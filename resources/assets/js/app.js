@@ -4,8 +4,17 @@ window.Vue = require('vue');
 
 import routes from './router'
 import VueRouter from 'vue-router'
+import { MdButton, MdContent, MdTabs, MdIcon } from 'vue-material/dist/components'
+import 'vue-material/dist/vue-material.min.css'
+import 'vue-material/dist/theme/default.css' // This line here
 
 window.Vue.use(VueRouter)
+
+Vue.use(MdButton)
+Vue.use(MdContent)
+Vue.use(MdTabs)
+Vue.use(MdIcon)
+
 
 const router = new VueRouter({ routes })
 

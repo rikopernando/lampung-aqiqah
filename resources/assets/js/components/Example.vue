@@ -1,16 +1,15 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Example Component</div>
+    <div>
+      <small>Raised</small>
+       <md-button class="md-raised">Default</md-button>
+       <md-button class="md-raised" :md-ripple="false">Ripple Off</md-button>
+       <md-button class="md-raised md-primary">Primary</md-button>
+       <md-button class="md-raised md-accent">Accent</md-button>
+       <md-button class="md-raised" disabled>Disabled</md-button>
+       <md-button class="md-icon-button">
+       <md-icon>home</md-icon>
+       </md-button>
 
-                    <div class="panel-body">
-                        I'm an example component!
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </template>
 
