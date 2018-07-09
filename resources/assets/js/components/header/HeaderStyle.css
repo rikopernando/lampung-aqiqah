@@ -1,0 +1,48 @@
+  .header-top {
+    background-color: #da2921;
+  }
+  .menu-kanan {
+    position: relative;
+    float: right;
+    padding-left: 550px
+  }
+  .label-nav {
+    color: white;
+  }
+  .label-nav-main {
+    color: #868686;
+    font-size: 1.1em;
+  }
+  .header-main {
+    height: 80px !important;
+    padding: 10px;
+    background-color: white;
+  }
+  .icon-aqiqah {
+    padding-top: 3px;
+    max-width: 15%;
+    height: auto;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .icon-link {
+    font-size: 20px;
+    color: white;
+    padding-left: 10px;
+    padding-top: 15px;
+  }
+  div .input-box {
+    font-size: 1.2em;
+    width: 150px;
+    border:none;
+    border-bottom:1px solid #868686;
+  }
+  div .icon-box {
+    font-size: 1.3em;
+    color: #868686;
+  }
+  div .icon-shop {
+    font-size: 2em;
+    color: #868686;
+    padding-left: 15px
+  }
