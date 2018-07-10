@@ -66,13 +66,13 @@
 
   .md-card {
     border-radius: 10px;
-    width: 350px;
+    width: 250px;
     margin: 4px;
     flex-wrap: wrap;
   }
 
   .image {
-    padding: 1px;
+    padding: 10px;
   }
   
   .card-action {
@@ -83,6 +83,10 @@
     display: flex;
     flex-wrap: wrap;
     margin: auto;
+  }
+
+  .card-media {
+    padding: 1px;
   }
 
   .card-hover {
