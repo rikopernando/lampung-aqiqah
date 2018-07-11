@@ -1,21 +1,18 @@
 <template>
-    <div>
-      <small>Raised</small>
-       <md-button class="md-raised">Default</md-button>
-       <md-button class="md-raised" :md-ripple="false">Ripple Off</md-button>
+    <div class="container">
        <md-button class="md-raised md-primary">Primary</md-button>
-       <md-button class="md-raised md-accent">Accent</md-button>
-       <md-button class="md-raised" disabled>Disabled</md-button>
-       <md-button class="md-icon-button">
-       <md-icon>home</md-icon>
-       </md-button>
-
+       <register></register>
     </div>
 </template>
 
 <script>
+    import Register from './auth/register'
     export default {
+        components : {
+          Register
+        },
         mounted() {
+            console.log('Component mounted.')
             console.log('Component mounted.')
         }
     }
