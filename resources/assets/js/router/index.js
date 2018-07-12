@@ -1,4 +1,5 @@
 import Example from '../components/Example'
+import PaketAqiqah from '../components/home/produk'
 import Slider from '../components/home/slider'
 import Footer from '../components/Footer/Footer'
 
@@ -8,7 +9,11 @@ const routes = [
           name : 'home',
           component : Example
         },{
-          path : '/slider',
+          path : '/paket',
+          name : 'paket',
+          component : PaketAqiqah
+        },
+        { path : '/slider',
           name : 'slider',
           component : Slider
         },
