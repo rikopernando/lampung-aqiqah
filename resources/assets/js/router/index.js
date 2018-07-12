@@ -2,6 +2,7 @@ import Example from '../components/Example'
 import PaketAqiqah from '../components/home/produk'
 import Slider from '../components/home/slider'
 import Footer from '../components/Footer/Footer'
+import indexHome from '../components/home/indexHome'
 
 const routes = [
         {
@@ -21,6 +22,11 @@ const routes = [
           path : '/footer',
           name : 'footer',
           component : Footer
+        },
+        {
+          path : '/indexHome',
+          name : 'indexHome',
+          component : indexHome
         }
     ]
 
