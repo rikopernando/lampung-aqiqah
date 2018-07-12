@@ -1,7 +1,6 @@
 <template>
     <div class="container">
        <md-button class="md-raised md-primary">Primary</md-button>
-       <register></register>
     </div>
 </template>
 
