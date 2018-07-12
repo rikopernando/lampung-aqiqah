@@ -13,7 +13,7 @@
 	 export default {
     	components: { Slider,Produk,Footer },
     	mounted(){
-    		console.log('s');
+    		console.log('');
     	}
 	}
 </script>
