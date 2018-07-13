@@ -1,48 +1,100 @@
-  .header-top {
-    background-color: #da2921;
-  }
-  .menu-kanan {
-    position: relative;
-    float: right;
-    padding-left: 550px
-  }
-  .label-nav {
-    color: white;
-  }
-  .label-nav-main {
-    color: #868686;
-    font-size: 1.1em;
-  }
-  .header-main {
-    height: 80px !important;
-    padding: 10px;
-    background-color: white;
-  }
-  .icon-aqiqah {
-    padding-top: 3px;
-    max-width: 15%;
-    height: auto;
-    display: inline-block;
-    vertical-align: middle;
-  }
-  .icon-link {
-    font-size: 20px;
-    color: white;
-    padding-left: 10px;
-    padding-top: 15px;
-  }
-  div .input-box {
-    font-size: 1.2em;
-    width: 150px;
-    border:none;
-    border-bottom:1px solid #868686;
-  }
-  div .icon-box {
-    font-size: 1.3em;
-    color: #868686;
-  }
-  div .icon-shop {
-    font-size: 2em;
-    color: #868686;
-    padding-left: 15px
-  }
+.header-top {
+  background-color: #da2921;
+}
+.menu-kanan {
+  position: relative;
+  right: -450px
+}
+.label-nav {
+  color: white;
+}
+.label-nav-main {
+  color: #868686;
+  font-size: 1.1em;
+}
+.header-main {
+  height: 80px !important;
+  padding: 10px;
+  background-color: #ffffff`;
+}
+.icon-aqiqah {
+  padding-top: 3px;
+  max-width: 15%;
+  height: auto;
+  display: inline-block;
+  vertical-align: middle;
+}
+.icon-link {
+  font-size: 20px;
+  color: white;
+  padding-left: 10px;
+  padding-top: 15px;
+}
+div .input-box {
+  font-size: 1.2em;
+  width: 150px;
+  border:none;
+  border-bottom:1px solid #868686;
+  background-color: whitesmoke;
+}
+div .icon-box {
+  font-size: 1.3em;
+  color: #868686;
+}
+div .icon-shop {
+  font-size: 2em;
+  color: #868686;
+  padding-left: 15px
+}
+
+/*MOBILE VERSION*/
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+#main {
+    transition: margin-left .5s;
+    padding: 16px;
+}
+@media screen and (min-width: 400px) {
+  #displaySidenav { display: block; }
+}
+@media screen and (min-width: 1024px) {
+  #displaySidenav { display: none; }
+}
+.icon-aqiqah-mobile {
+  padding-top: 3px;
+  max-width: 100%;
+  height: auto;
+  display: inline-block;
+  vertical-align: middle;
+}
+div .icon-shop-mobile {
+  font-size: 2em;
+  color: #868686;}
