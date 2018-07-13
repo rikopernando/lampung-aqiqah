@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-   <form novalidate class="md-layout" @submit.prevent="saveRegister">
+   <form novalidate class="md-layout" @submit.prevent="saveRegister",
       <md-card class="md-layout-item">
         <md-card-header>
           <div class="md-title">Register</div>

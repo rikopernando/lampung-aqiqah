@@ -1,14 +1,13 @@
 <template>
     <div class="container">
        <md-button class="md-raised md-primary">Primary</md-button>
-       <register></register>
-       <login></login>
+			<login></login>
     </div>
 </template>
 
 <script>
     import Register from './auth/register'
-    import Login from './auth/login'
+    import Login from './auth/login2'
     export default {
         components : {
           Register,Login
