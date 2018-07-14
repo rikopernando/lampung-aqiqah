@@ -20,7 +20,7 @@
 								<input type="password" name="password_confirmation" placeholder="Konfirmasi Password" v-model="register.password_confirmation"> 
 								<input type="submit" v-on:click="submit('register')" v-model="registerSubmit" id="registerSubmit">  
 								<div class="links">  
-									<a href="" v-on:click="flip('login')">Sudah Punya Akun ?</a>
+									<a href="#" v-on:click="flip('login')">Sudah Punya Akun ?</a>
 								</div>  
             </div>
 						<div class="form-login" id="form-login">
@@ -31,7 +31,7 @@
 								<input type="password" name="password" placeholder="Password" v-model="login.password">  
 								<input type="submit" v-on:click="submit('login')" v-model="loginSubmit"  id="loginSubmit">  
 								<div class="links">  
-									<a href="" v-on:click="flip('password')">Lupa password?</a>
+									<a href="#" v-on:click="flip('password')">Lupa password?</a>
 								</div>  
 						</div>
 						<div class="form-password" id="form-password">
