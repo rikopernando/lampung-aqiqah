@@ -11,7 +11,9 @@
 							<li v-on:click="flip('login')"><a href="#" id="login-form">Login</a></li>
 						</ul>            
 						<div class="form-register" id="form-register">
-            	<div class="error-message" v-text="registerError"></div>  
+                  <ul class="error-message">
+                    <li class="text-error" v-for="err in errors"> {{ err.toString() }} </li>
+                  </ul>
 								<input type="text" name="name" placeholder="Nama" v-model="register.name">  
 								<input type="email" name="email" placeholder="Email" v-model="register.email">  
 								<input type="password" name="password" placeholder="Password" v-model="register.password"> 
