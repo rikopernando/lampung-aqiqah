@@ -148,13 +148,6 @@
             $('#loginSubmit').removeClass('disabled')
             app.loginSubmit = "Login"
           })
-        },
-        clearForm() {
-          const app = this
-          app.register.name = ""
-          app.register.email = ""
-          app.register.password = ""
-          app.register.password_confirmation = ""
         }
 			}
     }
