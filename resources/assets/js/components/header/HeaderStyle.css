@@ -25,17 +25,15 @@
   vertical-align: middle;
 }
 .icon-link {
-  font-size: 20px;
+  font-size: 15px;
   color: white;
-  padding-left: 10px;
-  padding-top: 15px;
 }
 div .input-box {
   font-size: 1.2em;
   width: 150px;
   border:none;
   border-bottom:1px solid #868686;
-  background-color: whitesmoke;
+  background-color: white;
 }
 div .icon-box {
   font-size: 1.3em;
