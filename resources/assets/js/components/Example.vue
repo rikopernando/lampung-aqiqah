@@ -7,7 +7,7 @@
 
 <script>
     import Register from './auth/register'
-    import Login from './auth/login2'
+    import Login from './auth'
     export default {
         components : {
           Register,Login

@@ -22,7 +22,9 @@
 								</div>  
             </div>
 						<div class="form-login" id="form-login">
-								<div class="error-message" v-text="loginError"></div>  
+                  <ul class="error-message">
+                    <li class="text-error" v-for="err in errors"> {{ err.toString() }} </li>
+                  </ul>
                 <input type="email" name="email" placeholder="Email" v-model="login.email"> 
 								<input type="password" name="password" placeholder="Password" v-model="login.password">  
 								<input type="submit" v-on:click="submit('login')" v-model="loginSubmit"  id="loginSubmit">  
@@ -45,6 +47,7 @@
     export default {
       name : 'Login',
 			data : () => ({
+        errors : [],
         url : window.location.origin + window.location.pathname,
         snackbar: false,
 				active : null,
@@ -52,18 +55,18 @@
 				passwordSubmit: 'Reset Password',
 				loginSubmit: 'Login',
         register : {
-            name:     '',
-            email:    '',
+            name: '',
+            email: '',
             password: '',
             password_confirmation: '',
         },
         login : {
-            email:    '',
-            password:    '',
+            email: '',
+            password: '',
         },
 				registerError: '',
 				passwordError: '',
-				loginError:    '',
+				loginError:    'asfas',
         password : {
             email: '',
         }
@@ -109,6 +112,7 @@
                 break;
             case 'login':
                 this.loginSubmit = 'Logging In ...'
+                this.prosesLogin()
                 break;
             case 'password':
                 this.passwordSubmit = 'Resetting Password ...'
@@ -120,14 +124,29 @@
           .then((resp) => {
               console.log(resp)
               app.snackbar = true
-              app.clearForm()
               app.$router.replace('/dashboard/')
           })
           .catch((err) => {
               app.errors = err.response.data
               console.log(app.errors)
+              $('#registerSubmit').removeClass('disabled')
+              app.registerSubmit = "Register"
           })
 				},
+        prosesLogin() {
+          const app = this
+          axios.post(app.url+'login', app.login)
+          .then((resp) => {
+            console.log(resp)
+            app.$router.replace('/dashboard/')
+          })
+          .catch((err) => {
+            app.errors = err.response.data
+            console.log(app.errors)
+            $('#loginSubmit').removeClass('disabled')
+            app.loginSubmit = "Login"
+          })
+        },
         clearForm() {
           const app = this
           app.register.name = ""
@@ -250,4 +269,15 @@
 		.user-modal-container input[type="submit"].disabled {
 				background-color: #98d6b7;
 		}
+    
+    .error-message {
+        background-color:  #ff4d4d;
+        border-radius: 6px;
+    }
+
+    .text-error {
+      font-weight: bold;      
+      color: white;
+      padding : 4px;
+    }
 </style>
