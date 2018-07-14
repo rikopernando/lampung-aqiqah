@@ -12,9 +12,6 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Styles -->
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
         <!-- Fonts -->
         <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
         <!-- Styles -->
@@ -24,6 +21,6 @@
         <div id="app">
             <router-view></router-view>
         </div>
-        <script src="{{ asset('js/app.js?v=1.4')}}" type="text/javascript"></script>
+        <script src="{{ asset('js/app.js?v=1.8')}}" type="text/javascript"></script>
     </body>
 </html>
