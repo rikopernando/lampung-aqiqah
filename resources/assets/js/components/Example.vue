@@ -1,7 +1,7 @@
 <template>
     <div class="container">
        <md-button class="md-raised md-primary">Primary</md-button>
-			<login></login>
+			 <login></login>
     </div>
 </template>
 
@@ -9,7 +9,7 @@
     import Login from './auth'
     export default {
         components : {
-          Register,Login
+          Login
         },
         mounted() {
             console.log('Component mounted.')

@@ -43943,7 +43943,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: {
-        Register: Register, Login: __WEBPACK_IMPORTED_MODULE_0__auth___default.a
+        Login: __WEBPACK_IMPORTED_MODULE_0__auth___default.a
     },
     mounted: function mounted() {
         console.log('Component mounted.');
@@ -79148,7 +79148,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'Login',
@@ -79275,20 +79274,7 @@ var render = function() {
             }
           }
         },
-        [_vm._v("Login")]
-      ),
-      _vm._v(" "),
-      _c(
-        "md-button",
-        {
-          staticClass: "md-raised md-accent",
-          on: {
-            click: function($event) {
-              _vm.openModal("register")
-            }
-          }
-        },
-        [_vm._v("Register")]
+        [_vm._v("Login / Register")]
       ),
       _vm._v(" "),
       _c(

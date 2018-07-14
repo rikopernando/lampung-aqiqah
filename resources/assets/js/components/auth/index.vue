@@ -1,7 +1,6 @@
 <template>
     <div class="container">
-       <md-button class="md-raised md-accent" v-on:click="openModal('login')">Login</md-button>
-       <md-button class="md-raised md-accent" v-on:click="openModal('register')">Register</md-button>
+       <md-button class="md-raised md-accent" v-on:click="openModal('login')">Login / Register</md-button>
 
        <md-snackbar :md-active.sync="snackbar">Registrasi Berhasil!</md-snackbar>
        <div class="user-modal-container" id="login-modal" v-on:click="closeModal">
