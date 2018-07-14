@@ -72,30 +72,31 @@
 				openModal(which) {
           console.log(which)
 					if (this.active !== null) {
-							$('#form-'+this.active).removeClass('active');
-							$('#'+this.active+'-form').removeClass('active');
+							$('#form-'+this.active).removeClass('active')
+							$('#'+this.active+'-form').removeClass('active')
 					}
-
+          
           $("#login-modal").addClass('active')
-					$('#form-'+which).addClass('active');
-					$('#'+which+'-form').addClass('active');
-					this.active = which;
+					$('#form-'+which).addClass('active')
+					$('#'+which+'-form').addClass('active')
+					this.active = which
 
         },
         closeModal(e) {
-            e.preventDefault();
-            if (e.target === this.$el) {
-                $('#login-modal').removeClass('active');
+            console.log(e.path[1])
+            console.log(this.$el)
+            if (e.path[1] === this.$el) {
+                $('#login-modal').removeClass('active')
             }
         },
 				flip(which) {
 					if (which !== this.active) {
-						$('#form-' + this.active).removeClass('active');
-						$('#form-' + which).addClass('active');
-						$('#'+which+'-form').addClass('active');
-						$('#'+this.active+'-form').removeClass('active');
+						$('#form-' + this.active).removeClass('active')
+						$('#form-' + which).addClass('active')
+						$('#'+which+'-form').addClass('active')
+						$('#'+this.active+'-form').removeClass('active')
 
-						this.active = which;
+						this.active = which
 					}
 				},
         submit(which) {
