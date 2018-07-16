@@ -74,7 +74,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        User::whereId($id)->update($request->all());
     }
 
     /**

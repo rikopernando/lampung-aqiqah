@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form>
+    <form v-on:submit.prevent="saveForm()">
       <md-card>
         <md-card-header>
           <div class="md-title">Users</div>
@@ -27,7 +27,10 @@
 export default {
   data: () => ({
     url: window.location.origin + (window.location.pathname + 'user/'),
-    user: {}
+    user: {
+      name: '',
+      email: ''
+    }
   }),
   mounted() {
     this.getDataUser(this.$route.params.id);
@@ -37,6 +40,15 @@ export default {
       axios.get(this.url + userId)
       .then(resp => {
         this.user = resp.data;
+      })
+      .catch(resp => {
+        console.log('catch:', resp);
+      });
+    },
+    saveForm() {
+      axios.patch(this.url + this.$route.params.id, this.user)
+      .then(resp => {
+        console.log('then:', resp);
       })
       .catch(resp => {
         console.log('catch:', resp);
