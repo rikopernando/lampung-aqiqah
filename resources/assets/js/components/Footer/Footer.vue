@@ -1,5 +1,6 @@
 <template>
   <div class="row footer">
+  	  <div class="container">
   	<div class="md-layout md-gutter">
 	    <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100">
 	    	<div class="head">
@@ -47,6 +48,7 @@
 	  	Copyright © 2018 PT. Andaglos Global Teknologi.
 	  </p>
   </div>
+</div>
 </template>
 <script >
     export default {
