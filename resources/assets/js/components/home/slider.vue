@@ -130,24 +130,20 @@
                {
                   title: 'Slider 1',
                   content: 'Slide Content',
-                  image : 'http://aqiqahlampung.co.id/wp-content/uploads/slider2/banner-web-crop.jpeg'
+                  image : window.location.origin + window.location.pathname+'images/banner-sate-crop.jpg'
                },
                {
-                  title: 'Slider 1',
+                  title: 'Slider 2',
                   content: 'Slide Content',
-                  image: 'https://aqiqahlampung.co.id/wp-content/uploads/2018/04/banner-sate-crop.jpg'
-               },
-               {
-                  title: 'Slider 1',
-                  content: 'Slide Content',
-                  image: 'https://aqiqahlampung.co.id/wp-content/uploads/2018/04/menu1-1.png'
+                  image : window.location.origin + window.location.pathname+'images/banner-web-crop.jpeg'
                }
            ]
       }
 
+
    },
    mounted() {
-     console.log(this.slides)
+     console.log()
    }
   }
 </script>
