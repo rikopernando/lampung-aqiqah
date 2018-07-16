@@ -10,8 +10,6 @@
       md-cancel-text="Batal"
       @md-confirm="onConfirmDelete" />
 
-      <!-- <md-button class="md-primary md-raised" @click="active = true">Confirm</md-button> -->
-
     <md-table v-model="searched" md-sort="name" md-sort-order="asc" md-card md-fixed-header>
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
@@ -23,17 +21,18 @@
         </md-field>
       </md-table-toolbar>
 
+      <md-table-empty-state v-if="loading">
+		    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+      </md-table-empty-state>
       <md-table-empty-state
-      	v-if="users.length == 0"
+      	v-else-if="users.length == 0"
         md-label="Tidak ada data"
         md-description="Belum ada data User yang tersimpan.">
-        <md-button class="md-primary md-raised" @click="newUser">Create New User</md-button>
       </md-table-empty-state>      	
       <md-table-empty-state
       	v-else-if="users.length > 0 && search != null"
         md-label="Tidak ada User ditemukan"
         :md-description="`Tidak ada User ditemukan untuk kata kunci '${search}'. Cobalah menggunakan kata kunci yang lain.`">
-        <md-button class="md-primary md-raised" @click="newUser">Create New User</md-button>
       </md-table-empty-state>
 
       <md-table-row slot="md-table-row" slot-scope="{ item }">
@@ -68,8 +67,6 @@
   }
 
   export default {
-    name: 'TableSearch',
-    searchBy: '',
     data: () => ({
     	url: window.location.origin + (window.location.pathname + 'user/'),
       search: null,
@@ -77,7 +74,8 @@
 			snackbarDeleteUser: false,
 	    userIdForDelete: '',
       searched: [],
-      users: []
+      users: [],
+      loading: true
     }),
     mounted() {
     },
@@ -90,6 +88,7 @@
     		.then(resp => {
     			this.users = resp.data;
     			this.searched = resp.data;
+    			this.loading = false;
     			console.log(this.searched);
     		})
     		.catch(resp => {
@@ -111,17 +110,14 @@
     		this.promptDeleteUser = true;
     		this.userIdForDelete = userId;
     	},
-      newUser () {
-        window.alert('Noop')
-      },
-      searchOnTable () {
+      searchOnTable() {
         this.searched = searchByName(this.users, this.search)
       }
     }
   }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
   .md-field {
     max-width: 300px;
   }
