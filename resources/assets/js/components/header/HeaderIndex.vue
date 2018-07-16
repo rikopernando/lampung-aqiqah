@@ -55,7 +55,7 @@
           </div>
 
           <div class="md-toolbar-section-end">
-            <a href="#/login" class="md-button md-theme-default md-active">
+            <a href="#" class="md-button md-theme-default md-active"> 
               <div class="md-ripple">
                 <div class="label-nav-main">LOGIN</div>
               </div>
