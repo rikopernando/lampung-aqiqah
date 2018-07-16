@@ -132,6 +132,13 @@
 
           <div class="md-toolbar-section-end">
             <md-button class="md-icon-button">
+              <a href="#" v-on:click="openModal('login')">
+                  <i class="fa fa-user icon-shop-mobile"></i>
+              </a>
+            </md-button>
+          </div>
+          <div class="md-toolbar-section-end">
+            <md-button class="md-icon-button">
               <a href="#/cart">
                 <md-badge md-content="0">
                   <i class="fa fa-shopping-basket icon-shop-mobile"></i>
