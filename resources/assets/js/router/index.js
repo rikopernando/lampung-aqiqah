@@ -11,8 +11,8 @@ import Header from '../components/header/HeaderIndex.vue'
 const routes = [
         {
           path : '/',
-          name : 'home',
-          component : Example
+          name : 'indexHome',
+          component : indexHome
         },{
           path : '/paket',
           name : 'paket',
