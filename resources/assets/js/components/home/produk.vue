@@ -83,7 +83,6 @@
 
   .md-card {
     border-radius: 10px;
-    width: 250px;
     margin: 4px;
     flex-wrap: wrap;
   }
@@ -109,6 +108,7 @@
   .card-hover {
     padding : 4px;
   }
+
 
 </style>
 

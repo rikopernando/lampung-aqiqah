@@ -28,8 +28,8 @@
     margin-bottom: 50px;
 
     &:after {
-      width: 100%;
-      height: 100%;
+      width: 50%;
+      height: 50%;
       display: block;
       background: md-get-palette-color(purple, 200);
       content: " ";
@@ -45,13 +45,20 @@
       font-size: 25px;
       font-weight: 400;
   }
+  /*MOBILE VERSION*/
+  @media (max-width: 600px) {
+      .md-toolbar.md-theme-default .md-title  { font-size: 15px; }
+    }
+    @media (min-width: 600px) {
+      .md-toolbar.md-theme-default .md-title  { font-size: 25px; }
+    }
 
 </style>
 
 <template>
   <div >
       <div><!-- class div slider-->
-            <vueper-slides fade slide-content-outside="top" slide-content-outside-class="max-widthed" :touchable="false" :slide-ratio="0.2">
+            <vueper-slides fade slide-content-outside="top" slide-content-outside-class="max-widthed" :touchable="false" :slide-ratio="0.2" :bullets="false">
               <vueper-slide 
                   v-for="(slide, i) in slides" 
                   :key="i" 
@@ -130,12 +137,12 @@
                {
                   title: 'Slider 1',
                   content: 'Slide Content',
-                  image : window.location.origin + window.location.pathname+'images/banner-sate-crop.jpg'
+                  image : window.location.origin + window.location.pathname+'images/banner-sate-crop.jpg',
                },
                {
                   title: 'Slider 2',
                   content: 'Slide Content',
-                  image : window.location.origin + window.location.pathname+'images/banner-web-crop.jpeg'
+                  image : window.location.origin + window.location.pathname+'images/banner-web-crop.jpeg',
                }
            ]
       }
