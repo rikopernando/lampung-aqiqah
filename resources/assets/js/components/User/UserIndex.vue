@@ -16,9 +16,24 @@
           <h1 class="md-title">Users</h1>
         </div>
 
-        <md-field md-clearable class="md-toolbar-section-end">
-          <md-input placeholder="Pencarian..." v-model="search" @input="searchOnTable" />
-        </md-field>
+        <div class="md-toolbar-section-end search-input">
+        	<div class="md-layout">
+        		<div class="md-layout-item md-medium-size-50 md-small-size-50 md-xsmall-size-100">
+			        <md-field md-inline>
+			        	<label>Cari dengan...</label>
+			          <md-input v-model="search" @input="searchOnTable" />
+			        </md-field>
+        		</div>
+        		<div class="md-layout-item md-medium-size-50 md-small-size-50 md-xsmall-hide">
+			        <md-field>
+			          <md-select v-model="searchBy" @md-selected="searchOnTable" name="searchBy" id="searchBy" md-dense>
+			            <md-option value="name">Nama</md-option>
+			            <md-option value="email">Email</md-option>
+			          </md-select>
+			        </md-field>
+        		</div>
+        	</div>
+        </div>
       </md-table-toolbar>
 
       <md-table-empty-state v-if="loading">
@@ -37,7 +52,7 @@
 
       <md-table-row slot="md-table-row" slot-scope="{ item }">
         <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
-        <md-table-cell md-label="Name" md-sort-by="name">{{ item.name }}</md-table-cell>
+        <md-table-cell md-label="Nama" md-sort-by="name">{{ item.name }}</md-table-cell>
         <md-table-cell md-label="Email" md-sort-by="email">{{ item.email }}</md-table-cell>
         <md-table-cell md-label="Aksi">
         	<md-button :to="`/user/edit/${item.id}`" class="md-dense md-raised md-primary">Edit</md-button>
@@ -58,12 +73,15 @@
     return text.toString().toLowerCase()
   }
 
-  const searchByName = (items, term) => {
+  const searchByName = (items, term, searchBy) => {
     if (term) {
-      return items.filter(item => toLower(item.name).includes(toLower(term)))
+    	console.log('searchByName', searchBy);
+      return items.filter(item => {
+      	return toLower(item[searchBy]).includes(toLower(term));
+	    });
     }
 
-    return items
+    return items;
   }
 
   export default {
@@ -75,6 +93,7 @@
 	    userIdForDelete: '',
       searched: [],
       users: [],
+      searchBy: 'name',
       loading: true
     }),
     mounted() {
@@ -111,14 +130,14 @@
     		this.userIdForDelete = userId;
     	},
       searchOnTable() {
-        this.searched = searchByName(this.users, this.search)
+        this.searched = searchByName(this.users, this.search, this.searchBy);
       }
     }
   }
 </script>
 
 <style scoped>
-  .md-field {
-    max-width: 300px;
+  .search-input {
+    /*max-width: 150px;*/
   }
 </style>
