@@ -7,10 +7,10 @@
 </template>
 
 <script>
-    import Register from './auth/register'
+    import Login from './auth'
     export default {
         components : {
-          Register
+          Login
         },
         mounted() {
             console.log('Component mounted.')

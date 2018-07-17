@@ -1,0 +1,62 @@
+.label-nav-main {
+  color: #868686;
+  font-size: 1.1em;
+}
+.icon-aqiqah {
+  padding-top: 3px;
+  max-width: 15%;
+  height: auto;
+  display: inline-block;
+  vertical-align: middle;
+}
+.icon-link {
+  font-size: 15px;
+  color: white;
+}
+div .input-box {
+  font-size: 1.2em;
+  width: 150px;
+  border:none;
+  border-bottom:1px solid #868686;
+  background-color: white;
+}
+div .icon-box {
+  font-size: 1.3em;
+  color: #868686;
+}
+div .icon-shop {
+  font-size: 2em;
+  color: #868686;
+  padding-left: 15px
+}
+
+/*MOBILE VERSION*/
+@media (max-width: 600px) {
+  .md-xsmall-hide { display: none; }
+  #displaySidenav { display: block; }
+}
+@media (min-width: 600px) {
+  #displaySidenav { display: none; }
+}
+.side-menu {
+  padding-top: 12px;
+  color: #868686 !important;
+}
+.icon-shop-mobile {
+  font-size: 25px;
+  color: #868686;
+}
+.md-drawer {
+  width: 230px;
+  max-width: calc(100vw - 125px);
+}
+.md-content {
+  padding: 16px;
+}
+.social-media {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
