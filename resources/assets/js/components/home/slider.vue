@@ -37,12 +37,13 @@
   }
   .desc{
       color: #7a7a7a;
-      font-family: "Roboto", Sans-serif;
+      font-family: "Gill Sans", sans-serif;
       font-weight: 400;
   }
   .headDesc{
       color: #d21d24;
       font-size: 25px;
+      font-family: "Gill Sans", sans-serif;
       font-weight: 400;
   }
   /*MOBILE VERSION*/
@@ -74,45 +75,45 @@
     <div class="container"><!-- class container-->
            <div class="md-layout md-gutter md-alignment-center ">
             <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100">        
-              <h2 class="headDesc"><b><i class="fa fa-car"></i> Free Ongkir</b></h2>
+              <h2 class="headDesc"><i class="fa fa-truck"></i> Free Ongkir</h2>
               <p class="desc">Kami memberikan bebas biaya Pengiriman untuk wilayah Bandar Lampung dan sekitarnya dengan radius maksimal 30 KM</p>
             </div>
             <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100"> 
-              <h2 class="headDesc"><b><i class="fa fa-clock-o"></i> Tepat Waktu</b></h2>
+              <h2 class="headDesc"><i class="fa fa-clock-o"></i> Tepat Waktu</h2>
               <p class="desc">Pesanan kami antar sesuai permintaan secara langsung dan dikirim sesuai jadwal ke alamat Pemesan Layanan Aqiqah</p>
             </div>
             <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100"> 
-              <h2 class="headDesc"><b><i class="fa fa-thumbs-up"></i> Citarasa Istimewa</b></h2>
+              <h2 class="headDesc"><i class="fa fa-thumbs-up"></i> Citarasa Istimewa</h2>
               <p class="desc">Daging Aqiqah dimasak menggunakan bumbu tradisional dan rempah-rempah alami oleh juru masak berpengalaman</p>
             </div>
           </div>
 
           <div class="md-layout md-gutter md-alignment-center">
             <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100">        
-               <h2 class="headDesc"><b><i class="fa fa-book"></i> Sesuai Syar'i</b></h2>
+               <h2 class="headDesc"><i class="fa fa-book"></i> Sesuai Syar'i</h2>
               <p class="desc">Hewan Aqiqah disembelih sesuai standar syar’i dan kesehatan, dan di lakukan oleh Team kami yang berpengalaman</p>
             </div>
             <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100">
-            <h2 class="headDesc"><b><i class="fa fa-child"></i> Memberdayakan</b></h2>
+            <h2 class="headDesc"><i class="fa fa-child"></i> Memberdayakan</h2>
               <p class="desc">Dengan memesan layanan aqiqah kepada kami berarti  telah ikut meningkatkan kesejahteraan peternak lokal</p>
             </div>
             <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100"> 
-             <h2 class="headDesc"><b><i class="fa fa-group"></i> Peduli Sesama</b></h2>
+             <h2 class="headDesc"><i class="fa fa-group"></i> Peduli Sesama</h2>
               <p class="desc">Aqiqah Peduli mendistribusikan aqiqah Anda ke daerah miskin, daerah rawan gizi, Rumah Yatim Piatu, Pondok Pesantren</p>  
             </div>
           </div>
 
           <div class="md-layout md-gutter md-alignment-center">
             <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100">
-                <h2 class="headDesc"><b><i class="fa fa-video-camera"></i> Dokumentasi</b></h2>
+                <h2 class="headDesc"><i class="fa fa-video-camera"></i> Dokumentasi</h2>
                 <p class="desc">Kami dokumentasikan pemotongan untuk ayah bunda jika tidak bisa menyaksikan pemotongan secara langsung</p>
             </div>
             <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100">
-            <h2 class="headDesc"><b><i class="fa fa-credit-card-alt"></i> Pembayaran Mudah</b></h2>
+            <h2 class="headDesc"><i class="fa fa-credit-card-alt"></i> Pembayaran Mudah</h2>
             <p class="desc">Pembayaran dapat dilakukan dengan cara transfer dengan fitur Invoice dan konfirmasi pembayaran secara Real-Time</p>
             </div>
             <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100"> 
-          <h2 class="headDesc"><b><i class="fa fa-puzzle-piece"></i> Pilihan Paket</b></h2>
+          <h2 class="headDesc"><i class="fa fa-puzzle-piece"></i> Pilihan Paket</h2>
               <p class="desc">Anda dapat memilih paket sesuai keinginan, Anda juga bisa berkonsultasi dengan customer service kami.</p>  
             </div>
           </div>
