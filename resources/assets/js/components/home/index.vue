@@ -87,7 +87,7 @@
                 <div class="label-nav-main">HOME</div>
               </div>
             </a>
-            <a href="#/produk-list" class="md-button md-theme-default md-active">
+            <a href="#/dashboard" class="md-button md-theme-default md-active">
               <div class="md-ripple">
                 <div class="label-nav-main">PRODUK</div>
               </div>
@@ -306,7 +306,8 @@
           .then((resp) => {
               console.log(resp)
               app.snackbar = true
-              app.$router.replace('/dashboard/')
+              app.$store.commit('user/LOGIN')
+              app.$router.push('/dashboard')
           })
           .catch((err) => {
               app.errors = err.response.data
@@ -320,7 +321,8 @@
           axios.post(app.url+'login', app.login)
           .then((resp) => {
             console.log(resp)
-            app.$router.replace('/dashboard/')
+            app.$store.commit('user/LOGIN')
+            app.$router.push('/dashboard')
           })
           .catch((err) => {
             app.errors = err.response.data
