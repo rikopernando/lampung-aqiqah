@@ -95,9 +95,14 @@
           </div>
 
           <div class="md-toolbar-section-end">
-            <a href="#" class="md-button md-theme-default md-active" v-on:click="openModal('login')"> 
+            <a href="#" class="md-button md-theme-default md-active" v-on:click="openModal('login')" v-if="!this.$store.state.user.loggedIn"> 
               <div class="md-ripple">
                 <div class="label-nav-main">LOGIN</div>
+              </div>
+            </a>
+            <a href="#" class="md-button md-theme-default md-active" v-on:click="logout()" v-else> 
+              <div class="md-ripple">
+                <div class="label-nav-main">LOGOUT</div>
               </div>
             </a>
             <a href="#/cart" class="md-button md-theme-default md-active">
@@ -329,6 +334,19 @@
             console.log(app.errors)
             $('#loginSubmit').removeClass('disabled')
             app.loginSubmit = "Login"
+          })
+        },
+        logout() {
+          const app = this
+          axios.post(app.url+'/logout')
+          .then((resp) => {
+            console.log(resp.data)
+            app.$store.commit('user/LOGOUT')
+            app.$router.push('/')
+          })
+          .catch((err) => {
+            console.log(err)
+            alert('Terjadi Kesalahan')
           })
         }
 			}
