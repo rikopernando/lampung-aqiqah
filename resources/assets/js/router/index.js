@@ -20,12 +20,18 @@ const routes = [
         {
           path : '/user',
           name : 'user',
-          component : UserIndex
+          component : UserIndex,
+          meta : {
+            requiresAuth : true
+          }
         },
         {
           path : '/user/edit/:id',
           name : 'editUser',
-          component : UserEdit
+          component : UserEdit,
+          meta : {
+            requiresAuth : true
+          }
         }
 ]
 
