@@ -5,6 +5,7 @@ import UserEdit from '../components/User/UserEdit'
 
 // PRODUK
 import ProdukIndex from '../components/produk/ProdukIndex'
+import ProdukCreate from '../components/produk/ProdukCreate'
 
 const routes = [
         {
@@ -31,6 +32,11 @@ const routes = [
           path : '/produk',
           name : 'produk',
           component : ProdukIndex
+        },
+        {
+          path : '/produk/create',
+          name : 'createProduk',
+          component : ProdukCreate
         },
 ]
 

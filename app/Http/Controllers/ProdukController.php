@@ -39,7 +39,19 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $this->validate($request, [
+          'nama_produk' => 'required|max:300',
+          'harga_coret' => 'required|numeric|digits_between:1,11',
+          'harga_jual'  => 'required|numeric|digits_between:1,11',
+      ]);
+
+      $insert_barang = Produk::create([
+          'nama_produk'       => strtolower($request->nama_produk),
+          'harga_coret'       => $request->harga_coret,
+          'harga_jual'        => $request->harga_jual,
+          'stok'              => $request->stok === true ? 1 : 2,
+          'deskripsi_produk'  => $request->deskripsi_produk
+      ]);
     }
 
     /**

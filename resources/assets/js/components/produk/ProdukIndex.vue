@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <md-card md-with-hover>
         <ul class="breadcrumb">
-          <li><a href="#">Home</a></li>
+          <li><a href="#/">Home</a></li>
           <li class="active">Produk</li>
         </ul>
       </md-card>
@@ -37,7 +37,7 @@
         </md-card-header>
 
         <md-card-content>
-          <md-button :to="`/produk/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah</md-button>
+          <md-button :to="`/produk/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah Produk</md-button>
 
           <md-table v-model="searched" md-sort="name" md-sort-order="asc" md-fixed-header>
             <md-table-empty-state v-if="loading">
