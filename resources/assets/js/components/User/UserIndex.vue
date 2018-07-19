@@ -20,7 +20,8 @@
         	<div class="md-layout">
         		<div class="md-layout-item md-medium-size-50 md-small-size-50 md-xsmall-size-100">
 			        <md-field md-inline>
-			        	<label>Cari dengan...</label>
+			        	<label class="media-screen-xsmall-hide">Cari dengan...</label>
+			        	<label class="media-screen-medium-hide">Cari User...</label>
 			          <md-input v-model="search" @input="searchOnTable" />
 			        </md-field>
         		</div>
@@ -70,19 +71,16 @@
 
 <script>
   const toLower = text => {
-    return text.toString().toLowerCase()
-  }
+    return text.toString().toLowerCase();
+  };
 
-  const searchByName = (items, term, searchBy) => {
+  const searchUser = (items, term, searchBy) => {
     if (term) {
-    	console.log('searchByName', searchBy);
-      return items.filter(item => {
-      	return toLower(item[searchBy]).includes(toLower(term));
-	    });
+      return items.filter(item => toLower(item[searchBy]).includes(toLower(term)));
     }
 
     return items;
-  }
+  };
 
   export default {
     data: () => ({
@@ -96,8 +94,6 @@
       searchBy: 'name',
       loading: true
     }),
-    mounted() {
-    },
     created() {
     	this.getUserData();
     },
@@ -108,7 +104,6 @@
     			this.users = resp.data;
     			this.searched = resp.data;
     			this.loading = false;
-    			console.log(this.searched);
     		})
     		.catch(resp => {
     			console.log('catch getUserData:', resp);
@@ -130,14 +125,27 @@
     		this.userIdForDelete = userId;
     	},
       searchOnTable() {
-        this.searched = searchByName(this.users, this.search, this.searchBy);
+        this.searched = searchUser(this.users, this.search, this.searchBy);
       }
     }
   }
 </script>
 
 <style scoped>
-  .search-input {
-    /*max-width: 150px;*/
-  }
+	@media (max-width: 600px) {
+		.media-screen-medium-hide {
+			display: block;
+		}
+		.media-screen-xsmall-hide {
+			display: none
+		}
+	}
+	@media (min-width: 601px) {
+		.media-screen-xsmall-hide {
+			display: block;
+		}
+		.media-screen-medium-hide {
+			display: none;
+		}
+	}
 </style>

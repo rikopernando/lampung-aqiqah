@@ -1,7 +1,8 @@
 <template>
-  <div class="container">
-    <div class="md-layout">
-        <div class="md-layout-item md-medium-size-20 md-small-size-50 md-xsmall-size-100">
+  <div v-bind:style="{ 'background-image': 'url(' + url+'/images/background-batik.jpg' + ')' }">
+  <div class="container ">
+    <div class="md-layout ">
+        <div class="md-layout-item md-medium-size-25 md-small-size-50 md-xsmall-size-100">
            <md-card md-with-hover  class="card-hover">
                     <md-card-header class="card-header">
                             <div class="md-title">Paket Superman</div>
@@ -16,7 +17,8 @@
                     </md-card-actions>
             </md-card>
         </div>
-        <div class="md-layout-item md-medium-size-20 md-small-size-50 md-xsmall-size-100">
+
+        <div class="md-layout-item md-medium-size-25 md-small-size-50 md-xsmall-size-100">
               <md-card md-with-hover  class="card-hover">
                       <md-card-header class="card-header">
                                 <div class="md-title">Paket Superman</div>
@@ -31,7 +33,8 @@
                       </md-card-actions>
                </md-card>
         </div>
-        <div class="md-layout-item md-medium-size-20 md-small-size-50 md-xsmall-size-100">
+
+        <div class="md-layout-item md-medium-size-25 md-small-size-50 md-xsmall-size-100">
                  <md-card md-with-hover  class="card-hover">
                             <md-card-header class="card-header">
                                 <div class="md-title">Paket Spesial</div>
@@ -46,7 +49,8 @@
                             </md-card-actions>
                   </md-card>
         </div>
-        <div class="md-layout-item md-medium-size-20 md-small-size-50 md-xsmall-size-100">
+
+        <div class="md-layout-item md-medium-size-25 md-small-size-50 md-xsmall-size-100">
                  <md-card md-with-hover  class="card-hover">
                             <md-card-header class="card-header">
                                 <div class="md-title">Paket Spesial</div>
@@ -62,6 +66,7 @@
                   </md-card>
         </div>
     </div>
+  </div>
   </div>
 </template>
 

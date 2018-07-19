@@ -16,12 +16,18 @@ const routes = [
         {
           path : '/dashboard',
           name : 'dashboard',
-          component : Dashboard
+          component : Dashboard,
+          meta : {
+            requiresAuth : true
+          }
         },
         {
           path : '/user',
           name : 'user',
-          component : UserIndex
+          component : UserIndex,
+          meta : {
+            requiresAuth : true
+          }
         },
         {
           path : '/user/edit/:id',
@@ -42,7 +48,8 @@ const routes = [
           path : '/bank/edit/:id',
           name : 'bankEdit',
           component : BankEdit
-        },
+        }
 ]
 
 export default routes
+
