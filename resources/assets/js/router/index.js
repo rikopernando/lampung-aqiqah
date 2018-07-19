@@ -1,5 +1,7 @@
 import Dashboard from '../components/dashboard'
 import Home from '../components/home'
+import UserIndex from '../components/User/UserIndex'
+import UserEdit from '../components/User/UserEdit'
 
 const routes = [
         {
@@ -14,6 +16,16 @@ const routes = [
           meta : {
             requiresAuth : true
           }
+        },
+        {
+          path : '/user',
+          name : 'user',
+          component : UserIndex
+        },
+        {
+          path : '/user/edit/:id',
+          name : 'editUser',
+          component : UserEdit
         }
 ]
 
