@@ -37,17 +37,26 @@ const routes = [
         {
           path : '/bank',
           name : 'bank',
-          component : BankIndex
+          component : BankIndex,
+          meta : {
+            requiresAuth : true
+          }
         },
         {
           path : '/bank-create',
           name : 'bankCreate',
-          component : BankCreate
+          component : BankCreate,
+          meta : {
+            requiresAuth : true
+          }
         },
         {
           path : '/bank/edit/:id',
           name : 'bankEdit',
-          component : BankEdit
+          component : BankEdit,
+          meta : {
+            requiresAuth : true
+          }
         }
 ]
 
