@@ -1,51 +1,70 @@
 <template>
-    <md-layout md-gutter md-row md-align="start center" class="card-row">
-				<md-layout md-flex="30" md-row md-align="center">
-						<md-card md-with-hover class="card-hover">
-							<md-card-header class="card-header">
-								<div class="md-title">Paket Superman</div>
-							</md-card-header>
+  <div v-bind:style="{ 'background-image': 'url(' + url+'/images/background-batik.jpg' + ')' }">
+  <div class="container ">
+    <div class="md-layout ">
+        <div class="md-layout-item md-medium-size-25 md-small-size-50 md-xsmall-size-100">
+           <md-card md-with-hover  class="card-hover">
+                    <md-card-header class="card-header">
+                            <div class="md-title">Paket Superman</div>
+                            </md-card-header>
 
-							<md-card-media class="card-media">
-								<img :src="url+'/images/paketExample.png'" class="image">
-							</md-card-media>
+                            <md-card-media class="card-media">
+                                <img :src="url+'/images/paketExample2.png'" class="image">
+                            </md-card-media>
 
-							<md-card-actions class="card-action">
-                <md-button class="md-raised md-accent">Beli Sekarang</md-button>
-							</md-card-actions>
-						</md-card>
-				</md-layout>
-				<md-layout md-flex="30" md-row md-align="center">
-						<md-card md-with-hover class="card-hover">
-							<md-card-header class="card-header">
-								<div class="md-title">Paket Superman</div>
-							</md-card-header>
+                            <md-card-actions class="card-action">
+                          <md-button class="md-raised md-accent">Beli Sekarang</md-button>
+                    </md-card-actions>
+            </md-card>
+        </div>
+        <div class="md-layout-item md-medium-size-25 md-small-size-50 md-xsmall-size-100">
+              <md-card md-with-hover  class="card-hover">
+                      <md-card-header class="card-header">
+                                <div class="md-title">Paket Superman</div>
+                            </md-card-header>
 
-							<md-card-media class="card-media">
-								<img :src="url+'/images/paketExample2.png'" class="image">
-							</md-card-media>
+                            <md-card-media class="card-media">
+                                <img :src="url+'/images/paketExample.png'" class="image">
+                            </md-card-media>
 
-							<md-card-actions class="card-action">
-                <md-button class="md-raised md-accent">Beli Sekarang</md-button>
-							</md-card-actions>
-						</md-card>
-				</md-layout>
-				<md-layout md-flex="30" md-row md-align="center">
-						<md-card md-with-hover class="card-hover">
-							<md-card-header class="card-header">
-								<div class="md-title">Paket Spesial</div>
-							</md-card-header>
+                            <md-card-actions class="card-action">
+                         <md-button class="md-raised md-accent">Beli Sekarang</md-button>
+                      </md-card-actions>
+               </md-card>
+        </div>
+        <div class="md-layout-item md-medium-size-25 md-small-size-50 md-xsmall-size-100">
+                 <md-card md-with-hover  class="card-hover">
+                            <md-card-header class="card-header">
+                                <div class="md-title">Paket Spesial</div>
+                            </md-card-header>
 
-							<md-card-media class="card-media">
-								<img :src="url+'/images/paketSpesial.png'" class="image">
-							</md-card-media>
+                            <md-card-media class="card-media">
+                                <img :src="url+'/images/paketSpesial.png'" class="image">
+                            </md-card-media>
 
-							<md-card-actions class="card-action">
-                <md-button class="md-raised md-accent">Beli Sekarang</md-button>
-							</md-card-actions>
-						</md-card>
-				</md-layout>
-    </md-layout>
+                            <md-card-actions class="card-action">
+                      <md-button class="md-raised md-accent">Beli Sekarang</md-button>
+                            </md-card-actions>
+                  </md-card>
+        </div>
+        <div class="md-layout-item md-medium-size-25 md-small-size-50 md-xsmall-size-100">
+                 <md-card md-with-hover  class="card-hover">
+                            <md-card-header class="card-header">
+                                <div class="md-title">Paket Spesial</div>
+                            </md-card-header>
+
+                            <md-card-media class="card-media">
+                                <img :src="url+'/images/paketSpesial.png'" class="image">
+                            </md-card-media>
+
+                            <md-card-actions class="card-action">
+                      <md-button class="md-raised md-accent">Beli Sekarang</md-button>
+                            </md-card-actions>
+                  </md-card>
+        </div>
+    </div>
+  </div>
+  </div>
 </template>
 
 <script>
@@ -66,7 +85,6 @@
 
   .md-card {
     border-radius: 10px;
-    width: 250px;
     margin: 4px;
     flex-wrap: wrap;
   }
