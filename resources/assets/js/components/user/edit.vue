@@ -5,7 +5,7 @@
       <md-card md-with-hover>
         <ul class="breadcrumb">
           <li><a href="#">Home</a></li>
-          <li>User</li>
+          <li><router-link :to="{name: 'user'}">User</router-link></li>
           <li class="active">Edit</li>
         </ul>
       </md-card>
