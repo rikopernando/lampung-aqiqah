@@ -87,7 +87,7 @@
                 <div class="label-nav-main">HOME</div>
               </div>
             </a>
-            <a href="#/produk-list" class="md-button md-theme-default md-active">
+            <a href="#/dashboard" class="md-button md-theme-default md-active">
               <div class="md-ripple">
                 <div class="label-nav-main">PRODUK</div>
               </div>
@@ -95,11 +95,30 @@
           </div>
 
           <div class="md-toolbar-section-end">
-            <a href="#" class="md-button md-theme-default md-active" v-on:click="openModal('login')"> 
+
+            <a href="#" class="md-button md-theme-default md-active" v-on:click="openModal('login')" v-if="!this.$store.state.user.loggedIn"> 
               <div class="md-ripple">
                 <div class="label-nav-main">LOGIN</div>
               </div>
             </a>
+
+            <md-menu v-else>
+                <a href="#" class="md-button md-theme-default md-active" md-menu-trigger> 
+                  <div class="md-ripple">
+                    <div class="label-nav-main">{{this.$store.state.user.profile.name}}</div>
+                  </div>
+                </a>
+                <md-menu-content>
+                  <md-menu-item>
+                    <md-button v-on:click="logout()">LOGOUT</md-button>
+                  </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+
+            <form id="logout-form" v-bind:action="url+'logout'" method="POST" style="display: none;">
+              <input type="hidden" name="_token" v-bind:value="token"> 
+            </form>
+
             <a href="#/cart" class="md-button md-theme-default md-active">
               <div class="md-ripple">
                 <div class="label-nav-main">CART</div>
@@ -108,6 +127,7 @@
                 </md-badge>
               </div>
             </a>
+
           </div>
 
         </div>
@@ -222,7 +242,6 @@
     import Slider from './slider'
     import Produk from './produk'
     import Footer from '../Footer/Footer'
-
     export default {
 			data : () => ({
         modal : false,
@@ -230,6 +249,7 @@
         showSidepanel: false,
         errors : [],
         url : window.location.origin + window.location.pathname,
+        token : $('meta[name="csrf-token"]').attr('content'),
         snackbar: false,
 				active : null,
 				registerSubmit: 'Register',
@@ -304,9 +324,10 @@
           const app = this
           axios.post(app.url+'register', app.register)
           .then((resp) => {
-              console.log(resp)
+              console.log(resp.data)
               app.snackbar = true
-              app.$router.replace('/dashboard/')
+              app.$store.commit('user/LOGIN',resp.data)
+              app.$router.push('/dashboard')
           })
           .catch((err) => {
               app.errors = err.response.data
@@ -319,8 +340,9 @@
           const app = this
           axios.post(app.url+'login', app.login)
           .then((resp) => {
-            console.log(resp)
-            app.$router.replace('/dashboard/')
+            console.log(resp.data)
+            app.$store.commit('user/LOGIN',resp.data)
+            app.$router.push('/dashboard')
           })
           .catch((err) => {
             app.errors = err.response.data
@@ -328,12 +350,20 @@
             $('#loginSubmit').removeClass('disabled')
             app.loginSubmit = "Login"
           })
+        },
+        logout() {
+          document.getElementById('logout-form').submit();
+          this.$store.commit('user/LOGOUT')
         }
 			}
     }
 </script>
 
 <style lang="scss" scoped>
+    
+    .link-item {
+      display: inline-block;
+    }
 
     .user-modal-container * {
       box-sizing: border-box;
