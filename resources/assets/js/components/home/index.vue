@@ -312,9 +312,9 @@
           const app = this
           axios.post(app.url+'register', app.register)
           .then((resp) => {
-              console.log(resp)
+              console.log(resp.data)
               app.snackbar = true
-              app.$store.commit('user/LOGIN')
+              app.$store.commit('user/LOGIN',resp.data)
               app.$router.push('/dashboard')
           })
           .catch((err) => {
@@ -328,8 +328,8 @@
           const app = this
           axios.post(app.url+'login', app.login)
           .then((resp) => {
-            console.log(resp)
-            app.$store.commit('user/LOGIN')
+            console.log(resp.data)
+            app.$store.commit('user/LOGIN',resp.data)
             app.$router.push('/dashboard')
           })
           .catch((err) => {

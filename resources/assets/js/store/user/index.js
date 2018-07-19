@@ -10,8 +10,13 @@ const getters = {
 }
 
 const mutations = {
-    [LOGIN] (state) {
-      state.loggedIn = true
+    [LOGIN] (state, user) {
+      state.loggedIn = true,
+      state.profile = {
+        name : user.name,
+        email : user.email,
+        id : user.id
+      }
     },
     [LOGOUT] (state) {
       state.loggedIn = false
