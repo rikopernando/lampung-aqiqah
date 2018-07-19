@@ -4,6 +4,8 @@ import UserIndex from '../components/User/UserIndex'
 import UserEdit from '../components/User/UserEdit'
 import BankIndex from '../components/bank/BankIndex'
 import BankCreate from '../components/bank/BankCreate'
+import BankEdit from '../components/bank/BankEdit'
+
 
 const routes = [
         {
@@ -35,6 +37,11 @@ const routes = [
           path : '/bank-create',
           name : 'bankCreate',
           component : BankCreate
+        },
+        {
+          path : '/bank/edit/:id',
+          name : 'bankEdit',
+          component : BankEdit
         },
 ]
 

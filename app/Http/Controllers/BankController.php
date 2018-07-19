@@ -64,6 +64,8 @@ class BankController extends Controller
      */
     public function show($id)
     {
+
+
         return response(Bank::whereId($id)->first());
     }
 
@@ -87,6 +89,13 @@ class BankController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
+       $this->validate($request, [
+            'nama_bank' => 'required',
+            'atas_nama' => 'required',
+            'no_rek' => 'required|unique:banks,no_rek,'.$id.'|numeric',
+        ]);
+
         Bank::whereId($id)->update($request->all());
     }
 
