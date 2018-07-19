@@ -105,6 +105,9 @@
                 <div class="label-nav-main">LOGOUT</div>
               </div>
             </a>
+            <form id="logout-form" v-bind:action="url+'logout'" method="POST" style="display: none;">
+              <input type="hidden" name="_token" v-bind:value="token"> 
+            </form>
             <a href="#/cart" class="md-button md-theme-default md-active">
               <div class="md-ripple">
                 <div class="label-nav-main">CART</div>
@@ -227,7 +230,6 @@
     import Slider from './slider'
     import Produk from './produk'
     import Footer from '../Footer/Footer'
-
     export default {
 			data : () => ({
         modal : false,
@@ -235,6 +237,7 @@
         showSidepanel: false,
         errors : [],
         url : window.location.origin + window.location.pathname,
+        token : $('meta[name="csrf-token"]').attr('content'),
         snackbar: false,
 				active : null,
 				registerSubmit: 'Register',
@@ -337,17 +340,8 @@
           })
         },
         logout() {
-          const app = this
-          axios.post(app.url+'/logout')
-          .then((resp) => {
-            console.log(resp.data)
-            app.$store.commit('user/LOGOUT')
-            app.$router.push('/')
-          })
-          .catch((err) => {
-            console.log(err)
-            alert('Terjadi Kesalahan')
-          })
+          document.getElementById('logout-form').submit();
+          this.$store.commit('user/LOGOUT')
         }
 			}
     }
