@@ -3,6 +3,9 @@ import Home from '../components/home'
 import UserIndex from '../components/User/UserIndex'
 import UserEdit from '../components/User/UserEdit'
 
+// PRODUK
+import ProdukIndex from '../components/produk/ProdukIndex'
+
 const routes = [
         {
           path : '/',
@@ -23,7 +26,12 @@ const routes = [
           path : '/user/edit/:id',
           name : 'editUser',
           component : UserEdit
-        }
+        },
+        {
+          path : '/produk',
+          name : 'produk',
+          component : ProdukIndex
+        },
 ]
 
 export default routes
