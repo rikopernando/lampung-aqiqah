@@ -1,7 +1,7 @@
 import Dashboard from '../components/dashboard'
 import Home from '../components/home'
-import UserIndex from '../components/User/UserIndex'
-import UserEdit from '../components/User/UserEdit'
+import UserIndex from '../components/user/index'
+import UserEdit from '../components/user/edit'
 
 const routes = [
         {
