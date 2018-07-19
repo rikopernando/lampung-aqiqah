@@ -95,19 +95,30 @@
           </div>
 
           <div class="md-toolbar-section-end">
+
             <a href="#" class="md-button md-theme-default md-active" v-on:click="openModal('login')" v-if="!this.$store.state.user.loggedIn"> 
               <div class="md-ripple">
                 <div class="label-nav-main">LOGIN</div>
               </div>
             </a>
-            <a href="#" class="md-button md-theme-default md-active" v-on:click="logout()" v-else> 
-              <div class="md-ripple">
-                <div class="label-nav-main">LOGOUT</div>
-              </div>
-            </a>
+
+            <md-menu v-else>
+                <a href="#" class="md-button md-theme-default md-active" md-menu-trigger> 
+                  <div class="md-ripple">
+                    <div class="label-nav-main">{{this.$store.state.user.profile.name}}</div>
+                  </div>
+                </a>
+                <md-menu-content>
+                  <md-menu-item>
+                    <md-button v-on:click="logout()">LOGOUT</md-button>
+                  </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+
             <form id="logout-form" v-bind:action="url+'logout'" method="POST" style="display: none;">
               <input type="hidden" name="_token" v-bind:value="token"> 
             </form>
+
             <a href="#/cart" class="md-button md-theme-default md-active">
               <div class="md-ripple">
                 <div class="label-nav-main">CART</div>
@@ -116,6 +127,7 @@
                 </md-badge>
               </div>
             </a>
+
           </div>
 
         </div>
@@ -348,6 +360,10 @@
 </script>
 
 <style lang="scss" scoped>
+    
+    .link-item {
+      display: inline-block;
+    }
 
     .user-modal-container * {
       box-sizing: border-box;
