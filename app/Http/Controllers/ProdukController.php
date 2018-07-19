@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Produk;
 
 class ProdukController extends Controller
 {
+    public function view() {
+        return response(Produk::select()->get());
+    }
+
     /**
      * Display a listing of the resource.
      *

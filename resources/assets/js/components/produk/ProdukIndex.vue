@@ -27,7 +27,7 @@
                 <div class="md-layout-item md-medium-size-50 md-small-size-50 md-xsmall-hide">
                   <md-field>
                     <md-select v-model="searchBy" @md-selected="searchOnTable" name="searchBy" id="searchBy" md-dense>
-                      <md-option value="name">Nama</md-option>
+                      <md-option value="nama_produk">Nama</md-option>
                     </md-select>
                   </md-field>
                 </div>
@@ -37,24 +37,28 @@
         </md-card-header>
 
         <md-card-content>
+          <md-button :to="`/produk/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah</md-button>
+
           <md-table v-model="searched" md-sort="name" md-sort-order="asc" md-fixed-header>
             <md-table-empty-state v-if="loading">
       		    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
             </md-table-empty-state>
-            <md-table-empty-state v-else-if="users.length == 0" md-label="Tidak ada data"
+            <md-table-empty-state v-else-if="produks.length == 0" md-label="Tidak ada data"
                 md-description="Belum ada data User yang tersimpan.">
             </md-table-empty-state>
-            <md-table-empty-state v-else-if="users.length > 0 && search != null" md-label="Tidak ada User ditemukan"
+            <md-table-empty-state v-else-if="produks.length > 0 && search != null" md-label="Tidak ada User ditemukan"
                 :md-description="`Tidak ada User ditemukan untuk kata kunci '${search}'. Cobalah menggunakan kata kunci yang lain.`">
             </md-table-empty-state>
 
             <md-table-row slot="md-table-row" slot-scope="{ item }">
               <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
-              <md-table-cell md-label="Nama" md-sort-by="name">{{ item.name }}</md-table-cell>
-              <md-table-cell md-label="Email" md-sort-by="email">{{ item.email }}</md-table-cell>
+              <md-table-cell md-label="Nama`" md-sort-by="nama_produk">{{ item.nama_produk }}</md-table-cell>
+              <md-table-cell md-label="Harga Coret" md-sort-by="harga_coret">{{ item.harga_coret }}</md-table-cell>
+              <md-table-cell md-label="Harga Jual" md-sort-by="harga_jual">{{ item.harga_jual }}</md-table-cell>
+              <md-table-cell md-label="Stok" md-sort-by="stok">{{ item.stok }}</md-table-cell>
               <md-table-cell md-label="Aksi">
               	<md-button :to="`/user/edit/${item.id}`" class="md-dense md-raised md-primary">Edit</md-button>
-              	<md-button @click="deleteUser(item.id)" class="md-dense md-raised md-accent">Hapus</md-button>
+              	<md-button @click="deleteProduk(item.id)" class="md-dense md-raised md-accent">Hapus</md-button>
               </md-table-cell>
             </md-table-row>
           </md-table>
@@ -71,7 +75,7 @@
     return text.toString().toLowerCase();
   };
 
-  const searchUser = (items, term, searchBy) => {
+  const searchProduk = (items, term, searchBy) => {
     if (term) {
       return items.filter(item => toLower(item[searchBy]).includes(toLower(term)));
     }
@@ -81,14 +85,14 @@
 
   export default {
     data: () => ({
-    	url: window.location.origin + (window.location.pathname + 'user/'),
+    	url: window.location.origin + (window.location.pathname + 'produk/'),
       search: null,
 	    promptDeleteUser: false,
 			snackbarDeleteUser: false,
 	    userIdForDelete: '',
       searched: [],
-      users: [],
-      searchBy: 'name',
+      produks: [],
+      searchBy: 'nama_produk',
       loading: true
     }),
     created() {
@@ -98,7 +102,7 @@
     	getUserData() {
     		axios.get(this.url + 'view')
     		.then(resp => {
-    			this.users = resp.data;
+    			this.produks = resp.data;
     			this.searched = resp.data;
     			this.loading = false;
     		})
@@ -117,12 +121,12 @@
     			console.log('catch onConfirmDelete:', resp);
     		})
     	},
-    	deleteUser(userId) {
+    	deleteProduk(userId) {
     		this.promptDeleteUser = true;
     		this.userIdForDelete = userId;
     	},
       searchOnTable() {
-        this.searched = searchUser(this.users, this.search, this.searchBy);
+        this.searched = searchProduk(this.produks, this.search, this.searchBy);
       }
     }
   }

@@ -23,3 +23,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/user/view', 'UserController@view');
 Route::resource('user', 'UserController');
 
+//Produk
+Route::get('/produk/view', 'ProdukController@view');
+Route::resource('produk', 'ProdukController');
