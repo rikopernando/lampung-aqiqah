@@ -28,6 +28,8 @@
                   <md-field>
                     <md-select v-model="searchBy" @md-selected="searchOnTable" name="searchBy" id="searchBy" md-dense>
                       <md-option value="nama_produk">Nama</md-option>
+                      <md-option value="harga_coret">Harga Coret</md-option>
+                      <md-option value="harga_jual">Harga Jual</md-option>
                     </md-select>
                   </md-field>
                 </div>
@@ -52,13 +54,22 @@
 
             <md-table-row slot="md-table-row" slot-scope="{ item }">
               <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
-              <md-table-cell md-label="Nama`" md-sort-by="nama_produk">{{ item.nama_produk }}</md-table-cell>
-              <md-table-cell md-label="Harga Coret" md-sort-by="harga_coret">{{ item.harga_coret }}</md-table-cell>
-              <md-table-cell md-label="Harga Jual" md-sort-by="harga_jual">{{ item.harga_jual }}</md-table-cell>
-              <md-table-cell md-label="Stok" md-sort-by="stok">{{ item.stok }}</md-table-cell>
+              <md-table-cell md-label="Nama`" md-sort-by="nama_produk">{{ item.nama_produk | capitalize }}</md-table-cell>
+              <md-table-cell md-label="Harga Coret" md-sort-by="harga_coret">{{ item.harga_coret | pemisahTitik }}</md-table-cell>
+              <md-table-cell md-label="Harga Jual" md-sort-by="harga_jual">{{ item.harga_jual | pemisahTitik }}</md-table-cell>
+              <md-table-cell md-label="Stok" md-sort-by="stok">
+                <span style="color: green" v-if="item.stok === 1">Tersedia</span>
+                <span style="color: red" v-else>Tidak Tersedia</span>
+              </md-table-cell>
               <md-table-cell md-label="Aksi">
-              	<md-button :to="`/user/edit/${item.id}`" class="md-dense md-raised md-primary">Edit</md-button>
-              	<md-button @click="deleteProduk(item.id)" class="md-dense md-raised md-accent">Hapus</md-button>
+                <md-button :to="`/produk/edit/${item.id}`" class="md-fab md-dense md-primary">
+                  <md-icon>edit</md-icon>
+                  <md-tooltip md-direction="top">Edit</md-tooltip>
+                </md-button>
+                <md-button  @click="deleteProduk(item.id)" class="md-fab md-dense md-plain">
+                  <md-icon>delete_forever</md-icon>
+                  <md-tooltip md-direction="top">Hapus</md-tooltip>
+                </md-button>
               </md-table-cell>
             </md-table-row>
           </md-table>
@@ -97,6 +108,17 @@
     }),
     created() {
     	this.getUserData();
+    },
+    filters: {
+        pemisahTitik: function (value) {
+            var angka = [value];
+            var numberFormat = new Intl.NumberFormat('es-ES');
+            var formatted = angka.map(numberFormat.format);
+            return formatted.join('; ');
+        },
+        capitalize: function (value) {
+          return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
+        },
     },
     methods: {
     	getUserData() {
