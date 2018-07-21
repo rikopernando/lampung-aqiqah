@@ -2,7 +2,7 @@
   <div v-bind:style="{ 'background-image': 'url(' + url+'/images/background-batik.jpg' + ')' }">
   <div class="container ">
     <div class="md-layout ">
-        <div class="md-layout-item md-medium-size-25 md-small-size-50 md-xsmall-size-100">
+        <div class="md-layout-item md-medium-size-25 md-small-size-50 md-xsmall-size-50">
            <md-card md-with-hover  class="card-hover">
                     <md-card-header class="card-header">
                             <div class="md-title">Paket Superman</div>
@@ -18,7 +18,7 @@
             </md-card>
         </div>
 
-        <div class="md-layout-item md-medium-size-25 md-small-size-50 md-xsmall-size-100">
+        <div class="md-layout-item md-medium-size-25 md-small-size-50 md-xsmall-size-50">
               <md-card md-with-hover  class="card-hover">
                       <md-card-header class="card-header">
                                 <div class="md-title">Paket Superman</div>
@@ -34,7 +34,7 @@
                </md-card>
         </div>
 
-        <div class="md-layout-item md-medium-size-25 md-small-size-50 md-xsmall-size-100">
+        <div class="md-layout-item md-medium-size-25 md-small-size-50 md-xsmall-size-50">
                  <md-card md-with-hover  class="card-hover">
                             <md-card-header class="card-header">
                                 <div class="md-title">Paket Spesial</div>
@@ -50,7 +50,7 @@
                   </md-card>
         </div>
 
-        <div class="md-layout-item md-medium-size-25 md-small-size-50 md-xsmall-size-100">
+        <div class="md-layout-item md-medium-size-25 md-small-size-50 md-xsmall-size-50">
                  <md-card md-with-hover  class="card-hover">
                             <md-card-header class="card-header">
                                 <div class="md-title">Paket Spesial</div>
@@ -114,6 +114,15 @@
     padding : 4px;
   }
 
+  /*MOBILE VERSION*/
+  @media (max-width: 600px) {
+      .md-title  { font-size: 15px; }
+      .md-button  { font-size: 10px;}
+    }
+    @media (min-width: 600px) {
+      .md-title  { font-size: 24px; }
+      .md-button  { font-size: 14px;}
+    }
 
 </style>
 

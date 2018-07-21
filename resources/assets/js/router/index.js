@@ -59,7 +59,7 @@ const routes = [
           }
         },
         {
-          path : '/list-produk',
+          path : '/produk-list',
           name : 'listProduk',
           component : ProdukList
         }
