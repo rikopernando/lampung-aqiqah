@@ -20,10 +20,20 @@ const router = new VueRouter({ routes })
 
 router.beforeEach((to, from, next) => {
 	const loggedIn = store.state.user.loggedIn
-  console.log(loggedIn)
-  if (to.matched.some(record => record.meta.requiresAuth) && !loggedIn) {
-    next({ path: '/'})
-  } else {
+	const is_admin = store.state.user.is_admin
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!loggedIn) {
+        next({ path: '/'})
+    }else if(to.matched.some(record => record.meta.is_admin)){
+        if(!is_admin){
+          next({ path: '/'})
+        }else{
+          next()
+        }
+    }else {
+        next()
+    }
+  }else {
     next()
   }
 })

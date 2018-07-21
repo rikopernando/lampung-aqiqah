@@ -13,10 +13,10 @@
                   <ul class="error-message">
                     <li class="text-error" v-for="err in errors"> {{ err.toString() }} </li>
                   </ul>
-                <input type="text" name="name" placeholder="Nama" v-model="register.name">  
-                <input type="email" name="email" placeholder="Email" v-model="register.email">  
-                <input type="password" name="password" placeholder="Password" v-model="register.password"> 
-                <input type="password" name="password_confirmation" placeholder="Konfirmasi Password" v-model="register.password_confirmation"> 
+                <input type="text" name="name" placeholder="Nama" v-model="register.name" autocomplete="off">  
+                <input type="email" name="email" placeholder="Email" v-model="register.email" autocomplete="off">  
+                <input type="password" name="password" placeholder="Password" v-model="register.password" autocomplete="off">
+                <input type="password" name="password_confirmation" placeholder="Konfirmasi Password" v-model="register.password_confirmation" autocomplete="off"> 
                 <input type="submit" v-on:click="submit('register')" v-model="registerSubmit" id="registerSubmit">  
                 <div class="links">  
                   <a href="#" v-on:click="flip('login')">Sudah Punya Akun ?</a>
@@ -26,15 +26,15 @@
                   <ul class="error-message">
                     <li class="text-error" v-for="err in errors"> {{ err.toString() }} </li>
                   </ul>
-                <input type="email" name="email" placeholder="Email" v-model="login.email"> 
-                <input type="password" name="password" placeholder="Password" v-model="login.password">  
+                <input type="email" name="email" placeholder="Email" v-model="login.email" autocomplete="off"> 
+                <input type="password" name="password" placeholder="Password" v-model="login.password" autocomplete="off">  
                 <input type="submit" v-on:click="submit('login')" v-model="loginSubmit"  id="loginSubmit">  
                 <div class="links">  
                   <a href="#" v-on:click="flip('password')">Lupa password?</a>
                 </div>  
             </div>
             <div class="form-password" id="form-password">
-                <input type="text" name="email" placeholder="Email" v-model="password.email">  
+                <input type="text" name="email" placeholder="Email" v-model="password.email" autocomplete="off">  
                 <input type="submit" v-on:click="submit('password')" v-model="passwordSubmit" id="passwordSubmit">  
             </div>
           </div>  
