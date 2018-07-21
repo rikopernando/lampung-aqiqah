@@ -23,19 +23,23 @@
           </md-card-header-text>
         </md-card-header>
         <md-card-content>
-          <form v-on:submit.prevent="saveForm()">
+          <form novalidate v-on:submit.prevent="validateUser">
             <div v-if="loading" class="_spinner-container">
               <div class="_spinner">
                 <md-progress-spinner :md-diameter="80" :md-stroke="5" md-mode="indeterminate"></md-progress-spinner>
               </div>
             </div>
-            <md-field>
+            <md-field :class="getValidationClass('name')">
               <label v-if="!loading" for="name">Nama</label>
               <md-input name="name" id="name" v-model="user.name" />
+              <span class="md-error" v-if="!$v.user.name.required">Tolong isi kolom Nama</span>
+              <span class="md-error" v-else-if="!$v.user.name.minlength">Nama setidaknya mengandung 3 karakter</span>
             </md-field>
-            <md-field>
+            <md-field :class="getValidationClass('email')">
               <label v-if="!loading" for="email">Email</label>
               <md-input type="email" name="email" id="email" v-model="user.email" />
+              <span class="md-error" v-if="!$v.user.email.required">Tolong isi kolom Email</span>
+              <span class="md-error" v-else-if="!$v.user.email.email">Format Email salah</span>
             </md-field>
             <md-card-actions>
               <md-progress-spinner v-if="submitted" :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
@@ -53,7 +57,16 @@
   </div>
 </template>
 <script>
+import { validationMixin } from 'vuelidate'
+  import {
+    required,
+    email,
+    minLength,
+    maxLength
+  } from 'vuelidate/lib/validators'
+
 export default {
+  mixins: [validationMixin],
   data: () => ({
     url: window.location.origin + (window.location.pathname + 'user/'),
     user: {
@@ -62,12 +75,41 @@ export default {
     },
     snackbarEditUser: false,
     submitted: false,
-    loading: true
+    loading: true,
   }),
+  validations: {
+      user: {
+        name: {
+          required,
+          minLength: minLength(3)
+        },
+        email: {
+          required,
+          email
+        }
+      }
+    },
   mounted() {
     this.getDataUser(this.$route.params.id);
   },
   methods: {
+    getValidationClass (fieldName) {
+      const field = this.$v.user[fieldName]
+      console.log(this.$v.user)
+
+      if (field) {
+        return {
+          'md-invalid': field.$invalid && field.$dirty
+        }
+      }
+    },
+    validateUser() {
+      this.$v.$touch()
+
+      if (!this.$v.$invalid) {
+        this.saveForm()
+      }
+    },
     getDataUser(userId) {
       axios.get(this.url + userId)
       .then(resp => {
@@ -133,3 +175,5 @@ export default {
     padding: 4px 0px 0px 10px;
   }
 </style>
+
+
