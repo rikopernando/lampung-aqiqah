@@ -13,10 +13,10 @@
                   <ul class="error-message">
                     <li class="text-error" v-for="err in errors"> {{ err.toString() }} </li>
                   </ul>
-                <input type="text" name="name" placeholder="Nama" v-model="register.name">  
-                <input type="email" name="email" placeholder="Email" v-model="register.email">  
-                <input type="password" name="password" placeholder="Password" v-model="register.password"> 
-                <input type="password" name="password_confirmation" placeholder="Konfirmasi Password" v-model="register.password_confirmation"> 
+                <input type="text" name="name" placeholder="Nama" v-model="register.name" autocomplete="off">  
+                <input type="email" name="email" placeholder="Email" v-model="register.email" autocomplete="off">  
+                <input type="password" name="password" placeholder="Password" v-model="register.password" autocomplete="off">
+                <input type="password" name="password_confirmation" placeholder="Konfirmasi Password" v-model="register.password_confirmation" autocomplete="off"> 
                 <input type="submit" v-on:click="submit('register')" v-model="registerSubmit" id="registerSubmit">  
                 <div class="links">  
                   <a href="#" v-on:click="flip('login')">Sudah Punya Akun ?</a>
@@ -26,15 +26,15 @@
                   <ul class="error-message">
                     <li class="text-error" v-for="err in errors"> {{ err.toString() }} </li>
                   </ul>
-                <input type="email" name="email" placeholder="Email" v-model="login.email"> 
-                <input type="password" name="password" placeholder="Password" v-model="login.password">  
+                <input type="email" name="email" placeholder="Email" v-model="login.email" autocomplete="off"> 
+                <input type="password" name="password" placeholder="Password" v-model="login.password" autocomplete="off">  
                 <input type="submit" v-on:click="submit('login')" v-model="loginSubmit"  id="loginSubmit">  
                 <div class="links">  
                   <a href="#" v-on:click="flip('password')">Lupa password?</a>
                 </div>  
             </div>
             <div class="form-password" id="form-password">
-                <input type="text" name="email" placeholder="Email" v-model="password.email">  
+                <input type="text" name="email" placeholder="Email" v-model="password.email" autocomplete="off">  
                 <input type="submit" v-on:click="submit('password')" v-model="passwordSubmit" id="passwordSubmit">  
             </div>
           </div>  
@@ -43,7 +43,7 @@
      <div class="md-medium-size-50 md-small-size-50 md-xsmall-hide">
         <md-toolbar md-elevation="0" style="background-color: #da2921; min-height:10px">
 
-        <md-snackbar :md-active.sync="snackbar">Registrasi Berhasil!</md-snackbar>
+        <md-snackbar :md-active.sync="snackbar">{{ alertSnackbar }}</md-snackbar>
 
         <h3 class="md-title" style="flex: 1"></h3>
         <md-button href="#/pemesanan" style="color: white; font-size: 12px">Pemesanan</md-button>
@@ -249,6 +249,7 @@
 				registerSubmit: 'Register',
 				passwordSubmit: 'Reset Password',
 				loginSubmit: 'Login',
+        alertSnackbar : '',
         register : {
             name: '',
             email: '',
@@ -318,9 +319,11 @@
           axios.post(app.url+'register', app.register)
           .then((resp) => {
               console.log(resp.data)
+              app.alertSnackbar = 'Registrasi Berhasil!!'
               app.snackbar = true
               app.$store.commit('user/LOGIN',resp.data)
-              app.$router.push('/dashboard')
+              app.$store.state.user.is_admin ? app.$router.push('/dashboard') : app.$router.push('/')
+              $('#login-modal').removeClass('active')
           })
           .catch((err) => {
               app.errors = err.response.data
@@ -334,8 +337,11 @@
           axios.post(app.url+'login', app.login)
           .then((resp) => {
             console.log(resp.data)
+            app.alertSnackbar = 'Login Berhasil!!'
+            app.snackbar = true
             app.$store.commit('user/LOGIN',resp.data)
-            app.$router.push('/dashboard')
+            app.$store.state.user.is_admin ? app.$router.push('/dashboard') : app.$router.push('/')
+            $('#login-modal').removeClass('active')
           })
           .catch((err) => {
             app.errors = err.response.data

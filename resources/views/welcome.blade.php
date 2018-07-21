@@ -18,6 +18,6 @@
         <div id="app">
             <router-view></router-view>
         </div>
-        <script src="{{ asset('js/app.js?v=1.13')}}" type="text/javascript"></script>
+        <script src="{{ asset('js/app.js?v=1.15')}}" type="text/javascript"></script>
     </body>
 </html>
