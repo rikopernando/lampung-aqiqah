@@ -5,7 +5,7 @@ import UserEdit from '../components/User/UserEdit'
 import BankIndex from '../components/bank/BankIndex'
 import BankCreate from '../components/bank/BankCreate'
 import BankEdit from '../components/bank/BankEdit'
-
+import ProdukList from '../components/home/ListProduk'
 
 const routes = [
         {
@@ -57,6 +57,11 @@ const routes = [
           meta : {
             requiresAuth : true
           }
+        },
+        {
+          path : '/list-produk',
+          name : 'listProduk',
+          component : ProdukList
         }
 ]
 

@@ -87,7 +87,7 @@
                 <div class="label-nav-main">HOME</div>
               </div>
             </a>
-            <a href="#/dashboard" class="md-button md-theme-default md-active">
+            <a href="#/list-produk" class="md-button md-theme-default md-active">
               <div class="md-ripple">
                 <div class="label-nav-main">PRODUK</div>
               </div>
