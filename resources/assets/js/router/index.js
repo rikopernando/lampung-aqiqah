@@ -14,7 +14,8 @@ const routes = [
           name : 'dashboard',
           component : Dashboard,
           meta : {
-            requiresAuth : true
+            requiresAuth : true,
+            is_admin : true
           }
         },
         {
@@ -22,7 +23,8 @@ const routes = [
           name : 'user',
           component : UserIndex,
           meta : {
-            requiresAuth : true
+            requiresAuth : true,
+            is_admin : true
           }
         },
         {
@@ -30,7 +32,8 @@ const routes = [
           name : 'editUser',
           component : UserEdit,
           meta : {
-            requiresAuth : true
+            requiresAuth : true,
+            is_admin : true
           }
         }
 ]
