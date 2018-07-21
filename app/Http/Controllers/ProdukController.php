@@ -49,7 +49,7 @@ class ProdukController extends Controller
           'nama_produk'       => strtolower($request->nama_produk),
           'harga_coret'       => $request->harga_coret,
           'harga_jual'        => $request->harga_jual,
-          'stok'              => $request->stok === true ? 1 : 2,
+          'stok'              => $request->stok == "true" ? 1 : 2,
           'deskripsi_produk'  => $request->deskripsi_produk
       ]);
     }
@@ -96,6 +96,7 @@ class ProdukController extends Controller
      */
     public function destroy($id)
     {
-        //
+      $produk = Produk::destroy($id);
+      return response(200);
     }
 }

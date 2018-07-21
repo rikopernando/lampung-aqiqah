@@ -66,16 +66,27 @@
                   <md-icon>edit</md-icon>
                   <md-tooltip md-direction="top">Edit</md-tooltip>
                 </md-button>
-                <md-button  @click="deleteProduk(item.id)" class="md-fab md-dense md-plain">
+                <md-button  @click="deleteProduk(item.id, item.nama_produk)" class="md-fab md-dense md-plain">
                   <md-icon>delete_forever</md-icon>
                   <md-tooltip md-direction="top">Hapus</md-tooltip>
                 </md-button>
               </md-table-cell>
             </md-table-row>
           </md-table>
+
+          <!-- Snackbar for success alert -->
+          <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="notifSuccess">
+            <span id="span-snackbar">{{notifMessage}}</span>
+            <span><md-icon style="color: white">done_all</md-icon></span>
+          </md-snackbar>
         </md-card-content>
       </md-card>
 
+      <md-dialog-confirm style="text-transform: capitalize" :md-active.sync="promptDelete" md-title="Konfirmasi Hapus"
+        :md-content="notifMessage"
+        md-confirm-text="Ya"
+        md-cancel-text="Batal"
+        @md-confirm="onConfirmDelete" />
     </div>
   </div>
 </template>
@@ -98,16 +109,19 @@
     data: () => ({
     	url: window.location.origin + (window.location.pathname + 'produk/'),
       search: null,
-	    promptDeleteUser: false,
-			snackbarDeleteUser: false,
-	    userIdForDelete: '',
+	    promptDelete: false,
+			snackbarDelete: false,
+	    produkId: '',
+      produkDelete: '',
+      notifMessage: '',
+      notifSuccess: false,
       searched: [],
       produks: [],
       searchBy: 'nama_produk',
       loading: true
     }),
     created() {
-    	this.getUserData();
+    	this.getProdukData();
     },
     filters: {
         pemisahTitik: function (value) {
@@ -121,7 +135,7 @@
         },
     },
     methods: {
-    	getUserData() {
+    	getProdukData() {
     		axios.get(this.url + 'view')
     		.then(resp => {
     			this.produks = resp.data;
@@ -129,23 +143,31 @@
     			this.loading = false;
     		})
     		.catch(resp => {
-    			console.log('catch getUserData:', resp);
+    			console.log('catch getProdukData:', resp);
     		});
     	},
     	onConfirmDelete() {
-    		axios.delete(this.url + this.userIdForDelete)
+        let app = this;
+    		axios.delete(app.url + app.produkId)
     		.then(resp => {
-    			this.userIdForDelete = '';
-    			this.snackbarDeleteUser = true;
-    			this.getUserData();
+          app.notifMessage = `Berhasil Menghapus Produk ${app.produkDelete}.`
+    			app.produkId = '';
+    			app.produkDelete = '';
+    			app.snackbarDelete = true;
+          app.notifSuccess = true;
+    			app.getProdukData();
     		})
     		.catch(resp => {
     			console.log('catch onConfirmDelete:', resp);
     		})
     	},
-    	deleteProduk(userId) {
-    		this.promptDeleteUser = true;
-    		this.userIdForDelete = userId;
+    	deleteProduk(produkId, produkName) {
+        let app = this;
+
+    		app.promptDelete = true;
+    		app.produkId = produkId;
+    		app.produkDelete = produkName;
+    		app.notifMessage = `Apakah Anda Yakin Menghapus Produk <strong>${produkName}</strong> ?`;
     	},
       searchOnTable() {
         this.searched = searchProduk(this.produks, this.search, this.searchBy);
