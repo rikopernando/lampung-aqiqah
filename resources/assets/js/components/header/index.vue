@@ -43,7 +43,7 @@
      <div class="md-medium-size-50 md-small-size-50 md-xsmall-hide">
         <md-toolbar md-elevation="0" style="background-color: #da2921; min-height:10px">
 
-        <md-snackbar :md-active.sync="snackbar">Registrasi Berhasil!</md-snackbar>
+        <md-snackbar :md-active.sync="snackbar">{{ alertSnackbar }}</md-snackbar>
 
         <h3 class="md-title" style="flex: 1"></h3>
         <md-button href="#/pemesanan" style="color: white; font-size: 12px">Pemesanan</md-button>
@@ -249,6 +249,7 @@
 				registerSubmit: 'Register',
 				passwordSubmit: 'Reset Password',
 				loginSubmit: 'Login',
+        alertSnackbar : '',
         register : {
             name: '',
             email: '',
@@ -318,9 +319,11 @@
           axios.post(app.url+'register', app.register)
           .then((resp) => {
               console.log(resp.data)
+              app.alertSnackbar = 'Registrasi Berhasil!!'
               app.snackbar = true
               app.$store.commit('user/LOGIN',resp.data)
-              app.$router.push('/dashboard')
+              app.$store.state.user.is_admin ? app.$router.push('/dashboard') : app.$router.push('/')
+              $('#login-modal').removeClass('active')
           })
           .catch((err) => {
               app.errors = err.response.data
@@ -334,8 +337,11 @@
           axios.post(app.url+'login', app.login)
           .then((resp) => {
             console.log(resp.data)
+            app.alertSnackbar = 'Login Berhasil!!'
+            app.snackbar = true
             app.$store.commit('user/LOGIN',resp.data)
-            app.$router.push('/dashboard')
+            app.$store.state.user.is_admin ? app.$router.push('/dashboard') : app.$router.push('/')
+            $('#login-modal').removeClass('active')
           })
           .catch((err) => {
             app.errors = err.response.data
