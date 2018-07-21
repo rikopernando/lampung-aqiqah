@@ -50,15 +50,6 @@
         </md-card-header>
         <md-card-content>
       		<md-table v-model="searched" md-sort="name" md-sort-order="asc" md-fixed-header>
-			      <md-table-toolbar>
-			        <div class="md-toolbar-section-start">
-			          <h1 class="md-title">Users</h1>
-			        </div>
-
-			        <div class="md-toolbar-section-end search-input">
-			        	
-			        </div>
-			      </md-table-toolbar>
 
 			      <md-table-empty-state v-if="loading">
 					    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
