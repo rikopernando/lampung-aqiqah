@@ -62,7 +62,7 @@ class ProdukController extends Controller
      */
     public function show($id)
     {
-        //
+        return response(Produk::whereId($id)->first());
     }
 
     /**
@@ -83,9 +83,23 @@ class ProdukController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+      $this->validate($request, [
+          'nama_produk' => 'required|max:300',
+          'harga_coret' => 'required|numeric|digits_between:1,11',
+          'harga_jual'  => 'required|numeric|digits_between:1,11',
+      ]);
+      $update_produk = Produk::find($request->id);
+      $update_produk->update([
+        'nama_produk'       => strtolower($request->nama_produk),
+        'harga_coret'       => $request->harga_coret,
+        'harga_jual'        => $request->harga_jual,
+        'stok'              => $request->stok == "true" ? 1 : 2,
+        'deskripsi_produk'  => $request->deskripsi_produk,
+      ]);
+
+      $update_produk->save();
     }
 
     /**

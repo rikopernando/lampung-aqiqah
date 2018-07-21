@@ -6,6 +6,7 @@ import UserEdit from '../components/User/UserEdit'
 // PRODUK
 import ProdukIndex from '../components/produk/ProdukIndex'
 import ProdukCreate from '../components/produk/ProdukCreate'
+import ProdukEdit from '../components/produk/ProdukEdit'
 
 const routes = [
         {
@@ -37,6 +38,11 @@ const routes = [
           path : '/produk/create',
           name : 'createProduk',
           component : ProdukCreate
+        },
+        {
+          path : '/produk/edit/:id',
+          name : 'editProduk',
+          component : ProdukEdit
         },
 ]
 

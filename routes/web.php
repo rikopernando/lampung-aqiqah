@@ -25,4 +25,5 @@ Route::resource('user', 'UserController');
 
 //Produk
 Route::get('/produk/view', 'ProdukController@view');
+Route::post('/produk/{id}', 'ProdukController@update');
 Route::resource('produk', 'ProdukController');
