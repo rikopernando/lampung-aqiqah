@@ -47,6 +47,8 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
+        $memberRole = Role::where('name', 'admin')->first();
+        $user->attachRole($memberRole);
 
         return $user;
     }
