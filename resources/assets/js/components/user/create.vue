@@ -6,7 +6,7 @@
         <ul class="breadcrumb">
           <li><a href="#">Home</a></li>
           <li><router-link :to="{name: 'user'}">User</router-link></li>
-          <li class="active">Edit</li>
+          <li class="active">Tambah</li>
         </ul>
       </md-card>
 
@@ -17,41 +17,48 @@
           </div>
           <md-card-header-text>
             <div class="md-toolbar" style="margin-top: -20px; padding: 0px">
-              <div class="header-title md-toolbar-section-start">Edit User</div>
+              <div class="header-title md-toolbar-section-start">Tambah User</div>
               
             </div>
           </md-card-header-text>
         </md-card-header>
         <md-card-content>
           <form novalidate v-on:submit.prevent="validateUser">
-            <div v-if="loading" class="_spinner-container">
-              <div class="_spinner">
-                <md-progress-spinner :md-diameter="80" :md-stroke="5" md-mode="indeterminate"></md-progress-spinner>
-              </div>
-            </div>
             <md-field :class="getValidationClass('name')">
-              <label v-if="!loading" for="name">Nama</label>
+              <label for="name">Nama</label>
               <md-input name="name" id="name" v-model="user.name" />
               <span class="md-error" v-if="!$v.user.name.required">Tolong isi kolom Nama</span>
               <span class="md-error" v-else-if="!$v.user.name.minlength">Nama setidaknya mengandung 3 karakter</span>
             </md-field>
             <md-field :class="getValidationClass('email')">
-              <label v-if="!loading" for="email">Email</label>
+              <label for="email">Email</label>
               <md-input type="email" name="email" id="email" v-model="user.email" />
               <span class="md-error" v-if="!$v.user.email.required">Tolong isi kolom Email</span>
               <span class="md-error" v-else-if="!$v.user.email.email">Format Email salah</span>
             </md-field>
+            <md-field :class="getValidationClass('password')">
+              <label for="password">Password</label>
+              <md-input type="password" name="password" id="password" v-model="user.password" />
+              <span class="md-error" v-if="!$v.user.password.required">Tolong isi kolom Password</span>
+              <span class="md-error" v-else-if="!$v.user.password.minlength">Password setidaknya mengandung 6 karakter</span>
+            </md-field>
+            <md-field :class="getValidationClass('repeatPassword')">
+              <label for="repeatPassword">Ulangi Password</label>
+              <md-input type="repeatPassword" name="repeatPassword" id="repeatPassword" v-model="user.repeatPassword" />
+              <span class="md-error" v-if="!$v.user.repeatPassword.sameAsPassword">Password tidak sama</span>
+              {{ $v.user.repeatPassword.sameAsPassword }}
+            </md-field>
             <md-card-actions>
               <md-progress-spinner v-if="submitted" :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
-              <md-button v-else type="submit" class="md-primary">Edit User</md-button>
+              <md-button v-else type="submit" class="md-primary">Tambah User</md-button>
             </md-card-actions>
           </form>
         </md-card-content>
       </md-card>
 
       <!-- Snackbar for user edit alert -->
-      <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="snackbarEditUser" @md-closed="redirectToUserList">
-        <span>User berhasil diedit!</span>
+      <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="snackbarCreateUser" @md-closed="redirectToUserList">
+        <span>Berhasil menambahkan User!</span>
       </md-snackbar>
     </div>
   </div>
@@ -62,7 +69,8 @@ import { validationMixin } from 'vuelidate'
     required,
     email,
     minLength,
-    maxLength
+    maxLength,
+    sameAs
   } from 'vuelidate/lib/validators'
 
 export default {
@@ -71,11 +79,12 @@ export default {
     url: window.location.origin + (window.location.pathname + 'user'),
     user: {
       name: '',
-      email: ''
+      email: '',
+      password: '',
+      repeatPassword: ''
     },
-    snackbarEditUser: false,
+    snackbarCreateUser: false,
     submitted: false,
-    loading: true,
   }),
   validations: {
     user: {
@@ -86,11 +95,17 @@ export default {
       email: {
         required,
         email
+      },
+      password: {
+        required,
+        minLength: minLength(6)
+      },
+      repeatPassword: {
+        sameAsPassword: sameAs('password')
       }
     }
   },
   mounted() {
-    this.getDataUser(this.$route.params.id);
   },
   methods: {
     getValidationClass (fieldName) {
@@ -109,21 +124,12 @@ export default {
         this.saveForm()
       }
     },
-    getDataUser(userId) {
-      axios.get(this.url + '/' + userId)
-      .then(resp => {
-        this.user = resp.data;
-        this.loading = false;
-      })
-      .catch(resp => {
-        console.log('catch getDataUser:', resp);
-      });
-    },
     saveForm() {
       this.submitted = true;
-      axios.patch(this.url + this.$route.params.id, this.user)
+      axios.post(this.url, this.user)
       .then(resp => {
-        this.snackbarEditUser = true;
+        console.log(resp)
+        this.snackbarCreateUser = true;
         this.submitted = false;
       })
       .catch(resp => {
@@ -131,7 +137,7 @@ export default {
       });
     },
     redirectToUserList() {
-      this.$router.replace('/user');  
+      // this.$router.replace('/user');  
     }
   }
 }  
