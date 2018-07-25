@@ -6,7 +6,7 @@ import UserCreate from '../components/user/create'
 import BankIndex from '../components/bank/BankIndex'
 import BankCreate from '../components/bank/BankCreate'
 import BankEdit from '../components/bank/BankEdit'
-
+import ProdukList from '../components/home/ListProduk'
 
 const routes = [
         {
@@ -66,6 +66,11 @@ const routes = [
             requiresAuth : true,
             is_admin : true
           }
+        },
+        {
+          path : '/list-produk',
+          name : 'listProduk',
+          component : ProdukList
         }
 ]
 
