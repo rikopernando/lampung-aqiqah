@@ -28,3 +28,7 @@ Route::resource('user', 'UserController');
 //Bank
 Route::get('/bank/view', 'BankController@view');
 Route::resource('bank', 'BankController');
+//Produk
+Route::get('/produk/view', 'ProdukController@view');
+Route::post('/produk/{id}', 'ProdukController@update');
+Route::resource('produk', 'ProdukController');
