@@ -120,6 +120,25 @@ class ProdukController extends Controller
         'deskripsi_produk'  => $request->deskripsi_produk,
       ]);
 
+      if ($request->hasFile('foto')) {
+        $foto = $request->file('foto');
+
+          if (is_array($foto) || is_object($foto)) {
+            // Mengambil file yang diupload
+            $uploaded_foto = $foto;
+            // mengambil extension file
+            $extension = $uploaded_foto->getClientOriginalExtension();
+            // membuat nama file random berikut extension
+            $filename     = str_random(40) . '.' . $extension;
+            $image_resize = Image::make($foto->getRealPath());
+            $image_resize->fit(300);
+            $image_resize->save(public_path('image_produks/' . $filename));
+            $update_produk->foto = $filename;
+            // menyimpan field foto di table barangs  dengan filename yang baru dibuat
+            $update_produk->save();
+          }
+      }
+
       $update_produk->save();
     }
 
