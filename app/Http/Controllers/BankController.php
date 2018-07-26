@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
-use App\Role;
+use App\Bank;
 
-class UserController extends Controller
+class BankController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +18,7 @@ class UserController extends Controller
     }
 
     public function view() {
-        return response(User::select()->get());
+        return response(Bank::select()->get());
     }
 
     /**
@@ -41,17 +39,22 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // return response()->json($request);
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
+        $this->validate($request, [
+            'nama_bank' => 'required',
+            'atas_nama' => 'required',
+            'no_rek' => 'required|unique:banks,no_rek|numeric',
         ]);
-        $memberRole = Role::where('name', 'admin')->first();
-        $user->attachRole($memberRole);
 
-        return $user;
+        $master_bank = Bank::create([
+            'nama_bank' => $request->nama_bank,
+            'atas_nama' => $request->atas_nama,
+            'no_rek' => $request->no_rek,
+        ]);
+
+        return 1;
     }
+
+
 
     /**
      * Display the specified resource.
@@ -61,7 +64,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return response(User::whereId($id)->first());
+
+
+        return response(Bank::whereId($id)->first());
     }
 
     /**
@@ -84,7 +89,14 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        User::whereId($id)->update($request->all());
+        
+       $this->validate($request, [
+            'nama_bank' => 'required',
+            'atas_nama' => 'required',
+            'no_rek' => 'required|unique:banks,no_rek,'.$id.'|numeric',
+        ]);
+
+        Bank::whereId($id)->update($request->all());
     }
 
     /**
@@ -95,7 +107,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::destroy($id);
+        $bank = Bank::destroy($id);
         return response(200);
     }
 }

@@ -1,7 +1,12 @@
 import Dashboard from '../components/dashboard'
 import Home from '../components/home'
-import UserIndex from '../components/User/UserIndex'
-import UserEdit from '../components/User/UserEdit'
+import UserIndex from '../components/user/index'
+import UserEdit from '../components/user/edit'
+import UserCreate from '../components/user/create'
+import BankIndex from '../components/bank/BankIndex'
+import BankCreate from '../components/bank/BankCreate'
+import BankEdit from '../components/bank/BankEdit'
+import ProdukList from '../components/home/ListProduk'
 
 // PRODUK
 import ProdukIndex from '../components/produk/ProdukIndex'
@@ -17,17 +22,61 @@ const routes = [
         {
           path : '/dashboard',
           name : 'dashboard',
-          component : Dashboard
+          component : Dashboard,
+          meta : {
+            requiresAuth : true,
+            is_admin : true
+          }
         },
         {
           path : '/user',
           name : 'user',
-          component : UserIndex
+          component : UserIndex,
+          meta : {
+            requiresAuth : true,
+            is_admin : true
+          }
         },
         {
           path : '/user/edit/:id',
           name : 'editUser',
           component : UserEdit
+        },
+        {
+          path : '/user/create',
+          name : 'createUser',
+          component : UserCreate
+        },
+        {
+          path : '/bank',
+          name : 'bank',
+          component : BankIndex,
+          meta : {
+            requiresAuth : true
+          }
+        },
+        {
+          path : '/bank-create',
+          name : 'bankCreate',
+          component : BankCreate,
+          meta : {
+            requiresAuth : true
+          }
+        },
+        {
+          path : '/bank/edit/:id',
+          name : 'bankEdit',
+          component : BankEdit,
+          meta : {
+            requiresAuth : true,
+            is_admin : true
+          }
+        },
+        {
+          path : '/list-produk',
+          name : 'listProduk',
+          component : ProdukList
+        }
         },
         {
           path : '/produk',
@@ -47,3 +96,4 @@ const routes = [
 ]
 
 export default routes
+
