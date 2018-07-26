@@ -76,7 +76,6 @@ const routes = [
           path : '/list-produk',
           name : 'listProduk',
           component : ProdukList
-        }
         },
         {
           path : '/produk',
