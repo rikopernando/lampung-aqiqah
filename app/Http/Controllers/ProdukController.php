@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Produk;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class ProdukController extends Controller
 {
@@ -43,15 +44,35 @@ class ProdukController extends Controller
           'nama_produk' => 'required|max:300',
           'harga_coret' => 'required|numeric|digits_between:1,11',
           'harga_jual'  => 'required|numeric|digits_between:1,11',
+          'foto'        => 'image|max:3072',
       ]);
 
-      $insert_barang = Produk::create([
+      $insert_produk = Produk::create([
           'nama_produk'       => strtolower($request->nama_produk),
           'harga_coret'       => $request->harga_coret,
           'harga_jual'        => $request->harga_jual,
           'stok'              => $request->stok == "true" ? 1 : 2,
           'deskripsi_produk'  => $request->deskripsi_produk
       ]);
+
+      if ($request->hasFile('foto')) {
+        $foto = $request->file('foto');
+
+          if (is_array($foto) || is_object($foto)) {
+            // Mengambil file yang diupload
+            $uploaded_foto = $foto;
+            // mengambil extension file
+            $extension = $uploaded_foto->getClientOriginalExtension();
+            // membuat nama file random berikut extension
+            $filename     = str_random(40) . '.' . $extension;
+            $image_resize = Image::make($foto->getRealPath());
+            $image_resize->fit(300);
+            $image_resize->save(public_path('image_produks/' . $filename));
+            $insert_produk->foto = $filename;
+            // menyimpan field foto di table barangs  dengan filename yang baru dibuat
+            $insert_produk->save();
+          }
+      }
     }
 
     /**

@@ -40,6 +40,25 @@
             <md-textarea v-model="produk.deskripsi_produk"></md-textarea>
           </md-field>
           <md-switch v-model="produk.stok">Stok {{ !produk.stok ? 'Tidak Tersedia' : 'Tersedia' }}</md-switch>
+          <md-field>
+            <label>Foto Produk</label>
+            <md-file v-model="produk.foto" id="foto" accept="image/*" @change="onFileChange" />
+          </md-field>
+
+          <md-card md-with-hover class="thumbnail-foto" v-if="produk.foto != ''">
+            <md-card-media-cover md-text-scrim>
+                <md-card-media md-ratio="16:9">
+                  <img :src="previewFoto" alt="Foto Produk">
+                </md-card-media>
+
+                <md-card-area>
+                  <md-card-actions>
+                    <md-button @click="removeImage">Hapus Foto</md-button>
+                  </md-card-actions>
+                </md-card-area>
+              </md-card-media-cover>
+          </md-card>
+
 
           <div class="md-toolbar-section-end">
             <md-button @click="createProduk" class="md-dense md-raised" style="background-color: #d44723; color: white">
@@ -64,18 +83,40 @@
   export default {
     data: () => ({
     	url: window.location.origin + (window.location.pathname + 'produk'),
+			url_origin : window.location.origin + (window.location.pathname),
       errors: [],
       produk: {
         nama_produk: '',
         harga_coret: 0,
         harga_jual: 0,
         stok: true,
-        deskripsi_produk: ''
+        deskripsi_produk: '',
+        foto: ''
       },
+      previewFoto: '',
       notifMessage: '',
       notifSuccess: false
     }),
     methods: {
+      onFileChange(e) {
+        var files = e.target.files || e.dataTransfer.files;
+        if (!files.length)
+          return;
+        this.createImage(files[0]);
+      },
+      createImage(file) {
+        var image = new Image();
+        var reader = new FileReader();
+        var app = this;
+
+        reader.onload = (e) => {
+          app.previewFoto = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      },
+      removeImage() {
+        this.produk.foto = '';
+      },
       createProduk() {
   			let app = this;
   			let dataProduk = app.inputData(app);
@@ -92,7 +133,9 @@
   		},
   		inputData(app) {
   			let dataProduk = new FormData();
-
+            if (document.getElementById('foto').files[0] != undefined) {
+              dataProduk.append('foto', document.getElementById('foto').files[0]);
+            }
             dataProduk.append('nama_produk', app.produk.nama_produk);
       			dataProduk.append('harga_coret', app.produk.harga_coret);
       			dataProduk.append('harga_jual', app.produk.harga_jual);
@@ -171,5 +214,8 @@
     text-transform: uppercase;
     font-size: 10px;
     font-weight: bold
+  }
+  .thumbnail-foto {
+    width: 25%;
   }
 </style>
