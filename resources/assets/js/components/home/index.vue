@@ -12,7 +12,7 @@
     import Header from '../header'
     import Slider from './slider'
     import Produk from './produk'
-    import Footer from '../Footer/Footer'
+    import Footer from '../footer/footer'
 
     export default {
 			data : () => ({

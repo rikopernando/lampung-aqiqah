@@ -1,12 +1,18 @@
 import Dashboard from '../components/dashboard'
 import Home from '../components/home'
-import UserIndex from '../components/User/UserIndex'
-import UserEdit from '../components/User/UserEdit'
+import UserIndex from '../components/user/index'
+import UserEdit from '../components/user/edit'
+import UserCreate from '../components/user/create'
 import BankIndex from '../components/bank/BankIndex'
 import BankCreate from '../components/bank/BankCreate'
 import BankEdit from '../components/bank/BankEdit'
 import DetailProduk from '../components/list-produk/detail_produk'
+import ProdukList from '../components/home/ListProduk'
 
+// PRODUK
+import ProdukIndex from '../components/produk/ProdukIndex'
+import ProdukCreate from '../components/produk/ProdukCreate'
+import ProdukEdit from '../components/produk/ProdukEdit'
 
 const routes = [
         {
@@ -38,6 +44,11 @@ const routes = [
           component : UserEdit
         },
         {
+          path : '/user/create',
+          name : 'createUser',
+          component : UserCreate
+        },
+        {
           path : '/bank',
           name : 'bank',
           component : BankIndex,
@@ -66,8 +77,27 @@ const routes = [
           path : '/detail-produk',
           name : 'DetailProduk',
           component : DetailProduk,
-        }
-
+        },
+        {
+          path : '/list-produk',
+          name : 'listProduk',
+          component : ProdukList
+        },
+        {
+          path : '/produk',
+          name : 'produk',
+          component : ProdukIndex
+        },
+        {
+          path : '/produk/create',
+          name : 'createProduk',
+          component : ProdukCreate
+        },
+        {
+          path : '/produk/edit/:id',
+          name : 'editProduk',
+          component : ProdukEdit
+        },
 ]
 
 export default routes
