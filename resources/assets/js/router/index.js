@@ -5,6 +5,7 @@ import UserEdit from '../components/User/UserEdit'
 import BankIndex from '../components/bank/BankIndex'
 import BankCreate from '../components/bank/BankCreate'
 import BankEdit from '../components/bank/BankEdit'
+import DetailProduk from '../components/list-produk/detail_produk'
 
 
 const routes = [
@@ -60,7 +61,13 @@ const routes = [
             requiresAuth : true,
             is_admin : true
           }
+        },
+        {
+          path : '/detail-produk',
+          name : 'DetailProduk',
+          component : DetailProduk,
         }
+
 ]
 
 export default routes
