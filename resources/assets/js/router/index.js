@@ -5,7 +5,7 @@ import Footer from '../components/Footer/Footer'
 import indexHome from '../components/home/indexHome'
 import Dashboard from '../components/dashboard'
 import Header from '../components/header/HeaderIndex.vue'
-
+import Tes from '../components/tes'
 
 
 const routes = [
@@ -41,6 +41,10 @@ const routes = [
           path : '/header',
           name : 'header',
           component : Header
+        },
+        {
+          path : '/tes',
+          component : Tes
         }
 
     ]

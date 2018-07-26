@@ -30,7 +30,7 @@
     </side-nav>
 
     <content>
-      <div> <br> </div>
+      <slot></slot>
     </content>
   </div>
 </template>
