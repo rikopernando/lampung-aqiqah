@@ -16,6 +16,22 @@ class ProdukController extends Controller
         return response(Produk::select()->where('stok', 1)->get());
     }
 
+    public function sortProduk($filter) {
+        if ($filter == 3) {
+          $produk = Produk::select()->where('stok', 1)->orderBy('harga_jual', 'DESC')->get();
+        }
+        elseif ($filter == 4) {
+          $produk = Produk::select()->where('stok', 1)->orderBy('harga_jual', 'ASC')->get();
+        }
+        elseif ($filter == 5) {
+          $produk = Produk::select()->where('stok', 1)->orderBy('id', 'DESC')->get();
+        }else{
+          $produk = Produk::select()->where('stok', 1)->get();
+        }
+
+        return response($produk);
+    }
+
     /**
      * Display a listing of the resource.
      *
