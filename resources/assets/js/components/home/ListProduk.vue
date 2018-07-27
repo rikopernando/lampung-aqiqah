@@ -6,22 +6,21 @@
         <div class="container">
 
           <div class="md-medium-size-50 md-small-size-50 md-xsmall-hide">
-            <div class="md-toolbar" style="margin-top: -20px; padding: 0px">
+            <div class="md-toolbar" style="margin-top: -20px; padding: 30px 0px">
               <div class="header-title md-toolbar-section-start">
 
               </div>
               <div class="header-title md-toolbar-section-end">
-                  <div class="md-layout-item layout-filter"></div>
-  	                <div class="md-layout-item layout-filter">
-  	                	<md-field>
-  		                   <md-select v-model="filter_produk" name="filter_produk" id="filter_produk">
-      						            <md-option value="populer">Urutkan Terpopuler</md-option>
-      						            <md-option value="murah">Urutkan Termurah</md-option>
-      						            <md-option value="mahal">Urutkan Termahal</md-option>
-      						            <md-option value="baru">Urutkan Terbaru</md-option>
-      		         			 </md-select>
-                    	</md-field>
-  	                </div>
+                <md-field style="width: auto">
+                  <label for="movie">Urutkan</label>
+                  <md-select v-model="filter" name="filter" id="filter" @md-selected="produkSort">
+                    <md-option value="1">Default</md-option>
+                    <md-option value="2">Terpopuler</md-option>
+                    <md-option value="3">Termahal</md-option>
+                    <md-option value="4">Termurah</md-option>
+                    <md-option value="5">Terbaru</md-option>
+                  </md-select>
+                </md-field>
   	           </div>
   	        </div>
 
@@ -52,9 +51,20 @@
               </div>
             </div>
           </div>
-          <br>
-          <br>
           <div id="displayMobile">
+            <div class="md-toolbar" style="padding: 15px 5px">
+                <md-field>
+                  <label for="movie">Urutkan</label>
+                  <md-select v-model="filter" name="filter" id="filter" @md-selected="produkSort">
+                    <md-option value="1">Default</md-option>
+                    <md-option value="2">Terpopuler</md-option>
+                    <md-option value="3">Termahal</md-option>
+                    <md-option value="4">Termurah</md-option>
+                    <md-option value="5">Terbaru</md-option>
+                  </md-select>
+                </md-field>
+  	        </div>
+
             <div v-for="produk in produks">
               <div class="col-md-3 col-sm-6 col-xs-6" style="padding: 25px 5px">
                   <div class="md-layout-item">
@@ -98,7 +108,7 @@
   	data : () => ({
   			url : window.location.origin + window.location.pathname,
         url_picture : window.location.origin + (window.location.pathname) + "image_produks/",
-  			filter_produk: 'populer',
+  			filter: 1,
         produks: [],
         loading: true
   	}),
@@ -126,7 +136,20 @@
     		.catch(resp => {
     			console.log('catch getProdukData:', resp);
     		});
-    	}
+    	},
+      produkSort() {
+        let app = this;
+
+        axios.get(app.url+'produk/sort-produk/'+app.filter)
+    		.then(resp => {
+    			app.produks = resp.data;
+    			app.loading = false;
+    		})
+    		.catch(resp => {
+    			console.log('catch getProdukData:', resp);
+    		});
+      }
+
     },
     components : {
       Header, Footer

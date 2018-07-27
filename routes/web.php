@@ -31,6 +31,7 @@ Route::resource('bank', 'BankController');
 //Produk
 Route::get('/produk/view', 'ProdukController@view');
 Route::get('/produk/view-produk', 'ProdukController@viewProduk');
+Route::get('/produk/sort-produk/{filter}', 'ProdukController@sortProduk');
 Route::post('/produk/{id}', 'ProdukController@update');
 Route::post('/produk/{id}', 'ProdukController@update');
 Route::resource('produk', 'ProdukController');
