@@ -26,7 +26,7 @@
   	        </div>
 
             <div v-for="produk in produks">
-              <div class="col-md-3 col-xs-6" style="padding: 25px 15px">
+              <div class="col-md-3 col-sm-6 col-xs-6" style="padding: 25px 15px">
                   <div class="md-layout-item">
                      <md-card md-with-hover>
                        <md-card-media class="card-image">
@@ -35,16 +35,46 @@
                             <img :src="url_picture+'/'+produk.foto" class="image" v-else>
                           </md-card>
                        </md-card-media>
-                       <div class="flexFont" style="font-size: 18px; margin-top: 0px">
+                       <p class="flexFont">
                          <center> {{ produk.nama_produk | capitalize }} </center>
-                       </div>
+                       </p>
                        <md-card-actions class="card-action">
-                         <div class="md-toolbar-section-start flexFont harga-coret">Rp {{ produk.harga_coret | pemisahTitik }} </div>
-                         <div class="md-toolbar-section-end flexFont harga-jual">Rp {{ produk.harga_jual | pemisahTitik }} </div>
+                         <div class="md-toolbar-section-start harga-coret">Rp {{ produk.harga_coret | pemisahTitik }} </div>
+                         <div class="md-toolbar-section-end harga-jual">Rp {{ produk.harga_jual | pemisahTitik }} </div>
                        </md-card-actions>
                        <md-card-actions class="card-action">
                          <md-button class="beli-sekarang" style="background-color: #db4a24; color: white">
                            Add To Chart <span class="bg"></span>
+                         </md-button>
+                       </md-card-actions>
+                     </md-card>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <br>
+          <br>
+          <div id="displayMobile">
+            <div v-for="produk in produks">
+              <div class="col-md-3 col-sm-6 col-xs-6" style="padding: 25px 5px">
+                  <div class="md-layout-item">
+                     <md-card md-with-hover>
+                       <md-card-media class="card-image">
+                          <md-card md-with-hover style="margin-top: -50px!important">
+                            <img :src="url_picture+'/default.jpg'" class="image" v-if="produk.foto == null">
+                            <img :src="url_picture+'/'+produk.foto" class="image" v-else>
+                          </md-card>
+                       </md-card-media>
+                       <p class="flexFont">
+                         <center> {{ produk.nama_produk | capitalize }} </center>
+                       </p>
+                       <md-card-actions class="card-action">
+                         <div class="md-toolbar-section-start harga-coret"> {{ produk.harga_coret | pemisahTitik }} </div>
+                         <div class="md-toolbar-section-end harga-jual"> {{ produk.harga_jual | pemisahTitik }} </div>
+                       </md-card-actions>
+                       <md-card-actions class="card-action">
+                         <md-button class="md-raised beli-sekarang">
+                           Add To Chart
                          </md-button>
                        </md-card-actions>
                      </md-card>
@@ -88,7 +118,7 @@
     },
     methods: {
       getProdukData() {
-    		axios.get(this.url + 'produk/view')
+    		axios.get(this.url + 'produk/view-produk')
     		.then(resp => {
     			this.produks = resp.data;
     			this.loading = false;
@@ -103,14 +133,20 @@
     }
   }
 
-  /*
-    FLEXFONT
-  */
-  var divs = document.getElementsByClassName("flexFont");
-  for(var i = 0; i < divs.length; i++) {
-    var relFontsize = divs[i].offsetWidth*0.08;
-    divs[i].style.fontSize = relFontsize+'px';
-  }
+  function flexFont () {
+    var divs = document.getElementsByClassName("flexFont");
+      for(var i = 0; i < divs.length; i++) {
+        var relFontsize = divs[i].offsetWidth*0.08;
+        divs[i].style.fontSize = relFontsize+'px';
+      }
+  };
+
+  window.onload = function(event) {
+      flexFont();
+  };
+  window.onresize = function(event) {
+      flexFont();
+  };
 </script>
 
 <style scoped>
@@ -119,49 +155,65 @@
     flex-wrap: wrap;
   }
   .flexFont {
+    height:3em;
     padding:3%;
     margin: 5px;
-  }
-  .beli-sekarang {
-    position: relative;
-    z-index: 1;
-    float: right;
-    display: inline-block;
-    font-size: 13px;
-    font-weight: 900;
-    text-transform: uppercase;
-    padding: 12px 18px;
-    cursor: pointer;
-    transition: all .3s ease-in-out;
-    line-height: .95;
-    border: none;
-    background: none;
-    outline: none;
-    border: 1px solid #FF3100;
-    border-radius: 20px;
-    overflow: hidden;
-    width: 100%;
-  }
-  .harga-coret {
-    text-decoration: line-through;
-    color: #b9b2b0;
-    font-size: 15px;
-  }
-  .harga-jual {
-    color: #FF3100;
-    font-size: 15px;
+    font-family: Helvetica,Arial,sans-serif;
   }
   .card-image {
     padding: 10px;
     position: relative;
   }
+  img {
+    border-radius: 10px;
+  }
 
-  /*MOBILE VERSION*/
+  /*MOBILE CSS*/
   @media (max-width: 600px) {
     .md-xsmall-hide { display: none; }
-    #displaySidenav { display: block; }
+    #displayMobile { display: block; }
+    .container {
+      padding: 0px !important;
+    }
+    .beli-sekarang {
+      background-color: rgb(219, 74, 36) !important;
+      color: white !important;
+      width: 100%;
+      height: 25px;
+      border-radius: 5px;
+      font-size: 12px;
+    }
+    .harga-coret {
+      text-decoration: line-through;
+      color: #636363;
+      font-size: 12px;
+    }
+    .harga-jual {
+      color: #FF3100;
+      font-size: 12px;
+    }
   }
+
+  /* DEKSTOP CSS */
   @media (min-width: 600px) {
-    #displaySidenav { display: none; }
+    #displayMobile { display: none; }
+
+    .beli-sekarang {
+      background-color: rgb(219, 74, 36);
+      color: white;
+      width: 100%;
+      height: 35px;
+      border-radius: 5px;
+      font-size: 15px;
+    }
+    .harga-coret {
+      text-decoration: line-through;
+      color: #636363;
+      font-size: 15px;
+    }
+    .harga-jual {
+      color: #FF3100;
+      font-size: 15px;
+    }
   }
 </style>

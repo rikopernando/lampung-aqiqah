@@ -12,6 +12,10 @@ class ProdukController extends Controller
         return response(Produk::select()->get());
     }
 
+    public function viewProduk() {
+        return response(Produk::select()->where('stok', 1)->get());
+    }
+
     /**
      * Display a listing of the resource.
      *
