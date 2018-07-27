@@ -7,6 +7,8 @@ import BankIndex from '../components/bank/BankIndex'
 import BankCreate from '../components/bank/BankCreate'
 import BankEdit from '../components/bank/BankEdit'
 import ProdukList from '../components/home/ListProduk'
+import KeranjangBelanja from '../components/keranjangbelanja/KeranjangBelanja'
+
 
 const routes = [
         {
@@ -71,6 +73,11 @@ const routes = [
           path : '/list-produk',
           name : 'listProduk',
           component : ProdukList
+        },
+        {
+          path : '/keranjang-belanja',
+          name : 'keranjangBelanja',
+          component : KeranjangBelanja
         }
 ]
 
