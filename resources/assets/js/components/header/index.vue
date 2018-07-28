@@ -122,7 +122,7 @@
             <a href="#/keranjang-belanja" class="md-button md-theme-default md-active">
               <div class="md-ripple">
                 <div class="label-nav-main">CART</div>
-                <md-badge md-content="1">
+                <md-badge v-bind:md-content="daftarKeranjang">
                   <i class="fa fa-shopping-basket icon-shop"></i>
                 </md-badge>
               </div>
@@ -248,6 +248,7 @@
 				passwordSubmit: 'Reset Password',
 				loginSubmit: 'Login',
         alertSnackbar : '',
+        daftarKeranjang:0,
         register : {
             name: '',
             email: '',

@@ -1,8 +1,13 @@
 <template>
   <div v-bind:style="{ 'background-image': 'url(' + url+'/images/background-batik.jpg' + ')' }">
   <div class="container">
-       
+
+
         <div class="md-medium-size-50 md-small-size-50 md-xsmall-hide" style="margin:30px">
+          <md-empty-state v-if="loading">
+                <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+           </md-empty-state>
+
           <div v-for="produk in produks">
               <div class="col-md-3 col-sm-6 col-xs-6" style="padding: 25px 15px">
                   <div class="md-layout-item">
@@ -22,7 +27,7 @@
                        </md-card-actions>
                        <md-card-actions class="card-action">
                          <md-button @click="createKeranjang(produk.id)" class="beli-sekarang" style="background-color: #db4a24; color: white">
-                           Add To Chart <span class="bg"></span>
+                           Masuk Keranjang <span class="bg"></span>
                          </md-button>
                        </md-card-actions>
                      </md-card>
@@ -32,6 +37,11 @@
         </div>
 
         <div id="displayMobile" style="margin:30px">
+
+           <md-empty-state v-if="loading">
+                <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+           </md-empty-state>
+
             <div v-for="produk in produks">
               <div class="col-md-3 col-sm-6 col-xs-6" style="padding: 25px 5px">
                   <div class="md-layout-item">
@@ -51,7 +61,7 @@
                        </md-card-actions>
                        <md-card-actions class="card-action">
                          <md-button  @click="createKeranjang(produk.id)" class="md-raised beli-sekarang">
-                           Add To Chart
+                           Masuk Keranjang
                          </md-button>
                        </md-card-actions>
                      </md-card>

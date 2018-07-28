@@ -45,6 +45,11 @@ const routes = [
     component : ProdukList
   },
   {
+    path : '/detail-produk',
+    name : 'DetailProduk',
+    component : DetailProduk,
+  },
+  {
     path: '/dashboard',
     component: DashboardLayout,
     children: [
@@ -121,11 +126,6 @@ const routes = [
           requiresAuth : true,
           is_admin : true
         }
-      },
-      {
-        path : '/detail-produk',
-        name : 'DetailProduk',
-        component : DetailProduk,
       },
       {
         path : '/produk',
