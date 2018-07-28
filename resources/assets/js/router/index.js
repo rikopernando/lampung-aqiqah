@@ -15,6 +15,7 @@ import ProdukCreate from '../components/produk/ProdukCreate'
 import ProdukEdit from '../components/produk/ProdukEdit'
 
 import Checkout from '../components/checkout'
+import OrderReceived from '../components/checkout/OrderReceived'
 
 const routes = [
         {
@@ -126,8 +127,12 @@ const routes = [
           path : '/checkout',
           name : 'checkout',
           component : Checkout
+        },
+        {
+          path : '/checkout/order-received',
+          name : 'receivedOrder',
+          component : OrderReceived
         }
 ]
 
 export default routes
-
