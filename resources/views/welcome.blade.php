@@ -14,10 +14,10 @@
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         </head>
-    <body style="background-color:white;">
+    <body style="background-color: white;">
         <div id="app">
             <router-view></router-view>
         </div>
-        <script src="{{ asset('js/app.js?v=1.20')}}" type="text/javascript"></script>
+        <script src="{{ asset('js/app.js?v=1.21')}}" type="text/javascript"></script>
     </body>
 </html>

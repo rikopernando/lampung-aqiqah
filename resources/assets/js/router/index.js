@@ -28,123 +28,130 @@ import Typography from '../pages/Typography.vue'
 import Icons from '../pages/Icons.vue'
 import Notifications from '../pages/Notifications.vue'
 
+import Checkout from '../components/checkout'
+import OrderReceived from '../components/checkout/OrderReceived'
+
 const routes = [
-{
-    path : '/',
-    name : 'home',
-    component : Home
-  },
-  {
-    path : '/keranjang-belanja',
-    name : 'keranjangBelanja',
-    component : KeranjangBelanja
-  },
-  {
-    path : '/list-produk',
-    name : 'listProduk',
-    component : ProdukList
-  },
-  {
-    path : '/detail-produk',
-    name : 'DetailProduk',
-    component : DetailProduk,
-  },
-  {
-    path: '/dashboard',
-    component: DashboardLayout,
-    children: [
-      {
-        path: 'dashboard',
-        name: 'Dashboard',
-        component: Dashboard
-      },
-      {
-        path: 'user-profile',
-        name: 'User Profile',
-        component: UserProfile
-      },
-      {
-        path: 'table',
-        name: 'Table List',
-        component: TableList
-      },
-      {
-        path: 'typography',
-        name: 'Typography',
-        component: Typography
-      },
-      {
-        path: 'icons',
-        name: 'Icons',
-        component: Icons
-      },
-      {
-        path: 'notifications',
-        name: 'Notifications',
-        component: Notifications
-      },
-      {
-        path : '/user',
-        name : 'user',
-        component : UserIndex,
-        meta : {
-          requiresAuth : true,
-          is_admin : true
+        {
+          path : '/',
+          name : 'home',
+          component : Home
+        },
+        {
+          path : '/dashboard',
+          name : 'dashboard',
+          component : Dashboard,
+          meta : {
+            requiresAuth : true,
+            is_admin : true
+          }
+        },
+        {
+          path : '/user',
+          name : 'user',
+          component : UserIndex,
+          meta : {
+            requiresAuth : true,
+            is_admin : true
+          }
+        },
+        {
+          path : '/user/edit/:id',
+          name : 'editUser',
+          component : UserEdit,
+          meta : {
+            requiresAuth : true,
+            is_admin : true
+          }
+        },
+        {
+          path : '/user/create',
+          name : 'createUser',
+          component : UserCreate,
+          meta : {
+            requiresAuth : true,
+            is_admin : true
+          }
+        },
+        {
+          path : '/bank',
+          name : 'bank',
+          component : BankIndex,
+          meta : {
+            requiresAuth : true,
+            is_admin : true
+          }
+        },
+        {
+          path : '/bank-create',
+          name : 'bankCreate',
+          component : BankCreate,
+          meta : {
+            requiresAuth : true,
+            is_admin : true
+          }
+        },
+        {
+          path : '/bank/edit/:id',
+          name : 'bankEdit',
+          component : BankEdit,
+          meta : {
+            requiresAuth : true,
+            is_admin : true
+          }
+        },
+        {
+          path : '/detail-produk',
+          name : 'DetailProduk',
+          component : DetailProduk,
+        },
+        {
+          path : '/list-produk',
+          name : 'listProduk',
+          component : ProdukList,
+        },
+        {
+          path : '/produk',
+          name : 'produk',
+          component : ProdukIndex,
+          meta : {
+            requiresAuth : true,
+            is_admin : true
+          }
+        },
+        {
+          path : '/produk/create',
+          name : 'createProduk',
+          component : ProdukCreate,
+          meta : {
+            requiresAuth : true,
+            is_admin : true
+          }
+        },
+        {
+          path : '/produk/edit/:id',
+          name : 'editProduk',
+          component : ProdukEdit,
+          meta : {
+            requiresAuth : true,
+            is_admin : true
+          }
+        },
+        {
+          path : '/checkout',
+          name : 'checkout',
+          component : Checkout
+        },
+        {
+          path : '/checkout/order-received',
+          name : 'receivedOrder',
+          component : OrderReceived
+        },
+        {
+          path : '/keranjang-belanja',
+          name : 'keranjangBelanja',
+          component : KeranjangBelanja
         }
-      },
-      {
-        path : '/user/edit/:id',
-        name : 'editUser',
-        component : UserEdit
-      },
-      {
-        path : '/user/create',
-        name : 'createUser',
-        component : UserCreate
-      },
-      {
-        path : '/bank',
-        name : 'bank',
-        component : BankIndex,
-        meta : {
-          requiresAuth : true
-        }
-      },
-      {
-        path : '/bank-create',
-        name : 'bankCreate',
-        component : BankCreate,
-        meta : {
-          requiresAuth : true
-        }
-      },
-      {
-        path : '/bank/edit/:id',
-        name : 'bankEdit',
-        component : BankEdit,
-        meta : {
-          requiresAuth : true,
-          is_admin : true
-        }
-      },
-      {
-        path : '/produk',
-        name : 'produk',
-        component : ProdukIndex
-      },
-      {
-        path : '/produk/create',
-        name : 'createProduk',
-        component : ProdukCreate
-      },
-      {
-        path : '/produk/edit/:id',
-        name : 'editProduk',
-        component : ProdukEdit
-      }
-    ]
-  }
 ]
 
 export default routes
-
