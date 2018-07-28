@@ -8,7 +8,7 @@
         <md-icon>dashboard</md-icon>
         <p>Dashboard</p>
       </sidebar-link>
-      <sidebar-link to="/user">
+      <sidebar-link to="/user-profile">
         <md-icon>person</md-icon>
         <p>Profil User</p>
       </sidebar-link>

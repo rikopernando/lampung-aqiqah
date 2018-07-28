@@ -15,6 +15,23 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+route::get('/auth', 'AuthController@auth');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+// User
+Route::get('/user/view', 'UserController@view');
+Route::resource('user', 'UserController');
+
+//Bank
+Route::get('/bank/view', 'BankController@view');
+Route::resource('bank', 'BankController');
+//Produk
+Route::get('/produk/view', 'ProdukController@view');
+Route::get('/produk/view-produk', 'ProdukController@viewProduk');
+Route::get('/produk/sort-produk/{filter}', 'ProdukController@sortProduk');
+Route::post('/produk/{id}', 'ProdukController@update');
+Route::post('/produk/{id}', 'ProdukController@update');
+Route::resource('produk', 'ProdukController');
