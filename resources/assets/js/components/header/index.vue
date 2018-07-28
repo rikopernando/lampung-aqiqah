@@ -5,39 +5,39 @@
 
         <div class="user-modal-container" id="login-modal" v-on:click="closeModal" v-if="modal">
           <div class="user-modal">
-            <ul class="form-switcher">  
+            <ul class="form-switcher">
               <li v-on:click="flip('register')"><a href="#" id="register-form">Register</a></li>
               <li v-on:click="flip('login')"><a href="#" id="login-form">Login</a></li>
-            </ul>            
+            </ul>
             <div class="form-register" id="form-register">
                   <ul class="error-message">
                     <li class="text-error" v-for="err in errors"> {{ err.toString() }} </li>
                   </ul>
-                <input type="text" name="name" placeholder="Nama" v-model="register.name" autocomplete="off">  
-                <input type="email" name="email" placeholder="Email" v-model="register.email" autocomplete="off">  
+                <input type="text" name="name" placeholder="Nama" v-model="register.name" autocomplete="off">
+                <input type="email" name="email" placeholder="Email" v-model="register.email" autocomplete="off">
                 <input type="password" name="password" placeholder="Password" v-model="register.password" autocomplete="off">
-                <input type="password" name="password_confirmation" placeholder="Konfirmasi Password" v-model="register.password_confirmation" autocomplete="off"> 
-                <input type="submit" v-on:click="submit('register')" v-model="registerSubmit" id="registerSubmit">  
-                <div class="links">  
+                <input type="password" name="password_confirmation" placeholder="Konfirmasi Password" v-model="register.password_confirmation" autocomplete="off">
+                <input type="submit" v-on:click="submit('register')" v-model="registerSubmit" id="registerSubmit">
+                <div class="links">
                   <a href="#" v-on:click="flip('login')">Sudah Punya Akun ?</a>
-                </div>  
+                </div>
             </div>
             <div class="form-login" id="form-login">
                   <ul class="error-message">
                     <li class="text-error" v-for="err in errors"> {{ err.toString() }} </li>
                   </ul>
-                <input type="email" name="email" placeholder="Email" v-model="login.email" autocomplete="off"> 
-                <input type="password" name="password" placeholder="Password" v-model="login.password" autocomplete="off">  
-                <input type="submit" v-on:click="submit('login')" v-model="loginSubmit"  id="loginSubmit">  
-                <div class="links">  
+                <input type="email" name="email" placeholder="Email" v-model="login.email" autocomplete="off">
+                <input type="password" name="password" placeholder="Password" v-model="login.password" autocomplete="off">
+                <input type="submit" v-on:click="submit('login')" v-model="loginSubmit"  id="loginSubmit">
+                <div class="links">
                   <a href="#" v-on:click="flip('password')">Lupa password?</a>
-                </div>  
+                </div>
             </div>
             <div class="form-password" id="form-password">
-                <input type="text" name="email" placeholder="Email" v-model="password.email" autocomplete="off">  
-                <input type="submit" v-on:click="submit('password')" v-model="passwordSubmit" id="passwordSubmit">  
+                <input type="text" name="email" placeholder="Email" v-model="password.email" autocomplete="off">
+                <input type="submit" v-on:click="submit('password')" v-model="passwordSubmit" id="passwordSubmit">
             </div>
-          </div>  
+          </div>
        </div>
 
      <div class="md-medium-size-50 md-small-size-50 md-xsmall-hide">
@@ -96,14 +96,16 @@
 
           <div class="md-toolbar-section-end">
 
+
             <md-button v-on:click="openModal('login')" v-if="!this.$store.state.user.loggedIn"> 
+            
               <div class="md-ripple">
                 <div class="label-nav-main">LOGIN</div>
               </div>
             </md-button>
 
             <md-menu v-else>
-                <a href="#" class="md-button md-theme-default md-active" md-menu-trigger> 
+                <a href="#" class="md-button md-theme-default md-active" md-menu-trigger>
                   <div class="md-ripple">
                     <div class="label-nav-main">{{this.$store.state.user.profile.name}}</div>
                   </div>
@@ -116,10 +118,10 @@
             </md-menu>
 
             <form id="logout-form" v-bind:action="url+'logout'" method="POST" style="display: none;">
-              <input type="hidden" name="_token" v-bind:value="token"> 
+              <input type="hidden" name="_token" v-bind:value="token">
             </form>
 
-            <a href="#/cart" class="md-button md-theme-default md-active">
+            <a href="#/keranjang-belanja" class="md-button md-theme-default md-active">
               <div class="md-ripple">
                 <div class="label-nav-main">CART</div>
                 <md-badge md-content="0">
@@ -156,8 +158,6 @@
                   <i class="fa fa-user icon-shop-mobile"></i>
               </a>
             </md-button>
-          </div>
-          <div class="md-toolbar-section-end">
             <md-button class="md-icon-button">
               <a href="#/cart">
                 <md-badge md-content="0">
@@ -274,7 +274,7 @@
 							$('#form-'+this.active).removeClass('active')
 							$('#'+this.active+'-form').removeClass('active')
 					}
-          
+
           $("#login-modal").addClass('active')
 					$('#form-'+which).addClass('active')
 					$('#'+which+'-form').addClass('active')
@@ -359,7 +359,7 @@
 </script>
 
 <style lang="scss" scoped>
-    
+
     .link-item {
       display: inline-block;
     }
@@ -474,14 +474,14 @@
 		.user-modal-container input[type="submit"].disabled {
 				background-color:  #ff4d4d;
 		}
-    
+
     .error-message {
         background-color:  #ff4d4d;
         border-radius: 6px;
     }
 
     .text-error {
-      font-weight: bold;      
+      font-weight: bold;
       color: white;
       padding : 4px;
     }

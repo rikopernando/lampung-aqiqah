@@ -1,18 +1,32 @@
-import Dashboard from '../components/dashboard'
 import Home from '../components/home'
+
+// USER
 import UserIndex from '../components/user/index'
 import UserEdit from '../components/user/edit'
 import UserCreate from '../components/user/create'
+
+// BANK
 import BankIndex from '../components/bank/BankIndex'
 import BankCreate from '../components/bank/BankCreate'
 import BankEdit from '../components/bank/BankEdit'
-import DetailProduk from '../components/list-produk/detail_produk'
-import ProdukList from '../components/home/ListProduk'
+import KeranjangBelanja from '../components/keranjangbelanja/KeranjangBelanja'
+
 
 // PRODUK
 import ProdukIndex from '../components/produk/ProdukIndex'
 import ProdukCreate from '../components/produk/ProdukCreate'
 import ProdukEdit from '../components/produk/ProdukEdit'
+import DetailProduk from '../components/list-produk/detail_produk'
+import ProdukList from '../components/home/ListProduk'
+
+// MATERIAL TEMPLATE ROUTES
+import DashboardLayout from '../pages/Layout/DashboardLayout.vue'
+import Dashboard from '../pages/Dashboard.vue'
+import UserProfile from '../pages/UserProfile.vue'
+import TableList from '../pages/TableList.vue'
+import Typography from '../pages/Typography.vue'
+import Icons from '../pages/Icons.vue'
+import Notifications from '../pages/Notifications.vue'
 
 import Checkout from '../components/checkout'
 import OrderReceived from '../components/checkout/OrderReceived'
@@ -132,6 +146,11 @@ const routes = [
           path : '/checkout/order-received',
           name : 'receivedOrder',
           component : OrderReceived
+        },
+        {
+          path : '/keranjang-belanja',
+          name : 'keranjangBelanja',
+          component : KeranjangBelanja
         }
 ]
 
