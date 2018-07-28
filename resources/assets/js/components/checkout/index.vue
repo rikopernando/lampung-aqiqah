@@ -27,10 +27,24 @@
 										<input type="text" v-model="pesanan.alamat" class="form-control" placeholder="Alamat">
 									</div>
 									<div class="form-group">
-										<input type="text" v-model="pesanan.kecamatan" class="form-control" placeholder="Kecamatan">
+                    <selectize-component :settings="select_provinsi" v-model="pesanan.provinsi" ref="provinsi">
+                      <option v-for="provinsi, index in provinsi" v-bind:value="provinsi.id">{{ provinsi.name }} </option> 
+                    </selectize-component>
 									</div>
 									<div class="form-group">
-										<input type="text" v-model="pesanan.kota" class="form-control" placeholder="Kota">
+                    <selectize-component :settings="select_kabupaten" v-model="pesanan.kabupaten" ref="kabupaten">
+                      <option v-for="kabupaten, index in kabupaten" v-bind:value="kabupaten.id">{{ kabupaten.name }} </option> 
+                    </selectize-component>
+									</div>
+									<div class="form-group">
+                    <selectize-component :settings="select_kecamatan" v-model="pesanan.kecamatan" ref="kecamatan">
+                      <option v-for="kecamatan, index in kecamatan" v-bind:value="kecamatan.id">{{ kecamatan.name }} </option> 
+                    </selectize-component>
+									</div>
+									<div class="form-group">
+                    <selectize-component :settings="select_kelurahan" v-model="pesanan.kelurahan" ref="kelurahan">
+                      <option v-for="kelurahan, index in kelurahan" v-bind:value="kelurahan.id">{{ kelurahan.name }} </option> 
+                    </selectize-component>
 									</div>
 									<div class="form-group">
 										<input type="text" v-model="pesanan.handphone" class="form-control" placeholder="Handphone">
@@ -153,6 +167,7 @@
 
 <script>
   
+  import { mapState } from 'vuex'
   import Header from '../header'
   import Footer from '../footer/footer'
 
@@ -165,14 +180,28 @@
       jenisKelamin : {
         placeholder : 'Jenis Kelamin'
       },
+      select_provinsi : {
+        placeholder : 'Pilih Provinsi'
+      },
+      select_kabupaten : {
+        placeholder : 'Pilih Kabupaten atau Kota'
+      },
+      select_kecamatan : {
+        placeholder : 'Pilih Kecamatan'
+      },
+      select_kelurahan : {
+        placeholder : 'Pilih Kelurahan'
+      },
       pesanan : {
         nama_pemesan : '',
         alamat : '',
+        provinsi : '',
+        kelurahan : '',
         kecamatan : '',
-        kota : '',
+        kabupaten : '',
         handphone : '',
         email : '',
-        sumber_informasi : null,
+        sumber_informasi : '',
         notes : '',
         nama_peserta : '',
         ttl_peserta : '',
@@ -189,57 +218,47 @@
         kecamatan : '',
         kota : ''
       },
-      selected: {},
-      people: [
-        {
-          id: 1,
-          name: 'Shawna Dubbin',
-          email: 'sdubbin0@geocities.com',
-          gender: 'Male',
-          title: 'Assistant Media Planner'
-        },
-        {
-          id: 2,
-          name: 'Odette Demageard',
-          email: 'odemageard1@spotify.com',
-          gender: 'Female',
-          title: 'Account Coordinator'
-        },
-        {
-          id: 3,
-          name: 'Lonnie Izkovitz',
-          email: 'lizkovitz3@youtu.be',
-          gender: 'Female',
-          title: 'Operator'
-        },
-        {
-          id: 4,
-          name: 'Thatcher Stave',
-          email: 'tstave4@reference.com',
-          gender: 'Male',
-          title: 'Software Test Engineer III'
-        },
-        {
-          id: 5,
-          name: 'Clarinda Marieton',
-          email: 'cmarietonh@theatlantic.com',
-          gender: 'Female',
-          title: 'Paralegal'
-        }
-      ],
 			sumber_informasi: ['Google','Facebook','Instagram','Teman','Bidan','Website','Spanduk','X-Banner','Televisi','Radio']
     }),
     mounted () {
-      console.log('test tercipta')
+      this.$store.dispatch('lokasi/LOAD_PROVINSI')
+      this.$refs.kabupaten.$el.selectize.disable()
+      this.$refs.kecamatan.$el.selectize.disable()
+      this.$refs.kelurahan.$el.selectize.disable()
+    }, 
+    computed : mapState ({
+       provinsi () {
+        return this.$store.state.lokasi.provinsi
+       },
+       kabupaten () {
+        return this.$store.state.lokasi.kabupaten
+       },
+       kecamatan () {
+        return this.$store.state.lokasi.kecamatan
+       },
+       kelurahan () {
+        return this.$store.state.lokasi.kelurahan
+       }
+    }),
+    watch : {
+      'pesanan.provinsi' : function(){
+        this.pilihProvinsi()
+      }
     },
     components : {
       Header,Footer
     },
     methods : {
-			getClass: ({ id }) => ({
-        'md-primary': id === 2,
-        'md-accent': id === 3
-      }),
+      pilihProvinsi() {
+          const app = this
+          app.$refs.kabupaten.$el.selectize.settings.placeholder = "Tunggu Sebentar ..."
+          app.$refs.kabupaten.$el.selectize.updatePlaceholder()
+          app.$refs.kabupaten.$el.selectize.disable()
+          app.$store.dispatch('lokasi/LOAD_PROVINSI')
+          app.$refs.kabupaten.$el.selectize.enable()
+          app.$refs.kabupaten.$el.selectize.settings.placeholder = "Pilih Kabupaten atau Kota"
+          app.$refs.kabupaten.$el.selectize.updatePlaceholder()
+      },
     }
   }
 

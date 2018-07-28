@@ -13,6 +13,33 @@
         <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+        <style type="text/css">
+            .spinner:before { 
+                content: ''; 
+                box-sizing: border-box; 
+                position: absolute; 
+                top: 50%; 
+                left: 50%; 
+                width: 20px; 
+                height: 20px; 
+                margin-top: -10px; 
+                margin-left: -10px; 
+                border-radius: 50%; 
+                border: 2px solid #ccc; 
+                border-top-color: #333; 
+                animation: spinner .6s linear infinite; 
+            } 
+            .selectizeLoading > .selectize-input, .selectizeLoading > .selectize-input > input {
+                cursor: wait !important;
+                font-style: italic;
+                background:
+                url('http://www.hsi.com.hk/HSI-Net/pages/images/en/share/ajax-loader.gif')
+                no-repeat
+                center center;
+            }
+        </style>
+
         </head>
     <body style="background-color: white;">
         <div id="app">

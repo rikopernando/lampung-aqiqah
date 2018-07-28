@@ -2,10 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use Indonesia;
+use App\Pesanan;
 use Illuminate\Http\Request;
+
 
 class PesananController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -80,5 +93,10 @@ class PesananController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function provinsi(){
+        $provinsi = Indonesia::allProvinces();
+        return response()->json($provinsi);
     }
 }
