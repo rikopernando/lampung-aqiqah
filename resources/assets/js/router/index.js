@@ -136,6 +136,8 @@ const routes = [
         name : 'editProduk',
         component : ProdukEdit
       },
+    ]
+  }
 ]
 
 export default routes
