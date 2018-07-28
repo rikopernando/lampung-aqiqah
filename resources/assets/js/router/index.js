@@ -145,6 +145,8 @@ const routes = [
           name : 'keranjangBelanja',
           component : KeranjangBelanja
       }
+    ]
+  }
 ]
 
 export default routes
