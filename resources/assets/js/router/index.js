@@ -9,6 +9,10 @@ import UserCreate from '../components/user/create'
 import BankIndex from '../components/bank/BankIndex'
 import BankCreate from '../components/bank/BankCreate'
 import BankEdit from '../components/bank/BankEdit'
+import DetailProduk from '../components/list-produk/detail_produk'
+import ProdukList from '../components/home/ListProduk'
+import KeranjangBelanja from '../components/keranjangbelanja/KeranjangBelanja'
+
 
 // PRODUK
 import ProdukIndex from '../components/produk/ProdukIndex'
@@ -27,7 +31,7 @@ import Icons from '../pages/Icons.vue'
 import Notifications from '../pages/Notifications.vue'
 
 const routes = [
-  {
+{
     path : '/',
     name : 'home',
     component : Home
@@ -136,6 +140,11 @@ const routes = [
         name : 'editProduk',
         component : ProdukEdit
       },
+      {
+          path : '/keranjang-belanja',
+          name : 'keranjangBelanja',
+          component : KeranjangBelanja
+      }
     ]
   }
 ]
