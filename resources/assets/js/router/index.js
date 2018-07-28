@@ -35,6 +35,11 @@ const routes = [
     component : Home
   },
   {
+          path : '/keranjang-belanja',
+          name : 'keranjangBelanja',
+          component : KeranjangBelanja
+  },
+  {
     path: '/dashboard',
     component: DashboardLayout,
     children: [
@@ -136,11 +141,6 @@ const routes = [
         path : '/produk/edit/:id',
         name : 'editProduk',
         component : ProdukEdit
-      },
-      {
-          path : '/keranjang-belanja',
-          name : 'keranjangBelanja',
-          component : KeranjangBelanja
       }
     ]
   }

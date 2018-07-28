@@ -61,7 +61,6 @@
 						   <md-button style="align:right;" class="md-dense md-raised md-primary">Lanjut <md-icon>undo</md-icon> </md-button>
 						</div>
 
-		             	<md-button style="align:right;" class="md-dense md-raised md-primary">Refresh  <md-icon>refresh</md-icon> </md-button>
 		            </td>
        			</tr>
             </tbody>
@@ -138,7 +137,6 @@
 </script>
 
 <style scoped>
-
 .breadcrumb {
     padding: 8px 15px;
     margin-bottom: 22px;
@@ -147,12 +145,17 @@
     background-color: #ffffff;
     border-radius: 1px;
 }
-
 .h3, h3 {
     font-size: 24px;
     color: black;
 }
-
-table th{background:#da2921 !important; color:#fff !important; padding:5px !important;}
-table td{background:#FFF !important; padding:10px !important;}
+table th {
+	background:#da2921 !important; 
+	color:#fff !important; 
+	padding:5px !important;
+}
+table td {
+	background:#FFF !important;
+	padding:10px !important;
+}
 </style>

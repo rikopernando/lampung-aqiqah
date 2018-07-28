@@ -21,7 +21,7 @@
                          <div class="md-toolbar-section-end harga-jual">Rp {{ produk.harga_jual | pemisahTitik }} </div>
                        </md-card-actions>
                        <md-card-actions class="card-action">
-                         <md-button class="beli-sekarang" style="background-color: #db4a24; color: white">
+                         <md-button @click="createKeranjang(produk.id)" class="beli-sekarang" style="background-color: #db4a24; color: white">
                            Add To Chart <span class="bg"></span>
                          </md-button>
                        </md-card-actions>
@@ -50,7 +50,7 @@
                          <div class="md-toolbar-section-end harga-jual"> {{ produk.harga_jual | pemisahTitik }} </div>
                        </md-card-actions>
                        <md-card-actions class="card-action">
-                         <md-button class="md-raised beli-sekarang">
+                         <md-button  @click="createKeranjang(produk.id)" class="md-raised beli-sekarang">
                            Add To Chart
                          </md-button>
                        </md-card-actions>
@@ -60,6 +60,10 @@
             </div>
           </div>
 
+        <!-- Snackbar for Bank delete alert -->
+        <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarBerhasil" md-persistent>
+            <span>Produk Berhasil Masuk Keranjang !</span>
+          </md-snackbar>
   </div>
   </div>
 </template>
@@ -72,7 +76,8 @@
         url : window.location.origin + window.location.pathname,
         url_picture : window.location.origin + (window.location.pathname) + "image_produks/",
         produks:[],
-        loading: true
+        loading: true,
+        snackbarBerhasil: false,
       }
     },
     mounted() {
@@ -100,6 +105,15 @@
           console.log('catch getProdukData:', resp);
         });
       },
+      createKeranjang(id){
+        axios.post(this.url + 'keranjang-belanja/create/'+id)
+        .then(resp => {
+          this.snackbarBerhasil = true;
+        })
+        .catch(resp => {
+          console.log('Terjadi Kesalahan :', resp);
+        })
+      }
   }
 }
 
