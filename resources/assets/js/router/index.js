@@ -1,52 +1,50 @@
-import Example from '../components/Example'
-import PaketAqiqah from '../components/home/produk'
-import Slider from '../components/home/slider'
-import Footer from '../components/Footer/Footer'
-import indexHome from '../components/home/indexHome'
-import Dashboard from '../components/dashboard'
-import Header from '../components/header/HeaderIndex.vue'
-import Tes from '../components/tes'
+import DashboardLayout from '../pages/Layout/DashboardLayout.vue'
 
+import Dashboard from '../pages/Dashboard.vue'
+import UserProfile from '../pages/UserProfile.vue'
+import TableList from '../pages/TableList.vue'
+import Typography from '../pages/Typography.vue'
+import Icons from '../pages/Icons.vue'
+import Notifications from '../pages/Notifications.vue'
 
 const routes = [
-        {
-          path : '/',
-          name : 'home',
-          component : Example
-        },{
-          path : '/paket',
-          name : 'paket',
-          component : PaketAqiqah
-        },
-        { path : '/slider',
-          name : 'slider',
-          component : Slider
-        },
-        {
-          path : '/footer',
-          name : 'footer',
-          component : Footer
-        },
-        {
-          path : '/indexHome',
-          name : 'indexHome',
-          component : indexHome
-        },
-        {
-          path : '/dashboard',
-          name : 'dashboard',
-          component : Dashboard
-        },
-        {
-          path : '/header',
-          name : 'header',
-          component : Header
-        },
-        {
-          path : '/tes',
-          component : Tes
-        }
-
+  {
+    path: '/',
+    component: DashboardLayout,
+    redirect: '/dashboard',
+    children: [
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: Dashboard
+      },
+      {
+        path: 'user',
+        name: 'User Profile',
+        component: UserProfile
+      },
+      {
+        path: 'table',
+        name: 'Table List',
+        component: TableList
+      },
+      {
+        path: 'typography',
+        name: 'Typography',
+        component: Typography
+      },
+      {
+        path: 'icons',
+        name: 'Icons',
+        component: Icons
+      },
+      {
+        path: 'notifications',
+        name: 'Notifications',
+        component: Notifications
+      },
     ]
+  }
+]
 
 export default routes
