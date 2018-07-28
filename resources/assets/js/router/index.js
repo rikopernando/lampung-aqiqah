@@ -35,9 +35,14 @@ const routes = [
     component : Home
   },
   {
-          path : '/keranjang-belanja',
-          name : 'keranjangBelanja',
-          component : KeranjangBelanja
+    path : '/keranjang-belanja',
+    name : 'keranjangBelanja',
+    component : KeranjangBelanja
+  },
+  {
+    path : '/list-produk',
+    name : 'listProduk',
+    component : ProdukList
   },
   {
     path: '/dashboard',
@@ -121,11 +126,6 @@ const routes = [
         path : '/detail-produk',
         name : 'DetailProduk',
         component : DetailProduk,
-      },
-      {
-        path : '/list-produk',
-        name : 'listProduk',
-        component : ProdukList
       },
       {
         path : '/produk',

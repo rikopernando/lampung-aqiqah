@@ -11,7 +11,7 @@ class KeranjangBelanja extends Model
 {
     //
 
-    protected $fillable   = ['id_produk', 'jumlah_produk', 'session_id','harga_produk'];
+    protected $fillable   = ['id_produk', 'id_pelanggan','jumlah_produk', 'session_id','harga_produk'];
     protected $primaryKey = 'id_keranjang_belanja';
     // relasi ke produk
     public function produk()
