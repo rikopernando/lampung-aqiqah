@@ -6,9 +6,14 @@ import UserCreate from '../components/user/create'
 import BankIndex from '../components/bank/BankIndex'
 import BankCreate from '../components/bank/BankCreate'
 import BankEdit from '../components/bank/BankEdit'
+import DetailProduk from '../components/list-produk/detail_produk'
 import ProdukList from '../components/home/ListProduk'
 import KeranjangBelanja from '../components/keranjangbelanja/KeranjangBelanja'
 
+// PRODUK
+import ProdukIndex from '../components/produk/ProdukIndex'
+import ProdukCreate from '../components/produk/ProdukCreate'
+import ProdukEdit from '../components/produk/ProdukEdit'
 
 const routes = [
         {
@@ -70,9 +75,29 @@ const routes = [
           }
         },
         {
+          path : '/detail-produk',
+          name : 'DetailProduk',
+          component : DetailProduk,
+        },
+        {
           path : '/list-produk',
           name : 'listProduk',
           component : ProdukList
+        },
+        {
+          path : '/produk',
+          name : 'produk',
+          component : ProdukIndex
+        },
+        {
+          path : '/produk/create',
+          name : 'createProduk',
+          component : ProdukCreate
+        },
+        {
+          path : '/produk/edit/:id',
+          name : 'editProduk',
+          component : ProdukEdit
         },
         {
           path : '/keranjang-belanja',

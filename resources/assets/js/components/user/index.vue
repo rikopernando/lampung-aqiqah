@@ -49,6 +49,7 @@
           </md-card-header-text>
         </md-card-header>
         <md-card-content>
+          <md-button :to="`/user/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah User</md-button>
       		<md-table v-model="searched" md-sort="name" md-sort-order="asc" md-fixed-header>
 
 			      <md-table-empty-state v-if="loading">
