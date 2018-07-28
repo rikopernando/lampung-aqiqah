@@ -14,6 +14,8 @@ import ProdukIndex from '../components/produk/ProdukIndex'
 import ProdukCreate from '../components/produk/ProdukCreate'
 import ProdukEdit from '../components/produk/ProdukEdit'
 
+import Checkout from '../components/checkout'
+
 const routes = [
         {
           path : '/',
@@ -41,19 +43,28 @@ const routes = [
         {
           path : '/user/edit/:id',
           name : 'editUser',
-          component : UserEdit
+          component : UserEdit,
+          meta : {
+            requiresAuth : true,
+            is_admin : true
+          }
         },
         {
           path : '/user/create',
           name : 'createUser',
-          component : UserCreate
+          component : UserCreate,
+          meta : {
+            requiresAuth : true,
+            is_admin : true
+          }
         },
         {
           path : '/bank',
           name : 'bank',
           component : BankIndex,
           meta : {
-            requiresAuth : true
+            requiresAuth : true,
+            is_admin : true
           }
         },
         {
@@ -61,7 +72,8 @@ const routes = [
           name : 'bankCreate',
           component : BankCreate,
           meta : {
-            requiresAuth : true
+            requiresAuth : true,
+            is_admin : true
           }
         },
         {
@@ -81,23 +93,40 @@ const routes = [
         {
           path : '/list-produk',
           name : 'listProduk',
-          component : ProdukList
+          component : ProdukList,
         },
         {
           path : '/produk',
           name : 'produk',
-          component : ProdukIndex
+          component : ProdukIndex,
+          meta : {
+            requiresAuth : true,
+            is_admin : true
+          }
         },
         {
           path : '/produk/create',
           name : 'createProduk',
-          component : ProdukCreate
+          component : ProdukCreate,
+          meta : {
+            requiresAuth : true,
+            is_admin : true
+          }
         },
         {
           path : '/produk/edit/:id',
           name : 'editProduk',
-          component : ProdukEdit
+          component : ProdukEdit,
+          meta : {
+            requiresAuth : true,
+            is_admin : true
+          }
         },
+        {
+          path : '/checkout',
+          name : 'checkout',
+          component : Checkout
+        }
 ]
 
 export default routes
