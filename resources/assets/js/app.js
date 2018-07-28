@@ -63,6 +63,7 @@ router.beforeEach((to, from, next) => {
 
 const app = new Vue({
     router,
+    store,
     data: {
 	    Chartist: Chartist
 	}
