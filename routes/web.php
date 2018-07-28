@@ -37,4 +37,7 @@ Route::post('/produk/{id}', 'ProdukController@update');
 Route::post('/produk/{id}', 'ProdukController@update');
 Route::resource('produk', 'ProdukController');
 
+//Keranjang Belanja
+Route::post('/keranjang-belanja/create/{id}', 'KeranjangBelanjaController@tambahProdukKeranjangBelanjaan');
+
 

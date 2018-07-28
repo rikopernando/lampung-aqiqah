@@ -1,8 +1,13 @@
 <template>
   <div v-bind:style="{ 'background-image': 'url(' + url+'/images/background-batik.jpg' + ')' }">
   <div class="container">
-       
+
+
         <div class="md-medium-size-50 md-small-size-50 md-xsmall-hide" style="margin:30px">
+          <md-empty-state v-if="loading">
+                <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+           </md-empty-state>
+
           <div v-for="produk in produks">
               <div class="col-md-3 col-sm-6 col-xs-6" style="padding: 25px 15px">
                   <div class="md-layout-item">
@@ -21,8 +26,8 @@
                          <div class="md-toolbar-section-end harga-jual">Rp {{ produk.harga_jual | pemisahTitik }} </div>
                        </md-card-actions>
                        <md-card-actions class="card-action">
-                         <md-button class="beli-sekarang" style="background-color: #db4a24; color: white">
-                           Add To Chart <span class="bg"></span>
+                         <md-button @click="createKeranjang(produk.id)" class="beli-sekarang" style="background-color: #db4a24; color: white">
+                           Masuk Keranjang <span class="bg"></span>
                          </md-button>
                        </md-card-actions>
                      </md-card>
@@ -32,6 +37,11 @@
         </div>
 
         <div id="displayMobile" style="margin:30px">
+
+           <md-empty-state v-if="loading">
+                <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+           </md-empty-state>
+
             <div v-for="produk in produks">
               <div class="col-md-3 col-sm-6 col-xs-6" style="padding: 25px 5px">
                   <div class="md-layout-item">
@@ -50,8 +60,8 @@
                          <div class="md-toolbar-section-end harga-jual"> {{ produk.harga_jual | pemisahTitik }} </div>
                        </md-card-actions>
                        <md-card-actions class="card-action">
-                         <md-button class="md-raised beli-sekarang">
-                           Add To Chart
+                         <md-button  @click="createKeranjang(produk.id)" class="md-raised beli-sekarang">
+                           Masuk Keranjang
                          </md-button>
                        </md-card-actions>
                      </md-card>
@@ -60,6 +70,10 @@
             </div>
           </div>
 
+        <!-- Snackbar for Bank delete alert -->
+        <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarBerhasil" md-persistent>
+            <span>Produk Berhasil Masuk Keranjang !</span>
+          </md-snackbar>
   </div>
   </div>
 </template>
@@ -72,7 +86,8 @@
         url : window.location.origin + window.location.pathname,
         url_picture : window.location.origin + (window.location.pathname) + "image_produks/",
         produks:[],
-        loading: true
+        loading: true,
+        snackbarBerhasil: false,
       }
     },
     mounted() {
@@ -100,6 +115,15 @@
           console.log('catch getProdukData:', resp);
         });
       },
+      createKeranjang(id){
+        axios.post(this.url + 'keranjang-belanja/create/'+id)
+        .then(resp => {
+          this.snackbarBerhasil = true;
+        })
+        .catch(resp => {
+          console.log('Terjadi Kesalahan :', resp);
+        })
+      }
   }
 }
 
