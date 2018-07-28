@@ -9,8 +9,6 @@ import UserCreate from '../components/user/create'
 import BankIndex from '../components/bank/BankIndex'
 import BankCreate from '../components/bank/BankCreate'
 import BankEdit from '../components/bank/BankEdit'
-import DetailProduk from '../components/list-produk/detail_produk'
-import ProdukList from '../components/home/ListProduk'
 import KeranjangBelanja from '../components/keranjangbelanja/KeranjangBelanja'
 
 
@@ -39,7 +37,6 @@ const routes = [
   {
     path: '/dashboard',
     component: DashboardLayout,
-    redirect: '/',
     children: [
       {
         path: 'dashboard',
