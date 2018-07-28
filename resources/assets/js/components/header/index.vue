@@ -119,7 +119,7 @@
               <input type="hidden" name="_token" v-bind:value="token">
             </form>
 
-            <a href="#/cart" class="md-button md-theme-default md-active">
+            <a href="#/keranjang-belanja" class="md-button md-theme-default md-active">
               <div class="md-ripple">
                 <div class="label-nav-main">CART</div>
                 <md-badge md-content="0">
