@@ -96,11 +96,13 @@
 
           <div class="md-toolbar-section-end">
 
-            <a href="#" class="md-button md-theme-default md-active" v-on:click="openModal('login')" v-if="!this.$store.state.user.loggedIn">
+
+            <md-button v-on:click="openModal('login')" v-if="!this.$store.state.user.loggedIn"> 
+            
               <div class="md-ripple">
                 <div class="label-nav-main">LOGIN</div>
               </div>
-            </a>
+            </md-button>
 
             <md-menu v-else>
                 <a href="#" class="md-button md-theme-default md-active" md-menu-trigger>
