@@ -134,6 +134,43 @@ class KeranjangBelanjaController extends Controller
 
     }
 
+        public function editJumlahKeranjang($id,$operator){
+
+        if(!Session::get('session_id')){
+            $session_id    = session()->getId();
+        }else{
+            $session_id = Session::get('session_id');
+        }
+
+        if (Auth::check() == false) {
+            $keranjang_belanjaan = KeranjangBelanja::select()->where('session_id', $session_id)->where('id_produk',$id)->orderBy('id_keranjang_belanja','desc');
+
+        }else{
+            $keranjang_belanjaan = KeranjangBelanja::select()->where('id_pelanggan', Auth::user()->id)->where('id_produk',$id)->orderBy('id_keranjang_belanja','desc');  
+        }
+
+            $data_keranjang = $keranjang_belanjaan->first();
+            if ($operator == "+") {
+                       $jumlah_update = $data_keranjang->jumlah_produk + 1;
+                       $subtotal_update = $data_keranjang->harga_produk * $jumlah_update;
+                       $keranjang_belanjaan->update(['jumlah_produk' => $jumlah_update,'subtotal'=> $subtotal_update]);
+                       $respons['status'] = 1;
+            }else{
+                   $jumlah_update = $data_keranjang->jumlah_produk - 1;
+                   if ($jumlah_update == 0) {
+                       $respons['status'] = 0;
+                   }else{
+                        $subtotal_update = $data_keranjang->harga_produk * $jumlah_update;
+                        $keranjang_belanjaan->update(['jumlah_produk' => $jumlah_update,'subtotal'=> $subtotal_update]);
+                        $respons['status'] = 1;
+                   }
+
+            }
+
+            return response()->json($respons);
+    }
+
+
     /**
      * Show the form for creating a new resource.
      *
