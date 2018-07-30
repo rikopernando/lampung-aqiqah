@@ -31,6 +31,9 @@ import Notifications from '../pages/Notifications.vue'
 import Checkout from '../components/checkout'
 import OrderReceived from '../components/checkout/OrderReceived'
 
+// PROFIL
+import AkunIndex from '../components/profil'
+
 const routes = [
         {
           path : '/',
@@ -151,6 +154,15 @@ const routes = [
           path : '/keranjang-belanja',
           name : 'keranjangBelanja',
           component : KeranjangBelanja
+        },
+        {
+          path : '/akun',
+          name : 'indexAkun',
+          component : AkunIndex,
+          meta : {
+            requiresAuth : true,
+            is_admin : true
+          }
         }
 ]
 
