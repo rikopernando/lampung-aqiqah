@@ -95,10 +95,8 @@
           </div>
 
           <div class="md-toolbar-section-end">
-
-
+          
             <md-button v-on:click="openModal('login')" v-if="!this.$store.state.user.loggedIn"> 
-            
               <div class="md-ripple">
                 <div class="label-nav-main">LOGIN</div>
               </div>
@@ -188,21 +186,21 @@
             <md-list-item>
               <md-icon>store</md-icon>
               <span class="md-list-item-text">
-                <a href="#/produk-list" class="md-button md-theme-default md-active side-menu">PRODUK</a>
+                <a href="#/list-produk" class="md-button md-theme-default md-active side-menu">PRODUK</a>
               </span>
             </md-list-item>
 
             <md-list-item>
               <md-icon>add_shopping_cart</md-icon>
               <span class="md-list-item-text">
-                <a href="#/produk-list" class="md-button md-theme-default md-active side-menu">PEMESANAN</a>
+                <a href="#/pemesanan" class="md-button md-theme-default md-active side-menu">PEMESANAN</a>
               </span>
             </md-list-item>
 
             <md-list-item>
               <md-icon>local_atm</md-icon>
               <span class="md-list-item-text">
-                <a href="#/produk-list" class="md-button md-theme-default md-active side-menu">PEMBAYARAN</a>
+                <a href="#/pembayaran" class="md-button md-theme-default md-active side-menu">PEMBAYARAN</a>
               </span>
             </md-list-item>
 
