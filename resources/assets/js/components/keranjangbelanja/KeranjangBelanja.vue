@@ -8,8 +8,19 @@
 				          <li class="active">Keranjang Belanja</li>
 				        </ul>
 			 </md-card>
+
+		<md-dialog-confirm
+		      :md-active.sync="promptDeleteKeranjang"
+		      md-title="Hapus Produk?"
+		      md-content="Apakah Anda yakin ingin menghapus Produk ini?"
+		      md-confirm-text="Ya"
+		      md-cancel-text="Batal"
+		      @md-confirm="onConfirmDelete" />
+
+
+			 <md-card-content>
     		<div class="col-md-9">
-				      <md-table style="height: 400px;max-height: 400px;" v-model="keranjangbelanjas" md-sort="name" md-sort-order="asc" md-card md-fixed-header>
+				      <md-table style="height: 400px;max-height: 400px;" >
 				      <md-table-toolbar>
 				      	<h3>KERANJANG BELANJA</h3>
       				  </md-table-toolbar>
@@ -24,63 +35,64 @@
         			</tr>
     			</thead>
     			<tbody>
-            		<tr class="woocommerce-cart-form__cart-item cart_item">
+            		<tr class="woocommerce-cart-form__cart-item cart_item" v-for="keranjangbelanja in keranjangbelanjas">
+		         	 
 		         	 <td class="product-remove">
-		         	 	  <md-button class="md-icon-button md-dense md-raised" style="background-color:#da2921">
+		         	 	  <md-button @click="deleteKeranjang(keranjangbelanja.id_keranjang_belanja,keranjangbelanja.subtotal)" class="md-icon-button md-dense md-raised" style="background-color:#da2921">
         			      <md-icon style="color:#ffffff">delete</md-icon>
       					 </md-button>
 		       		 </td>
 
 		            <td class="product-thumbnail">
-		            	<a href="#"><img width="50" height="50" src="https://rumahaqiqah.org/wp-content/uploads/2016/05/menu5.png" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt="" srcset="https://rumahaqiqah.org/wp-content/uploads/2016/05/menu5.png 500w, https://rumahaqiqah.org/wp-content/uploads/2016/05/menu5-114x114.png 114w, https://rumahaqiqah.org/wp-content/uploads/2016/05/menu5-300x300.png 300w" sizes="(max-width: 300px) 100vw, 300px" /></a>
+		            	<img width="50" height="50" :src="url_picture+'/default.jpg'" v-if="keranjangbelanja.produk.foto == null" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt="" sizes="(max-width: 300px) 100vw, 300px" />
+		            	<img width="50" height="50" :src="url_picture+'/'+keranjangbelanja.produk.foto" v-else class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt="" sizes="(max-width: 300px) 100vw, 300px" />
 		       		 </td>
 
           			<td class="product-name" data-title="Produk">
-           			 	<a href="#">Paket Prima - Bandung</a>  
+           			 	<a href="#">{{ keranjangbelanja.produk.nama_produk | capitalize }}</a>  
            			</td>
 
 	            	<td class="product-price" data-title="Harga">
-	            		<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span>1.530.000</span>
+	            		<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span>{{ keranjangbelanja.harga_produk | pemisahTitik }}</span>
 	        		</td>
 
                  	<td class="product-quantity" data-title="Jumlah">
 	               	   <div class="quantity buttons_added">
-					    	<input type="button" value="-" class="minus btn btn-primary"> 
-					    	<input type="number" class="input-text qty text" step="1" min="0" max="9999" name="" value="2" title="Qty" size="4" pattern="[0-9]*" inputmode="numeric" />
-					   	 	<input type="button" value="+" class="plus btn btn-primary">
+	               	   		<button class="btn btn-sm " style="background-color:#da2921;color:white;">(-)</button>
+
+					    	<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol"></span>{{ keranjangbelanja.jumlah_produk | pemisahTitik }}</span>
+
+					    	<button class="btn btn-sm " style="background-color:#da2921;color:white;">(+)</button>
 					   	</div>
 	             	</td>
 
              		 <td class="product-subtotal" data-title="Subtotal">
-             	 		<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span>3.060.000</span>
+             	 		<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span>{{ keranjangbelanja.subtotal | pemisahTitik }}</span>
              		</td>
             	</tr>
-            	<tr>
-		            <td colspan="6" class="actions clear">
-		                <div class="continue-shopping pull-left text-left">
-						   <md-button style="align:right;" class="md-dense md-raised md-primary">Lanjut <md-icon>undo</md-icon> </md-button>
-						</div>
-
-		             	<md-button style="align:right;" class="md-dense md-raised md-primary">Refresh  <md-icon>refresh</md-icon> </md-button>
-		            </td>
-       			</tr>
             </tbody>
 		</table>
-		</md-table>
 
-				 </div>
-				 <div class="col-md-3" style="background-color:white;">
+		<div class="continue-shopping pull-left text-left">
+			<md-button :to="`/list-produk`" style="align:right;" class="md-dense md-raised md-primary">Lanjut Belanja<md-icon>undo</md-icon> </md-button>
+		</div>
+
+		</md-table>
+			</div>
+	</md-card-content>
+				 
+
+	<div class="col-md-3" style="background-color:white;">
 				 	<h3>RINCIAN PESANAN</h3>
-				 	<br>
+				 	<br><br>
 					<table class="table table-striped table-hover">
 				        <tbody>
 				          <tr>
 				          	<th>Subtotal</th>
-				            <td>Rp </span>3.060.000</span></td>       
-				          </tr>
+				            <td><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span>{{ subtotal | pemisahTitik }}</span></td></tr>
 				          <tr>
-				          	<th>Total</th>
-				            <td>Rp </span>3.060.000</span></td>    
+				          	<th>Total Akhir</th>
+				            <td><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span>{{ total_akhir | pemisahTitik }}</span></td>    
 				          </tr>
 				        </tbody>
 				      </table>
@@ -88,6 +100,10 @@
 				      <md-button style="align:right;" class="md-dense md-raised md-accent">Proses Checkout  <md-icon>send</md-icon> </md-button>
 
 				 </div>
+				 <!-- Snackbar for Bank delete alert -->
+			        <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarDeleteKeranjang" md-persistent>
+			            <span>Produk Keranjang berhasil dihapus!</span>
+			          </md-snackbar>
 			</div>
       <Footer></Footer>
   </div>
@@ -102,35 +118,75 @@
 	data : () => {
 		return {
 			url : window.location.origin + window.location.pathname,
+			url_picture : window.location.origin + (window.location.pathname) + "image_produks/",
 			filter_produk: 'populer',
-			 keranjangbelanjas: [
-				        {
-				          foto: "papa.jpg",
-				          produk: "Pepsodent",
-				          harga: 35000,
-				          jumlah: 1,
-				          subtotal:35000,
-				        },
-				        {
-				          foto: "popo.jpg",
-				          produk: "Selaras",
-				          harga: 45000,
-				          jumlah: 3,
-						  subtotal:135000,
-				        },
-				        				        {
-				          foto: "popo.jpg",
-				          produk: "Selaras",
-				          harga: 45000,
-				          jumlah: 3,
-						  subtotal:135000,
-				        }
-				  ]
+			promptDeleteKeranjang: false,
+			snackbarDeleteKeranjang: false,
+	    	keranjangIdForDelete: '',
+			keranjangbelanjas: [],
+			subtotal:0,
+			total_akhir:0
 		}
 	},
 	mounted() {
-	      console.log(this.url)
+	      this.getKeranjangBelanjaData();
+	      this.getSubtotalTbs();
 	},
+	filters: {
+	        pemisahTitik: function (value) {
+	            var angka = [value];
+	            var numberFormat = new Intl.NumberFormat('es-ES');
+	            var formatted = angka.map(numberFormat.format);
+	            return formatted.join('; ');
+	        },
+	        capitalize: function (value) {
+	          return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
+	   },
+	},
+	methods:{
+		getKeranjangBelanjaData() {
+        axios.get(this.url + 'keranjang-belanja/view')
+        .then(resp => {
+          this.keranjangbelanjas = resp.data;
+          this.loading = false;
+        })
+        .catch(resp => {
+          console.log('Gagal Proses KeranjangData:', resp);
+        });
+      },
+      getSubtotalTbs(){
+        var app =  this;
+        axios.get(app.url+'keranjang-belanja/subtotal-keranjang-belanja')
+        .then(resp => {
+         app.subtotal += resp.data.subtotal;
+         app.total_akhir += resp.data.subtotal;
+         })
+        .catch(resp => {
+          console.log('Gagal Proses SubtotalKeranjangData:',resp);
+        });
+      },
+      deleteKeranjang(id,subtotal) {
+        this.promptDeleteKeranjang = true;
+        this.keranjangIdForDelete = id;
+        this.subtotalsIdForDelete = subtotal;
+      },
+      onConfirmDelete() {
+    		axios.delete(this.url+ 'keranjang-belanja/'+ this.keranjangIdForDelete)
+    		.then(resp => {
+    			var subtotal = parseInt(this.subtotal) - parseInt(this.subtotalsIdForDelete)
+                this.subtotal = subtotal;
+                this.total_akhir = subtotal;
+    			this.keranjangIdForDelete = '';
+    			this.subtotalsIdForDelete = '';
+    			this.snackbarDeleteKeranjang = true;
+    			this.getKeranjangBelanjaData();
+    		})
+    		.catch(resp => {
+    			console.log('Terjadi Kesalahan Konfirmasi Delete :', resp);
+    		})
+    	},
+	},
+
     components : {
         Header, Footer
       }
@@ -138,7 +194,6 @@
 </script>
 
 <style scoped>
-
 .breadcrumb {
     padding: 8px 15px;
     margin-bottom: 22px;
@@ -147,12 +202,17 @@
     background-color: #ffffff;
     border-radius: 1px;
 }
-
 .h3, h3 {
     font-size: 24px;
     color: black;
 }
-
-table th{background:#da2921 !important; color:#fff !important; padding:5px !important;}
-table td{background:#FFF !important; padding:10px !important;}
+table th {
+	background:#da2921 !important; 
+	color:#fff !important; 
+	padding:5px !important;
+}
+table td {
+	background:#FFF !important;
+	padding:10px !important;
+}
 </style>
