@@ -35,4 +35,5 @@ Route::resource('produk', 'ProdukController');
 
 // Pesanan
 Route::get('pesanan/provinsi', 'PesananController@provinsi');
+Route::get('pesanan/pilih-wilayah/{id}/{type}', 'PesananController@pilih_wilayah');
 Route::resource('pesanan', 'PesananController');

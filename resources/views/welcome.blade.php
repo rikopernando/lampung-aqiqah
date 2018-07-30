@@ -15,21 +15,6 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
         <style type="text/css">
-            .spinner:before { 
-                content: ''; 
-                box-sizing: border-box; 
-                position: absolute; 
-                top: 50%; 
-                left: 50%; 
-                width: 20px; 
-                height: 20px; 
-                margin-top: -10px; 
-                margin-left: -10px; 
-                border-radius: 50%; 
-                border: 2px solid #ccc; 
-                border-top-color: #333; 
-                animation: spinner .6s linear infinite; 
-            } 
             .selectizeLoading > .selectize-input, .selectizeLoading > .selectize-input > input {
                 cursor: wait !important;
                 font-style: italic;
@@ -45,6 +30,6 @@
         <div id="app">
             <router-view></router-view>
         </div>
-        <script src="{{ asset('js/app.js?v=1.21')}}" type="text/javascript"></script>
+        <script src="{{ asset('js/app.js?v=1.24')}}" type="text/javascript"></script>
     </body>
 </html>

@@ -32,16 +32,22 @@
                     </selectize-component>
 									</div>
 									<div class="form-group">
+                    <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kabupaten"></md-progress-bar>
+                    <p class="waiting" v-if="this.$store.state.lokasi.load_kabupaten">Mohon tunggu ...</p>
                     <selectize-component :settings="select_kabupaten" v-model="pesanan.kabupaten" ref="kabupaten">
                       <option v-for="kabupaten, index in kabupaten" v-bind:value="kabupaten.id">{{ kabupaten.name }} </option> 
                     </selectize-component>
 									</div>
 									<div class="form-group">
+                    <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kecamatan"></md-progress-bar>
+                    <p class="waiting" v-if="this.$store.state.lokasi.load_kecamatan">Mohon tunggu ...</p>
                     <selectize-component :settings="select_kecamatan" v-model="pesanan.kecamatan" ref="kecamatan">
                       <option v-for="kecamatan, index in kecamatan" v-bind:value="kecamatan.id">{{ kecamatan.name }} </option> 
                     </selectize-component>
 									</div>
 									<div class="form-group">
+                    <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kelurahan"></md-progress-bar>
+                    <p class="waiting" v-if="this.$store.state.lokasi.load_kelurahan">Mohon tunggu ...</p>
                     <selectize-component :settings="select_kelurahan" v-model="pesanan.kelurahan" ref="kelurahan">
                       <option v-for="kelurahan, index in kelurahan" v-bind:value="kelurahan.id">{{ kelurahan.name }} </option> 
                     </selectize-component>
@@ -168,6 +174,7 @@
 <script>
   
   import { mapState } from 'vuex'
+  import { LOAD_DATA } from '../../store/lokasi/mutations'
   import Header from '../header'
   import Footer from '../footer/footer'
 
@@ -238,26 +245,61 @@
        },
        kelurahan () {
         return this.$store.state.lokasi.kelurahan
-       }
+       },
     }),
     watch : {
       'pesanan.provinsi' : function(){
-        this.pilihProvinsi()
+          if(this.pesanan.provinsi){
+            const wilayah = "kabupaten"
+            this.pilihWilayah(wilayah,this.pesanan.provinsi)
+          }
+      },
+      'pesanan.kabupaten' : function(){
+          if(this.pesanan.kabupaten){
+            const wilayah = "kecamatan"
+            this.pilihWilayah(wilayah,this.pesanan.kabupaten)
+          }
+      },
+      'pesanan.kecamatan' : function(){
+          if(this.pesanan.kecamatan){
+            const wilayah = "kelurahan"
+            this.pilihWilayah(wilayah,this.pesanan.kecamatan)
+          }
       }
     },
     components : {
       Header,Footer
     },
     methods : {
-      pilihProvinsi() {
+      pilihWilayah(type, id_wilayah) {
           const app = this
-          app.$refs.kabupaten.$el.selectize.settings.placeholder = "Tunggu Sebentar ..."
-          app.$refs.kabupaten.$el.selectize.updatePlaceholder()
-          app.$refs.kabupaten.$el.selectize.disable()
-          app.$store.dispatch('lokasi/LOAD_PROVINSI')
-          app.$refs.kabupaten.$el.selectize.enable()
-          app.$refs.kabupaten.$el.selectize.settings.placeholder = "Pilih Kabupaten atau Kota"
-          app.$refs.kabupaten.$el.selectize.updatePlaceholder()
+          var selectize
+            switch (type) {
+                case "kabupaten":
+                  selectize = app.$refs.kabupaten.$el.selectize
+                  selectize.clearOptions()
+                  app.$refs.kecamatan.$el.selectize.clearOptions()
+                  app.$refs.kelurahan.$el.selectize.clearOptions()
+                  app.$refs.kecamatan.$el.selectize.disable()
+                  app.$refs.kelurahan.$el.selectize.disable()
+                    break;
+                case "kecamatan":
+                  selectize = app.$refs.kecamatan.$el.selectize
+                  selectize.clearOptions()
+                  app.$refs.kelurahan.$el.selectize.clearOptions()
+                  app.$refs.kelurahan.$el.selectize.disable()
+                    break;
+                case "kelurahan":
+                  selectize = app.$refs.kelurahan.$el.selectize
+                  selectize.clearOptions()
+                    break;
+            }
+          app.$store.commit(`lokasi/${LOAD_DATA}`,type)
+          app.$store.dispatch('lokasi/LOAD_WILAYAH',{
+            type : type,
+            id : id_wilayah
+          })
+          selectize.enable()
       },
     }
   }
@@ -292,6 +334,14 @@
 
   .md-table + .md-table {
     margin-top: 16px
+  }
+
+  .md-progress-bar {
+    margin: 1px;
+  }
+  
+  .waiting {
+    font-style: italic;
   }
 
   table th{background:#da2921 !important; color:#fff !important; padding:5px !important;}
