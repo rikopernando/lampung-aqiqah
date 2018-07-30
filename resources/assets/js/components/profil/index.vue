@@ -19,7 +19,7 @@
                   </a>
 
                   <div class="md-title" style="color: #868686">
-                    Rindang Ramadhan
+                    #{{ user.id }} {{ user.name }}
                   </div>
                 </div>
 						</md-card-header>
@@ -29,26 +29,67 @@
               <div class="row">
                 <div class="col-md-3">
                   <ul class="nav nav-tabs tabs-left sideways">
-                    <li class="active"><a style="color: #db4a24" href="#dashboard-v" data-toggle="tab">DASHBOARD</a></li>
+                    <li class="active" id="dashboard"><a style="color: #db4a24" href="#dashboard-v" data-toggle="tab">DASHBOARD</a></li>
                     <li><a style="color: #db4a24" href="#order-v" data-toggle="tab">ORDER</a></li>
                     <li><a style="color: #db4a24" href="#alamat-v" data-toggle="tab">ALAMAT</a></li>
                     <li><a style="color: #db4a24" href="#akun-v" data-toggle="tab">DETAIL AKUN</a></li>
-                    <li><a style="color: #db4a24" @click="logout()" data-toggle="tab">KELUAR</a></li>
+                    <li><a style="color: #db4a24" @click="logout" data-toggle="tab">KELUAR</a></li>
                   </ul>
                 </div>
                 <div class="col-md-9">
                   <div class="tab-content">
-                    <div class="tab-pane active" id="dashboard-v">DASHBOARD</div>
+                    <div class="tab-pane active" id="dashboard-v">
+                      <p class="md-subheading">
+                        Halo <b>{{ user.name }}</b> (bukan <b>{{ user.name }}</b> ? <a @click="logout()">Keluar</a>)
+                      </p><br>
+                      <p class="subheading">
+                        Dari Dashboard akun Anda, Anda dapat melihat pesanan terbaru Anda,
+                        mengelola alamat pengiriman dan penagihan Anda
+                        dan mengedit kata sandi dan detail akun Anda.
+                      </p>
+                    </div>
                     <div class="tab-pane" id="order-v">ORDER</div>
                     <div class="tab-pane" id="alamat-v">ALAMAT</div>
-                    <div class="tab-pane" id="akun-v">DETAIL AKUN</div>
+                    <div class="tab-pane" id="akun-v">
+                      <md-field>
+                        <label>Nama Lengkap</label>
+                        <md-input v-model="user.name"></md-input>
+                        <span-error v-if="errors.name" class="label-danger">{{errors.name[0]}}</span-error>
+                      </md-field>
+                      <md-field>
+                        <label>Email</label>
+                        <md-input v-model="user.email"></md-input>
+                        <span-error v-if="errors.email" class="label-danger">{{errors.email[0]}}</span-error>
+                      </md-field>
+
+                      <div class="md-subheading" style="color: #868686">
+                        PERUBAHAN SANDI
+                      </div>
+
+                      <md-field>
+                        <label>Sandi Baru (Biarkan Kosong Jika Tidak Diubah)</label>
+                        <md-input v-model="user.password" type="password"></md-input>
+                        <span-error v-if="errors.password" class="label-danger">{{errors.password[0]}}</span-error>
+                      </md-field>
+                      <md-field>
+                        <label>Ulangi Sandi Baru</label>
+                        <md-input v-model="user.password_confirmation" type="password"></md-input>
+                      </md-field>
+
+                      <md-button @click="saveForm" class="md-dense md-raised" style="background-color: #d44723; color: white">
+                        Simpan Perubahan
+                      </md-button>
+
+                      <!-- Snackbar for success alert -->
+                      <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="notifSuccess" @md-closed="redirectTo">
+                        <span id="span-snackbar">{{notifMessage}}</span>
+                        <span><md-icon style="color: white">done_all</md-icon></span>
+                      </md-snackbar>
+
+                    </div>
                   </div>
                 </div>
               </div>
-
-              <form id="logout-form" v-bind:action="url+'logout'" method="POST" style="display: none;">
-                <input type="hidden" name="_token" v-bind:value="token">
-              </form>
 
 						</md-card-content>
 
@@ -65,27 +106,55 @@
 
   export default {
     data : () => ({
-      dataPesanan: [
-        { header: 'Nomor Order', content: '#519' },
-        { header: 'Tanggal', content: '27 Juli 2018' },
-        { header: 'Total', content: 'Rp. 6.700.000' },
-        { header: 'Metode Pembayaran', content: 'Transfer Bank' },
-        { header: 'Bank', content: 'BNI SYARIAH' },
-        { header: 'Nomor Rekening', content: '3737-8899-21' },
-        { header: 'Atas Nama', content: 'Iwan Setiawan' },
-      ],
-      dataPemesan: [
-        { judul: 'Kecamatan', isi: 'Kemiling' },
-        { judul: 'Sumber Informasi', isi: 'Website' },
-        { judul: 'Nama Peserta', isi: 'Muhammad Zamhari' },
-        { judul: 'Tempat, Tanggal Lahir', isi: 'Lampung, 13 Juli 2015' },
-        { judul: 'Jenis Kelamin', isi: 'Laki - Laki' },
-        { judul: 'Nama Ayah', isi: 'Sujarwono' },
-        { judul: 'Nama Ibu', isi: 'Siti Hanifah' },
-        { judul: 'Lahir Di (Nama RSB / Bidan)', isi: 'RS Ibu dan Anak Asih' },
-      ]
+    	url: window.location.origin + (window.location.pathname + 'user'),
+      token : $('meta[name="csrf-token"]').attr('content'),
+      errors: [],
+      user: {
+        name: '',
+        email: '',
+        password: '',
+        password_confirmation: '',
+        id: ''
+      },
+      notifMessage: '',
+      notifSuccess: false,
+
     }),
+    mounted() {
+      let app = this;
+
+      app.getProfile(app);
+    },
     methods: {
+      getProfile(app){
+        axios.get(app.url+"/detail-akun")
+        .then(resp => {
+          app.user = resp.data;
+        })
+        .catch(resp => {
+          console.log(resp);
+        });
+      },
+      saveForm() {
+        var app = this;
+
+  			axios.put(app.url+'/simpan-detail-akun', app.user)
+  			.then(function (resp) {
+          app.notifMessage = `Berhasil Mengubah Akun ${app.user.name}`
+          app.kosongkanData(app);
+          app.notifSuccess = true;
+  			})
+  			.catch(function (resp) {
+  				app.errors = resp.response.data
+  			});
+      },
+      kosongkanData(app){
+        app.user.password = '';
+        app.user.password_confirmation = '';
+      },
+      redirectTo() {
+        window.location.replace(window.location.origin+(window.location.pathname)+"#/akun")
+      },
       logout() {
         document.getElementById('logout-form').submit();
         this.$store.commit('user/LOGOUT')
@@ -158,5 +227,22 @@
     color: #fff !important;
     display: block;
     width: 0;
+  }
+
+  span-error {
+    color: white;
+    height: 20px;
+    position: absolute;
+    bottom: -22px;
+    font-size: 12px;
+    transition: .3s cubic-bezier(.4,0,.2,1);
+  }
+  .label-danger {
+    background-color: red;
+    border-radius: 12px;
+    padding: 0px 10px;
+    text-transform: uppercase;
+    font-size: 10px;
+    font-weight: bold
   }
 </style>

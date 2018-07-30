@@ -23,6 +23,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 // User
 Route::get('/user/view', 'UserController@view');
+Route::get('/user/detail-akun', 'UserController@detailAkun');
+Route::put('/user/simpan-detail-akun', 'UserController@simpanDetailAkun');
 Route::resource('user', 'UserController');
 
 //Bank
@@ -39,5 +41,3 @@ Route::resource('produk', 'ProdukController');
 
 //Keranjang Belanja
 Route::post('/keranjang-belanja/create/{id}', 'KeranjangBelanjaController@tambahProdukKeranjangBelanjaan');
-
-

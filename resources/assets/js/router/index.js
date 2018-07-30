@@ -160,8 +160,7 @@ const routes = [
           name : 'indexAkun',
           component : AkunIndex,
           meta : {
-            requiresAuth : true,
-            is_admin : true
+            requiresAuth : false,
           }
         }
 ]
