@@ -134,6 +134,29 @@ class KeranjangBelanjaController extends Controller
 
     }
 
+        public function tambahJumlahKeranjang($id){
+
+        if(!Session::get('session_id')){
+            $session_id    = session()->getId();
+        }else{
+            $session_id = Session::get('session_id');
+        }
+
+        if (Auth::check() == false) {
+            $keranjang_belanjaan = KeranjangBelanja::select()->where('session_id', $session_id)->where('id_produk',$id)->orderBy('id_keranjang_belanja','desc');
+
+        }else{
+            $keranjang_belanjaan = KeranjangBelanja::select()->where('id_pelanggan', Auth::user()->id)->where('id_produk',$id)->orderBy('id_keranjang_belanja','desc');  
+        }
+
+            $data_keranjang = $keranjang_belanjaan->first();
+            $jumlah_update = $data_keranjang->jumlah_produk + 1;
+            $subtotal_update = $data_keranjang->harga_produk * $jumlah_update;
+            $keranjang_belanjaan->update(['jumlah_produk' => $data_keranjang->jumlah_produk + 1,'subtotal'=> $subtotal_update]);
+
+            return response()->json($keranjang_belanjaan);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

@@ -28,7 +28,8 @@
 			<table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents" cellspacing="0">
    				 <thead>
        				<tr>
-            			<th class="product-name" colspan="3">Produk</th>
+       					<th class="product-name">Aksi</th>
+            			<th class="product-name" colspan="2">Produk</th>
             			<th class="product-price">Harga</th>
             			<th class="product-quantity">Jumlah</th>
             			<th class="product-subtotal">Subtotal</th>
@@ -58,11 +59,11 @@
 
                  	<td class="product-quantity" data-title="Jumlah">
 	               	   <div class="quantity buttons_added">
-	               	   		<button class="btn btn-sm " style="background-color:#da2921;color:white;">(-)</button>
+	               	   		<button class="btn btn-sm" @click="kurangJumlahKeranjang(keranjangbelanja.id_produk,keranjangbelanja.harga_produk)" style="background-color:#da2921;color:white;">(-)</button>
 
 					    	<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol"></span>{{ keranjangbelanja.jumlah_produk | pemisahTitik }}</span>
 
-					    	<button class="btn btn-sm " style="background-color:#da2921;color:white;">(+)</button>
+					    	<button class="btn btn-sm" @click="tambahJumlahKeranjang(keranjangbelanja.id_produk,keranjangbelanja.harga_produk)" style="background-color:#da2921;color:white;">(+)</button>
 					   	</div>
 	             	</td>
 
@@ -185,6 +186,18 @@
     			console.log('Terjadi Kesalahan Konfirmasi Delete :', resp);
     		})
     	},
+       tambahJumlahKeranjang(id,harga_produk){
+        axios.post(this.url + 'keranjang-belanja/tambah-jumlah-keranjang/'+id)
+        .then(resp => {
+              	var subtotalupdate = parseInt(this.subtotal) + parseInt(harga_produk)
+                this.subtotal = subtotalupdate;
+                this.total_akhir = subtotalupdate;
+    			this.getKeranjangBelanjaData();
+        })
+        .catch(resp => {
+          console.log('Terjadi Kesalahan :', resp);
+        })
+      }
 	},
 
     components : {
