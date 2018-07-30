@@ -95,8 +95,8 @@
           </div>
 
           <div class="md-toolbar-section-end">
-
-            <md-button v-on:click="openModal('login')" v-if="!this.$store.state.user.loggedIn">
+          
+            <md-button v-on:click="openModal('login')" v-if="!this.$store.state.user.loggedIn"> 
               <div class="md-ripple">
                 <div class="label-nav-main">LOGIN</div>
               </div>
@@ -119,10 +119,10 @@
               <input type="hidden" name="_token" v-bind:value="token">
             </form>
 
-            <a href="#/cart" class="md-button md-theme-default md-active">
+            <a href="#/keranjang-belanja" class="md-button md-theme-default md-active">
               <div class="md-ripple">
                 <div class="label-nav-main">CART</div>
-                <md-badge md-content="0">
+                <md-badge v-bind:md-content="daftarKeranjang">
                   <i class="fa fa-shopping-basket icon-shop"></i>
                 </md-badge>
               </div>
@@ -156,8 +156,6 @@
                   <i class="fa fa-user icon-shop-mobile"></i>
               </a>
             </md-button>
-          </div>
-          <div class="md-toolbar-section-end">
             <md-button class="md-icon-button">
               <a href="#/cart">
                 <md-badge md-content="0">
@@ -250,6 +248,7 @@
 				passwordSubmit: 'Reset Password',
 				loginSubmit: 'Login',
         alertSnackbar : '',
+        daftarKeranjang:0,
         register : {
             name: '',
             email: '',

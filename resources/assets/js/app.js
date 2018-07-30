@@ -6,6 +6,18 @@ import routes from './router'
 import store from './store'
 import VueRouter from 'vue-router'
 import VueMaterial from 'vue-material'
+import Sidebar from './components/dashboard/index'
+
+// Plugins
+import GlobalComponents from './globalComponents'
+import GlobalDirectives from './globalDirectives'
+import Notifications from './components/NotificationPlugin'
+
+// MaterialDashboard plugin
+import MaterialDashboard from './material-dashboard'
+
+import Chartist from 'chartist'
+
 
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css' // This line here
@@ -17,8 +29,19 @@ window.$ = window.jQuery = require('jquery')
 Vue.component('selectize-component', require('vue2-selectize'))
 Vue.use(VueMaterial)
 
+Vue.use(MaterialDashboard)
+Vue.use(GlobalComponents)
+Vue.use(GlobalDirectives)
+Vue.use(Notifications)
 
-const router = new VueRouter({ routes })
+// global library setup
+Object.defineProperty(Vue.prototype, '$Chartist', {
+  get () {
+    return this.$root.Chartist
+  }
+})
+
+const router = new VueRouter({ routes, linkExactActiveClass: 'nav-item active' })
 
 router.beforeEach((to, from, next) => {
 	const loggedIn = store.state.user.loggedIn
@@ -41,5 +64,9 @@ router.beforeEach((to, from, next) => {
 })
 
 const app = new Vue({
-    router,store
+    router,
+    store,
+    data: {
+	    Chartist: Chartist
+	}
 }).$mount('#app')

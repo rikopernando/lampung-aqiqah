@@ -20,7 +20,10 @@
     "vueperslides": "^1.5.0"
   },
   "dependencies": {
+    "chartist": "^0.11.0",
+    "es6-promise": "^4.2.4",
     "laravel-vue-pagination": "^1.2.0",
+    "vue-clickaway": "^2.2.2",
     "vue-material": "^1.0.0-beta-10.2",
     "vue-router": "^3.0.1",
     "vue2-selectize": "^1.1.6",

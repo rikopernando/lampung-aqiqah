@@ -1,71 +1,79 @@
 <template>
   <div v-bind:style="{ 'background-image': 'url(' + url+'/images/background-batik.jpg' + ')' }">
-  <div class="container ">
-    <div class="md-layout ">
-        <div class="md-layout-item md-medium-size-25 md-small-size-50 md-xsmall-size-50">
-           <md-card md-with-hover  class="card-hover">
-                    <md-card-header class="card-header">
-                            <div class="md-title">Paket Superman</div>
-                            </md-card-header>
+  <div class="container">
 
-                            <md-card-media class="card-media">
-                                <img :src="url+'/images/paketExample2.png'" class="image">
-                            </md-card-media>
 
-                            <md-card-actions class="card-action">
-                          <md-button class="md-raised md-accent">Beli Sekarang</md-button>
-                    </md-card-actions>
-            </md-card>
+        <div class="md-medium-size-50 md-small-size-50 md-xsmall-hide" style="margin:30px">
+          <md-empty-state v-if="loading">
+                <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+           </md-empty-state>
+
+          <div v-for="produk in produks">
+              <div class="col-md-3 col-sm-6 col-xs-6" style="padding: 25px 15px">
+                  <div class="md-layout-item">
+                     <md-card md-with-hover>
+                       <md-card-media class="card-image">
+                          <md-card md-with-hover style="margin-top: -50px!important">
+                            <img :src="url_picture+'/default.jpg'" class="image" v-if="produk.foto == null">
+                            <img :src="url_picture+'/'+produk.foto" class="image" v-else>
+                          </md-card>
+                       </md-card-media>
+                       <p class="flexFont">
+                         <center> {{ produk.nama_produk | capitalize }} </center>
+                       </p>
+                       <md-card-actions class="card-action">
+                         <div class="md-toolbar-section-start harga-coret">Rp {{ produk.harga_coret | pemisahTitik }} </div>
+                         <div class="md-toolbar-section-end harga-jual">Rp {{ produk.harga_jual | pemisahTitik }} </div>
+                       </md-card-actions>
+                       <md-card-actions class="card-action">
+                         <md-button @click="createKeranjang(produk.id)" class="beli-sekarang" style="background-color: #db4a24; color: white">
+                           Masuk Keranjang <span class="bg"></span>
+                         </md-button>
+                       </md-card-actions>
+                     </md-card>
+                  </div>
+              </div>
+            </div>
         </div>
 
-        <div class="md-layout-item md-medium-size-25 md-small-size-50 md-xsmall-size-50">
-              <md-card md-with-hover  class="card-hover">
-                      <md-card-header class="card-header">
-                                <div class="md-title">Paket Superman</div>
-                            </md-card-header>
+        <div id="displayMobile" style="margin:30px">
 
-                            <md-card-media class="card-media">
-                                <img :src="url+'/images/paketExample.png'" class="image">
-                            </md-card-media>
+           <md-empty-state v-if="loading">
+                <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+           </md-empty-state>
 
-                            <md-card-actions class="card-action">
-                         <md-button class="md-raised md-accent">Beli Sekarang</md-button>
-                      </md-card-actions>
-               </md-card>
-        </div>
+            <div v-for="produk in produks">
+              <div class="col-md-3 col-sm-6 col-xs-6" style="padding: 25px 5px">
+                  <div class="md-layout-item">
+                     <md-card md-with-hover>
+                       <md-card-media class="card-image">
+                          <md-card md-with-hover style="margin-top: -50px!important">
+                            <img :src="url_picture+'/default.jpg'" class="image" v-if="produk.foto == null">
+                            <img :src="url_picture+'/'+produk.foto" class="image" v-else>
+                          </md-card>
+                       </md-card-media>
+                       <p class="flexFont">
+                         <center> {{ produk.nama_produk | capitalize }} </center>
+                       </p>
+                       <md-card-actions class="card-action">
+                         <div class="md-toolbar-section-start harga-coret"> {{ produk.harga_coret | pemisahTitik }} </div>
+                         <div class="md-toolbar-section-end harga-jual"> {{ produk.harga_jual | pemisahTitik }} </div>
+                       </md-card-actions>
+                       <md-card-actions class="card-action">
+                         <md-button  @click="createKeranjang(produk.id)" class="md-raised beli-sekarang">
+                           Masuk Keranjang
+                         </md-button>
+                       </md-card-actions>
+                     </md-card>
+                  </div>
+              </div>
+            </div>
+          </div>
 
-        <div class="md-layout-item md-medium-size-25 md-small-size-50 md-xsmall-size-50">
-                 <md-card md-with-hover  class="card-hover">
-                            <md-card-header class="card-header">
-                                <div class="md-title">Paket Spesial</div>
-                            </md-card-header>
-
-                            <md-card-media class="card-media">
-                                <img :src="url+'/images/paketSpesial.png'" class="image">
-                            </md-card-media>
-
-                            <md-card-actions class="card-action">
-                      <md-button class="md-raised md-accent">Beli Sekarang</md-button>
-                            </md-card-actions>
-                  </md-card>
-        </div>
-
-        <div class="md-layout-item md-medium-size-25 md-small-size-50 md-xsmall-size-50">
-                 <md-card md-with-hover  class="card-hover">
-                            <md-card-header class="card-header">
-                                <div class="md-title">Paket Spesial</div>
-                            </md-card-header>
-
-                            <md-card-media class="card-media">
-                                <img :src="url+'/images/paketSpesial.png'" class="image">
-                            </md-card-media>
-
-                            <md-card-actions class="card-action">
-                      <md-button class="md-raised md-accent">Beli Sekarang</md-button>
-                            </md-card-actions>
-                  </md-card>
-        </div>
-    </div>
+        <!-- Snackbar for Bank delete alert -->
+        <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarBerhasil" md-persistent>
+            <span>Produk Berhasil Masuk Keranjang !</span>
+          </md-snackbar>
   </div>
   </div>
 </template>
@@ -75,54 +83,135 @@
     name: 'ElevationExample',
     data : () => {
       return {
-        url : window.location.origin + window.location.pathname
+        url : window.location.origin + window.location.pathname,
+        url_picture : window.location.origin + (window.location.pathname) + "image_produks/",
+        produks:[],
+        loading: true,
+        snackbarBerhasil: false,
       }
     },
     mounted() {
-      console.log(this.url)
-    }
+      this.getProdukTerbaruData();
+    },
+    filters: {
+        pemisahTitik: function (value) {
+            var angka = [value];
+            var numberFormat = new Intl.NumberFormat('es-ES');
+            var formatted = angka.map(numberFormat.format);
+            return formatted.join('; ');
+        },
+        capitalize: function (value) {
+          return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
+   },
+  },
+  methods:{
+        getProdukTerbaruData() {
+        axios.get(this.url + 'produk/view-produk-terbaru')
+        .then(resp => {
+          this.produks = resp.data;
+          this.loading = false;
+        })
+        .catch(resp => {
+          console.log('catch getProdukData:', resp);
+        });
+      },
+      createKeranjang(id){
+        axios.post(this.url + 'keranjang-belanja/create/'+id)
+        .then(resp => {
+          this.snackbarBerhasil = true;
+        })
+        .catch(resp => {
+          console.log('Terjadi Kesalahan :', resp);
+        })
+      }
   }
+}
+
+
+  function flexFont () {
+    var divs = document.getElementsByClassName("flexFont");
+      for(var i = 0; i < divs.length; i++) {
+        var relFontsize = divs[i].offsetWidth*0.08;
+        divs[i].style.fontSize = relFontsize+'px';
+      }
+  };
+
+  window.onload = function(event) {
+      flexFont();
+  };
+  window.onresize = function(event) {
+      flexFont();
+  };
 </script>
 
-<style lang="scss" scoped>
 
+<style scoped>
   .md-card {
     border-radius: 10px;
-    margin: 4px;
     flex-wrap: wrap;
   }
-
-  .image {
+  .flexFont {
+    height:3em;
+    padding:3%;
+    margin: 5px;
+    font-family: Helvetica,Arial,sans-serif;
+  }
+  .card-image {
     padding: 10px;
+    position: relative;
   }
-  
-  .card-action {
-    padding : 10px;
-  }
-  
-  .card-row {
-    display: flex;
-    flex-wrap: wrap;
-    margin: auto;
+  img {
+    border-radius: 10px;
   }
 
-  .card-media {
-    padding: 1px;
-  }
-
-  .card-hover {
-    padding : 4px;
-  }
-
-  /*MOBILE VERSION*/
+  /*MOBILE CSS*/
   @media (max-width: 600px) {
-      .md-title  { font-size: 15px; }
-      .md-button  { font-size: 10px;}
+    .md-xsmall-hide { display: none; }
+    #displayMobile { display: block; }
+    .container {
+      padding: 0px !important;
     }
-    @media (min-width: 600px) {
-      .md-title  { font-size: 24px; }
-      .md-button  { font-size: 14px;}
+    .beli-sekarang {
+      background-color: rgb(219, 74, 36) !important;
+      color: white !important;
+      width: 100%;
+      height: 25px;
+      border-radius: 5px;
+      font-size: 12px;
     }
+    .harga-coret {
+      text-decoration: line-through;
+      color: #636363;
+      font-size: 12px;
+    }
+    .harga-jual {
+      color: #FF3100;
+      font-size: 12px;
+    }
+  }
 
+  /* DEKSTOP CSS */
+  @media (min-width: 600px) {
+    #displayMobile { display: none; }
+
+    .beli-sekarang {
+      background-color: rgb(219, 74, 36);
+      color: white;
+      width: 100%;
+      height: 35px;
+      border-radius: 5px;
+      font-size: 15px;
+    }
+    .harga-coret {
+      text-decoration: line-through;
+      color: #636363;
+      font-size: 15px;
+    }
+    .harga-jual {
+      color: #FF3100;
+      font-size: 15px;
+    }
+  }
 </style>
+
 
