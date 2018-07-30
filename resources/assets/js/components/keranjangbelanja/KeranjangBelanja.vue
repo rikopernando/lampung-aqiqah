@@ -17,6 +17,11 @@
 		      md-cancel-text="Batal"
 		      @md-confirm="onConfirmDelete" />
 
+    	<md-dialog-alert
+      			:md-active.sync="promptGagalEdit"
+      			md-title="Gagal !!"
+      			md-content="Produk tidak bisa dengan jumlah 0 ,Silakan hapus produk " />
+
 		    <div class="row">
 		    <div class="col-md-1"></div>
     		<div class="col-md-7">
@@ -59,11 +64,11 @@
 
 				                 	<td class="product-quantity" data-title="Jumlah" style="text-align:right">
 					               	   <div class="quantity buttons_added">
-					               	   		<button class="btn btn-sm" @click="kurangJumlahKeranjang(keranjangbelanja.id_produk,keranjangbelanja.harga_produk)" style="background-color:#da2921;color:white;">( - )</button>
+					               	   		<button class="btn btn-sm" @click="kurangJumlahKeranjang(keranjangbelanja.id_produk,keranjangbelanja.harga_produk,keranjangbelanja.jumlah_produk)" style="background-color:#da2921;color:white;">( - )</button>
 
 									    	<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol"></span>{{ keranjangbelanja.jumlah_produk | pemisahTitik }}</span>
 
-									    	<button class="btn btn-sm" @click="tambahJumlahKeranjang(keranjangbelanja.id_produk,keranjangbelanja.harga_produk)" style="background-color:#da2921;color:white;">( + )</button>
+									    	<button class="btn btn-sm" @click="tambahJumlahKeranjang(keranjangbelanja.id_produk,keranjangbelanja.harga_produk,keranjangbelanja.jumlah_produk)" style="background-color:#da2921;color:white;">( + )</button>
 									   	</div>
 					             	</td>
 
@@ -116,6 +121,7 @@
 			url_picture : window.location.origin + (window.location.pathname) + "image_produks/",
 			filter_produk: 'populer',
 			promptDeleteKeranjang: false,
+			promptGagalEdit:false,
 			snackbarDeleteKeranjang: false,
 	    	keranjangIdForDelete: '',
 			keranjangbelanjas: [],
@@ -182,12 +188,31 @@
     		})
     	},
        tambahJumlahKeranjang(id,harga_produk){
-        axios.post(this.url + 'keranjang-belanja/tambah-jumlah-keranjang/'+id)
+       	var operator = "+";
+        axios.post(this.url + 'keranjang-belanja/edit-jumlah-keranjang/'+id+'/'+operator)
         .then(resp => {
               	var subtotalupdate = parseInt(this.subtotal) + parseInt(harga_produk)
                 this.subtotal = subtotalupdate;
                 this.total_akhir = subtotalupdate;
     			this.getKeranjangBelanjaData();
+        })
+        .catch(resp => {
+          console.log('Terjadi Kesalahan :', resp);
+        })
+      },
+      kurangJumlahKeranjang(id,harga_produk){
+      	var operator = "-";
+        axios.post(this.url + 'keranjang-belanja/edit-jumlah-keranjang/'+id+'/'+operator)
+        .then(resp => {
+        	if (resp.data.status == 0) {
+        	   this.promptGagalEdit = true;
+        	}else{
+              	var subtotalupdate = parseInt(this.subtotal) - parseInt(harga_produk)
+                this.subtotal = subtotalupdate;
+                this.total_akhir = subtotalupdate;
+    			this.getKeranjangBelanjaData();        		
+        	}
+
         })
         .catch(resp => {
           console.log('Terjadi Kesalahan :', resp);

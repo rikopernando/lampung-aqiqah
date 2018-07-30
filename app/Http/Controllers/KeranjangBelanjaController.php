@@ -134,7 +134,7 @@ class KeranjangBelanjaController extends Controller
 
     }
 
-        public function tambahJumlahKeranjang($id){
+        public function editJumlahKeranjang($id,$operator){
 
         if(!Session::get('session_id')){
             $session_id    = session()->getId();
@@ -150,12 +150,26 @@ class KeranjangBelanjaController extends Controller
         }
 
             $data_keranjang = $keranjang_belanjaan->first();
-            $jumlah_update = $data_keranjang->jumlah_produk + 1;
-            $subtotal_update = $data_keranjang->harga_produk * $jumlah_update;
-            $keranjang_belanjaan->update(['jumlah_produk' => $data_keranjang->jumlah_produk + 1,'subtotal'=> $subtotal_update]);
+            if ($operator == "+") {
+                       $jumlah_update = $data_keranjang->jumlah_produk + 1;
+                       $subtotal_update = $data_keranjang->harga_produk * $jumlah_update;
+                       $keranjang_belanjaan->update(['jumlah_produk' => $jumlah_update,'subtotal'=> $subtotal_update]);
+                       $respons['status'] = 1;
+            }else{
+                   $jumlah_update = $data_keranjang->jumlah_produk - 1;
+                   if ($jumlah_update == 0) {
+                       $respons['status'] = 0;
+                   }else{
+                        $subtotal_update = $data_keranjang->harga_produk * $jumlah_update;
+                        $keranjang_belanjaan->update(['jumlah_produk' => $jumlah_update,'subtotal'=> $subtotal_update]);
+                        $respons['status'] = 1;
+                   }
 
-            return response()->json($keranjang_belanjaan);
+            }
+
+            return response()->json($respons);
     }
+
 
     /**
      * Show the form for creating a new resource.
