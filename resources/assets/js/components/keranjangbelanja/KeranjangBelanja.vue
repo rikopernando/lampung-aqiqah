@@ -32,8 +32,12 @@
 				        			</tr>
 				    			</thead>
 				    			<tbody>
-				            		<tr class="woocommerce-cart-form__cart-item cart_item" v-for="keranjangbelanja in keranjangbelanjas">
-						         	 
+				    				<md-empty-state v-if="loading">
+							                <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+							           </md-empty-state>
+
+				            		<tr class="woocommerce-cart-form__cart-item cart_item scrollable-menu" v-for="keranjangbelanja in keranjangbelanjas">
+
 						         	 <td class="product-remove">
 						         	 	  <md-button @click="deleteKeranjang(keranjangbelanja.id_keranjang_belanja,keranjangbelanja.subtotal)" class="md-icon-button md-dense md-raised" style="background-color:#da2921">
 				        			      <md-icon style="color:#ffffff">delete</md-icon>
@@ -115,6 +119,7 @@
 			snackbarDeleteKeranjang: false,
 	    	keranjangIdForDelete: '',
 			keranjangbelanjas: [],
+			loading: true,
 			subtotal:0,
 			total_akhir:0
 		}
@@ -217,5 +222,9 @@ table th {
 table td {
 	background:#FFF !important;
 	padding:8px !important;
+}
+.scrollable-menu {
+    max-height: 15px;
+    overflow-x: hidden;
 }
 </style>
