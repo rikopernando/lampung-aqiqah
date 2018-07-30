@@ -30,6 +30,7 @@ class KeranjangBelanjaController extends Controller
         }
 
         $harga_produk = Produk::select()->where('id', $id)->first();
+        $subtotal = $harga_produk->harga_jual * 1;
 
         if (Auth::check() == false) {
             $datakeranjang_belanjaan = KeranjangBelanja::where('session_id', $session_id)->Where('id_produk', $id); 
@@ -41,11 +42,13 @@ class KeranjangBelanjaController extends Controller
 
             if ($datakeranjang_belanjaan->count() > 0) {
                 $total_tambah_produk = 0;
-                $datakeranjang_belanjaan->update(['jumlah_produk' => $jumlah_produk->jumlah_produk + 1]);
+                $jumlah_update = $jumlah_produk->jumlah_produk + 1;
+                $subtotal_update = $subtotal * $jumlah_update;
+                $datakeranjang_belanjaan->update(['jumlah_produk' => $jumlah_produk->jumlah_produk + 1,'subtotal'=> $subtotal_update]);
 
             } else {
                 $total_tambah_produk = 1;
-                $produk = KeranjangBelanja::create(['id_produk' => $id, 'session_id' => $session_id, 'jumlah_produk' => 1,'harga_produk'=>$harga_produk->harga_jual]);
+                $produk = KeranjangBelanja::create(['id_produk' => $id, 'session_id' => $session_id, 'jumlah_produk' => 1,'harga_produk'=>$harga_produk->harga_jual,'subtotal'=> $subtotal]);
             }
 
         }else{
@@ -58,18 +61,78 @@ class KeranjangBelanjaController extends Controller
             }
 
             if ($datakeranjang_belanjaan->count() > 0) {
-             $total_tambah_produk = 0;
-             $datakeranjang_belanjaan->update(['jumlah_produk' => $jumlah_produk->jumlah_produk + 1]);
-
+                $total_tambah_produk = 0;
+                $jumlah_update = $jumlah_produk->jumlah_produk + 1;
+                $subtotal_update = $subtotal * $jumlah_update;
+                $datakeranjang_belanjaan->update(['jumlah_produk' => $jumlah_produk->jumlah_produk + 1,'subtotal'=> $subtotal_update]);
          } else {
              $total_tambah_produk = 1;
-             $produk = KeranjangBelanja::create(['id_produk' => $id, 'id_pelanggan' => $pelanggan, 'jumlah_produk' => 1,'harga_produk'=>$harga_produk->harga_jual]);
+             $produk = KeranjangBelanja::create(['id_produk' => $id, 'id_pelanggan' => $pelanggan, 'jumlah_produk' => 1,'harga_produk'=>$harga_produk->harga_jual,'subtotal'=> $subtotal]);
          }
      }
 
      return  $total_tambah_produk;
 
  }
+
+
+        public function cekSubtotalKeranjangBelanja()
+    {
+        if(!Session::get('session_id')){
+            $session_id    = session()->getId();
+        }else{
+            $session_id = Session::get('session_id');
+        }
+
+        if (Auth::check() == false) {
+            $datasubtotal  = KeranjangBelanja::select([DB::raw('SUM(subtotal) as subtotal')])->where('session_id',$session_id)->first();
+                
+                if ($datasubtotal->subtotal == null || $datasubtotal->subtotal == '') {
+                   $subtotals = 0;
+                }else{
+                   $subtotals = $datasubtotal->subtotal;
+                }
+
+            $respons['subtotal'] = $subtotals;
+        }
+        else{
+             $pelanggan = Auth::user()->id;
+
+             $datasubtotal  = KeranjangBelanja::select([DB::raw('SUM(subtotal) as subtotal')])->where('id_pelanggan',$pelanggan)->first();
+                
+                if ($datasubtotal->subtotal == null || $datasubtotal->subtotal == '') {
+                   $subtotals = 0;
+                }else{
+                   $subtotals = $datasubtotal->subtotal;
+                }
+
+            $respons['subtotal'] = $subtotals;
+        }
+
+
+        return response()->json($respons);
+    }
+
+        public function view()
+    {
+        if(!Session::get('session_id')){
+            $session_id    = session()->getId();
+        }else{
+            $session_id = Session::get('session_id');
+        }
+
+        if (Auth::check() == false) {
+            $keranjang_belanjaan = KeranjangBelanja::with(['produk'])->where('session_id', $session_id)->orderBy('id_keranjang_belanja','desc')->get();
+
+        }else{
+            $keranjang_belanjaan = KeranjangBelanja::with(['produk'])->where('id_pelanggan', Auth::user()->id)->orderBy('id_keranjang_belanja','desc')->get();  
+   
+        }
+
+
+        return response()->json($keranjang_belanjaan);
+
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -134,6 +197,7 @@ class KeranjangBelanjaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $KeranjangBelanja = KeranjangBelanja::destroy($id);
+        return response(200);
     }
 }
