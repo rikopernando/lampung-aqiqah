@@ -29,27 +29,26 @@
 						<md-card-content>
 
               <div class="row">
-                <div class="md-medium-size-50 md-small-size-50 md-xsmall-hide">
-                  <div class="col-md-3">
+                <div class="col-md-3" style="padding: 0px;">
+                  <div class="md-medium-size-50 md-small-size-50 md-xsmall-hide">
                     <ul class="nav nav-tabs tabs-left">
-                      <li class="active" id="dashboard"><a style="color: #db4a24" href="#dashboard-v" data-toggle="tab">DASHBOARD</a></li>
-                      <li><a style="color: #db4a24" href="#order-v" data-toggle="tab">ORDER</a></li>
-                      <li><a style="color: #db4a24" href="#alamat-v" data-toggle="tab">ALAMAT</a></li>
-                      <li><a style="color: #db4a24" href="#akun-v" data-toggle="tab">DETAIL AKUN</a></li>
-                      <li><a style="color: #db4a24" @click="logout" data-toggle="tab">KELUAR</a></li>
+                      <li class="tab-profil active" id="dashboard"><a style="color: #db4a24" href="#dashboard-v" data-toggle="tab">DASHBOARD</a></li>
+                      <li class="tab-profil"><a style="color: #db4a24" href="#order-v" data-toggle="tab">ORDER</a></li>
+                      <li class="tab-profil"><a style="color: #db4a24" href="#alamat-v" data-toggle="tab">ALAMAT</a></li>
+                      <li class="tab-profil"><a style="color: #db4a24" href="#akun-v" data-toggle="tab">DETAIL AKUN</a></li>
+                      <li class="tab-profil"><a style="color: #db4a24" @click="logout" data-toggle="tab">KELUAR</a></li>
                     </ul>
                   </div>
+
+                    <div id="displayTabs" style="padding: 0px !important">
+                      <ul class="nav nav-tabs tabs-mobile">
+                        <li class="active" id="dashboard"><a style="color: #db4a24" href="#dashboard-v" data-toggle="tab">DASHBOARD</a></li>
+                        <li><a style="color: #db4a24" href="#order-v" data-toggle="tab">ORDER</a></li>
+                        <li><a style="color: #db4a24" href="#alamat-v" data-toggle="tab">ALAMAT</a></li>
+                        <li><a style="color: #db4a24" href="#akun-v" data-toggle="tab">AKUN</a></li>
+                      </ul>
+                    </div><br>
                 </div>
-
-                <div class="col-md-12" id="displayTabs" style="padding: 0px !important">
-                  <ul class="nav nav-tabs tabs-mobile">
-                    <li class="active" id="dashboard"><a style="color: #db4a24" href="#dashboard-v" data-toggle="tab">DASHBOARD</a></li>
-                    <li><a style="color: #db4a24" href="#order-v" data-toggle="tab">ORDER</a></li>
-                    <li><a style="color: #db4a24" href="#alamat-v" data-toggle="tab">ALAMAT</a></li>
-                    <li><a style="color: #db4a24" href="#akun-v" data-toggle="tab">AKUN</a></li>
-                  </ul>
-                </div><br>
-
                 <div class="col-md-9">
                   <div class="tab-content">
                     <div class="tab-pane active" id="dashboard-v">
@@ -64,7 +63,7 @@
 
                       <!-- DASHBOARD CARD -->
                       <div class="row" id="portfolio">
-                        <div class="col-md-4 col-sm-4 col-xs-6">
+                        <div class="col-md-4 col-xs-6">
                           <div class="card border-card" id="orderCard">
                             <div class="card-title">ORDER</div>
                             <div class="card-icon"><i class="material-icons">shopping_basket</i></div>
@@ -76,7 +75,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-4 col-sm-4 col-xs-6">
+                        <div class="col-md-4 col-xs-6">
                           <div class="card border-card" id="alamatCard">
                             <div class="card-title">ALAMAT</div>
                             <div class="card-icon"><i class="material-icons">location_on</i></div>
@@ -88,7 +87,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-4 col-sm-4 col-xs-6">
+                        <div class="col-md-4 col-xs-6">
                           <div class="card border-card" id="akunCard">
                             <div class="card-title">AKUN</div>
                             <div class="card-icon"><i class="material-icons">account_circle</i></div>
@@ -219,5 +218,4 @@
       Header,Footer
     },
   }
-
 </script>

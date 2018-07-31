@@ -10,6 +10,13 @@
   border-radius: 4px;
 }
 
+.show {
+  display: none !important;
+}
+
+.active.show {
+  display: block !important;
+}
 
 /*MOBILE VERSION*/
 @media (max-width: 600px) {
@@ -18,7 +25,7 @@
 
   .image--cover {
     width: 50px;
-    height: 85px;
+    height: 50px !important;
     border-radius: 50%;
     margin: 5px;
 
@@ -79,14 +86,25 @@
   hr {
     margin: 0px !important;
   }
+
+  .nav {
+    flex-wrap: nowrap !important;
+  }
+
+  .col-xs-6 {
+    width: 50% !important;
+  }
 }
 
 @media (min-width: 600px) {
   #displayTabs { display: none; }
 
+  .nav {
+    display: block !important;
+  }
   .image--cover {
     width: 85px;
-    height: 85px;
+    height: 85px !important;
     border-radius: 50%;
     margin: 5px;
 
@@ -121,7 +139,8 @@
   border: 1px solid transparent;
 }
 
-.tabs-left>li.active>a::after{content: "";
+.tabs-left>li.active>a::after{
+  content: "";
   position: absolute;
   top: 10px;
   right: -10px;
@@ -150,7 +169,6 @@ span-error {
   font-weight: bold
 }
 
-// CARD DASHBOARD
 #portfolio {
   background: #fafafa;
   padding: 8px 0;
@@ -236,4 +254,5 @@ span-error {
 }
 .card-hint a {
   font-size: 15px;
+  background-color: inherit;
 }
