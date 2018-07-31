@@ -36,10 +36,10 @@
 				            			<th class="product-subtotal">Subtotal</th>
 				        			</tr>
 				    			</thead>
-				    			<tbody>
+				    			<tbody v-if="keranjangbelanjas.length"  class="data-ada">
 				    				<md-empty-state v-if="loading">
 							                <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
-							           </md-empty-state>
+							        </md-empty-state>
 
 				            		<tr class="woocommerce-cart-form__cart-item cart_item scrollable-menu" v-for="keranjangbelanja in keranjangbelanjas">
 
@@ -59,24 +59,28 @@
 				           			</td>
 
 					            	<td class="product-price" data-title="Harga" style="text-align:right">
-					            		<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span>{{ keranjangbelanja.harga_produk | pemisahTitik }}</span>
+					            		<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span><b>{{ keranjangbelanja.harga_produk | pemisahTitik }}</b></span>
 					        		</td>
 
 				                 	<td class="product-quantity" data-title="Jumlah" style="text-align:right">
 					               	   <div class="quantity buttons_added">
 					               	   		<button class="btn btn-sm" @click="kurangJumlahKeranjang(keranjangbelanja.id_produk,keranjangbelanja.harga_produk,keranjangbelanja.jumlah_produk)" style="background-color:#da2921;color:white;">( - )</button>
 
-									    	<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol"></span>{{ keranjangbelanja.jumlah_produk | pemisahTitik }}</span>
+									    	<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol"></span><b>{{ keranjangbelanja.jumlah_produk | pemisahTitik }}</b></span>
 
 									    	<button class="btn btn-sm" @click="tambahJumlahKeranjang(keranjangbelanja.id_produk,keranjangbelanja.harga_produk,keranjangbelanja.jumlah_produk)" style="background-color:#da2921;color:white;">( + )</button>
 									   	</div>
 					             	</td>
 
 				             		 <td class="product-subtotal" data-title="Subtotal" style="text-align:right">
-				             	 		<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span>{{ keranjangbelanja.subtotal | pemisahTitik }}</span>
+				             	 		<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span><b>{{ keranjangbelanja.subtotal | pemisahTitik }}</b></span>
 				             		</td>
 				            	</tr>
 				            </tbody>
+
+				            <tbody class="data-tidak-ada" v-else>
+                                   <tr><td colspan="6" class="text-center">Tidak Ada Data Keranjang Belanja</td></tr>
+                            </tbody>
 						</table>
 
 						<md-button :to="`/list-produk`" style="align:right;" class="md-dense md-raised md-primary">Lanjut Belanja<md-icon>undo</md-icon> </md-button>
@@ -88,15 +92,15 @@
 				        <tbody>
 				          <tr>
 				          	<th>Subtotal</th>
-				            <td style="text-align:right"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span>{{ subtotal | pemisahTitik }}</span></td></tr>
+				            <td style="text-align:right"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span><b>{{ subtotal | pemisahTitik }}</b></span></td></tr>
 				          <tr>
 				          	<th>Total Akhir</th>
-				            <td style="text-align:right"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span>{{ total_akhir | pemisahTitik }}</span></td>    
+				            <td style="text-align:right"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span><b>{{ total_akhir | pemisahTitik }}</b></span></td>    
 				          </tr>
 				        </tbody>
 				      </table>
 
-				  <md-button style="align:right;" class="md-dense md-raised md-accent">Proses Checkout  <md-icon>send</md-icon> </md-button>
+				  <md-button :to="`/checkout`" style="align:right;" class="md-dense md-raised md-accent">Proses Checkout  <md-icon>send</md-icon> </md-button>
 				 </div>
 				 <div class="col-md-1"></div>
 				 <!-- Snackbar for Bank delete alert -->
@@ -245,7 +249,7 @@ table th {
 	padding:4px !important;
 }
 table td {
-	background:#FFF !important;
+	background:#f7e1e1 !important;
 	padding:8px !important;
 }
 .scrollable-menu {
