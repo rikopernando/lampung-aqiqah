@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <sidebar>
     <div class="col-md-12">
 
 	  	<!-- Prompt delete user -->
@@ -11,14 +11,14 @@
 	      md-cancel-text="Batal"
 	      @md-confirm="onConfirmDelete" />
 
-     	<md-card md-with-hover>
+     	<md-card>
       	<ul class="breadcrumb">
         	<li><a href="#">Home</a></li>
         	<li class="active">User</li>
       	</ul>
       </md-card>
 
-      <md-card md-with-hover>
+      <md-card>
         <md-card-header>
           <div class="header-card">
             <md-icon style="color: white">account_box</md-icon>
@@ -84,7 +84,7 @@
 	      <span>User berhasil dihapus!</span>
 	    </md-snackbar>
 	  </div>
-  </div>
+  </sidebar>
 </template>
 
 <script>

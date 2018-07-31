@@ -1,8 +1,8 @@
 <template>
-  <div class="container">
+  <sidebar>
     <div class="col-md-12">
 
-      <md-card md-with-hover>
+      <md-card>
         <ul class="breadcrumb">
           <li><a href="#">Home</a></li>
           <li><router-link :to="{name: 'user'}">User</router-link></li>
@@ -10,7 +10,7 @@
         </ul>
       </md-card>
 
-      <md-card md-with-hover>
+      <md-card>
         <md-card-header>
           <div class="header-card">
             <md-icon style="color: white;">account_box</md-icon>
@@ -60,7 +60,7 @@
         <span>Berhasil menambahkan User!</span>
       </md-snackbar>
     </div>
-  </div>
+  </sidebar>
 </template>
 <script>
 import { validationMixin } from 'vuelidate'
