@@ -9,9 +9,8 @@ const store = new Vuex.Store({
     awesome: true
   },
   modules : {
-    user
+    user,
   }
 })
 
 export default store
-

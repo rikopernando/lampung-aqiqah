@@ -8,40 +8,23 @@ import VueRouter from 'vue-router'
 import VueMaterial from 'vue-material'
 import Sidebar from './components/dashboard/index'
 
-// Plugins
-import GlobalComponents from './globalComponents'
-import GlobalDirectives from './globalDirectives'
-import Notifications from './components/NotificationPlugin'
-
-// MaterialDashboard plugin
-import MaterialDashboard from './material-dashboard'
-
-import Chartist from 'chartist'
-
-
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css' // This line here
 import './auth'
 
 window.Vue.use(VueRouter)
 
+
+// Global Vue Components
+Vue.component('sidebar', Sidebar)
+
+
 Vue.use(VueMaterial)
 
-Vue.use(MaterialDashboard)
-Vue.use(GlobalComponents)
-Vue.use(GlobalDirectives)
-Vue.use(Notifications)
-
-// global library setup
-Object.defineProperty(Vue.prototype, '$Chartist', {
-  get () {
-    return this.$root.Chartist
-  }
-})
-
-const router = new VueRouter({ routes, linkExactActiveClass: 'nav-item active' })
+const router = new VueRouter({ routes })
 
 router.beforeEach((to, from, next) => {
+
 	const loggedIn = store.state.user.loggedIn
 	const is_admin = store.state.user.is_admin
   if (to.matched.some(record => record.meta.requiresAuth)) {
@@ -63,8 +46,5 @@ router.beforeEach((to, from, next) => {
 
 const app = new Vue({
     router,
-    store,
-    data: {
-	    Chartist: Chartist
-	}
+    store
 }).$mount('#app')
