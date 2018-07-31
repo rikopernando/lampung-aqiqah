@@ -19,6 +19,7 @@ class CreateKeranjangBelanjasTable extends Migration
             $table->integer('id_pelanggan')->nullable();
             $table->integer('jumlah_produk');
             $table->bigInteger('harga_produk'); 
+            $table->bigInteger('subtotal'); 
             $table->string('session_id', 100)->nullable();
             $table->timestamps();
         });
