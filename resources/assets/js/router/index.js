@@ -19,6 +19,9 @@ import ProdukEdit from '../components/produk/ProdukEdit'
 import DetailProduk from '../components/list-produk/detail_produk'
 import ProdukList from '../components/home/ListProduk'
 
+import Checkout from '../components/checkout'
+import OrderReceived from '../components/checkout/OrderReceived'
+
 const routes = [
   {
     path : '/',
@@ -38,11 +41,19 @@ const routes = [
   },{
     path : '/user/edit/:id',
     name : 'editUser',
-    component : UserEdit
+    component : UserEdit,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
   },{
     path : '/user/create',
     name : 'createUser',
-    component : UserCreate
+    component : UserCreate,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
   },
 
   // Bank
@@ -82,21 +93,36 @@ const routes = [
   },{
     path : '/produk',
     name : 'produk',
-    component : ProdukIndex
+    component : ProdukIndex,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
   },{
     path : '/produk/create',
     name : 'createProduk',
-    component : ProdukCreate
+    component : ProdukCreate,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
   },{
     path : '/produk/edit/:id',
     name : 'editProduk',
-    component : ProdukEdit
+    component : ProdukEdit,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
   },{
-    path : '/keranjang-belanja',
-    name : 'keranjangBelanja',
-    component : KeranjangBelanja
+    path : '/checkout',
+    name : 'checkout',
+    component : Checkout
+  },{
+    path : '/checkout/order-received',
+    name : 'receivedOrder',
+    component : OrderReceived
   }
 ]
 
 export default routes
-

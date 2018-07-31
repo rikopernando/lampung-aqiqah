@@ -61,9 +61,10 @@
 
 
           <div class="md-toolbar-section-end">
-            <md-button @click="createProduk" class="md-dense md-raised" style="background-color: #d44723; color: white">
+            <md-button v-if="!loading" @click="createProduk" class="md-dense md-raised" style="background-color: #d44723; color: white">
               Submit
             </md-button>
+            <md-progress-spinner v-else :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
           </div>
 
           <!-- Snackbar for success alert -->
@@ -95,7 +96,8 @@
       },
       previewFoto: '',
       notifMessage: '',
-      notifSuccess: false
+      notifSuccess: false,
+      loading: false,
     }),
     methods: {
       onFileChange(e) {
@@ -121,6 +123,7 @@
   			let app = this;
   			let dataProduk = app.inputData(app);
 
+        app.loading = true;
         axios.post(app.url, dataProduk)
   			.then((resp) => {
           app.notifMessage = `Berhasil Menambah Produk ${app.produk.nama_produk}`
@@ -129,6 +132,7 @@
   			.catch((resp) => {
           app.$refs.nama_produk.$el.focus()
   				app.errors = resp.response.data
+          app.loading = false;
   			});
   		},
   		inputData(app) {

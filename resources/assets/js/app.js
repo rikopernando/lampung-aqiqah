@@ -13,10 +13,12 @@ import 'vue-material/dist/theme/default.css' // This line here
 import './auth'
 
 window.Vue.use(VueRouter)
+window.$ = window.jQuery = require('jquery')
 
 
 // Global Vue Components
 Vue.component('sidebar', Sidebar)
+Vue.component('selectize-component', require('vue2-selectize'))
 
 
 Vue.use(VueMaterial)

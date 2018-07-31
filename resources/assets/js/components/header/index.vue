@@ -95,12 +95,12 @@
           </div>
 
           <div class="md-toolbar-section-end">
-
-            <a href="#" class="md-button md-theme-default md-active" v-on:click="openModal('login')" v-if="!this.$store.state.user.loggedIn">
+          
+            <md-button v-on:click="openModal('login')" v-if="!this.$store.state.user.loggedIn"> 
               <div class="md-ripple">
                 <div class="label-nav-main">LOGIN</div>
               </div>
-            </a>
+            </md-button>
 
             <md-menu v-else>
                 <a href="#" class="md-button md-theme-default md-active" md-menu-trigger>
@@ -122,7 +122,7 @@
             <a href="#/keranjang-belanja" class="md-button md-theme-default md-active">
               <div class="md-ripple">
                 <div class="label-nav-main">CART</div>
-                <md-badge md-content="0">
+                <md-badge v-bind:md-content="daftarKeranjang">
                   <i class="fa fa-shopping-basket icon-shop"></i>
                 </md-badge>
               </div>
@@ -186,21 +186,21 @@
             <md-list-item>
               <md-icon>store</md-icon>
               <span class="md-list-item-text">
-                <a href="#/produk-list" class="md-button md-theme-default md-active side-menu">PRODUK</a>
+                <a href="#/list-produk" class="md-button md-theme-default md-active side-menu">PRODUK</a>
               </span>
             </md-list-item>
 
             <md-list-item>
               <md-icon>add_shopping_cart</md-icon>
               <span class="md-list-item-text">
-                <a href="#/produk-list" class="md-button md-theme-default md-active side-menu">PEMESANAN</a>
+                <a href="#/pemesanan" class="md-button md-theme-default md-active side-menu">PEMESANAN</a>
               </span>
             </md-list-item>
 
             <md-list-item>
               <md-icon>local_atm</md-icon>
               <span class="md-list-item-text">
-                <a href="#/produk-list" class="md-button md-theme-default md-active side-menu">PEMBAYARAN</a>
+                <a href="#/pembayaran" class="md-button md-theme-default md-active side-menu">PEMBAYARAN</a>
               </span>
             </md-list-item>
 
@@ -248,6 +248,7 @@
 				passwordSubmit: 'Reset Password',
 				loginSubmit: 'Login',
         alertSnackbar : '',
+        daftarKeranjang:0,
         register : {
             name: '',
             email: '',

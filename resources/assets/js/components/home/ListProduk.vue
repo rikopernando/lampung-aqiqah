@@ -6,6 +6,11 @@
         <div class="container">
 
           <div class="md-medium-size-50 md-small-size-50 md-xsmall-hide">
+          
+           <md-empty-state v-if="loading">
+                <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+           </md-empty-state>
+
             <div class="md-toolbar" style="margin-top: -20px; padding: 30px 0px">
               <div class="header-title md-toolbar-section-start">
 
@@ -42,8 +47,8 @@
                          <div class="md-toolbar-section-end harga-jual">Rp {{ produk.harga_jual | pemisahTitik }} </div>
                        </md-card-actions>
                        <md-card-actions class="card-action">
-                         <md-button class="beli-sekarang" style="background-color: #db4a24; color: white">
-                           Add To Chart <span class="bg"></span>
+                         <md-button  @click="createKeranjang(produk.id)" class="beli-sekarang" style="background-color: #db4a24; color: white">
+                           Masuk Keranjang <span class="bg"></span>
                          </md-button>
                        </md-card-actions>
                      </md-card>
@@ -52,6 +57,11 @@
             </div>
           </div>
           <div id="displayMobile">
+
+           <md-empty-state v-if="loading">
+                <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+           </md-empty-state>
+
             <div class="md-toolbar" style="padding: 15px 5px">
                 <md-field>
                   <label for="movie">Urutkan</label>
@@ -83,8 +93,8 @@
                          <div class="md-toolbar-section-end harga-jual"> {{ produk.harga_jual | pemisahTitik }} </div>
                        </md-card-actions>
                        <md-card-actions class="card-action">
-                         <md-button class="md-raised beli-sekarang">
-                           Add To Chart
+                         <md-button  @click="createKeranjang(produk.id)" class="md-raised beli-sekarang">
+                           Masuk Keranjang
                          </md-button>
                        </md-card-actions>
                      </md-card>
@@ -92,6 +102,11 @@
               </div>
             </div>
           </div>
+
+        <!-- Snackbar for Bank delete alert -->
+        <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarBerhasil" md-persistent>
+            <span>Produk Berhasil Masuk Keranjang !</span>
+          </md-snackbar>
 
         </div>
       </div>
@@ -110,7 +125,8 @@
         url_picture : window.location.origin + (window.location.pathname) + "image_produks/",
   			filter: 1,
         produks: [],
-        loading: true
+        loading: true,
+        snackbarBerhasil: false,
   	}),
   	mounted() {
       this.getProdukData()
@@ -148,6 +164,15 @@
     		.catch(resp => {
     			console.log('catch getProdukData:', resp);
     		});
+      },
+      createKeranjang(id){
+        axios.post(this.url + 'keranjang-belanja/create/'+id)
+        .then(resp => {
+          this.snackbarBerhasil = true;
+        })
+        .catch(resp => {
+          console.log('Terjadi Kesalahan :', resp);
+        })
       }
 
     },
