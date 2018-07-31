@@ -10,16 +10,90 @@
   border-radius: 4px;
 }
 
-.image--cover {
-  width: 85px;
-  height: 85px;
-  border-radius: 50%;
-  margin: 5px;
 
-  object-fit: cover;
-  object-position: center right;
+/*MOBILE VERSION*/
+@media (max-width: 600px) {
+  .md-xsmall-hide { display: none; }
+  #displayTabs { display: block; }
+
+  .image--cover {
+    width: 50px;
+    height: 85px;
+    border-radius: 50%;
+    margin: 5px;
+
+    object-fit: cover;
+    object-position: center right;
+  }
+
+  .md-card-header {
+    padding: 10px !important;
+  }
+
+  .md-card .md-title {
+    font-size: 20px;
+  }
+
+  ul {
+    padding: 0px 10px!important;
+  }
+
+  .tabs-mobile {
+    display: flex;
+  }
+
+  .tabs-mobile>li.active>a,
+  .tabs-mobile>li.active>a:hover,
+  .tabs-mobile>li.active>a:focus {
+    border-bottom-color: #ddd;
+    border-right-color: transparent;
+    background:#db4a24;
+    color: #fff !important;
+    border:none;
+    border-radius:2px;
+    margin:0px;
+  }
+
+  .nav-tabs>li>a:hover {
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+  }
+
+  .nav > li > a {
+    padding: 10px 10px !important;
+  }
+
+  #portfolio .card .card-title {
+    font-size: 15px !important;
+  }
+
+  #portfolio .card .card-icon {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  #portfolio .card .card-icon i {
+    font-size: 2rem !important;
+  }
+
+  hr {
+    margin: 0px !important;
+  }
 }
 
+@media (min-width: 600px) {
+  #displayTabs { display: none; }
+
+  .image--cover {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    margin: 5px;
+
+    object-fit: cover;
+    object-position: center right;
+  }
+}
 .tabs-left {
   border-bottom: none;
   border-right: 1px solid #ddd;
