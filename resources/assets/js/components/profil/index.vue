@@ -46,7 +46,48 @@
                         Dari Dashboard akun Anda, Anda dapat melihat pesanan terbaru Anda,
                         mengelola alamat pengiriman dan penagihan Anda
                         dan mengedit kata sandi dan detail akun Anda.
-                      </p>
+                      </p><br>
+
+                      <!-- DASHBOARD CARD -->
+                      <div class="row" id="portfolio">
+                        <div class="col-md-4">
+                          <div class="card border-card" id="orderCard">
+                            <div class="card-title">ORDER</div>
+                            <div class="card-icon"><i class="material-icons">shopping_basket</i></div>
+                            <div class="card-data"></div>
+                            <hr/>
+                            <div class="card-hint">
+                              <i class="material-icons">list</i>
+                              <a href="#order-v" data-toggle="tab">Lihat Pesanan</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="card border-card" id="alamatCard">
+                            <div class="card-title">ALAMAT</div>
+                            <div class="card-icon"><i class="material-icons">location_on</i></div>
+                            <div class="card-data"></div>
+                            <hr/>
+                            <div class="card-hint">
+                              <i class="material-icons">edit_location</i>
+                              <a href="#alamat-v" data-toggle="tab">Kelola Alamat</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="card border-card" id="akunCard">
+                            <div class="card-title">AKUN</div>
+                            <div class="card-icon"><i class="material-icons">account_circle</i></div>
+                            <div class="card-data"></div>
+                            <hr/>
+                            <div class="card-hint">
+                              <i class="material-icons">edit</i>
+                              <a href="#akun-v" data-toggle="tab">Ubah Akun</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
                     <div class="tab-pane" id="order-v">ORDER</div>
                     <div class="tab-pane" id="alamat-v">ALAMAT</div>
@@ -244,5 +285,100 @@
     text-transform: uppercase;
     font-size: 10px;
     font-weight: bold
+  }
+
+  #about {
+    padding: 16px;
+  }
+
+  .bdr {
+    border: 1px solid red;
+  }
+
+  #portfolio {
+    background: #fafafa;
+    padding: 8px 0;
+  }
+  #portfolio .card {
+    margin: 0 -8px 32px -8px;
+    color: rgba(0, 0, 0, 0.87);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  #portfolio .card .card-title {
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px;
+    font-weight: 300;
+    font-size: 20px;
+    color: #868686;
+  }
+  #portfolio .card .card-data {
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px 16px 0 0;
+    font-size: 1.5rem;
+    font-weight: 300;
+  }
+  #portfolio .card hr {
+    width: 90%;
+  }
+  #portfolio .card .card-hint {
+    display: flex;
+    padding: 0 0 8px 8px;
+    font-size: 0.9rem;
+    font-weight: 300;
+  }
+  #portfolio .card .card-hint i {
+    font-size: 1.3rem;
+    color: red;
+    margin-right: 8px;
+  }
+  #portfolio .card .card-icon {
+    display: flex;
+    position: absolute;
+    top: -20px;
+    left: 12px;
+    background: linear-gradient(60deg, #ffa726, #EF6C00);
+    color: white;
+    width: 75px;
+    height: 75px;
+    box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.15);
+    align-items: center;
+    justify-content: center;
+    border-radius: 25%;
+  }
+  #portfolio .card .card-icon i {
+    font-size: 4rem;
+  }
+  #portfolio #orderCard .card-icon {
+    background: linear-gradient(60deg, #5E35B1, #039BE5);
+  }
+  #portfolio #orderCard .card-hint i {
+    color: red;
+    padding-top: 3px;
+    font-size: 15px;
+  }
+  #portfolio #alamatCard .card-icon {
+    background: linear-gradient(60deg, #F50057, #FF8A80);
+  }
+  #portfolio #alamatCard .card-hint i {
+    color: blue;
+    padding-top: 3px;
+    font-size: 15px;
+  }
+  #portfolio #akunCard .card-icon {
+    background: linear-gradient(60deg, #fb8c00, #FFCA29);
+  }
+  #portfolio #akunCard .card-hint i {
+    color: red;
+    padding-top: 3px;
+    font-size: 15px;
+  }
+  .border-card {
+    border: 1px solid #dedede;
+    border-radius: 10px;
+  }
+  .card-hint a {
+    font-size: 15px;
   }
 </style>
