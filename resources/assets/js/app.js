@@ -6,6 +6,7 @@ import routes from './router'
 import store from './store'
 import VueRouter from 'vue-router'
 import VueMaterial from 'vue-material'
+import vSelect from 'vue-select'
 
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css' // This line here
@@ -15,6 +16,7 @@ window.Vue.use(VueRouter)
 window.$ = window.jQuery = require('jquery')
 
 Vue.component('selectize-component', require('vue2-selectize'))
+Vue.component('v-select',vSelect)
 Vue.use(VueMaterial)
 
 

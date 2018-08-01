@@ -14,22 +14,11 @@
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-        <style type="text/css">
-            .selectizeLoading > .selectize-input, .selectizeLoading > .selectize-input > input {
-                cursor: wait !important;
-                font-style: italic;
-                background:
-                url('http://www.hsi.com.hk/HSI-Net/pages/images/en/share/ajax-loader.gif')
-                no-repeat
-                center center;
-            }
-        </style>
-
         </head>
     <body style="background-color: white;">
         <div id="app">
             <router-view></router-view>
         </div>
-        <script src="{{ asset('js/app.js?v=1.24')}}" type="text/javascript"></script>
+        <script src="{{ asset('js/app.js?v=1.36')}}" type="text/javascript"></script>
     </body>
 </html>

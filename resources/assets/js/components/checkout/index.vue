@@ -18,54 +18,12 @@
 						<md-card-content>
 							<div class="row">
                 <div class="col-md-6">
-                  <h5>Billing Details </h5>
-                  
-                  <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Nama Pemesan" v-model="pesanan.nama_pemesan">
-                  </div>
-									<div class="form-group">
-										<input type="text" v-model="pesanan.alamat" class="form-control" placeholder="Alamat">
-									</div>
-									<div class="form-group">
-                    <selectize-component :settings="select_provinsi" v-model="pesanan.provinsi" ref="provinsi">
-                      <option v-for="provinsi, index in provinsi" v-bind:value="provinsi.id">{{ provinsi.name }} </option> 
-                    </selectize-component>
-									</div>
-									<div class="form-group">
-                    <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kabupaten"></md-progress-bar>
-                    <p class="waiting" v-if="this.$store.state.lokasi.load_kabupaten">Mohon tunggu ...</p>
-                    <selectize-component :settings="select_kabupaten" v-model="pesanan.kabupaten" ref="kabupaten">
-                      <option v-for="kabupaten, index in kabupaten" v-bind:value="kabupaten.id">{{ kabupaten.name }} </option> 
-                    </selectize-component>
-									</div>
-									<div class="form-group">
-                    <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kecamatan"></md-progress-bar>
-                    <p class="waiting" v-if="this.$store.state.lokasi.load_kecamatan">Mohon tunggu ...</p>
-                    <selectize-component :settings="select_kecamatan" v-model="pesanan.kecamatan" ref="kecamatan">
-                      <option v-for="kecamatan, index in kecamatan" v-bind:value="kecamatan.id">{{ kecamatan.name }} </option> 
-                    </selectize-component>
-									</div>
-									<div class="form-group">
-                    <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kelurahan"></md-progress-bar>
-                    <p class="waiting" v-if="this.$store.state.lokasi.load_kelurahan">Mohon tunggu ...</p>
-                    <selectize-component :settings="select_kelurahan" v-model="pesanan.kelurahan" ref="kelurahan">
-                      <option v-for="kelurahan, index in kelurahan" v-bind:value="kelurahan.id">{{ kelurahan.name }} </option> 
-                    </selectize-component>
-									</div>
-									<div class="form-group">
-										<input type="text" v-model="pesanan.handphone" class="form-control" placeholder="Handphone">
-									</div>
-									<div class="form-group">
-										<input type="email" v-model="pesanan.email" class="form-control" placeholder="Email">
-									</div>
-									<div class="form-group">
-                    <selectize-component :settings="sumberInformasi" v-model="pesanan.sumber_informasi" ref="sumber_informasi">
-                      <option v-for="sumberinformasi, index in sumber_informasi" v-bind:value="sumberinformasi">{{ sumberinformasi }} </option> 
-                    </selectize-component>
-									</div>
-                  <div class="form-group">
-                    <textarea v-model="pesanan.notes" class="form-control" placeholder="Catatan"></textarea>
-                  </div>
+                  <h5>Billing Details</h5>
+                  <BillingDetails 
+                      :pesanan="pesanan" :lokasi="this.$store.state.lokasi" :select_provinsi="select_provinsi" :select_kabupaten="select_kabupaten"
+                      :select_kecamatan="select_kecamatan" :select_kelurahan="select_kelurahan" :selectsumberInformasi="sumberInformasi"
+                      :sumber_informasi="sumber_informasi" :provinsi="provinsi" :kabupaten="kabupaten" :kecamatan="kecamatan" :kelurahan="kelurahan"
+                      />
                 </div>
 
                 <div class="col-md-6">
@@ -177,15 +135,16 @@
   import { LOAD_DATA } from '../../store/lokasi/mutations'
   import Header from '../header'
   import Footer from '../footer/footer'
+  import BillingDetails from './billing-details'
 
   export default {
     data : () => ({
       kirim_ke_alamat_lain : false,
-      sumberInformasi : {
-        placeholder : 'Sumber Informasi'
-      },
       jenisKelamin : {
         placeholder : 'Jenis Kelamin'
+      },
+      sumberInformasi : {
+        placeholder : 'Sumber Informasi'
       },
       select_provinsi : {
         placeholder : 'Pilih Provinsi'
@@ -199,6 +158,7 @@
       select_kelurahan : {
         placeholder : 'Pilih Kelurahan'
       },
+			sumber_informasi: ['Google','Facebook','Instagram','Teman','Bidan','Website','Spanduk','X-Banner','Televisi','Radio'],
       pesanan : {
         nama_pemesan : '',
         alamat : '',
@@ -224,14 +184,10 @@
         alamat : '',
         kecamatan : '',
         kota : ''
-      },
-			sumber_informasi: ['Google','Facebook','Instagram','Teman','Bidan','Website','Spanduk','X-Banner','Televisi','Radio']
+      }
     }),
     mounted () {
       this.$store.dispatch('lokasi/LOAD_PROVINSI')
-      this.$refs.kabupaten.$el.selectize.disable()
-      this.$refs.kecamatan.$el.selectize.disable()
-      this.$refs.kelurahan.$el.selectize.disable()
     }, 
     computed : mapState ({
        provinsi () {
@@ -247,61 +203,9 @@
         return this.$store.state.lokasi.kelurahan
        },
     }),
-    watch : {
-      'pesanan.provinsi' : function(){
-          if(this.pesanan.provinsi){
-            const wilayah = "kabupaten"
-            this.pilihWilayah(wilayah,this.pesanan.provinsi)
-          }
-      },
-      'pesanan.kabupaten' : function(){
-          if(this.pesanan.kabupaten){
-            const wilayah = "kecamatan"
-            this.pilihWilayah(wilayah,this.pesanan.kabupaten)
-          }
-      },
-      'pesanan.kecamatan' : function(){
-          if(this.pesanan.kecamatan){
-            const wilayah = "kelurahan"
-            this.pilihWilayah(wilayah,this.pesanan.kecamatan)
-          }
-      }
-    },
     components : {
-      Header,Footer
+      Header,Footer, BillingDetails
     },
-    methods : {
-      pilihWilayah(type, id_wilayah) {
-          const app = this
-          var selectize
-            switch (type) {
-                case "kabupaten":
-                  selectize = app.$refs.kabupaten.$el.selectize
-                  selectize.clearOptions()
-                  app.$refs.kecamatan.$el.selectize.clearOptions()
-                  app.$refs.kelurahan.$el.selectize.clearOptions()
-                  app.$refs.kecamatan.$el.selectize.disable()
-                  app.$refs.kelurahan.$el.selectize.disable()
-                    break;
-                case "kecamatan":
-                  selectize = app.$refs.kecamatan.$el.selectize
-                  selectize.clearOptions()
-                  app.$refs.kelurahan.$el.selectize.clearOptions()
-                  app.$refs.kelurahan.$el.selectize.disable()
-                    break;
-                case "kelurahan":
-                  selectize = app.$refs.kelurahan.$el.selectize
-                  selectize.clearOptions()
-                    break;
-            }
-          app.$store.commit(`lokasi/${LOAD_DATA}`,type)
-          app.$store.dispatch('lokasi/LOAD_WILAYAH',{
-            type : type,
-            id : id_wilayah
-          })
-          selectize.enable()
-      },
-    }
   }
 
 </script>
@@ -338,10 +242,6 @@
 
   .md-progress-bar {
     margin: 1px;
-  }
-  
-  .waiting {
-    font-style: italic;
   }
 
   table th{background:#da2921 !important; color:#fff !important; padding:5px !important;}

@@ -13,16 +13,6 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-    <style type="text/css">
-        .selectizeLoading > .selectize-input, .selectizeLoading > .selectize-input > input {
-            cursor: wait !important;
-            font-style: italic;
-            background:
-            url('http://www.hsi.com.hk/HSI-Net/pages/images/en/share/ajax-loader.gif')
-            no-repeat
-            center center;
-        }
-    </style>
 </head>
 <body>
     <div id="app">
