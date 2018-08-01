@@ -25,11 +25,20 @@ import OrderReceived from '../components/checkout/OrderReceived'
 // PROFIL
 import AkunIndex from '../components/profil'
 
+import Dashboard from '../components/dashboard/index'
+
 const routes = [
   {
     path : '/',
     name : 'home',
     component : Home
+  },
+
+  // Dashboard
+  {
+    path : '/dashboard',
+    name : 'dashboard',
+    component : Dashboard
   },
 
   // User
