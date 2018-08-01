@@ -122,7 +122,7 @@
             <a href="#/keranjang-belanja" class="md-button md-theme-default md-active">
               <div class="md-ripple">
                 <div class="label-nav-main">CART</div>
-                <md-badge v-bind:md-content="daftarKeranjang">
+                <md-badge v-bind:md-content="this.$store.state.keranjangbelanja.countKeranjang">
                   <i class="fa fa-shopping-basket icon-shop"></i>
                 </md-badge>
               </div>
@@ -158,7 +158,7 @@
             </md-button>
             <md-button class="md-icon-button">
               <a href="#/cart">
-                <md-badge md-content="0">
+                <md-badge v-bind:md-content="this.$store.state.keranjangbelanja.countKeranjang">
                   <i class="fa fa-shopping-basket icon-shop-mobile"></i>
                 </md-badge>
               </a>
@@ -248,7 +248,6 @@
 				passwordSubmit: 'Reset Password',
 				loginSubmit: 'Login',
         alertSnackbar : '',
-        daftarKeranjang:0,
         register : {
             name: '',
             email: '',
@@ -265,6 +264,7 @@
 			}),
       mounted () {
         this.modal = true
+        this.$store.dispatch('keranjangbelanja/LOAD_KERANJANG_LIST')
       },
 			methods : {
 				openModal(which) {

@@ -1,11 +1,12 @@
-import { COUNTKERANJANG,SUBTOTALKERANJANG,DELETEKERANJANG,TAMBAHJUMLAHKERANJANG } from './mutations'
+import { COUNTKERANJANG,SUBTOTALKERANJANG,DELETEKERANJANG,TAMBAHJUMLAHKERANJANG,CREATEKERANJANG } from './mutations'
 
 const state = {
     datakeranjang : {},
     loading:true,
     subtotal:0,
     total_akhir:0,
-    status:null
+    status:null,
+    countKeranjang:0
 }
 
 const getters = {
@@ -17,6 +18,7 @@ const mutations = {
       console.log(data);
       state.loading = false
       state.datakeranjang = data
+      state.countKeranjang = data.count_keranjang;
     },
     SUBTOTALKERANJANG : (state, data)=> {
       state.loading = false
@@ -27,6 +29,7 @@ const mutations = {
           var subtotal = parseInt(state.subtotal) - parseInt(data.subtotal)
           state.subtotal = subtotal;
           state.total_akhir = subtotal;
+          state.countKeranjang -= 1;
 
         function cekTbs(tbs) { 
           return tbs.id_keranjang_belanja === data.id
@@ -65,6 +68,12 @@ const mutations = {
           state.datakeranjang.data_keranjang[index].jumlah_produk -= 1
           state.datakeranjang.data_keranjang[index].subtotal -= data.harga_produk
           state.status = respdata.status;
+        }
+    },
+    CREATEKERANJANG : (state,{respdata,data})=> {
+      if (respdata == 1) {
+          console.log(respdata)
+           state.countKeranjang += 1;
         }
     },
 }
@@ -110,6 +119,15 @@ const actions = {
         axios.post('keranjang-belanja/edit-jumlah-keranjang/'+get.id_keranjang_belanja+'/'+get.operator)
         .then(resp => {
           commit('KURANGJUMLAHKERANJANG',{respdata:resp.data,data:get})
+        })
+        .catch(err => {
+          console.log('Terjadi Kesalahan :', err);
+        })
+  },
+  LOAD_CREATE_LIST : ({commit},get) => {
+        axios.post('keranjang-belanja/create/'+get.id)
+        .then(resp => {
+          commit('CREATEKERANJANG',{respdata:resp.data,data:get})
         })
         .catch(err => {
           console.log('Terjadi Kesalahan :', err);
