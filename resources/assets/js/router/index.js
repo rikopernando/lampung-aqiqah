@@ -22,6 +22,9 @@ import ProdukList from '../components/home/ListProduk'
 import Checkout from '../components/checkout'
 import OrderReceived from '../components/checkout/OrderReceived'
 
+// PROFIL
+import AkunIndex from '../components/profil'
+
 import Dashboard from '../components/dashboard/index'
 
 const routes = [
@@ -131,7 +134,19 @@ const routes = [
     path : '/checkout/order-received',
     name : 'receivedOrder',
     component : OrderReceived
+  },{ 
+    path : '/keranjang-belanja', 
+    name : 'keranjangBelanja', 
+    component : KeranjangBelanja 
+  },{
+    path : '/akun',
+    name : 'indexAkun',
+    component : AkunIndex,
+    meta : {
+      requiresAuth : false,
+    }
   }
+
 ]
 
 export default routes

@@ -95,8 +95,8 @@
           </div>
 
           <div class="md-toolbar-section-end">
-          
-            <md-button v-on:click="openModal('login')" v-if="!this.$store.state.user.loggedIn"> 
+
+            <md-button v-on:click="openModal('login')" v-if="!this.$store.state.user.loggedIn">
               <div class="md-ripple">
                 <div class="label-nav-main">LOGIN</div>
               </div>
@@ -109,9 +109,8 @@
                   </div>
                 </a>
                 <md-menu-content>
-                  <md-menu-item>
-                    <md-button v-on:click="logout()">LOGOUT</md-button>
-                  </md-menu-item>
+                  <md-menu-item @click="logout()">LOGOUT</md-menu-item>
+                  <md-menu-item @click="myProfile">AKUN SAYA</md-menu-item>
                 </md-menu-content>
             </md-menu>
 
@@ -348,6 +347,9 @@
             $('#loginSubmit').removeClass('disabled')
             app.loginSubmit = "Login"
           })
+        },
+        myProfile() {
+          this.$router.replace('/akun');
         },
         logout() {
           document.getElementById('logout-form').submit();

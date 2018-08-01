@@ -23,6 +23,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 // User
 Route::get('/user/view', 'UserController@view');
+Route::get('/user/detail-akun', 'UserController@detailAkun');
+Route::put('/user/simpan-detail-akun', 'UserController@simpanDetailAkun');
 Route::resource('user', 'UserController');
 
 //Bank
@@ -43,5 +45,3 @@ Route::get('/keranjang-belanja/view', 'KeranjangBelanjaController@view');
 Route::get('/keranjang-belanja/subtotal-keranjang-belanja','KeranjangBelanjaController@cekSubtotalKeranjangBelanja');
 Route::post('/keranjang-belanja/edit-jumlah-keranjang/{id}/{operator}', 'KeranjangBelanjaController@editJumlahKeranjang');
 Route::resource('keranjang-belanja', 'KeranjangBelanjaController');
-
-
