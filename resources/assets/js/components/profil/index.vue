@@ -1,6 +1,6 @@
 <template>
   <div>
-    <link rel="stylesheet" href="../resources/assets/js/components/profil/profilPelangganStyle.css">
+    <link rel="stylesheet" :href="urlOrigin+'/css/profil-pelanggan.css'">
 
     <Header></Header>
       <div class="container">
@@ -106,7 +106,18 @@
                       </md-card>
 
                     </div>
-                    <div class="tab-pane" id="order-v">ORDER</div>
+                    <div class="tab-pane" id="order-v">
+                      <md-card>
+                        <md-card-content>
+                          <div class="md-subheading">
+                            <span>Belum Ada Pesanan Yang Dibuat.</span>
+                            <md-button class="md-dense md-raised" style="background-color: #d44723; color: white">
+                              <a href="#/list-produk" style="color: white">Lanjutkan Belanja</a>
+                            </md-button>
+                          </div>
+                        </md-card-content>
+                      </md-card>
+                    </div>
                     <div class="tab-pane" id="alamat-v">
 
                       <md-card>
@@ -244,6 +255,7 @@
 
   export default {
     data : () => ({
+    	urlOrigin: window.location.origin + (window.location.pathname),
     	url: window.location.origin + (window.location.pathname + 'user'),
       token : $('meta[name="csrf-token"]').attr('content'),
       errors: [],
