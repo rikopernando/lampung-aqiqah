@@ -22,11 +22,20 @@ import ProdukList from '../components/home/ListProduk'
 import Checkout from '../components/checkout'
 import OrderReceived from '../components/checkout/OrderReceived'
 
+import Dashboard from '../components/dashboard/index'
+
 const routes = [
   {
     path : '/',
     name : 'home',
     component : Home
+  },
+
+  // Dashboard
+  {
+    path : '/dashboard',
+    name : 'dashboard',
+    component : Dashboard
   },
 
   // User

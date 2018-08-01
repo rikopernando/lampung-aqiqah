@@ -1,6 +1,6 @@
 <template>
   <sidebar>
-    <div class="col-md-12">
+    <div class="col-md-12" style="padding: 0">
 
 	  	<!-- Prompt delete user -->
 	  	<md-dialog-confirm
