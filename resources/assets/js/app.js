@@ -6,7 +6,7 @@ import routes from './router'
 import store from './store'
 import VueRouter from 'vue-router'
 import VueMaterial from 'vue-material'
-import Sidebar from './components/dashboard/index'
+import Sidebar from './components/sidebar/index'
 
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css' // This line here

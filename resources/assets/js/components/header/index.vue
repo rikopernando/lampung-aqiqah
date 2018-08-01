@@ -1,7 +1,7 @@
 <template>
   <div>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="../resources/assets/js/components/header/HeaderStyle.css">
+        <link rel="stylesheet" :href="url + 'css/HeaderStyle.css'">
 
         <div class="user-modal-container" id="login-modal" v-on:click="closeModal" v-if="modal">
           <div class="user-modal">
@@ -264,6 +264,7 @@
 			}),
       mounted () {
         this.modal = true
+        console.log(this.url)
       },
 			methods : {
 				openModal(which) {
