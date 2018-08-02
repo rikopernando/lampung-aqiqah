@@ -36,7 +36,7 @@
 				            			<th class="product-subtotal">Subtotal</th>
 				        			</tr>
 				    			</thead>
-				    			<tbody v-if="keranjangbelanjas.length"  class="data-ada">
+				    			<tbody v-if="this.$store.state.keranjangbelanja.countKeranjang > 0"  class="data-ada">
 				    				<md-empty-state v-if="this.$store.state.keranjangbelanja.loading">
 							                <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
 							        </md-empty-state>
@@ -100,7 +100,7 @@
 				        </tbody>
 				      </table>
 
-				  <md-button :to="`/checkout`" v-if="keranjangbelanjas.length"  style="align:right;" class="md-dense md-raised md-accent">Proses Checkout  <md-icon>send</md-icon> </md-button>
+				  <md-button :to="`/checkout`" v-if="this.$store.state.keranjangbelanja.countKeranjang > 0"  style="align:right;" class="md-dense md-raised md-accent">Proses Checkout  <md-icon>send</md-icon> </md-button>
 				 </div>
 				 <div class="col-md-1"></div>
 				 <!-- Snackbar for Bank delete alert -->
