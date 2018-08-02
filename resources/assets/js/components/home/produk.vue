@@ -43,7 +43,7 @@
            </md-empty-state>
 
             <div v-for="produk in produks">
-              <div class="col-md-3 col-sm-6 col-xs-6" style="padding: 25px 5px">
+              <div class="col-xs-6" style="padding: 25px 5px">
                   <div class="md-layout-item">
                      <md-card md-with-hover>
                        <md-card-media class="card-image">
@@ -116,13 +116,8 @@
         });
       },
       createKeranjang(id){
-        axios.post(this.url + 'keranjang-belanja/create/'+id)
-        .then(resp => {
-          this.snackbarBerhasil = true;
-        })
-        .catch(resp => {
-          console.log('Terjadi Kesalahan :', resp);
-        })
+        this.$store.dispatch('keranjangbelanja/LOAD_CREATE_LIST',{id :id})
+        this.snackbarBerhasil = true;
       }
   }
 }
@@ -213,5 +208,3 @@
     }
   }
 </style>
-
-

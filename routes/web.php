@@ -44,4 +44,5 @@ Route::post('/keranjang-belanja/create/{id}', 'KeranjangBelanjaController@tambah
 Route::get('/keranjang-belanja/view', 'KeranjangBelanjaController@view');
 Route::get('/keranjang-belanja/subtotal-keranjang-belanja','KeranjangBelanjaController@cekSubtotalKeranjangBelanja');
 Route::post('/keranjang-belanja/edit-jumlah-keranjang/{id}/{operator}', 'KeranjangBelanjaController@editJumlahKeranjang');
+Route::post('/keranjang-belanja/jumlah-pesanan', 'KeranjangBelanjaController@jumlahPesanan');
 Route::resource('keranjang-belanja', 'KeranjangBelanjaController');
