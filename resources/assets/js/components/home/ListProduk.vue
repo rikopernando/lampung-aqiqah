@@ -166,13 +166,8 @@
     		});
       },
       createKeranjang(id){
-        axios.post(this.url + 'keranjang-belanja/create/'+id)
-        .then(resp => {
-          this.snackbarBerhasil = true;
-        })
-        .catch(resp => {
-          console.log('Terjadi Kesalahan :', resp);
-        })
+        this.$store.dispatch('keranjangbelanja/LOAD_CREATE_LIST',{id :id})
+        this.snackbarBerhasil = true;
       }
 
     },

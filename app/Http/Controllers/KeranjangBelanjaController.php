@@ -122,15 +122,22 @@ class KeranjangBelanjaController extends Controller
         }
 
         if (Auth::check() == false) {
-            $keranjang_belanjaan = KeranjangBelanja::with(['produk'])->where('session_id', $session_id)->orderBy('id_keranjang_belanja','desc')->get();
-
+             $keranjang_belanjaan = KeranjangBelanja::with(['produk'])->where('session_id', $session_id)->orderBy('id_keranjang_belanja','desc');
+            
+            $data_keranjang = $keranjang_belanjaan->get();
+            $count_keranjang = $keranjang_belanjaan->count();
         }else{
-            $keranjang_belanjaan = KeranjangBelanja::with(['produk'])->where('id_pelanggan', Auth::user()->id)->orderBy('id_keranjang_belanja','desc')->get();
-
+            $keranjang_belanjaan = KeranjangBelanja::with(['produk'])->where('id_pelanggan', Auth::user()->id)->orderBy('id_keranjang_belanja','desc');  
+            
+            $data_keranjang = $keranjang_belanjaan->get();
+            $count_keranjang = $keranjang_belanjaan->count();
         }
 
+        $respons['data_keranjang'] = $data_keranjang;
+        $respons['count_keranjang'] = $count_keranjang;
 
-        return response()->json($keranjang_belanjaan);
+
+        return response()->json($respons);
 
     }
 
@@ -143,10 +150,10 @@ class KeranjangBelanjaController extends Controller
         }
 
         if (Auth::check() == false) {
-            $keranjang_belanjaan = KeranjangBelanja::select()->where('session_id', $session_id)->where('id_produk',$id)->orderBy('id_keranjang_belanja','desc');
+            $keranjang_belanjaan = KeranjangBelanja::select()->where('session_id', $session_id)->where('id_keranjang_belanja',$id)->orderBy('id_keranjang_belanja','desc');
 
         }else{
-            $keranjang_belanjaan = KeranjangBelanja::select()->where('id_pelanggan', Auth::user()->id)->where('id_produk',$id)->orderBy('id_keranjang_belanja','desc');
+            $keranjang_belanjaan = KeranjangBelanja::select()->where('id_pelanggan', Auth::user()->id)->where('id_keranjang_belanja',$id)->orderBy('id_keranjang_belanja','desc');
         }
 
             $data_keranjang = $keranjang_belanjaan->first();
@@ -169,7 +176,6 @@ class KeranjangBelanjaController extends Controller
 
             return response()->json($respons);
     }
-
 
     public function jumlahPesanan() {
       if (Auth::check()) {
