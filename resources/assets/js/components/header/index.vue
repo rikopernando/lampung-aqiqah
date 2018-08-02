@@ -1,43 +1,43 @@
 <template>
   <div>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="../resources/assets/js/components/header/HeaderStyle.css">
+        <link rel="stylesheet" :href="url + 'css/header-style.css'">
 
         <div class="user-modal-container" id="login-modal" v-on:click="closeModal" v-if="modal">
           <div class="user-modal">
-            <ul class="form-switcher">  
+            <ul class="form-switcher">
               <li v-on:click="flip('register')"><a href="#" id="register-form">Register</a></li>
               <li v-on:click="flip('login')"><a href="#" id="login-form">Login</a></li>
-            </ul>            
+            </ul>
             <div class="form-register" id="form-register">
                   <ul class="error-message">
                     <li class="text-error" v-for="err in errors"> {{ err.toString() }} </li>
                   </ul>
-                <input type="text" name="name" placeholder="Nama" v-model="register.name" autocomplete="off">  
-                <input type="email" name="email" placeholder="Email" v-model="register.email" autocomplete="off">  
+                <input type="text" name="name" placeholder="Nama" v-model="register.name" autocomplete="off">
+                <input type="email" name="email" placeholder="Email" v-model="register.email" autocomplete="off">
                 <input type="password" name="password" placeholder="Password" v-model="register.password" autocomplete="off">
-                <input type="password" name="password_confirmation" placeholder="Konfirmasi Password" v-model="register.password_confirmation" autocomplete="off"> 
-                <input type="submit" v-on:click="submit('register')" v-model="registerSubmit" id="registerSubmit">  
-                <div class="links">  
+                <input type="password" name="password_confirmation" placeholder="Konfirmasi Password" v-model="register.password_confirmation" autocomplete="off">
+                <input type="submit" v-on:click="submit('register')" v-model="registerSubmit" id="registerSubmit">
+                <div class="links">
                   <a href="#" v-on:click="flip('login')">Sudah Punya Akun ?</a>
-                </div>  
+                </div>
             </div>
             <div class="form-login" id="form-login">
                   <ul class="error-message">
                     <li class="text-error" v-for="err in errors"> {{ err.toString() }} </li>
                   </ul>
-                <input type="email" name="email" placeholder="Email" v-model="login.email" autocomplete="off"> 
-                <input type="password" name="password" placeholder="Password" v-model="login.password" autocomplete="off">  
-                <input type="submit" v-on:click="submit('login')" v-model="loginSubmit"  id="loginSubmit">  
-                <div class="links">  
+                <input type="email" name="email" placeholder="Email" v-model="login.email" autocomplete="off">
+                <input type="password" name="password" placeholder="Password" v-model="login.password" autocomplete="off">
+                <input type="submit" v-on:click="submit('login')" v-model="loginSubmit"  id="loginSubmit">
+                <div class="links">
                   <a href="#" v-on:click="flip('password')">Lupa password?</a>
-                </div>  
+                </div>
             </div>
             <div class="form-password" id="form-password">
-                <input type="text" name="email" placeholder="Email" v-model="password.email" autocomplete="off">  
-                <input type="submit" v-on:click="submit('password')" v-model="passwordSubmit" id="passwordSubmit">  
+                <input type="text" name="email" placeholder="Email" v-model="password.email" autocomplete="off">
+                <input type="submit" v-on:click="submit('password')" v-model="passwordSubmit" id="passwordSubmit">
             </div>
-          </div>  
+          </div>
        </div>
 
      <div class="md-medium-size-50 md-small-size-50 md-xsmall-hide">
@@ -96,33 +96,32 @@
 
           <div class="md-toolbar-section-end">
 
-            <md-button v-on:click="openModal('login')" v-if="!this.$store.state.user.loggedIn"> 
+            <md-button v-on:click="openModal('login')" v-if="!this.$store.state.user.loggedIn">
               <div class="md-ripple">
                 <div class="label-nav-main">LOGIN</div>
               </div>
             </md-button>
 
             <md-menu v-else>
-                <a href="#" class="md-button md-theme-default md-active" md-menu-trigger> 
+                <a href="#" class="md-button md-theme-default md-active" md-menu-trigger>
                   <div class="md-ripple">
                     <div class="label-nav-main">{{this.$store.state.user.profile.name}}</div>
                   </div>
                 </a>
                 <md-menu-content>
-                  <md-menu-item>
-                    <md-button v-on:click="logout()">LOGOUT</md-button>
-                  </md-menu-item>
+                  <md-menu-item @click="logout()">LOGOUT</md-menu-item>
+                  <md-menu-item @click="myProfile">AKUN SAYA</md-menu-item>
                 </md-menu-content>
             </md-menu>
 
             <form id="logout-form" v-bind:action="url+'logout'" method="POST" style="display: none;">
-              <input type="hidden" name="_token" v-bind:value="token"> 
+              <input type="hidden" name="_token" v-bind:value="token">
             </form>
 
-            <a href="#/cart" class="md-button md-theme-default md-active">
+            <a href="#/keranjang-belanja" class="md-button md-theme-default md-active">
               <div class="md-ripple">
                 <div class="label-nav-main">CART</div>
-                <md-badge md-content="0">
+                <md-badge v-bind:md-content="this.$store.state.keranjangbelanja.countKeranjang">
                   <i class="fa fa-shopping-basket icon-shop"></i>
                 </md-badge>
               </div>
@@ -156,11 +155,9 @@
                   <i class="fa fa-user icon-shop-mobile"></i>
               </a>
             </md-button>
-          </div>
-          <div class="md-toolbar-section-end">
             <md-button class="md-icon-button">
               <a href="#/cart">
-                <md-badge md-content="0">
+                <md-badge v-bind:md-content="this.$store.state.keranjangbelanja.countKeranjang">
                   <i class="fa fa-shopping-basket icon-shop-mobile"></i>
                 </md-badge>
               </a>
@@ -188,21 +185,21 @@
             <md-list-item>
               <md-icon>store</md-icon>
               <span class="md-list-item-text">
-                <a href="#/produk-list" class="md-button md-theme-default md-active side-menu">PRODUK</a>
+                <a href="#/list-produk" class="md-button md-theme-default md-active side-menu">PRODUK</a>
               </span>
             </md-list-item>
 
             <md-list-item>
               <md-icon>add_shopping_cart</md-icon>
               <span class="md-list-item-text">
-                <a href="#/produk-list" class="md-button md-theme-default md-active side-menu">PEMESANAN</a>
+                <a href="#/pemesanan" class="md-button md-theme-default md-active side-menu">PEMESANAN</a>
               </span>
             </md-list-item>
 
             <md-list-item>
               <md-icon>local_atm</md-icon>
               <span class="md-list-item-text">
-                <a href="#/produk-list" class="md-button md-theme-default md-active side-menu">PEMBAYARAN</a>
+                <a href="#/pembayaran" class="md-button md-theme-default md-active side-menu">PEMBAYARAN</a>
               </span>
             </md-list-item>
 
@@ -266,6 +263,8 @@
 			}),
       mounted () {
         this.modal = true
+
+        this.$store.dispatch('keranjangbelanja/LOAD_KERANJANG_LIST')
       },
 			methods : {
 				openModal(which) {
@@ -274,7 +273,7 @@
 							$('#form-'+this.active).removeClass('active')
 							$('#'+this.active+'-form').removeClass('active')
 					}
-          
+
           $("#login-modal").addClass('active')
 					$('#form-'+which).addClass('active')
 					$('#'+which+'-form').addClass('active')
@@ -350,6 +349,21 @@
             app.loginSubmit = "Login"
           })
         },
+        keranjangBelanja() {
+          const app = this
+
+          axios.post(app.url+'keranjang-belanja/jumlah-pesanan')
+          .then((resp) => {
+            app.daftarKeranjang = resp.data;
+          })
+          .catch((err) => {
+            app.errors = err.response.data
+            console.log(app.errors)
+          })
+        },
+        myProfile() {
+          this.$router.replace('/akun');
+        },
         logout() {
           document.getElementById('logout-form').submit();
           this.$store.commit('user/LOGOUT')
@@ -359,7 +373,7 @@
 </script>
 
 <style lang="scss" scoped>
-    
+
     .link-item {
       display: inline-block;
     }
@@ -474,14 +488,14 @@
 		.user-modal-container input[type="submit"].disabled {
 				background-color:  #ff4d4d;
 		}
-    
+
     .error-message {
         background-color:  #ff4d4d;
         border-radius: 6px;
     }
 
     .text-error {
-      font-weight: bold;      
+      font-weight: bold;
       color: white;
       padding : 4px;
     }

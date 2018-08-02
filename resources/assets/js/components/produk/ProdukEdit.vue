@@ -63,9 +63,10 @@
           </md-card>
 
           <div class="md-toolbar-section-end">
-            <md-button @click="editProduk" class="md-dense md-raised" style="background-color: #d44723; color: white">
+            <md-button v-if="!loading" @click="editProduk" class="md-dense md-raised" style="background-color: #d44723; color: white">
               Simpan
             </md-button>
+            <md-progress-spinner v-else :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
           </div>
 
           <!-- Snackbar for success alert -->
@@ -144,6 +145,7 @@
         let app = this;
   			let dataProduk = app.inputData(app);
 
+        app.loading = true;
         axios.post(app.url+"/"+app.produkId, dataProduk)
         .then(resp => {
           app.notifMessage = `Berhasil Mengubah Produk ${app.produk.nama_produk}`
@@ -152,6 +154,7 @@
         .catch(resp => {
           console.log(resp);
   				app.errors = resp.response.data
+          app.loading = false;
         });
       },
   		inputData(app) {

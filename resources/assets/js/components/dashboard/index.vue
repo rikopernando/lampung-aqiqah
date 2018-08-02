@@ -1,9 +1,4 @@
 <template>
-  <p> Welcome! </p>
+  <sidebar>
+  </sidebar>
 </template>
-
-<script>
-  export default {
-    name : 'Dashboard'
-  }
-</script>

@@ -23,6 +23,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 // User
 Route::get('/user/view', 'UserController@view');
+Route::get('/user/detail-akun', 'UserController@detailAkun');
+Route::put('/user/simpan-detail-akun', 'UserController@simpanDetailAkun');
 Route::resource('user', 'UserController');
 
 //Bank
@@ -30,10 +32,22 @@ Route::get('/bank/view', 'BankController@view');
 Route::resource('bank', 'BankController');
 //Produk
 Route::get('/produk/view', 'ProdukController@view');
+Route::get('/produk/view-produk', 'ProdukController@viewProduk');
+Route::get('/produk/view-produk-terbaru', 'ProdukController@viewProdukTerbaru');
+Route::get('/produk/sort-produk/{filter}', 'ProdukController@sortProduk');
 Route::post('/produk/{id}', 'ProdukController@update');
 Route::resource('produk', 'ProdukController');
+
 
 // Pesanan
 Route::get('pesanan/provinsi', 'PesananController@provinsi');
 Route::get('pesanan/pilih-wilayah/{id}/{type}', 'PesananController@pilih_wilayah');
 Route::resource('pesanan', 'PesananController');
+
+
+Route::post('/keranjang-belanja/create/{id}', 'KeranjangBelanjaController@tambahProdukKeranjangBelanjaan');
+Route::get('/keranjang-belanja/view', 'KeranjangBelanjaController@view');
+Route::get('/keranjang-belanja/subtotal-keranjang-belanja','KeranjangBelanjaController@cekSubtotalKeranjangBelanja');
+Route::post('/keranjang-belanja/edit-jumlah-keranjang/{id}/{operator}', 'KeranjangBelanjaController@editJumlahKeranjang');
+Route::post('/keranjang-belanja/jumlah-pesanan', 'KeranjangBelanjaController@jumlahPesanan');
+Route::resource('keranjang-belanja', 'KeranjangBelanjaController');
