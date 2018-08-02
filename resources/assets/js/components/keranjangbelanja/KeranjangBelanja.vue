@@ -64,7 +64,7 @@
 
 				                 	<td class="product-quantity" data-title="Jumlah" style="text-align:right">
 					               	   <div class="quantity buttons_added">
-					               	   		<button class="btn btn-md" @click="kurangJumlahKeranjang(keranjangbelanja.id_keranjang_belanja,keranjangbelanja.harga_produk)" style="background-color:#da2921;color:white;">&nbsp;( - )&nbsp;</button>
+					               	   		<button class="btn btn-md" @click="kurangJumlahKeranjang(keranjangbelanja.id_keranjang_belanja,keranjangbelanja.harga_produk)" style="background-color:#da2921;color:white;">&nbsp;( - )</button>
 
 									    	<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol"></span><b>{{ keranjangbelanja.jumlah_produk | pemisahTitik }}</b></span>
 
