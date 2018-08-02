@@ -17,102 +17,106 @@
 		      md-cancel-text="Batal"
 		      @md-confirm="onConfirmDelete" />
 
+    	<md-dialog-alert
+      			:md-active.sync="promptGagalEdit"
+      			md-title="Gagal !!"
+      			md-content="Produk tidak bisa dengan jumlah 0 ,Silakan hapus produk " />
 
-			 <md-card-content>
-    		<div class="col-md-9">
-				      <md-table style="height: 400px;max-height: 400px;" >
-				      <md-table-toolbar>
-				      	<h3>KERANJANG BELANJA</h3>
-      				  </md-table-toolbar>
+		    <div class="row">
+		    <div class="col-md-1"></div>
+    		<div class="col-md-7">
+				<h3>KERANJANG BELANJA</h3>
+					<table class="table-border table-responsive">
+				   				 <thead>
+				       				<tr>
+				       					<th class="product-name">Aksi</th>
+				            			<th class="product-name" colspan="2">Produk</th>
+				            			<th class="product-price">Harga</th>
+				            			<th class="product-quantity">Jumlah</th>
+				            			<th class="product-subtotal">Subtotal</th>
+				        			</tr>
+				    			</thead>
+				    			<tbody v-if="keranjangbelanjas.length"  class="data-ada">
+				    				<md-empty-state v-if="this.$store.state.keranjangbelanja.loading">
+							                <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+							        </md-empty-state>
 
-			<table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents" cellspacing="0">
-   				 <thead>
-       				<tr>
-            			<th class="product-name" colspan="3">Produk</th>
-            			<th class="product-price">Harga</th>
-            			<th class="product-quantity">Jumlah</th>
-            			<th class="product-subtotal">Subtotal</th>
-        			</tr>
-    			</thead>
-    			<tbody>
-            		<tr class="woocommerce-cart-form__cart-item cart_item" v-for="keranjangbelanja in keranjangbelanjas">
-		         	 
-		         	 <td class="product-remove">
-		         	 	  <md-button @click="deleteKeranjang(keranjangbelanja.id_keranjang_belanja,keranjangbelanja.subtotal)" class="md-icon-button md-dense md-raised" style="background-color:#da2921">
-        			      <md-icon style="color:#ffffff">delete</md-icon>
-      					 </md-button>
-		       		 </td>
+				            		<tr class="woocommerce-cart-form__cart-item cart_item scrollable-menu" v-for="keranjangbelanja in keranjangbelanjas">
 
-		            <td class="product-thumbnail">
-		            	<img width="50" height="50" :src="url_picture+'/default.jpg'" v-if="keranjangbelanja.produk.foto == null" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt="" sizes="(max-width: 300px) 100vw, 300px" />
-		            	<img width="50" height="50" :src="url_picture+'/'+keranjangbelanja.produk.foto" v-else class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt="" sizes="(max-width: 300px) 100vw, 300px" />
-		       		 </td>
+						         	 <td class="product-remove">
+						         	 	  <md-button @click="deleteKeranjang(keranjangbelanja.id_keranjang_belanja,keranjangbelanja.subtotal)" class="md-icon-button md-dense md-raised" style="background-color:#da2921">
+				        			      <md-icon style="color:#ffffff">delete</md-icon>
+				      					 </md-button>
+						       		 </td>
 
-          			<td class="product-name" data-title="Produk">
-           			 	<a href="#">{{ keranjangbelanja.produk.nama_produk | capitalize }}</a>  
-           			</td>
+						            <td class="product-thumbnail">
+						            	<img width="50" height="50" :src="url_picture+'/default.jpg'" v-if="keranjangbelanja.produk.foto == null" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt="" sizes="(max-width: 300px) 100vw, 300px" />
+						            	<img width="50" height="50" :src="url_picture+'/'+keranjangbelanja.produk.foto" v-else class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt="" sizes="(max-width: 300px) 100vw, 300px" />
+						       		 </td>
 
-	            	<td class="product-price" data-title="Harga">
-	            		<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span>{{ keranjangbelanja.harga_produk | pemisahTitik }}</span>
-	        		</td>
+				          			<td class="product-name" data-title="Produk">
+				           			 	{{ keranjangbelanja.produk.nama_produk | capitalize }}
+				           			</td>
 
-                 	<td class="product-quantity" data-title="Jumlah">
-	               	   <div class="quantity buttons_added">
-	               	   		<button class="btn btn-sm " style="background-color:#da2921;color:white;">(-)</button>
+					            	<td class="product-price" data-title="Harga" style="text-align:right">
+					            		<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span><b>{{ keranjangbelanja.harga_produk | pemisahTitik }}</b></span>
+					        		</td>
 
-					    	<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol"></span>{{ keranjangbelanja.jumlah_produk | pemisahTitik }}</span>
+				                 	<td class="product-quantity" data-title="Jumlah" style="text-align:right">
+					               	   <div class="quantity buttons_added">
+					               	   		<button class="btn btn-sm" @click="kurangJumlahKeranjang(keranjangbelanja.id_keranjang_belanja,keranjangbelanja.harga_produk)" style="background-color:#da2921;color:white;">( - )</button>
 
-					    	<button class="btn btn-sm " style="background-color:#da2921;color:white;">(+)</button>
-					   	</div>
-	             	</td>
+									    	<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol"></span><b>{{ keranjangbelanja.jumlah_produk | pemisahTitik }}</b></span>
 
-             		 <td class="product-subtotal" data-title="Subtotal">
-             	 		<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span>{{ keranjangbelanja.subtotal | pemisahTitik }}</span>
-             		</td>
-            	</tr>
-            </tbody>
-		</table>
+									    	<button class="btn btn-sm" @click="tambahJumlahKeranjang(keranjangbelanja.id_keranjang_belanja,keranjangbelanja.harga_produk)" style="background-color:#da2921;color:white;">( + )</button>
+									   	</div>
+					             	</td>
 
-		<div class="continue-shopping pull-left text-left">
-			<md-button :to="`/list-produk`" style="align:right;" class="md-dense md-raised md-primary">Lanjut Belanja<md-icon>undo</md-icon> </md-button>
-		</div>
+				             		 <td class="product-subtotal" data-title="Subtotal" style="text-align:right">
+				             	 		<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span><b>{{ keranjangbelanja.subtotal | pemisahTitik }}</b></span>
+				             		</td>
+				            	</tr>
+				            </tbody>
 
-		</md-table>
+				            <tbody class="data-tidak-ada" v-else>
+                                   <tr><td colspan="6" class="text-center">Tidak Ada Data Keranjang Belanja</td></tr>
+                            </tbody>
+						</table>
+
+						<md-button :to="`/list-produk`" style="align:right;" class="md-dense md-raised md-primary">Lanjut Belanja<md-icon>undo</md-icon> </md-button>
 			</div>
-	</md-card-content>
-				 
 
-	<div class="col-md-3" style="background-color:white;">
+			<div class="col-md-3">
 				 	<h3>RINCIAN PESANAN</h3>
-				 	<br><br>
 					<table class="table table-striped table-hover">
 				        <tbody>
 				          <tr>
 				          	<th>Subtotal</th>
-				            <td><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span>{{ subtotal | pemisahTitik }}</span></td></tr>
+				            <td style="text-align:right"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span><b>{{ this.$store.state.keranjangbelanja.subtotal | pemisahTitik }}</b></span></td></tr>
 				          <tr>
 				          	<th>Total Akhir</th>
-				            <td><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span>{{ total_akhir | pemisahTitik }}</span></td>    
+				            <td style="text-align:right"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span><b>{{ this.$store.state.keranjangbelanja.total_akhir | pemisahTitik }}</b></span></td>    
 				          </tr>
 				        </tbody>
 				      </table>
 
-				      <md-button style="align:right;" class="md-dense md-raised md-accent">Proses Checkout  <md-icon>send</md-icon> </md-button>
-
+				  <md-button :to="`/checkout`" v-if="keranjangbelanjas.length"  style="align:right;" class="md-dense md-raised md-accent">Proses Checkout  <md-icon>send</md-icon> </md-button>
 				 </div>
+				 <div class="col-md-1"></div>
 				 <!-- Snackbar for Bank delete alert -->
 			        <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarDeleteKeranjang" md-persistent>
 			            <span>Produk Keranjang berhasil dihapus!</span>
 			          </md-snackbar>
 			</div>
-      <Footer></Footer>
-  </div>
+	</div>
+    <Footer></Footer>
+</div>
 </template>
 
 <script>
     import Header from '../header'
     import Footer from '../footer/footer'
-
+    import { mapState } from 'vuex'
 
     export default {
 	data : () => {
@@ -121,16 +125,15 @@
 			url_picture : window.location.origin + (window.location.pathname) + "image_produks/",
 			filter_produk: 'populer',
 			promptDeleteKeranjang: false,
-			snackbarDeleteKeranjang: false,
+			promptGagalEdit:false,
 	    	keranjangIdForDelete: '',
-			keranjangbelanjas: [],
-			subtotal:0,
-			total_akhir:0
+	    	snackbarDeleteKeranjang:false,
+		    subtotalIdForDelete: '',
 		}
 	},
 	mounted() {
-	      this.getKeranjangBelanjaData();
-	      this.getSubtotalTbs();
+		  this.$store.dispatch('keranjangbelanja/LOAD_KERANJANG_LIST')
+	      this.$store.dispatch('keranjangbelanja/LOAD_SUBTOTAL_LIST')
 	},
 	filters: {
 	        pemisahTitik: function (value) {
@@ -143,48 +146,36 @@
 	          return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
 	   },
 	},
+	 computed : mapState ({    
+      keranjangbelanjas(){
+        return this.$store.state.keranjangbelanja.datakeranjang.data_keranjang
+      }
+    }),
 	methods:{
-		getKeranjangBelanjaData() {
-        axios.get(this.url + 'keranjang-belanja/view')
-        .then(resp => {
-          this.keranjangbelanjas = resp.data;
-          this.loading = false;
-        })
-        .catch(resp => {
-          console.log('Gagal Proses KeranjangData:', resp);
-        });
-      },
-      getSubtotalTbs(){
-        var app =  this;
-        axios.get(app.url+'keranjang-belanja/subtotal-keranjang-belanja')
-        .then(resp => {
-         app.subtotal += resp.data.subtotal;
-         app.total_akhir += resp.data.subtotal;
-         })
-        .catch(resp => {
-          console.log('Gagal Proses SubtotalKeranjangData:',resp);
-        });
-      },
       deleteKeranjang(id,subtotal) {
         this.promptDeleteKeranjang = true;
         this.keranjangIdForDelete = id;
         this.subtotalsIdForDelete = subtotal;
       },
       onConfirmDelete() {
-    		axios.delete(this.url+ 'keranjang-belanja/'+ this.keranjangIdForDelete)
-    		.then(resp => {
-    			var subtotal = parseInt(this.subtotal) - parseInt(this.subtotalsIdForDelete)
-                this.subtotal = subtotal;
-                this.total_akhir = subtotal;
-    			this.keranjangIdForDelete = '';
-    			this.subtotalsIdForDelete = '';
-    			this.snackbarDeleteKeranjang = true;
-    			this.getKeranjangBelanjaData();
-    		})
-    		.catch(resp => {
-    			console.log('Terjadi Kesalahan Konfirmasi Delete :', resp);
-    		})
+    	  this.$store.dispatch('keranjangbelanja/LOAD_DELETE_LIST',{id :this.keranjangIdForDelete,subtotal:this.subtotalsIdForDelete})
+    	  this.keranjangIdForDelete = '';
+          this.subtotalIdForDelete = '';
+          this.snackbarDeleteKeranjang = true;
     	},
+       tambahJumlahKeranjang(id,harga_produk){
+       	var operator = "+";
+       	this.$store.dispatch('keranjangbelanja/LOAD_TAMBAH_JUMLAH_LIST',{id_keranjang_belanja :id,harga_produk:harga_produk,operator:operator})
+      },
+      kurangJumlahKeranjang(id,harga_produk){
+      	var operator = "-";
+      	this.$store.dispatch('keranjangbelanja/LOAD_KURANG_JUMLAH_LIST',{id_keranjang_belanja :id,harga_produk:harga_produk,operator:operator})
+      	if(this.$store.state.keranjangbelanja.status == 0){
+      		this.promptGagalEdit = true;
+      	}else{
+      		this.promptGagalEdit = false;
+      	}
+      }
 	},
 
     components : {
@@ -209,10 +200,14 @@
 table th {
 	background:#da2921 !important; 
 	color:#fff !important; 
-	padding:5px !important;
+	padding:4px !important;
 }
 table td {
-	background:#FFF !important;
-	padding:10px !important;
+	background:#f7e1e1 !important;
+	padding:8px !important;
+}
+.scrollable-menu {
+    max-height: 15px;
+    overflow-x: hidden;
 }
 </style>
