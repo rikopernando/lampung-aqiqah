@@ -5,6 +5,7 @@
           <md-card md-with-hover>
             <ul class="breadcrumb">
               <li><a href="#/">Home</a></li>
+              <li><a href="#/keranjang-belanja">CART</a></li>
               <li class="active">Checkout</li>
             </ul>
           </md-card>
@@ -18,19 +19,23 @@
 						<md-card-content>
 							<div class="row">
                 <div class="col-md-6">
-                  <h5>Billing Details</h5>
+                  <h4>Billing Details</h4>
+
                   <BillingDetails 
                       :pesanan="pesanan" :select_provinsi="select_provinsi" :select_kabupaten="select_kabupaten"
                       :select_kecamatan="select_kecamatan" :select_kelurahan="select_kelurahan" :selectsumberInformasi="sumberInformasi"
                       :sumber_informasi="sumber_informasi" :provinsi="provinsi" :kabupaten="kabupaten" :kecamatan="kecamatan" :kelurahan="kelurahan"
                       />
+
                 </div>
 
                 <div class="col-md-6">
                   <md-checkbox v-model="kirim_ke_alamat_lain">Kirim ke alamat lain ?</md-checkbox>
-                  <KirimTempatLain :kirim_tempat_lain="kirim_tempat_lain" :select_provinsi="select_provinsi" :select_kabupaten="select_kabupaten" :select_kecamatan="select_kecamatan" :select_kelurahan="select_kelurahan"  :provinsi="provinsi" :kabupaten="kabupaten" :kecamatan="kecamatan" :kelurahan="kelurahan" v-if="kirim_ke_alamat_lain" />
 
-                  <h5>Data Peserta Aqiqah</h5>
+                  <KirimTempatLain :kirim_tempat_lain="kirim_tempat_lain" :select_provinsi="select_provinsi" :select_kabupaten="select_kabupaten" :select_kecamatan="select_kecamatan" 
+                  :select_kelurahan="select_kelurahan"  :provinsi="provinsi" :kabupaten="kabupaten" :kecamatan="kecamatan" :kelurahan="kelurahan" v-if="kirim_ke_alamat_lain" />
+
+                  <h4>Data Peserta Aqiqah</h4>
                   <DataPesertaAqiqah :pesanan="pesanan" />
                   
                 </div>
@@ -43,29 +48,29 @@
                   <th> PRODUCT </th>
                   <th style="text-align:right;"> TOTAL </th>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>Paket Premium x 2 </td>
-                    <td style="text-align:right; font-size:15px; font-weight:bold;"> Rp. 1.000.000</td>
-                  </tr>
-                  <tr>
-                    <td>Paket Special x 3 </td>
-                    <td style="text-align:right; font-size:15px; font-weight:bold;"><strong>Rp. 1.000.000</strong> </td>
+				    		<tbody v-if="this.$store.state.keranjangbelanja.countKeranjang > 0">
+                  <tr v-for="produks, index in data_produk">
+                    <td style="font-style: oblique;"> {{ produks.produk.nama_produk }} <span style="font-weight:bold">x {{ produks.jumlah_produk }} </span></td>
+                    <td style="text-align:right; font-size:15px; font-weight:bold;"> Rp. {{ produks.subtotal | pemisahTitik }}</td>
                   </tr>
                 </tbody>
-                <tbody>
+                <tbody v-else>
+                   <tr><td colspan="2" class="text-center" v-if="this.$store.state.keranjangbelanja.loading"><md-progress-spinner :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner></td></tr>
+                   <tr><td colspan="2" class="text-center" style="font-style: oblique 40deg;">Produk Kosong</td></tr>
+                </tbody>
+                <tbody v-if="this.$store.state.keranjangbelanja.countKeranjang > 0">
                   <tr>
                     <th>Subtotal</th>
-                    <td style="text-align:right; font-size:17px; font-weight:bold;"> <strong>Rp. 2.000.000</strong></td>
+                    <td style="text-align:right; font-size:17px; font-weight:bold;"> <strong>Rp. {{ this.$store.state.keranjangbelanja.subtotal | pemisahTitik }}</strong></td>
                   </tr>
                   <tr>
                     <th>Total</th>
-                    <td style="text-align:right; font-size:17px; font-weight:bold;"><strong>Rp. 2.000.000</strong> </td>
+                    <td style="text-align:right; font-size:17px; font-weight:bold;"><strong>Rp. {{ this.$store.state.keranjangbelanja.total_akhir | pemisahTitik }}</strong> </td>
                   </tr>
                 </tbody>
               </table>
 							
-							<h5>Metode Pembayaran</h5>
+							<h4>Metode Pembayaran</h4>
 							<md-steppers md-vertical>
 								<md-step id="first" md-label="Transfer Bank">
 										Lakukan pembayaran Anda langsung ke rekening bank kami. Harap gunakan ID Pesanan Anda sebagai referensi pembayaran. Pesanan Anda tidak akan dikirim sampai dana telah masuk ke rekening kami.
@@ -148,7 +153,16 @@
     }),
     mounted () {
       this.$store.dispatch('lokasi/LOAD_PROVINSI')
+	    this.$store.dispatch('keranjangbelanja/LOAD_SUBTOTAL_LIST')
     }, 
+	  filters: {
+      pemisahTitik: function (value) {
+          var angka = [value];
+          var numberFormat = new Intl.NumberFormat('es-ES');
+          var formatted = angka.map(numberFormat.format);
+          return formatted.join('; ');
+      },
+  	},
     computed : mapState ({
        provinsi () {
         return this.$store.state.lokasi.provinsi
@@ -161,6 +175,9 @@
        },
        kelurahan () {
         return this.$store.state.lokasi.kelurahan
+       },
+       data_produk () {
+        return this.$store.state.keranjangbelanja.datakeranjang.data_keranjang
        },
     }),
     components : {
@@ -202,6 +219,10 @@
 
   .md-progress-bar {
     margin: 1px;
+  }
+
+  .md-progress-spinner {
+    margin: 14px;
   }
 
   table th{background:#da2921 !important; color:#fff !important; padding:5px !important;}
