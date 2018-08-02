@@ -12,22 +12,22 @@
         </selectize-component>
       </div>
       <div class="form-group">
-        <md-progress-bar md-mode="indeterminate" v-if="lokasi.load_kabupaten"></md-progress-bar>
-        <p class="waiting" v-if="lokasi.load_kabupaten">Mohon tunggu ...</p>
+        <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kabupaten"></md-progress-bar>
+        <p class="waiting" v-if="this.$store.state.lokasi.load_kabupaten">Mohon tunggu ...</p>
         <selectize-component :settings="select_kabupaten" ref="kabupaten" v-on:input="pilihWilayah('kecamatan')">
           <option v-for="kabupaten, index in kabupaten" v-bind:value="kabupaten.id">{{ kabupaten.name }} </option> 
         </selectize-component>
       </div>
       <div class="form-group">
-        <md-progress-bar md-mode="indeterminate" v-if="lokasi.load_kecamatan"></md-progress-bar>
-        <p class="waiting" v-if="lokasi.load_kecamatan">Mohon tunggu ...</p>
+        <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kecamatan"></md-progress-bar>
+        <p class="waiting" v-if="this.$store.state.lokasi.load_kecamatan">Mohon tunggu ...</p>
         <selectize-component :settings="select_kecamatan" ref="kecamatan" v-on:input="pilihWilayah('kelurahan')">
           <option v-for="kecamatan, index in kecamatan" v-bind:value="kecamatan.id">{{ kecamatan.name }} </option> 
         </selectize-component>
       </div>
       <div class="form-group">
-        <md-progress-bar md-mode="indeterminate" v-if="lokasi.load_kelurahan"></md-progress-bar>
-        <p class="waiting" v-if="lokasi.load_kelurahan">Mohon tunggu ...</p>
+        <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kelurahan"></md-progress-bar>
+        <p class="waiting" v-if="this.$store.state.lokasi.load_kelurahan">Mohon tunggu ...</p>
         <selectize-component :settings="select_kelurahan" ref="kelurahan" v-on:input="changeKelurahan()">
           <option v-for="kelurahan, index in kelurahan" v-bind:value="kelurahan.id">{{ kelurahan.name }} </option> 
         </selectize-component>
@@ -54,9 +54,7 @@
   import { LOAD_DATA } from '../../store/lokasi/mutations'
 
   export default {
-      props : ["pesanan" ,"lokasi" ,"select_provinsi" ,"select_kabupaten"
-                  ,"select_kecamatan" ,"select_kelurahan" ,"selectsumberInformasi",
-                  "sumber_informasi" ,"provinsi" ,"kabupaten" ,"kecamatan" ,"kelurahan"],
+      props : ["pesanan" ,"select_provinsi" ,"select_kabupaten", "select_kecamatan" ,"select_kelurahan" ,"selectsumberInformasi", "sumber_informasi" ,"provinsi" ,"kabupaten" ,"kecamatan" ,"kelurahan"],
       mounted() {
         this.$refs.kabupaten.$el.selectize.disable()
         this.$refs.kelurahan.$el.selectize.disable()
@@ -78,6 +76,9 @@
                   id_wilayah = app.$refs.provinsi.$el.selectize.getValue()
                   if(id_wilayah){
                       app.pesanan.provinsi = id_wilayah
+                      app.pesanan.kabupaten = null 
+                      app.pesanan.kecamatan = null
+                      app.pesanan.kelurahan = null
                       selectize = app.$refs.kabupaten.$el.selectize
                       app.$refs.kecamatan.$el.selectize.disable()
                       app.$refs.kelurahan.$el.selectize.disable()
@@ -87,6 +88,8 @@
                   id_wilayah = app.$refs.kabupaten.$el.selectize.getValue()
                   if(id_wilayah){
                       app.pesanan.kabupaten = id_wilayah
+                      app.pesanan.kecamatan = null
+                      app.pesanan.kelurahan = null
                       selectize = app.$refs.kecamatan.$el.selectize
                       selectize.clearOptions()
                       app.$refs.kelurahan.$el.selectize.clearOptions()
@@ -97,6 +100,7 @@
                   id_wilayah = app.$refs.kecamatan.$el.selectize.getValue()
                   if(id_wilayah){
                       app.pesanan.kecamatan = id_wilayah
+                      app.pesanan.kelurahan = null
                       selectize = app.$refs.kelurahan.$el.selectize
                       selectize.clearOptions()
                   }
@@ -104,10 +108,11 @@
             }
 
           if(id_wilayah){
-              app.$store.commit(`lokasi/${LOAD_DATA}`,type)
+              app.$store.commit(`lokasi/${LOAD_DATA}`,{data : type, status : 1})
               app.$store.dispatch('lokasi/LOAD_WILAYAH',{
                 type : type,
-                id : id_wilayah
+                id : id_wilayah,
+                status : 1
               })
               selectize.enable()
               selectize.focus()

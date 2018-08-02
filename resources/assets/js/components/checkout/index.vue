@@ -20,7 +20,7 @@
                 <div class="col-md-6">
                   <h5>Billing Details</h5>
                   <BillingDetails 
-                      :pesanan="pesanan" :lokasi="this.$store.state.lokasi" :select_provinsi="select_provinsi" :select_kabupaten="select_kabupaten"
+                      :pesanan="pesanan" :select_provinsi="select_provinsi" :select_kabupaten="select_kabupaten"
                       :select_kecamatan="select_kecamatan" :select_kelurahan="select_kelurahan" :selectsumberInformasi="sumberInformasi"
                       :sumber_informasi="sumber_informasi" :provinsi="provinsi" :kabupaten="kabupaten" :kecamatan="kecamatan" :kelurahan="kelurahan"
                       />
@@ -28,33 +28,7 @@
 
                 <div class="col-md-6">
                   <md-checkbox v-model="kirim_ke_alamat_lain">Kirim ke alamat lain ?</md-checkbox>
-                  <span v-if="kirim_ke_alamat_lain">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <input type="text" v-model="kirim_tempat_lain.nama_depan" placeholder="Nama Depan" class="form-control">
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <input type="text" v-model="kirim_tempat_lain.nama_belakang" placeholder="Nama Belakang" class="form-control">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <input type="text" v-model="kirim_tempat_lain.company_name" placeholder="Company Name" class="form-control">
-                  </div>
-                  <div class="form-group">
-                    <input type="text" v-model="kirim_tempat_lain.alamat" placeholder="Alamat" class="form-control">
-                  </div>
-                  <div class="form-group">
-                    <input type="text" v-model="kirim_tempat_lain.kecamatan" class="form-control" placeholder="Kecamatan">
-                  </div>
-                  <div class="form-group">
-                    <input type="text" v-model="kirim_tempat_lain.kota"  class="form-control" placeholder="Kota">
-                  </div>
-                  </span>
+                  <KirimTempatLain :kirim_tempat_lain="kirim_tempat_lain" :select_provinsi="select_provinsi" :select_kabupaten="select_kabupaten" :select_kecamatan="select_kecamatan" :select_kelurahan="select_kelurahan"  :provinsi="provinsi" :kabupaten="kabupaten" :kecamatan="kecamatan" :kelurahan="kelurahan" v-if="kirim_ke_alamat_lain" />
                   <h5>Data Peserta Aqiqah</h5>
                   <div class="form-group">
                     <input type="text" v-model="pesanan.nama_peserta" class="form-control" placeholder="Nama Peserta">
@@ -136,6 +110,7 @@
   import Header from '../header'
   import Footer from '../footer/footer'
   import BillingDetails from './billing-details'
+  import KirimTempatLain from './kirim-tempat-lain'
 
   export default {
     data : () => ({
@@ -182,12 +157,15 @@
         nama_belakang : '',
         company_name : '',
         alamat : '',
+        provinsi : '',
+        kelurahan : '',
         kecamatan : '',
-        kota : ''
+        kabupaten : '',
       }
     }),
     mounted () {
       this.$store.dispatch('lokasi/LOAD_PROVINSI')
+      console.log(5)
     }, 
     computed : mapState ({
        provinsi () {
@@ -204,7 +182,7 @@
        },
     }),
     components : {
-      Header,Footer, BillingDetails
+      Header,Footer, BillingDetails, KirimTempatLain
     },
   }
 
