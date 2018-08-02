@@ -3,8 +3,8 @@
     <div class="col-md-12" style="padding: 0">
       <md-card>
         <ul class="breadcrumb">
-          <li><router-link :to="`/`">Home</router-link></li>
-          <li><router-link :to="`/bank`">Bank</router-link></li>
+          <li><router-link :to="{ name: 'home'}">Home</router-link></li>
+          <li><router-link :to="{ name: 'bank'}">Bank</router-link></li>
           <li class="active">Tambah Bank</li>
         </ul>
       </md-card>
@@ -113,7 +113,7 @@ export default {
     padding: 4px 0px 0px 10px;
   }
   .error-message {
-        background-color:  #ff4d4d;
-        border-radius: 6px;
-    }
+    background-color:  #ff4d4d;
+    border-radius: 6px;
+  }
 </style>
