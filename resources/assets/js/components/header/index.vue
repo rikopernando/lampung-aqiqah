@@ -263,6 +263,7 @@
 			}),
       mounted () {
         this.modal = true
+
         this.$store.dispatch('keranjangbelanja/LOAD_KERANJANG_LIST')
       },
 			methods : {
@@ -346,6 +347,18 @@
             console.log(app.errors)
             $('#loginSubmit').removeClass('disabled')
             app.loginSubmit = "Login"
+          })
+        },
+        keranjangBelanja() {
+          const app = this
+
+          axios.post(app.url+'keranjang-belanja/jumlah-pesanan')
+          .then((resp) => {
+            app.daftarKeranjang = resp.data;
+          })
+          .catch((err) => {
+            app.errors = err.response.data
+            console.log(app.errors)
           })
         },
         myProfile() {
