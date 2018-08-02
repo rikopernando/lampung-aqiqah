@@ -165,7 +165,9 @@ p {
         Aqiqah Lampung
       <div class="pull-right">
         <md-icon style="color: white">power_settings_new</md-icon>
-        <span class="btn" style="color: white; font-weight: bold">Logout</span>
+        <span class="btn" style="color: white; font-weight: bold">
+          <router-link :to="{name: 'logout'}" tag="div">Logout</router-link>
+        </span>
       </div>
       </div>
     </div>

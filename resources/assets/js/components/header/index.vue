@@ -110,9 +110,7 @@
                 </a>
                 <md-menu-content>
                   <md-menu-item @click="">
-                    <router-link :to="{name: 'logout', params: {
-                      token: token
-                    }}" tag="div">LOGOUT</router-link>
+                    <router-link :to="{name: 'logout'}" tag="div">LOGOUT</router-link>
                   </md-menu-item>
                   <md-menu-item @click="">
                     <router-link :to="{name: 'indexAkun'}" tag="div">AKUN SAYA</router-link>
