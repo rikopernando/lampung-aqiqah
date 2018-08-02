@@ -33,10 +33,10 @@ class KeranjangBelanjaController extends Controller
         $subtotal = $harga_produk->harga_jual * 1;
 
         if (Auth::check() == false) {
-            $datakeranjang_belanjaan = KeranjangBelanja::where('session_id', $session_id)->Where('id_produk', $id); 
+            $datakeranjang_belanjaan = KeranjangBelanja::where('session_id', $session_id)->Where('id_produk', $id);
             $jumlah_produk           = $datakeranjang_belanjaan->first();
 
-            if ($datakeranjang_belanjaan->count() == 0) {            
+            if ($datakeranjang_belanjaan->count() == 0) {
                 Session::put('session_id',$session_id);
             }
 
@@ -53,10 +53,10 @@ class KeranjangBelanjaController extends Controller
 
         }else{
             $pelanggan = Auth::user()->id;
-            $datakeranjang_belanjaan = KeranjangBelanja::where('id_pelanggan', $pelanggan)->Where('id_produk', $id); 
+            $datakeranjang_belanjaan = KeranjangBelanja::where('id_pelanggan', $pelanggan)->Where('id_produk', $id);
             $jumlah_produk           = $datakeranjang_belanjaan->first();
 
-            if ($datakeranjang_belanjaan->count() == 0) {            
+            if ($datakeranjang_belanjaan->count() == 0) {
                 Session::put('session_id',$session_id);
             }
 
@@ -86,7 +86,7 @@ class KeranjangBelanjaController extends Controller
 
         if (Auth::check() == false) {
             $datasubtotal  = KeranjangBelanja::select([DB::raw('SUM(subtotal) as subtotal')])->where('session_id',$session_id)->first();
-                
+
                 if ($datasubtotal->subtotal == null || $datasubtotal->subtotal == '') {
                    $subtotals = 0;
                 }else{
@@ -99,7 +99,7 @@ class KeranjangBelanjaController extends Controller
              $pelanggan = Auth::user()->id;
 
              $datasubtotal  = KeranjangBelanja::select([DB::raw('SUM(subtotal) as subtotal')])->where('id_pelanggan',$pelanggan)->first();
-                
+
                 if ($datasubtotal->subtotal == null || $datasubtotal->subtotal == '') {
                    $subtotals = 0;
                 }else{
@@ -125,8 +125,8 @@ class KeranjangBelanjaController extends Controller
             $keranjang_belanjaan = KeranjangBelanja::with(['produk'])->where('session_id', $session_id)->orderBy('id_keranjang_belanja','desc')->get();
 
         }else{
-            $keranjang_belanjaan = KeranjangBelanja::with(['produk'])->where('id_pelanggan', Auth::user()->id)->orderBy('id_keranjang_belanja','desc')->get();  
-   
+            $keranjang_belanjaan = KeranjangBelanja::with(['produk'])->where('id_pelanggan', Auth::user()->id)->orderBy('id_keranjang_belanja','desc')->get();
+
         }
 
 
@@ -146,7 +146,7 @@ class KeranjangBelanjaController extends Controller
             $keranjang_belanjaan = KeranjangBelanja::select()->where('session_id', $session_id)->where('id_produk',$id)->orderBy('id_keranjang_belanja','desc');
 
         }else{
-            $keranjang_belanjaan = KeranjangBelanja::select()->where('id_pelanggan', Auth::user()->id)->where('id_produk',$id)->orderBy('id_keranjang_belanja','desc');  
+            $keranjang_belanjaan = KeranjangBelanja::select()->where('id_pelanggan', Auth::user()->id)->where('id_produk',$id)->orderBy('id_keranjang_belanja','desc');
         }
 
             $data_keranjang = $keranjang_belanjaan->first();
@@ -168,6 +168,18 @@ class KeranjangBelanjaController extends Controller
             }
 
             return response()->json($respons);
+    }
+
+
+    public function jumlahPesanan() {
+      if (Auth::check()) {
+        $jumlah_pesanan = KeranjangBelanja::where('id_pelanggan', Auth::user()->id)->count();
+      }else{
+        $session_id = !Session::get('session_id') ? session()->getId() : Session::get('session_id');
+        $jumlah_pesanan = KeranjangBelanja::where('session_id', $session_id)->count();
+      }
+
+      return $jumlah_pesanan;
     }
 
 

@@ -43,7 +43,7 @@
            </md-empty-state>
 
             <div v-for="produk in produks">
-              <div class="col-md-3 col-sm-6 col-xs-6" style="padding: 25px 5px">
+              <div class="col-xs-6" style="padding: 25px 5px">
                   <div class="md-layout-item">
                      <md-card md-with-hover>
                        <md-card-media class="card-image">
@@ -213,5 +213,3 @@
     }
   }
 </style>
-
-
