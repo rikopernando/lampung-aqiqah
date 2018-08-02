@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Indonesia;
+use App\Pesanan;
 use Illuminate\Http\Request;
-use App\Bank;
 
-class BankController extends Controller
+
+class PesananController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -16,6 +18,7 @@ class BankController extends Controller
     {
         $this->middleware('auth');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -24,10 +27,6 @@ class BankController extends Controller
     public function index()
     {
         //
-    }
-
-    public function view() {
-        return response(Bank::select()->get());
     }
 
     /**
@@ -48,22 +47,8 @@ class BankController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'nama_bank' => 'required',
-            'atas_nama' => 'required',
-            'no_rek' => 'required|unique:banks,no_rek|numeric',
-        ]);
-
-        $master_bank = Bank::create([
-            'nama_bank' => $request->nama_bank,
-            'atas_nama' => $request->atas_nama,
-            'no_rek' => $request->no_rek,
-        ]);
-
-        return 1;
+        //
     }
-
-
 
     /**
      * Display the specified resource.
@@ -73,9 +58,7 @@ class BankController extends Controller
      */
     public function show($id)
     {
-
-
-        return response(Bank::whereId($id)->first());
+        //
     }
 
     /**
@@ -98,14 +81,7 @@ class BankController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
-       $this->validate($request, [
-            'nama_bank' => 'required',
-            'atas_nama' => 'required',
-            'no_rek' => 'required|unique:banks,no_rek,'.$id.'|numeric',
-        ]);
-
-        Bank::whereId($id)->update($request->all());
+        //
     }
 
     /**
@@ -116,7 +92,38 @@ class BankController extends Controller
      */
     public function destroy($id)
     {
-        $bank = Bank::destroy($id);
-        return response(200);
+        //
+    }
+
+    public function provinsi(){
+        $provinsi = Indonesia::allProvinces();
+        return response()->json($provinsi);
+    }
+
+    public function pilih_wilayah($id,$type){
+
+   # Tarik ID_wilayah & tipe_wilayah
+        $id_wilayah   = $id;
+        $type_wilayah = $type;
+
+        # Buat pilihan "Switch Case" berdasarkan variabel "type" dari dari data yg dikirim
+        switch ($type_wilayah):
+    # untuk kasus "kabupaten"
+        case 'kabupaten':
+        $kabupaten = Indonesia::allCities()->where('province_id', $id);
+        return response()->json($kabupaten);
+        break;
+    # untuk kasus "kecamatan"
+        case 'kecamatan':
+        $kecamatan = Indonesia::allDistricts()->where('city_id', $id);
+        return response()->json($kecamatan);
+        break;
+    # untuk kasus "kelurahan"
+        case 'kelurahan':
+        $kelurahan = Indonesia::allVillages()->where('district_id', $id);
+        return response()->json($kelurahan);
+        break;
+        # pilihan berakhir
+        endswitch;
     }
 }

@@ -38,7 +38,12 @@ Route::get('/produk/sort-produk/{filter}', 'ProdukController@sortProduk');
 Route::post('/produk/{id}', 'ProdukController@update');
 Route::resource('produk', 'ProdukController');
 
-//Keranjang Belanja
+
+// Pesanan
+Route::get('pesanan/provinsi', 'PesananController@provinsi');
+Route::get('pesanan/pilih-wilayah/{id}/{type}', 'PesananController@pilih_wilayah');
+Route::resource('pesanan', 'PesananController');
+
 
 Route::post('/keranjang-belanja/create/{id}', 'KeranjangBelanjaController@tambahProdukKeranjangBelanjaan');
 Route::get('/keranjang-belanja/view', 'KeranjangBelanjaController@view');

@@ -18,87 +18,21 @@
 						<md-card-content>
 							<div class="row">
                 <div class="col-md-6">
-                  <h5>Billing Details </h5>
-                  
-                  <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Nama Pemesan" v-model="pesanan.nama_pemesan">
-                  </div>
-									<div class="form-group">
-										<input type="text" v-model="pesanan.alamat" class="form-control" placeholder="Alamat">
-									</div>
-									<div class="form-group">
-										<input type="text" v-model="pesanan.kecamatan" class="form-control" placeholder="Kecamatan">
-									</div>
-									<div class="form-group">
-										<input type="text" v-model="pesanan.kota" class="form-control" placeholder="Kota">
-									</div>
-									<div class="form-group">
-										<input type="text" v-model="pesanan.handphone" class="form-control" placeholder="Handphone">
-									</div>
-									<div class="form-group">
-										<input type="email" v-model="pesanan.email" class="form-control" placeholder="Email">
-									</div>
-									<div class="form-group">
-                    <selectize-component :settings="sumberInformasi" v-model="pesanan.sumber_informasi" ref="sumber_informasi">
-                      <option v-for="sumberinformasi, index in sumber_informasi" v-bind:value="sumberinformasi">{{ sumberinformasi }} </option> 
-                    </selectize-component>
-									</div>
-                  <div class="form-group">
-                    <textarea v-model="pesanan.notes" class="form-control" placeholder="Catatan"></textarea>
-                  </div>
+                  <h5>Billing Details</h5>
+                  <BillingDetails 
+                      :pesanan="pesanan" :select_provinsi="select_provinsi" :select_kabupaten="select_kabupaten"
+                      :select_kecamatan="select_kecamatan" :select_kelurahan="select_kelurahan" :selectsumberInformasi="sumberInformasi"
+                      :sumber_informasi="sumber_informasi" :provinsi="provinsi" :kabupaten="kabupaten" :kecamatan="kecamatan" :kelurahan="kelurahan"
+                      />
                 </div>
 
                 <div class="col-md-6">
                   <md-checkbox v-model="kirim_ke_alamat_lain">Kirim ke alamat lain ?</md-checkbox>
-                  <span v-if="kirim_ke_alamat_lain">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <input type="text" v-model="kirim_tempat_lain.nama_depan" placeholder="Nama Depan" class="form-control">
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <input type="text" v-model="kirim_tempat_lain.nama_belakang" placeholder="Nama Belakang" class="form-control">
-                      </div>
-                    </div>
-                  </div>
+                  <KirimTempatLain :kirim_tempat_lain="kirim_tempat_lain" :select_provinsi="select_provinsi" :select_kabupaten="select_kabupaten" :select_kecamatan="select_kecamatan" :select_kelurahan="select_kelurahan"  :provinsi="provinsi" :kabupaten="kabupaten" :kecamatan="kecamatan" :kelurahan="kelurahan" v-if="kirim_ke_alamat_lain" />
 
-                  <div class="form-group">
-                    <input type="text" v-model="kirim_tempat_lain.company_name" placeholder="Company Name" class="form-control">
-                  </div>
-                  <div class="form-group">
-                    <input type="text" v-model="kirim_tempat_lain.alamat" placeholder="Alamat" class="form-control">
-                  </div>
-                  <div class="form-group">
-                    <input type="text" v-model="kirim_tempat_lain.kecamatan" class="form-control" placeholder="Kecamatan">
-                  </div>
-                  <div class="form-group">
-                    <input type="text" v-model="kirim_tempat_lain.kota"  class="form-control" placeholder="Kota">
-                  </div>
-                  </span>
                   <h5>Data Peserta Aqiqah</h5>
-                  <div class="form-group">
-                    <input type="text" v-model="pesanan.nama_peserta" class="form-control" placeholder="Nama Peserta">
-                  </div>
-                  <div class="form-group">
-                    <input type="text" v-model="pesanan.ttl_peserta" class="form-control" placeholder="Tempat & Tanggal Lahir">
-                  </div>
-                  <div class="form-group">
-                    <selectize-component :settings="jenisKelamin" v-model="pesanan.jenis_kelamin_peserta" ref="jenis_kelamin_peserta">
-                      <option v-bind:value="1">Laki-laki</option>
-                      <option v-bind:value="2">Perempuan</option>
-                    </selectize-component>
-                  </div>
-                  <div class="form-group">
-                    <input type="text" v-model="pesanan.nama_ayah" class="form-control" placeholder="Nama Ayah">
-                  </div>
-                  <div class="form-group">
-                    <input type="text" v-model="pesanan.nama_ibu" class="form-control" placeholder="Nama Ibu">
-                  </div>
-                  <div class="form-group">
-                    <input type="text" v-model="pesanan.tempat_lahir" class="form-control" placeholder="Lahir Di(Nama RSB/Bidan)">
-                  </div>
+                  <DataPesertaAqiqah :pesanan="pesanan" />
+                  
                 </div>
               </div>
 
@@ -153,26 +87,46 @@
 
 <script>
   
+  import { mapState } from 'vuex'
+  import { LOAD_DATA } from '../../store/lokasi/mutations'
   import Header from '../header'
   import Footer from '../footer/footer'
+  import BillingDetails from './billing-details'
+  import KirimTempatLain from './kirim-tempat-lain'
+  import DataPesertaAqiqah from './data-peserta-aqiqah'
 
   export default {
     data : () => ({
       kirim_ke_alamat_lain : false,
-      sumberInformasi : {
-        placeholder : 'Sumber Informasi'
-      },
       jenisKelamin : {
         placeholder : 'Jenis Kelamin'
       },
+      sumberInformasi : {
+        placeholder : 'Sumber Informasi'
+      },
+      select_provinsi : {
+        placeholder : 'Pilih Provinsi'
+      },
+      select_kabupaten : {
+        placeholder : 'Pilih Kabupaten atau Kota'
+      },
+      select_kecamatan : {
+        placeholder : 'Pilih Kecamatan'
+      },
+      select_kelurahan : {
+        placeholder : 'Pilih Kelurahan'
+      },
+			sumber_informasi: ['Google','Facebook','Instagram','Teman','Bidan','Website','Spanduk','X-Banner','Televisi','Radio'],
       pesanan : {
         nama_pemesan : '',
         alamat : '',
+        provinsi : '',
+        kelurahan : '',
         kecamatan : '',
-        kota : '',
+        kabupaten : '',
         handphone : '',
         email : '',
-        sumber_informasi : null,
+        sumber_informasi : '',
         notes : '',
         nama_peserta : '',
         ttl_peserta : '',
@@ -186,61 +140,32 @@
         nama_belakang : '',
         company_name : '',
         alamat : '',
+        provinsi : '',
+        kelurahan : '',
         kecamatan : '',
-        kota : ''
-      },
-      selected: {},
-      people: [
-        {
-          id: 1,
-          name: 'Shawna Dubbin',
-          email: 'sdubbin0@geocities.com',
-          gender: 'Male',
-          title: 'Assistant Media Planner'
-        },
-        {
-          id: 2,
-          name: 'Odette Demageard',
-          email: 'odemageard1@spotify.com',
-          gender: 'Female',
-          title: 'Account Coordinator'
-        },
-        {
-          id: 3,
-          name: 'Lonnie Izkovitz',
-          email: 'lizkovitz3@youtu.be',
-          gender: 'Female',
-          title: 'Operator'
-        },
-        {
-          id: 4,
-          name: 'Thatcher Stave',
-          email: 'tstave4@reference.com',
-          gender: 'Male',
-          title: 'Software Test Engineer III'
-        },
-        {
-          id: 5,
-          name: 'Clarinda Marieton',
-          email: 'cmarietonh@theatlantic.com',
-          gender: 'Female',
-          title: 'Paralegal'
-        }
-      ],
-			sumber_informasi: ['Google','Facebook','Instagram','Teman','Bidan','Website','Spanduk','X-Banner','Televisi','Radio']
+        kabupaten : '',
+      }
     }),
     mounted () {
-      console.log('test tercipta')
-    },
+      this.$store.dispatch('lokasi/LOAD_PROVINSI')
+    }, 
+    computed : mapState ({
+       provinsi () {
+        return this.$store.state.lokasi.provinsi
+       },
+       kabupaten () {
+        return this.$store.state.lokasi.kabupaten
+       },
+       kecamatan () {
+        return this.$store.state.lokasi.kecamatan
+       },
+       kelurahan () {
+        return this.$store.state.lokasi.kelurahan
+       },
+    }),
     components : {
-      Header,Footer
+      Header,Footer, BillingDetails, KirimTempatLain, DataPesertaAqiqah
     },
-    methods : {
-			getClass: ({ id }) => ({
-        'md-primary': id === 2,
-        'md-accent': id === 3
-      }),
-    }
   }
 
 </script>
@@ -273,6 +198,10 @@
 
   .md-table + .md-table {
     margin-top: 16px
+  }
+
+  .md-progress-bar {
+    margin: 1px;
   }
 
   table th{background:#da2921 !important; color:#fff !important; padding:5px !important;}

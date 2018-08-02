@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
         <!-- Bootstrap CSS CDN -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
         <!-- Our Custom CSS -->
@@ -40,5 +41,6 @@
                 });
             });
         </script>
+
     </body>
 </html>
