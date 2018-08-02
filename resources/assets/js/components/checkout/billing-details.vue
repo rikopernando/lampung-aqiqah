@@ -1,10 +1,10 @@
 <template>
   <div>
       <div class="form-group">
-        <input type="text" class="form-control" placeholder="Nama Pemesan" v-on:input="pesanan.nama_pemesan = $event.target.value">
+        <input type="text" class="form-control form-checkout" placeholder="Nama Pemesan" v-on:input="pesanan.nama_pemesan = $event.target.value">
       </div>
       <div class="form-group">
-        <input type="text" v-on:input="pesanan.alamat = $event.target.value" class="form-control" placeholder="Alamat">
+        <input type="text" v-on:input="pesanan.alamat = $event.target.value" class="form-control form-checkout" placeholder="Alamat">
       </div>
       <div class="form-group">
         <selectize-component :settings="select_provinsi" ref="provinsi" v-on:input="pilihWilayah('kabupaten')">
@@ -33,10 +33,10 @@
         </selectize-component>
       </div>
       <div class="form-group">
-        <input type="text" v-on:input="pesanan.handphone = $event.target.value" class="form-control" placeholder="Handphone">
+        <input type="text" v-on:input="pesanan.handphone = $event.target.value" class="form-control form-checkout" placeholder="Handphone">
       </div>
       <div class="form-group">
-        <input type="email" v-on:input="pesanan.email = $event.target.value" class="form-control" placeholder="Email">
+        <input type="email" v-on:input="pesanan.email = $event.target.value" class="form-control form-checkout" placeholder="Email">
       </div>
       <div class="form-group">
         <selectize-component :settings="selectsumberInformasi" v-on:input="changeSumberInformasi()" ref="sumber_informasi">
@@ -44,7 +44,7 @@
         </selectize-component>
       </div>
       <div class="form-group">
-        <textarea v-on:input="pesanan.notes = $event.target.value" class="form-control" placeholder="Catatan"></textarea>
+        <textarea v-on:input="pesanan.notes = $event.target.value" class="form-control form-checkout" placeholder="Catatan"></textarea>
       </div>
     </div>
 </template>
@@ -80,8 +80,11 @@
                       app.pesanan.kecamatan = null
                       app.pesanan.kelurahan = null
                       selectize = app.$refs.kabupaten.$el.selectize
+                      selectize.setValue('')
                       app.$refs.kecamatan.$el.selectize.disable()
                       app.$refs.kelurahan.$el.selectize.disable()
+                      app.$refs.kecamatan.$el.selectize.setValue('')
+                      app.$refs.kelurahan.$el.selectize.setValue('')
                   }
                     break;
                 case "kecamatan":
@@ -91,9 +94,10 @@
                       app.pesanan.kecamatan = null
                       app.pesanan.kelurahan = null
                       selectize = app.$refs.kecamatan.$el.selectize
-                      selectize.clearOptions()
-                      app.$refs.kelurahan.$el.selectize.clearOptions()
+                      selectize.disable()
+                      selectize.setValue('')
                       app.$refs.kelurahan.$el.selectize.disable()
+                      app.$refs.kelurahan.$el.selectize.setValue('')
                   }
                     break;
                 case "kelurahan":
@@ -102,7 +106,7 @@
                       app.pesanan.kecamatan = id_wilayah
                       app.pesanan.kelurahan = null
                       selectize = app.$refs.kelurahan.$el.selectize
-                      selectize.clearOptions()
+                      selectize.setValue('')
                   }
                     break;
             }
@@ -126,5 +130,8 @@
 <style lang="scss" scoped>
   .waiting {
     font-style: italic;
+  }
+  .form-checkout {
+    font-size: 14px;
   }
 </style>

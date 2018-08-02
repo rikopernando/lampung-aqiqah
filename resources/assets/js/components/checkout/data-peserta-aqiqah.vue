@@ -1,10 +1,10 @@
 <template>
    <div>
       <div class="form-group">
-        <input type="text" v-on:input="pesanan.nama_peserta = $event.target.value" class="form-control" placeholder="Nama Peserta">
+        <input type="text" v-on:input="pesanan.nama_peserta = $event.target.value" class="form-control form-checkout" placeholder="Nama Peserta">
       </div>
       <div class="form-group">
-        <input type="text" v-on:input="pesanan.ttl_peserta = $event.target.value" class="form-control" placeholder="Tempat & Tanggal Lahir">
+        <input type="text" v-on:input="pesanan.ttl_peserta = $event.target.value" class="form-control form-checkout" placeholder="Tempat & Tanggal Lahir">
       </div>
       <div class="form-group">
         <selectize-component :settings="jenisKelamin" v-on:input="changeJenisKelamin()" ref="jenis_kelamin_peserta">
@@ -13,13 +13,13 @@
         </selectize-component>
       </div>
       <div class="form-group">
-        <input type="text" v-on:input="pesanan.nama_ayah = $event.target.value" class="form-control" placeholder="Nama Ayah">
+        <input type="text" v-on:input="pesanan.nama_ayah = $event.target.value" class="form-control form-checkout" placeholder="Nama Ayah">
       </div>
       <div class="form-group">
-        <input type="text" v-on:input="pesanan.nama_ibu = $event.target.value" class="form-control" placeholder="Nama Ibu">
+        <input type="text" v-on:input="pesanan.nama_ibu = $event.target.value" class="form-control form-checkout" placeholder="Nama Ibu">
       </div>
       <div class="form-group">
-        <input type="text" v-on:input="pesanan.tempat_lahir = $event.target.value" class="form-control" placeholder="Lahir Di(Nama RSB/Bidan)">
+        <input type="text" v-on:input="pesanan.tempat_lahir = $event.target.value" class="form-control form-checkout" placeholder="Lahir Di(Nama RSB/Bidan)">
       </div>
    </div>
 </template>
@@ -39,3 +39,9 @@
     }
   }
 </script>
+
+<style lang="scss" scoped>
+  .form-checkout {
+    font-size: 14px;
+  }
+</style>

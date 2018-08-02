@@ -3,21 +3,21 @@
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <input type="text" v-on:input="kirim_tempat_lain.nama_depan = $event.target.value" placeholder="Nama Depan" class="form-control">
+            <input type="text" v-on:input="kirim_tempat_lain.nama_depan = $event.target.value" placeholder="Nama Depan" class="form-control form-checkout">
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <input type="text" v-on:input="kirim_tempat_lain.nama_belakang = $event.target.value" placeholder="Nama Belakang" class="form-control">
+            <input type="text" v-on:input="kirim_tempat_lain.nama_belakang = $event.target.value" placeholder="Nama Belakang" class="form-control form-checkout">
           </div>
         </div>
       </div>
 
       <div class="form-group">
-        <input type="text" v-on:input="kirim_tempat_lain.company_name = $event.target.value" placeholder="Company Name" class="form-control">
+        <input type="text" v-on:input="kirim_tempat_lain.company_name = $event.target.value" placeholder="Company Name" class="form-control form-checkout">
       </div>
       <div class="form-group">
-        <input type="text" v-on:input="kirim_tempat_lain.alamat = $event.target.value" placeholder="Alamat" class="form-control">
+        <input type="text" v-on:input="kirim_tempat_lain.alamat = $event.target.value" placeholder="Alamat" class="form-control form-checkout">
       </div>
       <div class="form-group">
         <selectize-component :settings="select_provinsi" ref="provinsi" v-on:input="pilihWilayah('kabupaten')">
@@ -95,6 +95,9 @@
                     selectize = app.$refs.kabupaten.$el.selectize
                     app.$refs.kecamatan.$el.selectize.disable()
                     app.$refs.kelurahan.$el.selectize.disable()
+                    selectize.setValue('')
+                    app.$refs.kecamatan.$el.selectize.setValue('')
+                    app.$refs.kelurahan.$el.selectize.setValue('')
                 }
                   break;
               case "kecamatan":
@@ -104,9 +107,9 @@
                     app.kirim_tempat_lain.kecamatan = null
                     app.kirim_tempat_lain.kelurahan = null
                     selectize = app.$refs.kecamatan.$el.selectize
-                    selectize.clearOptions()
-                    app.$refs.kelurahan.$el.selectize.clearOptions()
                     app.$refs.kelurahan.$el.selectize.disable()
+                    selectize.setValue('')
+                    app.$refs.kelurahan.$el.selectize.setValue('')
                 }
                   break;
               case "kelurahan":
@@ -115,7 +118,7 @@
                     app.kirim_tempat_lain.kecamatan = id_wilayah
                     app.kirim_tempat_lain.kelurahan = null
                     selectize = app.$refs.kelurahan.$el.selectize
-                    selectize.clearOptions()
+                    selectize.setValue('')
                 }
                   break;
             }
@@ -135,3 +138,9 @@
   }
 
 </script>
+
+<style lang="scss" scoped>
+  .form-checkout {
+    font-size: 14px;
+  }
+</style>

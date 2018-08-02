@@ -110,16 +110,16 @@
         placeholder : 'Sumber Informasi'
       },
       select_provinsi : {
-        placeholder : 'Pilih Provinsi'
+        placeholder : 'Cari Provinsi ...'
       },
       select_kabupaten : {
-        placeholder : 'Pilih Kabupaten atau Kota'
+        placeholder : 'Cari Kabupaten atau Kota ...'
       },
       select_kecamatan : {
-        placeholder : 'Pilih Kecamatan'
+        placeholder : 'Cari Kecamatan ...'
       },
       select_kelurahan : {
-        placeholder : 'Pilih Kelurahan'
+        placeholder : 'Cari Kelurahan ...'
       },
 			sumber_informasi: ['Google','Facebook','Instagram','Teman','Bidan','Website','Spanduk','X-Banner','Televisi','Radio'],
       pesanan : {
