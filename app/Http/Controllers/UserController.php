@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Role;
+use Auth;
 
 class UserController extends Controller
 {
@@ -21,6 +22,34 @@ class UserController extends Controller
 
     public function view() {
         return response(User::select()->get());
+    }
+
+    public function detailAkun() {
+        return response(User::where('id',Auth::User()->id)->first());
+    }
+
+    public function simpanDetailAkun(Request $request) {
+
+      $this->validate($request, [
+          'name'      => 'required|string|max:255',
+          'email'     => 'required|string|email|max:255|unique:users,email,'. $request->id,
+      ]);
+
+      if ($request->password != "") {
+        $this->validate($request, [
+            'password'  => 'required|min:6|confirmed'
+        ]);
+
+        $user = User::where('id', $request->id)->update([
+            'password'  => bcrypt($request->password)
+        ]);
+      }
+
+        $user = User::where('id', $request->id)->update([
+            'name'    => $request->name,
+            'email'   => $request->email,
+        ]);
+
     }
 
     /**
