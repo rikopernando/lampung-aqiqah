@@ -27,6 +27,8 @@ import AkunIndex from '../components/profil'
 
 import Dashboard from '../components/dashboard/index'
 
+import Logout from '../components/logout/index'
+
 const routes = [
   {
     path : '/',
@@ -145,8 +147,11 @@ const routes = [
     meta : {
       requiresAuth : false,
     }
+  },{
+    path : '/logout',
+    name : 'logout',
+    component : Logout
   }
-
 ]
 
 export default routes
