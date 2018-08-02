@@ -29,28 +29,10 @@
                 <div class="col-md-6">
                   <md-checkbox v-model="kirim_ke_alamat_lain">Kirim ke alamat lain ?</md-checkbox>
                   <KirimTempatLain :kirim_tempat_lain="kirim_tempat_lain" :select_provinsi="select_provinsi" :select_kabupaten="select_kabupaten" :select_kecamatan="select_kecamatan" :select_kelurahan="select_kelurahan"  :provinsi="provinsi" :kabupaten="kabupaten" :kecamatan="kecamatan" :kelurahan="kelurahan" v-if="kirim_ke_alamat_lain" />
+
                   <h5>Data Peserta Aqiqah</h5>
-                  <div class="form-group">
-                    <input type="text" v-model="pesanan.nama_peserta" class="form-control" placeholder="Nama Peserta">
-                  </div>
-                  <div class="form-group">
-                    <input type="text" v-model="pesanan.ttl_peserta" class="form-control" placeholder="Tempat & Tanggal Lahir">
-                  </div>
-                  <div class="form-group">
-                    <selectize-component :settings="jenisKelamin" v-model="pesanan.jenis_kelamin_peserta" ref="jenis_kelamin_peserta">
-                      <option v-bind:value="1">Laki-laki</option>
-                      <option v-bind:value="2">Perempuan</option>
-                    </selectize-component>
-                  </div>
-                  <div class="form-group">
-                    <input type="text" v-model="pesanan.nama_ayah" class="form-control" placeholder="Nama Ayah">
-                  </div>
-                  <div class="form-group">
-                    <input type="text" v-model="pesanan.nama_ibu" class="form-control" placeholder="Nama Ibu">
-                  </div>
-                  <div class="form-group">
-                    <input type="text" v-model="pesanan.tempat_lahir" class="form-control" placeholder="Lahir Di(Nama RSB/Bidan)">
-                  </div>
+                  <DataPesertaAqiqah :pesanan="pesanan" />
+                  
                 </div>
               </div>
 
@@ -111,6 +93,7 @@
   import Footer from '../footer/footer'
   import BillingDetails from './billing-details'
   import KirimTempatLain from './kirim-tempat-lain'
+  import DataPesertaAqiqah from './data-peserta-aqiqah'
 
   export default {
     data : () => ({
@@ -165,7 +148,6 @@
     }),
     mounted () {
       this.$store.dispatch('lokasi/LOAD_PROVINSI')
-      console.log(5)
     }, 
     computed : mapState ({
        provinsi () {
@@ -182,7 +164,7 @@
        },
     }),
     components : {
-      Header,Footer, BillingDetails, KirimTempatLain
+      Header,Footer, BillingDetails, KirimTempatLain, DataPesertaAqiqah
     },
   }
 
