@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
-    <div class="col-md-12">
-      <md-card md-with-hover style="border-radius: 10px">
+  <sidebar>
+    <div class="col-md-12" style="padding: 0">
+      <md-card>
         <ul class="breadcrumb">
           <li><a href="#/">Home</a></li>
           <li><a href="#/produk">Produk</a></li>
@@ -9,7 +9,7 @@
         </ul>
       </md-card>
 
-      <md-card md-with-hover style="border-radius: 10px">
+      <md-card>
         <md-card-header>
           <div class="header-card">
             <md-icon style="color: white">dns</md-icon>
@@ -47,7 +47,7 @@
             <md-file v-model="produk.foto" id="foto" accept="image/*" @change="onFileChange" />
           </md-field>
 
-          <md-card md-with-hover class="thumbnail-foto" v-if="produk.foto != null">
+          <md-card class="thumbnail-foto" v-if="produk.foto != null">
             <md-card-media-cover md-text-scrim>
                 <md-card-media md-ratio="16:9">
                   <img :src="url_picture+'/'+produk.foto" alt="Foto Produk">
@@ -78,7 +78,7 @@
       </md-card>
 
     </div>
-  </div>
+  </sidebar>
 </template>
 
 

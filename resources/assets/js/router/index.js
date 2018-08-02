@@ -77,7 +77,7 @@ const routes = [
       requiresAuth : true
     }
   },{
-    path : '/bank-create',
+    path : '/bank/create',
     name : 'bankCreate',
     component : BankCreate,
     meta : {

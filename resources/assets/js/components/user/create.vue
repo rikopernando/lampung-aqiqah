@@ -1,7 +1,6 @@
 <template>
   <sidebar>
     <div class="col-md-12">
-
       <md-card>
         <ul class="breadcrumb">
           <li><a href="#">Home</a></li>

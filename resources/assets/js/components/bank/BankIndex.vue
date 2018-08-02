@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
-    <div class="col-md-12">
-      <md-card md-with-hover>
+  <sidebar>
+    <div class="col-md-12" style="padding: 0">
+      <md-card>
         <ul class="breadcrumb">
           <li><router-link :to="`/`">Home</router-link></li>
           <li class="active">Bank</li>
@@ -17,7 +17,7 @@
       md-cancel-text="Batal"
       @md-confirm="onConfirmDelete" />
 
-      <md-card md-with-hover>
+      <md-card>
         <md-card-header>
           <div class="header-card">
             <md-icon style="color: white">account_balance</md-icon>
@@ -51,7 +51,7 @@
         <md-card-content>
 
           <div class="md-toolbar-section-start">
-                  <md-button :to="`/bank-create`" class="md-dense md-raised" style="background-color: #d44723; color: white"> Tambah</md-button>
+                  <md-button :to="`/bank-create`" class="md-dense md-raised" style="background-color: #d44723; color: white"> Tambah Bank</md-button>
           </div>
           <div class="md-toolbar-section-end"></div>
 
@@ -87,7 +87,7 @@
       </md-card>
 
     </div>
-  </div>
+  </sidebar>
 </template>
 
 <script>
