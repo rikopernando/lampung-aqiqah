@@ -26,7 +26,7 @@
 		    <div class="col-md-1"></div>
     		<div class="col-md-7">
 				<h3>KERANJANG BELANJA</h3>
-					<table class="table-border table-responsive">
+					<table class="table-responsive">
 				   				 <thead>
 				       				<tr>
 				       					<th class="product-name">Aksi</th>
