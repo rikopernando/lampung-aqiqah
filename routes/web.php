@@ -19,6 +19,8 @@ Route::get('/', function () {
 Route::get('/produk/view-produk', 'DaftarProdukController@viewProduk');
 Route::get('/produk/view-produk-terbaru', 'DaftarProdukController@viewProdukTerbaru');
 Route::get('/produk/sort-produk/{filter}', 'DaftarProdukController@sortProduk');
+Route::get('/produk/lihat-detail/{id_produk}', 'DaftarProdukController@detailProduk');
+
 
 route::get('/auth', 'AuthController@auth');
 

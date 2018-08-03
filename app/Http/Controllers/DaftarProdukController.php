@@ -38,6 +38,16 @@ class DaftarProdukController extends Controller
         return response($produk);
     }
 
+    public function detailProduk($id_produk){
+       $dataDetailProduk = Produk::select()->where('stok', 1)->where('id',$id_produk)->orderBy('id', 'DESC')->limit(4)->first();
+       $respons['nama_produk'] = title_case($dataDetailProduk->nama_produk);
+       $respons['foto'] = $dataDetailProduk->foto;
+       $respons['harga_coret'] = $dataDetailProduk->harga_coret;
+       $respons['harga_jual'] = $dataDetailProduk->harga_jual;
+       $respons['deskripsi_produk'] = $dataDetailProduk->deskripsi_produk;
+       return response()->json($respons);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
