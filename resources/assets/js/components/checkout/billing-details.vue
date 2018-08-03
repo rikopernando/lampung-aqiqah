@@ -14,21 +14,21 @@
       <div class="form-group">
         <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kabupaten"></md-progress-bar>
         <p class="waiting" v-if="this.$store.state.lokasi.load_kabupaten">Mohon tunggu ...</p>
-        <selectize-component :settings="select_kabupaten" ref="kabupaten" v-on:input="pilihWilayah('kecamatan')">
+        <selectize-component :settings="select_kabupaten" ref="kabupaten" v-on:input="pilihWilayah('kecamatan')" v-if="showKabupaten">
           <option v-for="kabupaten, index in kabupaten" v-bind:value="kabupaten.id">{{ kabupaten.name }} </option> 
         </selectize-component>
       </div>
       <div class="form-group">
         <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kecamatan"></md-progress-bar>
         <p class="waiting" v-if="this.$store.state.lokasi.load_kecamatan">Mohon tunggu ...</p>
-        <selectize-component :settings="select_kecamatan" ref="kecamatan" v-on:input="pilihWilayah('kelurahan')">
+        <selectize-component :settings="select_kecamatan" ref="kecamatan" v-on:input="pilihWilayah('kelurahan')" v-if="showKecamatan">
           <option v-for="kecamatan, index in kecamatan" v-bind:value="kecamatan.id">{{ kecamatan.name }} </option> 
         </selectize-component>
       </div>
       <div class="form-group">
         <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kelurahan"></md-progress-bar>
         <p class="waiting" v-if="this.$store.state.lokasi.load_kelurahan">Mohon tunggu ...</p>
-        <selectize-component :settings="select_kelurahan" ref="kelurahan" v-on:input="changeKelurahan()">
+        <selectize-component :settings="select_kelurahan" ref="kelurahan" v-on:input="changeKelurahan()" v-if="showKelurahan">
           <option v-for="kelurahan, index in kelurahan" v-bind:value="kelurahan.id">{{ kelurahan.name }} </option> 
         </selectize-component>
       </div>
@@ -52,13 +52,31 @@
 <script>
 
   import { LOAD_DATA } from '../../store/lokasi/mutations'
+  import { mapState } from 'vuex'
 
   export default {
       props : ["pesanan" ,"select_provinsi" ,"select_kabupaten", "select_kecamatan" ,"select_kelurahan" ,"selectsumberInformasi", "sumber_informasi" ,"provinsi" ,"kabupaten" ,"kecamatan" ,"kelurahan"],
-      mounted() {
-        this.$refs.kabupaten.$el.selectize.disable()
-        this.$refs.kelurahan.$el.selectize.disable()
-        this.$refs.kecamatan.$el.selectize.disable()
+      data : () => ({
+        showKabupaten : false,
+        showKecamatan : false,
+        showKelurahan : false
+      }),
+      watch : {
+        kabupaten : function () {
+          if(Object.keys(this.kabupaten).length){
+            this.showKabupaten = true
+          }
+        },
+        kecamatan : function () {
+          if(Object.keys(this.kecamatan).length){
+            this.showKecamatan = true
+          }
+        },
+        kelurahan : function () {
+          if(Object.keys(this.kelurahan).length){
+            this.showKelurahan = true
+          }
+        }
       },
       methods: {
         changeKelurahan () {
@@ -79,12 +97,9 @@
                       app.pesanan.kabupaten = null 
                       app.pesanan.kecamatan = null
                       app.pesanan.kelurahan = null
-                      selectize = app.$refs.kabupaten.$el.selectize
-                      selectize.setValue('')
-                      app.$refs.kecamatan.$el.selectize.disable()
-                      app.$refs.kelurahan.$el.selectize.disable()
-                      app.$refs.kecamatan.$el.selectize.setValue('')
-                      app.$refs.kelurahan.$el.selectize.setValue('')
+                      app.showKabupaten = false
+                      app.showKecamatan = false
+                      app.showKelurahan = false
                   }
                     break;
                 case "kecamatan":
@@ -93,11 +108,8 @@
                       app.pesanan.kabupaten = id_wilayah
                       app.pesanan.kecamatan = null
                       app.pesanan.kelurahan = null
-                      selectize = app.$refs.kecamatan.$el.selectize
-                      selectize.disable()
-                      selectize.setValue('')
-                      app.$refs.kelurahan.$el.selectize.disable()
-                      app.$refs.kelurahan.$el.selectize.setValue('')
+                      app.showKecamatan = false
+                      app.showKelurahan = false
                   }
                     break;
                 case "kelurahan":
@@ -105,8 +117,7 @@
                   if(id_wilayah){
                       app.pesanan.kecamatan = id_wilayah
                       app.pesanan.kelurahan = null
-                      selectize = app.$refs.kelurahan.$el.selectize
-                      selectize.setValue('')
+                      app.showKelurahan = false
                   }
                     break;
             }
@@ -118,8 +129,6 @@
                 id : id_wilayah,
                 status : 1
               })
-              selectize.enable()
-              selectize.focus()
           }
         }
       }

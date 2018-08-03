@@ -55,8 +55,14 @@
                   </tr>
                 </tbody>
                 <tbody v-else>
-                   <tr><td colspan="2" class="text-center" v-if="this.$store.state.keranjangbelanja.loading"><md-progress-spinner :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner></td></tr>
-                   <tr><td colspan="2" class="text-center" style="font-style: oblique 40deg;">Produk Kosong</td></tr>
+                   <tr v-if="this.$store.state.keranjangbelanja.loading">
+                       <td colspan="2" class="text-center" >
+                         <md-progress-spinner :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
+                       </td>
+                   </tr>
+                   <tr else>
+                       <td colspan="2" class="text-center" style="font-style: oblique 40deg;">Produk Kosong</td>
+                   </tr>
                 </tbody>
                 <tbody v-if="this.$store.state.keranjangbelanja.countKeranjang > 0">
                   <tr>

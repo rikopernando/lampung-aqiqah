@@ -27,21 +27,21 @@
       <div class="form-group">
         <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kabupaten_lain"></md-progress-bar>
         <p class="waiting" v-if="this.$store.state.lokasi.load_kabupaten_lain">Mohon tunggu ...</p>
-        <selectize-component :settings="select_kabupaten" ref="kabupaten" v-on:input="pilihWilayah('kecamatan')">
+        <selectize-component :settings="select_kabupaten" ref="kabupaten" v-on:input="pilihWilayah('kecamatan')" v-if="showKabupaten">
           <option v-for="kabupaten, index in kabupaten" v-bind:value="kabupaten.id">{{ kabupaten.name }} </option> 
         </selectize-component>
       </div>
       <div class="form-group">
         <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kecamatan_lain"></md-progress-bar>
         <p class="waiting" v-if="this.$store.state.lokasi.load_kecamatan_lain">Mohon tunggu ...</p>
-        <selectize-component :settings="select_kecamatan" ref="kecamatan" v-on:input="pilihWilayah('kelurahan')">
+        <selectize-component :settings="select_kecamatan" ref="kecamatan" v-on:input="pilihWilayah('kelurahan')" v-if="showKecamatan">
           <option v-for="kecamatan, index in kecamatan" v-bind:value="kecamatan.id">{{ kecamatan.name }} </option> 
         </selectize-component>
       </div>
       <div class="form-group">
         <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kelurahan_lain"></md-progress-bar>
         <p class="waiting" v-if="this.$store.state.lokasi.load_kelurahan_lain">Mohon tunggu ...</p>
-        <selectize-component :settings="select_kelurahan" ref="kelurahan" v-on:input="changeKelurahan()">
+        <selectize-component :settings="select_kelurahan" ref="kelurahan" v-on:input="changeKelurahan()" v-if="showKelurahan">
           <option v-for="kelurahan, index in kelurahan" v-bind:value="kelurahan.id">{{ kelurahan.name }} </option> 
         </selectize-component>
       </div>
@@ -56,9 +56,9 @@
   export default {
     props : ['kirim_tempat_lain', 'select_provinsi', 'select_kabupaten' , 'select_kecamatan', 'select_kelurahan', 'provinsi'],
     data : () => ({
-      load_kabupaten : false,
-      load_kecamatan : false,
-      load_kelurahan : false
+        showKabupaten : false,
+        showKecamatan : false,
+        showKelurahan : false
     }),
     computed : mapState ({
        kabupaten () {
@@ -69,12 +69,24 @@
        },
        kelurahan () {
         return this.$store.state.lokasi.kelurahan_lain
-       },
+       }
     }),
-    mounted() {
-      this.$refs.kabupaten.$el.selectize.disable()
-      this.$refs.kelurahan.$el.selectize.disable()
-      this.$refs.kecamatan.$el.selectize.disable()
+    watch : {
+        kabupaten : function () {
+          if(Object.keys(this.kabupaten).length){
+            this.showKabupaten = true
+          }
+        },
+        kecamatan : function () {
+          if(Object.keys(this.kecamatan).length){
+            this.showKecamatan = true
+          }
+        },
+        kelurahan : function () {
+          if(Object.keys(this.kelurahan).length){
+            this.showKelurahan = true
+          }
+        }
     },
     methods : {
       changeKelurahan(){
@@ -92,12 +104,9 @@
                     app.kirim_tempat_lain.kabupaten = null 
                     app.kirim_tempat_lain.kecamatan = null
                     app.kirim_tempat_lain.kelurahan = null
-                    selectize = app.$refs.kabupaten.$el.selectize
-                    app.$refs.kecamatan.$el.selectize.disable()
-                    app.$refs.kelurahan.$el.selectize.disable()
-                    selectize.setValue('')
-                    app.$refs.kecamatan.$el.selectize.setValue('')
-                    app.$refs.kelurahan.$el.selectize.setValue('')
+                    app.showKabupaten = false
+                    app.showKecamatan = false
+                    app.showKelurahan = false
                 }
                   break;
               case "kecamatan":
@@ -106,10 +115,8 @@
                     app.kirim_tempat_lain.kabupaten = id_wilayah
                     app.kirim_tempat_lain.kecamatan = null
                     app.kirim_tempat_lain.kelurahan = null
-                    selectize = app.$refs.kecamatan.$el.selectize
-                    app.$refs.kelurahan.$el.selectize.disable()
-                    selectize.setValue('')
-                    app.$refs.kelurahan.$el.selectize.setValue('')
+                    app.showKecamatan = false
+                    app.showKelurahan = false
                 }
                   break;
               case "kelurahan":
@@ -117,8 +124,7 @@
                 if(id_wilayah){
                     app.kirim_tempat_lain.kecamatan = id_wilayah
                     app.kirim_tempat_lain.kelurahan = null
-                    selectize = app.$refs.kelurahan.$el.selectize
-                    selectize.setValue('')
+                    app.showKelurahan = false
                 }
                   break;
             }
@@ -130,8 +136,6 @@
                 id : id_wilayah,
                 status : 2
               })
-             selectize.enable()
-             selectize.focus()
           }
        }
     }
