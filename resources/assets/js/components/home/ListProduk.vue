@@ -4,14 +4,11 @@
        <div class="produk-modal-container" id="produk-modal" >
             <div class="produk-modal">
                 <div class="title-produk">
-                  <div class="col-sm-4"> 
-                  </div>
-                  <div class="col-sm-4">
+                     <div class="md-toolbar-section-start"></div>
                     {{ detailProduk.nama_produk  }}
-                  </div>
-                  <div class="col-sm-4" style="text-align: right;" >
-                    <button type="button" v-on:click="closeModalProduk" class="btn btn-danger btn-lg">X </button>
-                  </div> 
+                     <div class="md-toolbar-section-end" style="padding:10px">
+                          <button type="button" @click="closeModalProduk" class="btn btn-danger btn-lg" >X </button>   
+                     </div>
                 </div>
                 <div class="form-produk" id="form-produk">
                   <div class="row">
@@ -62,7 +59,7 @@
             <div v-for="produk in produks">
               <div class="col-md-3 col-sm-6 col-xs-6" style="padding: 25px 15px">
                   <div class="md-layout-item">
-                     <md-card md-with-hover  >
+                     <md-card md-with-hover>
                       <div id="card-atas" @click="openModalProduk(produk.id)">
                        <md-card-media class="card-image" >
                           <md-card md-with-hover style="margin-top: -50px!important">
@@ -111,8 +108,9 @@
 
             <div v-for="produk in produks">
               <div class="col-xs-6" style="padding: 25px 5px">
-                  <div class="md-layout-item" @click="openModalProduk(produk.id)">
+                  <div class="md-layout-item">
                      <md-card md-with-hover >
+                      <div id="card-atas" @click="openModalProduk(produk.id)">
                        <md-card-media class="card-image" >
                           <md-card md-with-hover style="margin-top: -50px!important" >
                             <img :src="url_picture+'/default.jpg'" class="image" v-if="produk.foto == null">
@@ -123,14 +121,17 @@
                          <center> {{ produk.nama_produk | capitalize }} </center>
                        </p>
                        <md-card-actions class="card-action">
-                         <div class="md-toolbar-section-start harga-coret"> {{ produk.harga_coret | pemisahTitik }} </div>
-                         <div class="md-toolbar-section-end harga-jual"> {{ produk.harga_jual | pemisahTitik }} </div>
+                         <div class="md-toolbar-section-start harga-coret">Rp {{ produk.harga_coret | pemisahTitik }} </div>
+                         <div class="md-toolbar-section-end harga-jual"> Rp {{ produk.harga_jual | pemisahTitik }} </div>
                        </md-card-actions>
+                      </div>
+                      <div id="card-bawah">
                        <md-card-actions class="card-action">
                          <md-button  @click="createKeranjang(produk.id)" class="md-raised beli-sekarang">
                            Masuk Keranjang
                          </md-button>
                        </md-card-actions>
+                     </div>
                      </md-card>
                   </div>
               </div>
