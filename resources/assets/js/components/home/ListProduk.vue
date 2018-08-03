@@ -61,8 +61,9 @@
 
             <div v-for="produk in produks">
               <div class="col-md-3 col-sm-6 col-xs-6" style="padding: 25px 15px">
-                  <div class="md-layout-item" v-on:click="openModalProduk(produk.id)">
+                  <div class="md-layout-item">
                      <md-card md-with-hover  >
+                      <div id="card-atas" @click="openModalProduk(produk.id)">
                        <md-card-media class="card-image" >
                           <md-card md-with-hover style="margin-top: -50px!important">
                             <img :src="url_picture+'/default.jpg'" class="image" v-if="produk.foto == null">
@@ -76,11 +77,14 @@
                          <div class="md-toolbar-section-start harga-coret">Rp {{ produk.harga_coret | pemisahTitik }} </div>
                          <div class="md-toolbar-section-end harga-jual">Rp {{ produk.harga_jual | pemisahTitik }} </div>
                        </md-card-actions>
+                       </div>
+                       <div id="card-bawah">
                        <md-card-actions class="card-action">
                          <md-button @click="createKeranjang(produk.id)" class="beli-sekarang" style="background-color: #db4a24; color: white">
                            Masuk Keranjang <span class="bg"></span>
                          </md-button>
                        </md-card-actions>
+                     </div>
                      </md-card>
                   </div>
               </div>
@@ -107,10 +111,10 @@
 
             <div v-for="produk in produks">
               <div class="col-xs-6" style="padding: 25px 5px">
-                  <div class="md-layout-item" v-on:click="openModalProduk()">
+                  <div class="md-layout-item" @click="openModalProduk(produk.id)">
                      <md-card md-with-hover >
-                       <md-card-media class="card-image" v-on:click="openModalProduk()">
-                          <md-card md-with-hover style="margin-top: -50px!important">
+                       <md-card-media class="card-image" >
+                          <md-card md-with-hover style="margin-top: -50px!important" >
                             <img :src="url_picture+'/default.jpg'" class="image" v-if="produk.foto == null">
                             <img :src="url_picture+'/'+produk.foto" class="image" v-else>
                           </md-card>
