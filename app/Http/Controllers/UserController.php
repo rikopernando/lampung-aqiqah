@@ -62,6 +62,30 @@ class UserController extends Controller
 
     }
 
+    public function simpanAlamat(Request $request) {
+
+      $this->validate($request, [
+          'name'        => 'required|string|max:255',
+          'no_telp'     => 'required|numeric',
+          'alamat'      => 'required',
+          'provinsi'    => 'required',
+          'kabupaten'   => 'required',
+          'kecamatan'   => 'required',
+          'kelurahan'   => 'required'
+      ]);
+
+      $user = User::where('id', $request->id)->update([
+        'name'=> $request->name,
+        'no_telp'=> $request->no_telp,
+        'alamat'=> $request->alamat,
+        'provinsi'=> $request->provinsi,
+        'kabupaten'=> $request->kabupaten,
+        'kecamatan'=> $request->kecamatan,
+        'kelurahan'=> $request->kelurahan,
+      ]);
+
+    }
+
     /**
      * Show the form for creating a new resource.
      *

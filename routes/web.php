@@ -25,6 +25,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/user/view', 'UserController@view');
 Route::get('/user/detail-akun', 'UserController@detailAkun');
 Route::put('/user/simpan-detail-akun', 'UserController@simpanDetailAkun');
+Route::put('/user/simpan-alamat', 'UserController@simpanAlamat');
 Route::resource('user', 'UserController');
 
 //Bank
