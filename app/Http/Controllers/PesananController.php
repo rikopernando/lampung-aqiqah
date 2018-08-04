@@ -6,6 +6,10 @@ use Indonesia;
 use App\Pesanan;
 use App\User;
 use App\Role;
+use App\DetailPesanan;
+use App\KeranjangBelanja;
+use DB;
+use Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,6 +50,9 @@ class PesananController extends Controller
      */
     public function store(Request $request)
     {
+
+      DB::beginTransaction();
+
       $this->validate($request, [
           'nama_pemesan' => 'required',
           'alamat' => 'required',
@@ -54,7 +61,7 @@ class PesananController extends Controller
           'kecamatan'  => 'required',
           'kelurahan'  => 'required',
           'handphone'  => 'required',
-          'email' => 'required|string|email|max:255|unique:users',
+          'email' => 'required|string|email|max:255',
           'sumber_informasi' => 'required',
           'catatan' => 'required',
           'nama_peserta' => 'required',
@@ -67,6 +74,7 @@ class PesananController extends Controller
 
       if(Auth::check()){
          $pelanggan_id = Auth::User()->id;
+         $keranjang_belanja  = KeranjangBelanja::where('id_pelanggan',$pelanggan_id);
       }else{
          
         $user = User::create([
@@ -79,6 +87,8 @@ class PesananController extends Controller
         $user->attachRole($memberRole);
 
         $pelanggan_id = $user->id;
+        $session_id    = $this->getSessionId();
+        $keranjang_belanja  = KeranjangBelanja::where('session_id',$session_id);
       }
 
       $update_alamat_user = User::find($pelanggan_id);
@@ -99,6 +109,18 @@ class PesananController extends Controller
         'total' => $request->total,
         'metode_pembayaran' => $request->metode_pembayaran
       ]);
+       
+      foreach($keranjang_belanja->get() as $data) {
+
+          $new_detail_pesanan = DetailPesanan::create([
+            'id_pesanan' => $new_pesanan->id, 'id_produk' => $data->id_produk, 'pelanggan_id' => $pelanggan_id, 'jumlah_produk' => $data->jumlah_produk, 'harga_produk' => $data->harga_produk, 'potongan' => $data->potongan, 'subtotal' => $data->subtotal
+          ]);
+            
+      }
+
+      $keranjang_belanja->delete();
+
+      DB::commit();
 
       return $new_pesanan;
     }
@@ -178,5 +200,14 @@ class PesananController extends Controller
         break;
         # pilihan berakhir
         endswitch;
+    }
+
+    public function getSessionId() {
+        if(!Session::get('session_id')){
+            $session_id    = session()->getId();
+        }else{
+            $session_id = Session::get('session_id');
+        }
+        return $session_id;
     }
 }
