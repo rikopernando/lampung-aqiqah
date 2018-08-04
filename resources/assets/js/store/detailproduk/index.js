@@ -1,7 +1,7 @@
 import { DATADETAILPRODUK } from './mutations'
 
 const state = {
-    dataDetail : {},
+    detailProduk : {},
 }
 
 const getters = {
@@ -11,15 +11,14 @@ const getters = {
 const mutations = {
     DATADETAILPRODUK : (state, data)=> {
       console.log(data);
-      state.dataDetail = data;
-      
+      state.detailProduk = data;
     },
     
 }
 
 const actions = {      
-  LOAD_DETAIL_PRODUK : ({commit}) => {
-    axios.get('produk/lihat-detail/'+id_produk)
+  LOAD_DETAIL_PRODUK : ({commit},getdelete) => {
+    axios.get('produk/lihat-detail/'+getdelete.id)
     .then(resp => {
       commit('DATADETAILPRODUK',resp.data)
     })
