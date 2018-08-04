@@ -5,7 +5,7 @@
             <div class="produk-modal">
                 <div class="title-produk">
                      <div class="md-toolbar-section-start"></div>
-                    {{ detailProduk.nama_produk  }}
+                    {{ this.$store.state.detailproduk.detailProduk.nama_produk  }}
                      <div class="md-toolbar-section-end" style="padding:10px">
                           <button type="button" @click="closeModalProduk" class="btn btn-danger btn-lg" >X </button>   
                      </div>
@@ -13,13 +13,13 @@
                 <div class="form-produk" id="form-produk">
                   <div class="row">
                     <div class="col-md-6">
-                            <img :src="url_picture+'/default.jpg'" v-if="detailProduk.foto == null">
-                            <img :src="url_picture+'/'+detailProduk.foto" v-else>
+                            <img :src="url_picture+'/default.jpg'" v-if="this.$store.state.detailproduk.detailProduk.foto == null">
+                            <img :src="url_picture+'/'+this.$store.state.detailproduk.detailProduk.foto" v-else>
                     </div>
                     <div class="col-md-6">
-                      <h3> <strike>Rp {{ detailProduk.harga_coret | pemisahTitik }}</strike> Rp {{ detailProduk.harga_jual | pemisahTitik }} </h3> 
+                      <h3> <strike>Rp {{ this.$store.state.detailproduk.detailProduk.harga_coret | pemisahTitik }}</strike> Rp {{ this.$store.state.detailproduk.detailProduk.harga_jual | pemisahTitik }} </h3> 
                       <p class="desc">
-                      {{ detailProduk.deskripsi_produk }} 
+                      {{ this.$store.state.detailproduk.detailProduk.deskripsi_produk }} 
                       </p>
                       <input type="number" name="jumlah_produk" ref="jumlah_produk" class="jumlah_produk" value="">
                       <button class="btn-add-cart">Masukan Ke Keranjang</button>
@@ -162,7 +162,6 @@
         produks: [],
         loading: true,
         snackbarBerhasil: false,
-        detailProduk:{}
   	}),
   	mounted() {
       this.getProdukData()
@@ -208,15 +207,8 @@
           let app = this;
           $("#produk-modal").addClass('active')
           $('#form-produk').addClass('active')
-          axios.get(app.url+'produk/lihat-detail/'+id_produk)
-          .then(resp => {
-            app.detailProduk = resp.data;
-            console.log(app.detailProduk)
-            app.$refs.jumlah_produk.focus();
-          })
-          .catch(resp => {
-            console.log('catch getDetailProdukData:', resp);
-          });
+          app.$store.dispatch('detailproduk/LOAD_DETAIL_PRODUK',{id :id})
+          app.$refs.jumlah_produk.focus();
       },
       closeModalProduk() {
         $('#produk-modal').removeClass('active')
