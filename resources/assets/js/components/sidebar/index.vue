@@ -165,25 +165,41 @@ p {
         Aqiqah Lampung
       <div class="pull-right">
         <md-icon style="color: white">power_settings_new</md-icon>
-        <span class="btn" style="color: white; font-weight: bold">Logout</span>
+        <span class="btn" style="color: white; font-weight: bold">
+          <router-link :to="{name: 'logout'}" tag="div">Logout</router-link>
+        </span>
       </div>
       </div>
     </div>
     <div class="sidebar">
       <ul>
-        <li><a href="#"><md-icon>dashboard</md-icon><span>Dashboard</span></a></li>
-        <li><a href="#"><md-icon>fastfood</md-icon><span>Produk</span></a></li>
-        <li><a href="#"><md-icon>attach_money</md-icon><span>Bank</span></a></li>
-        <li><a href="#"><md-icon>account_box</md-icon><span>User</span></a></li>
+        <li>
+          <router-link :to="{name: 'dashboard'}">
+            <md-icon>dashboard</md-icon><span>Dashboard</span>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="{name: 'produk'}">
+            <md-icon>fastfood</md-icon><span>Produk</span>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="{name: 'bank'}">
+            <md-icon>attach_money</md-icon><span>Bank</span>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="{name: 'user'}">
+            <md-icon>account_box</md-icon><span>User</span>
+          </router-link>
+        </li>
       </ul>
     </div>
 
     <!-- Content -->
     <div class="main">
-      <div class="hipsum">
-        <slot>
-        </slot>
-      </div>
+      <slot>
+      </slot>
       <div class="footer">
         <p>Copyright © 2018 PT. Andaglos Global Teknologi.</p>
       </div>
