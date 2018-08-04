@@ -147,10 +147,28 @@
           </a>
 
           <div class="md-toolbar-section-end">
-            <md-button class="md-icon-button">
+            <md-button class="md-icon-button" v-if="!this.$store.state.user.loggedIn">
               <a href="#" v-on:click="openModal('login')">
                   <i class="fa fa-user icon-shop-mobile"></i>
               </a>
+            </md-button>
+
+            <md-button class="md-icon-button" v-else>
+              <md-menu>
+                <a href="#" class="md-button md-theme-default md-active" md-menu-trigger>
+                  <div class="md-ripple">
+                    <i class="fa fa-user icon-shop-mobile"></i>
+                  </div>
+                </a>
+                <md-menu-content>
+                  <md-menu-item @click="">
+                    <router-link :to="{name: 'logout'}" tag="div">LOGOUT</router-link>
+                  </md-menu-item>
+                  <md-menu-item @click="">
+                    <router-link :to="{name: 'indexAkun'}" tag="div">AKUN SAYA</router-link>
+                  </md-menu-item>
+                </md-menu-content>
+              </md-menu>
             </md-button>
             <md-button class="md-icon-button">
               <a href="#/keranjang-belanja">
