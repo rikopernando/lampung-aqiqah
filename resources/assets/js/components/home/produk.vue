@@ -77,6 +77,7 @@
               <div class="col-xs-6" style="padding: 25px 5px">
                   <div class="md-layout-item">
                      <md-card md-with-hover>
+                      <div id="card-atas" @click="openModalProduk(produk.id)">
                        <md-card-media class="card-image">
                           <md-card md-with-hover style="margin-top: -50px!important">
                             <img :src="url_picture+'/default.jpg'" class="image" v-if="produk.foto == null">
@@ -90,11 +91,14 @@
                          <div class="md-toolbar-section-start harga-coret"> {{ produk.harga_coret | pemisahTitik }} </div>
                          <div class="md-toolbar-section-end harga-jual"> {{ produk.harga_jual | pemisahTitik }} </div>
                        </md-card-actions>
+                     </div>
+                     <div id="card-bawah" >
                        <md-card-actions class="card-action">
                          <md-button  @click="createKeranjang(produk.id)" class="md-raised beli-sekarang">
                            Masuk Keranjang
                          </md-button>
                        </md-card-actions>
+                     </div>
                      </md-card>
                   </div>
               </div>
