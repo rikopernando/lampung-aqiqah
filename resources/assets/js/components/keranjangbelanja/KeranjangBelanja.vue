@@ -25,22 +25,21 @@
 	    <div class="row">
 		    <div class="col-md-1"></div>
     		<div class="col-md-7">
-					<h3>KERANJANG BELANJA</h3>
-					<table class="table-border table-responsive">
-			   		<thead>
-			       	<tr>
-			       		<th class="product-name">Aksi</th>
-			          <th class="product-name" colspan="2">Produk</th>
-			          <th class="product-price">Harga</th>
-			          <th class="product-quantity">Jumlah</th>
-			          <th class="product-subtotal">Subtotal</th>
-			        </tr>
-			    	</thead>
-			    	<tbody v-if="keranjangbelanjas.length"  class="data-ada">
-			    		<md-empty-state v-if="this.$store.state.keranjangbelanja.loading">
-						    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
-						  </md-empty-state>
-			        <tr class="woocommerce-cart-form__cart-item cart_item scrollable-menu" v-for="keranjangbelanja in keranjangbelanjas">
+				<h3>KERANJANG BELANJA</h3>
+					<table class="table-responsive">
+				   				 <thead>
+				       				<tr>
+				       					<th class="product-name">Aksi</th>
+				            			<th class="product-name" colspan="2">Produk</th>
+				            			<th class="product-price">Harga</th>
+				            			<th class="product-quantity">Jumlah</th>
+				            			<th class="product-subtotal">Subtotal</th>
+				        			</tr>
+				    			</thead>
+				    			<tbody v-if="this.$store.state.keranjangbelanja.countKeranjang > 0"  class="data-ada">
+				    				<md-empty-state v-if="this.$store.state.keranjangbelanja.loading">
+							                <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+							        </md-empty-state>
 
 					    	<td class="product-remove">
 					        <md-button @click="deleteKeranjang(keranjangbelanja.id_keranjang_belanja,keranjangbelanja.subtotal)" class="md-icon-button md-dense md-raised" style="background-color:#da2921">
@@ -83,9 +82,44 @@
             </tbody>
 					</table>
 
-					<md-button :to="`/list-produk`" style="align:right;" class="md-dense md-raised md-primary">Lanjut Belanja<md-icon>undo</md-icon></md-button>
-				</div>
-				<div class="col-md-3">
+						            <td class="product-thumbnail">
+						            	<img width="50" height="50" :src="url_picture+'/default.jpg'" v-if="keranjangbelanja.produk.foto == null" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt="" sizes="(max-width: 300px) 100vw, 300px" />
+						            	<img width="50" height="50" :src="url_picture+'/'+keranjangbelanja.produk.foto" v-else class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail wp-post-image" alt="" sizes="(max-width: 300px) 100vw, 300px" />
+						       		 </td>
+
+				          			<td class="product-name" data-title="Produk">
+				           			 	{{ keranjangbelanja.produk.nama_produk | capitalize }}
+				           			</td>
+
+					            	<td class="product-price" data-title="Harga" style="text-align:right">
+					            		<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span><b>{{ keranjangbelanja.harga_produk | pemisahTitik }}</b></span>
+					        		</td>
+
+				                 	<td class="product-quantity" data-title="Jumlah" style="text-align:right">
+					               	   <div class="quantity buttons_added">
+					               	   		<button class="btn btn-md" @click="kurangJumlahKeranjang(keranjangbelanja.id_keranjang_belanja,keranjangbelanja.harga_produk)" style="background-color:#da2921;color:white;">&nbsp;( - )</button>
+
+									    	<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol"></span><b>{{ keranjangbelanja.jumlah_produk | pemisahTitik }}</b></span>
+
+									    	<button class="btn btn-md" @click="tambahJumlahKeranjang(keranjangbelanja.id_keranjang_belanja,keranjangbelanja.harga_produk)" style="background-color:#da2921;color:white;">( + )</button>
+									   	</div>
+					             	</td>
+
+				             		 <td class="product-subtotal" data-title="Subtotal" style="text-align:right">
+				             	 		<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">Rp </span><b>{{ keranjangbelanja.subtotal | pemisahTitik }}</b></span>
+				             		</td>
+				            	</tr>
+				            </tbody>
+
+				            <tbody class="data-tidak-ada" v-else>
+                                   <tr><td colspan="6" class="text-center">Tidak Ada Data Keranjang Belanja</td></tr>
+                            </tbody>
+						</table>
+
+						<md-button :to="`/list-produk`" style="align:right;" class="md-dense md-raised md-primary">Lanjut Belanja<md-icon>undo</md-icon> </md-button>
+			</div>
+
+			<div class="col-md-3">
 				 	<h3>RINCIAN PESANAN</h3>
 					<table class="table table-striped table-hover">
 		        <tbody>
@@ -108,10 +142,13 @@
 				</div>
 			 	<div class="col-md-1"></div>
 
-			 	<!-- Snackbar for Bank delete alert -->
-        <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarDeleteKeranjang" md-persistent>
-	        <span>Produk Keranjang berhasil dihapus!</span>
-	      </md-snackbar>
+				  <md-button :to="`/checkout`" v-if="this.$store.state.keranjangbelanja.countKeranjang > 0"  style="align:right;" class="md-dense md-raised md-accent">Proses Checkout  <md-icon>send</md-icon> </md-button>
+				 </div>
+				 <div class="col-md-1"></div>
+				 <!-- Snackbar for Bank delete alert -->
+			        <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarDeleteKeranjang" md-persistent>
+			            <span>Produk Keranjang berhasil dihapus!</span>
+			          </md-snackbar>
 			</div>
 		</div>
     <Footer></Footer>

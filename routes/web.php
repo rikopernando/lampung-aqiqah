@@ -15,6 +15,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//Daftar Produk
+Route::get('/produk/view-produk', 'DaftarProdukController@viewProduk');
+Route::get('/produk/view-produk-terbaru', 'DaftarProdukController@viewProdukTerbaru');
+Route::get('/produk/sort-produk/{filter}', 'DaftarProdukController@sortProduk');
+Route::get('/produk/lihat-detail/{id_produk}', 'DaftarProdukController@detailProduk');
+
+
 route::get('/auth', 'AuthController@auth');
 
 Auth::routes();
@@ -32,13 +39,16 @@ Route::get('/bank/view', 'BankController@view');
 Route::resource('bank', 'BankController');
 //Produk
 Route::get('/produk/view', 'ProdukController@view');
-Route::get('/produk/view-produk', 'ProdukController@viewProduk');
-Route::get('/produk/view-produk-terbaru', 'ProdukController@viewProdukTerbaru');
-Route::get('/produk/sort-produk/{filter}', 'ProdukController@sortProduk');
 Route::post('/produk/{id}', 'ProdukController@update');
 Route::resource('produk', 'ProdukController');
 
-//Keranjang Belanja
+
+
+// Pesanan
+Route::get('pesanan/provinsi', 'PesananController@provinsi');
+Route::get('pesanan/pilih-wilayah/{id}/{type}', 'PesananController@pilih_wilayah');
+Route::resource('pesanan', 'PesananController');
+
 
 Route::post('/keranjang-belanja/create/{id}', 'KeranjangBelanjaController@tambahProdukKeranjangBelanjaan');
 Route::get('/keranjang-belanja/view', 'KeranjangBelanjaController@view');

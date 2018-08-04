@@ -8,32 +8,18 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class ProdukController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function view() {
         return response(Produk::select()->get());
-    }
-
-    public function viewProduk() {
-        return response(Produk::select()->where('stok', 1)->get());
-    }
-
-    public function viewProdukTerbaru(){
-       return response(Produk::select()->where('stok', 1)->orderBy('id', 'DESC')->limit(4)->get());
-    }
-
-    public function sortProduk($filter) {
-        if ($filter == 3) {
-          $produk = Produk::select()->where('stok', 1)->orderBy('harga_jual', 'DESC')->get();
-        }
-        elseif ($filter == 4) {
-          $produk = Produk::select()->where('stok', 1)->orderBy('harga_jual', 'ASC')->get();
-        }
-        elseif ($filter == 5) {
-          $produk = Produk::select()->where('stok', 1)->orderBy('id', 'DESC')->get();
-        }else{
-          $produk = Produk::select()->where('stok', 1)->get();
-        }
-
-        return response($produk);
     }
 
     /**

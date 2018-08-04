@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
         <!-- Bootstrap CSS CDN -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
         <!-- Our Custom CSS -->
@@ -23,7 +24,7 @@
         <div id="app">
             <router-view></router-view>
         </div>
-        <script src="{{ asset('js/app.js?v=1.23')}}" type="text/javascript"></script>
+        <script src="{{ asset('js/app.js?v=1.24')}}" type="text/javascript"></script>
 
         <!-- jQuery CDN - Slim version (=without AJAX) -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
@@ -40,5 +41,6 @@
                 });
             });
         </script>
+
     </body>
 </html>

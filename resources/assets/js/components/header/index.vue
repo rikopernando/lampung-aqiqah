@@ -120,7 +120,7 @@
 
             <router-link :to="{name: 'keranjangBelanja'}" class="md-button md-theme-default md-active">
               <div class="md-ripple">
-                <div class="label-nav-main">CART</div>
+                <div class="label-nav-main">KERANJANG</div>
                 <md-badge v-bind:md-content="this.$store.state.keranjangbelanja.countKeranjang">
                   <i class="fa fa-shopping-basket icon-shop"></i>
                 </md-badge>
@@ -153,7 +153,7 @@
               </a>
             </md-button>
             <md-button class="md-icon-button">
-              <a href="#/cart">
+              <a href="#/keranjang-belanja">
                 <md-badge v-bind:md-content="this.$store.state.keranjangbelanja.countKeranjang">
                   <i class="fa fa-shopping-basket icon-shop-mobile"></i>
                 </md-badge>

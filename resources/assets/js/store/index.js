@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import user from './user'
-import keranjangbelanja from './keranjangbelanja'
 import axios from 'axios'
+import user from './user'
+import lokasi from './lokasi'
+import keranjangbelanja from './keranjangbelanja'
 
 Vue.use(Vuex)
 
@@ -11,7 +12,7 @@ const store = new Vuex.Store({
     awesome: true
   },
   modules : {
-    user,keranjangbelanja
+    user,lokasi,keranjangbelanja
   }
 })
 
