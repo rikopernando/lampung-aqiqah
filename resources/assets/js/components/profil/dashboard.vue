@@ -3,7 +3,7 @@
     <md-card>
       <md-card-content>
         <p class="md-subheading">
-          Halo <b>{{ user.name }}</b> (bukan <b>{{ user.name }}</b> ? <a @click="logout()">Keluar</a>)
+          Halo <b>{{ user.name }}</b> (bukan <b>{{ user.name }}</b> ? ) <router-link :to="{name: 'logout'}" tag="div" style="color: blue">KELUAR</router-link>
         </p><br>
         <p class="subheading">
           Dari Dashboard akun Anda, Anda dapat melihat pesanan terbaru Anda,
@@ -58,7 +58,7 @@
 <script>
   export default {
     props: ["user"],
-    methods: {      
+    methods: {
       logout() {
         document.getElementById('logout-form').submit();
         this.$store.commit('user/LOGOUT')

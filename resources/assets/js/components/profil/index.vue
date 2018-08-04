@@ -34,7 +34,7 @@
                       <li class="tab-profil"><a style="color: #db4a24" href="#order-v" data-toggle="tab">ORDER</a></li>
                       <li class="tab-profil"><a style="color: #db4a24" href="#alamat-v" data-toggle="tab">ALAMAT</a></li>
                       <li class="tab-profil"><a style="color: #db4a24" href="#akun-v" data-toggle="tab">DETAIL AKUN</a></li>
-                      <li class="tab-profil"><a style="color: #db4a24" @click="logout" data-toggle="tab">KELUAR</a></li>
+                      <li class="tab-profil"><router-link :to="{name: 'logout'}" tag="div" style="color: #db4a24; padding: 10px 15px;">KELUAR</router-link></li>
                     </ul>
                   </div>
 
@@ -160,10 +160,6 @@
           console.log(resp);
         });
       },
-      logout() {
-        document.getElementById('logout-form').submit();
-        this.$store.commit('user/LOGOUT')
-      }
     },
     components : {
       Header, Footer, DashboardTab, OrderTab, AlamatTab, AkunTab,
