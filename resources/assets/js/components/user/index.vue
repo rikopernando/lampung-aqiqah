@@ -13,7 +13,7 @@
 
      	<md-card>
       	<ul class="breadcrumb">
-        	<li><a href="#">Home</a></li>
+        	<li><router-link :to="{name: 'home'}">Home</router-link></li>
         	<li class="active">User</li>
       	</ul>
       </md-card>
