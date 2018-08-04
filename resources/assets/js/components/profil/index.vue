@@ -6,7 +6,7 @@
       <div class="container">
           <md-card md-with-hover>
             <ul class="breadcrumb">
-              <li><a href="#/">Home</a></li>
+              <li><router-link :to="{name: 'home'}">Home</router-link></li>
               <li class="active">Akun</li>
             </ul>
           </md-card>
@@ -14,12 +14,11 @@
           <md-card md-with-hover>
 						<md-card-header>
                 <div class="md-toolbar-section-start">
-                  <a href="#/akun" class="simple-text logo-mini">
+                  <router-link class="simple-text logo-mini" :to="{name: 'indexAkun'}">
                     <div class="wrapper">
                       <img src="https://www.fancyhands.com/images/default-avatar-250x250.png" alt="" class="image--cover" />
                     </div>
-                  </a>
-
+                  </router-link>
                   <div class="md-title" style="color: #868686">
                     #{{ user.id }} {{ user.name }}
                   </div>
@@ -112,7 +111,9 @@
                           <div class="md-subheading">
                             <span>Belum Ada Pesanan Yang Dibuat.</span>
                             <md-button class="md-dense md-raised" style="background-color: #d44723; color: white">
-                              <a href="#/list-produk" style="color: white">Lanjutkan Belanja</a>
+                              <router-link style="color: white" :to="{name: 'listProduk'}">
+                                Lanjutkan Belanja
+                              </router-link>
                             </md-button>
                           </div>
                         </md-card-content>
