@@ -134,7 +134,7 @@
 		},
 		mounted() {
 		  this.$store.dispatch('keranjangbelanja/LOAD_KERANJANG_LIST')
-      this.$store.dispatch('keranjangbelanja/LOAD_SUBTOTAL_LIST')
+      	  this.$store.dispatch('keranjangbelanja/LOAD_SUBTOTAL_LIST')
 		},
 		filters: {
       pemisahTitik: function (value) {

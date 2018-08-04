@@ -125,7 +125,7 @@ const actions = {
         })
   },
   LOAD_CREATE_LIST : ({commit},get) => {
-        axios.post('keranjang-belanja/create/'+get.id)
+        axios.post('keranjang-belanja/create/'+get.id+'/'+get.jumlah_produk)
         .then(resp => {
           commit('CREATEKERANJANG',{respdata:resp.data,data:get})
         })

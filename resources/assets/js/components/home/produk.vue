@@ -23,7 +23,7 @@
                       {{ this.$store.state.detailproduk.detailProduk.deskripsi_produk }} 
                       </p>
                       <input type="number" name="jumlah_produk" ref="jumlah_produk" class="jumlah_produk" v-model="jumlah_produk" >
-                      <button class="btn-add-cart">Masukan Ke Keranjang</button>
+                      <button @click="createKeranjangDetail(id_detail)" class="btn-add-cart">Masukan Ke Keranjang</button>
                     </div>
                   </div>
                 </div>
@@ -123,7 +123,8 @@
         produks:[],
         loading: true,
         snackbarBerhasil: false,
-        jumlah_produk:0
+        jumlah_produk:0,
+        id_detail:""
       }
     },
     mounted() {
@@ -152,7 +153,7 @@
         });
       },
       createKeranjang(id){
-        this.$store.dispatch('keranjangbelanja/LOAD_CREATE_LIST',{id :id})
+        this.$store.dispatch('keranjangbelanja/LOAD_CREATE_LIST',{id :id,jumlah_produk:1})
         this.snackbarBerhasil = true;
       },
       openModalProduk(id_produk) {
@@ -162,11 +163,20 @@
           app.$store.dispatch('detailproduk/LOAD_DETAIL_PRODUK',{id:id_produk})
           app.jumlah_produk = 1;
           app.$refs.jumlah_produk.focus();
-
+          app.id_detail = id_produk;
       },
       closeModalProduk() {
-        $('#produk-modal').removeClass('active')
-      }
+        $('#produk-modal').removeClass('active');
+        app.id_detail = "";
+      },
+      createKeranjangDetail(id){
+        console.log(id)
+        var jumlah_produk = this.jumlah_produk;
+        this.$store.dispatch('keranjangbelanja/LOAD_CREATE_LIST',{id :id,jumlah_produk:jumlah_produk})
+        $('#produk-modal').removeClass('active');
+        app.id_detail = "";
+        this.snackbarBerhasil = true;
+      },
   }
 }
 
