@@ -56,6 +56,9 @@
 
   export default {
       props : ["pesanan" ,"select_provinsi" ,"select_kabupaten", "select_kecamatan" ,"select_kelurahan" ,"selectsumberInformasi", "sumber_informasi" ,"provinsi" ,"kabupaten" ,"kecamatan" ,"kelurahan"],
+      mounted () {
+        this.setProfile()
+      },
       data : () => ({
         showKabupaten : false,
         showKecamatan : false,
@@ -89,6 +92,11 @@
           }
         },
         profile : function () {
+           this.setProfile()
+        }
+      },
+      methods: {
+        setProfile() {
           const app = this
           if(Object.keys(app.profile).length){
               app.pesanan.nama_pemesan = app.profile.name
@@ -110,9 +118,7 @@
               $("#provinsi").val(app.profile.provinsi)
               app.setWilayah('kabupaten',app.selected_provinsi)
           }
-        }
-      },
-      methods: {
+        },
         changeKelurahan () {
             this.pesanan.kelurahan = this.$refs.kelurahan.$el.selectize.getValue()
         },
