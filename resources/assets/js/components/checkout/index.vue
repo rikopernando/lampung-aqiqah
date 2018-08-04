@@ -30,10 +30,10 @@
                 </div>
 
                 <div class="col-md-6">
-                  <md-checkbox v-model="kirim_ke_alamat_lain">Kirim ke alamat lain ?</md-checkbox>
+                  <md-checkbox v-model="pesanan.kirim_ke_alamat_lain">Kirim ke alamat lain ?</md-checkbox>
 
-                  <KirimTempatLain :kirim_tempat_lain="kirim_tempat_lain" :select_provinsi="select_provinsi" :select_kabupaten="select_kabupaten" :select_kecamatan="select_kecamatan" 
-                  :select_kelurahan="select_kelurahan"  :provinsi="provinsi" :kabupaten="kabupaten" :kecamatan="kecamatan" :kelurahan="kelurahan" v-if="kirim_ke_alamat_lain" />
+                  <KirimTempatLain :kirim_tempat_lain="pesanan.kirim_tempat_lain" :select_provinsi="select_provinsi" :select_kabupaten="select_kabupaten" :select_kecamatan="select_kecamatan" 
+                  :select_kelurahan="select_kelurahan"  :provinsi="provinsi" :kabupaten="kabupaten" :kecamatan="kecamatan" :kelurahan="kelurahan" v-if="pesanan.kirim_ke_alamat_lain" />
 
                   <h4>Data Peserta Aqiqah</h4>
                   <DataPesertaAqiqah :pesanan="pesanan" />
@@ -78,16 +78,16 @@
 							
 							<h4>Metode Pembayaran</h4>
 							<md-steppers md-vertical>
-								<md-step id="first" md-label="Transfer Bank">
+								<md-step id="first" md-label="Transfer Bank" v-on:click="pesanan.metode_pembayaran = 'Transfer Bank'">
 										Lakukan pembayaran Anda langsung ke rekening bank kami. Harap gunakan ID Pesanan Anda sebagai referensi pembayaran. Pesanan Anda tidak akan dikirim sampai dana telah masuk ke rekening kami.
 								</md-step>
 
-								<md-step id="second" md-label="Cash On Delivery">
+								<md-step id="second" md-label="Cash On Delivery" v-on:click="pesanan.metode_pembayaran = 'Cash On Delivery'">
 										Pembayaran di tempat saat barang datang
 								</md-step>
 							</md-steppers>
 							
-							<md-button class="md-raised md-accent" type="submit">Pesan Sekarang!</md-button>
+							<md-button class="md-raised md-accent" type="button" v-on:click="pesanSekarang()">Pesan Sekarang!</md-button>
 						</md-card-content>
 
           </md-card>
@@ -108,7 +108,8 @@
 
   export default {
     data : () => ({
-      kirim_ke_alamat_lain : false,
+      errors : [],
+    	url: window.location.origin + (window.location.pathname + 'pesanan'),
       jenisKelamin : {
         placeholder : 'Jenis Kelamin'
       },
@@ -138,24 +139,27 @@
         handphone : '',
         email : '',
         sumber_informasi : '',
-        notes : '',
+        catatan : '',
         nama_peserta : '',
-        ttl_peserta : '',
+        tempat_tanggal_lahir : '',
         jenis_kelamin_peserta : '',
         nama_ayah : '',
         nama_ibu : '',
-        tempat_lahir :''
+        tempat_lahir :'',
+        metode_pembayaran : 'Transfer Bank',
+        total : 0,
+        kirim_ke_alamat_lain : false,
+        kirim_tempat_lain : {
+          nama_depan : '',
+          nama_belakang : '',
+          company_name : '',
+          alamat : '',
+          provinsi : '',
+          kelurahan : '',
+          kecamatan : '',
+          kabupaten : '',
+        }
       },
-      kirim_tempat_lain : {
-        nama_depan : '',
-        nama_belakang : '',
-        company_name : '',
-        alamat : '',
-        provinsi : '',
-        kelurahan : '',
-        kecamatan : '',
-        kabupaten : '',
-      }
     }),
     mounted () {
       this.$store.dispatch('lokasi/LOAD_PROVINSI')
@@ -189,6 +193,20 @@
     components : {
       Header,Footer, BillingDetails, KirimTempatLain, DataPesertaAqiqah
     },
+    methods : {
+      pesanSekarang() {
+        console.log(2)
+        const app = this
+        app.pesanan.total = app.$store.state.keranjangbelanja.total_akhir
+        axios.post(app.url,app.pesanan)
+        .then((resp) => {
+
+        })
+        .catch((err) => {
+           app.errors = err.response.data
+        })
+      }
+    }
   }
 
 </script>
@@ -229,6 +247,17 @@
 
   .md-progress-spinner {
     margin: 14px;
+  }
+
+  .error-message {
+    background-color:  #ff4d4d;
+    border-radius: 6px;
+  }
+
+  .text-error {
+    font-weight: bold;
+    color: white;
+    padding : 4px;
   }
 
   table th{background:#da2921 !important; color:#fff !important; padding:5px !important;}

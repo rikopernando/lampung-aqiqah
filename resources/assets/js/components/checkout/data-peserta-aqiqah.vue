@@ -4,7 +4,7 @@
         <input type="text" v-on:input="pesanan.nama_peserta = $event.target.value" class="form-control form-checkout" placeholder="Nama Peserta">
       </div>
       <div class="form-group">
-        <input type="text" v-on:input="pesanan.ttl_peserta = $event.target.value" class="form-control form-checkout" placeholder="Tempat & Tanggal Lahir">
+        <input type="text" v-on:input="pesanan.tempat_tanggal_lahir = $event.target.value" class="form-control form-checkout" placeholder="Tempat & Tanggal Lahir">
       </div>
       <div class="form-group">
         <selectize-component :settings="jenisKelamin" v-on:input="changeJenisKelamin()" ref="jenis_kelamin_peserta">
