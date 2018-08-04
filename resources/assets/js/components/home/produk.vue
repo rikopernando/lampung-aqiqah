@@ -2,7 +2,7 @@
 
 
   <div v-bind:style="{ 'background-image': 'url(' + url+'/images/background-batik.jpg' + ')' }">
-             <div class="produk-modal-container" id="produk-modal" >
+        <div class="produk-modal-container" id="produk-modal" >
             <div class="produk-modal">
                 <div class="title-produk">
                      <div class="md-toolbar-section-start"></div>
@@ -18,11 +18,11 @@
                             <img :src="url_picture+'/'+this.$store.state.detailproduk.detailProduk.foto" v-else>
                     </div>
                     <div class="col-md-6">
-                      <h3> <strike>Rp {{ this.$store.state.detailproduk.detailProduk.harga_coret | pemisahTitik }}</strike> Rp {{ this.$store.state.detailproduk.detailProduk.harga_jual | pemisahTitik }} </h3> 
+                      <h3> <strike style="color: #636363;">Rp {{ this.$store.state.detailproduk.detailProduk.harga_coret | pemisahTitik }}</strike> Rp {{ this.$store.state.detailproduk.detailProduk.harga_jual | pemisahTitik }} </h3> 
                       <p class="desc">
                       {{ this.$store.state.detailproduk.detailProduk.deskripsi_produk }} 
                       </p>
-                      <input type="number" name="jumlah_produk" ref="jumlah_produk" class="jumlah_produk" value="">
+                      <input type="number" name="jumlah_produk" ref="jumlah_produk" class="jumlah_produk" v-model="jumlah_produk" >
                       <button class="btn-add-cart">Masukan Ke Keranjang</button>
                     </div>
                   </div>
@@ -119,6 +119,7 @@
         produks:[],
         loading: true,
         snackbarBerhasil: false,
+        jumlah_produk:0
       }
     },
     mounted() {
@@ -154,8 +155,10 @@
           let app = this;
           $("#produk-modal").addClass('active')
           $('#form-produk').addClass('active')
-          app.$store.dispatch('detailproduk/LOAD_DETAIL_PRODUK',{id :id})
+          app.$store.dispatch('detailproduk/LOAD_DETAIL_PRODUK',{id:id_produk})
+          app.jumlah_produk = 1;
           app.$refs.jumlah_produk.focus();
+
       },
       closeModalProduk() {
         $('#produk-modal').removeClass('active')

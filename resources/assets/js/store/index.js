@@ -4,6 +4,7 @@ import axios from 'axios'
 import user from './user'
 import lokasi from './lokasi'
 import keranjangbelanja from './keranjangbelanja'
+import detailproduk from './detailproduk'
 
 Vue.use(Vuex)
 
@@ -12,7 +13,7 @@ const store = new Vuex.Store({
     awesome: true
   },
   modules : {
-    user,lokasi,keranjangbelanja
+    user,lokasi,keranjangbelanja,detailproduk
   }
 })
 
