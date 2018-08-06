@@ -155,7 +155,6 @@ p {
 
 <template>
   <div>
-    <!-- Adminral is a simple boilerplate template. You can use it to create awesome apps. Its free to use. If you have any queries then dont' hesitate to contact/comment. -->
     <div class="header">
       <a href="#" id="menu-toggle" class="">
         <md-icon style="color: white">menu</md-icon>
@@ -207,29 +206,31 @@ p {
   </div>
 </template>
 <script>
-  export default {
-    mounted() {
-      this.init()
-    },
-    methods: {
-      init() {
-        var main = document.querySelector(".main");
-        var sidebar = document.querySelector(".sidebar");
-        var menutoggle = document.getElementById("menu-toggle");
-        console.log(menutoggle)
 
-        menutoggle.addEventListener("click", function(e) {
-          menutoggle.classList.toggle("active");
-          main.classList.toggle("active");
-          sidebar.classList.toggle("active");
+export default {
+  mounted() {
+    this.init()
+  },
+  methods: {
+    init() {
+      var main = document.querySelector(".main");
+      var sidebar = document.querySelector(".sidebar");
+      var menutoggle = document.getElementById("menu-toggle");
+      console.log(menutoggle)
 
-          if (sidebar.classList.contains("active")) {
-            menutoggle.querySelector("i").classList.remove("fa-bars");
-          } else {
-            menutoggle.querySelector("i").classList.add("fa-bars");
-          }
-        });
-      }
+      menutoggle.addEventListener("click", function(e) {
+        menutoggle.classList.toggle("active");
+        main.classList.toggle("active");
+        sidebar.classList.toggle("active");
+
+        if (sidebar.classList.contains("active")) {
+          menutoggle.querySelector("i").classList.remove("fa-bars");
+        } else {
+          menutoggle.querySelector("i").classList.add("fa-bars");
+        }
+      });
     }
   }
+}
+
 </script>

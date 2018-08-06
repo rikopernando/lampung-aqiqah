@@ -1,66 +1,4 @@
-<template>
-  <div>
-    <Header></Header>
-		<div class="produk-modal-container" id="produk-modal" v-on:click="closeModalProduk">
-			<div class="produk-modal">
-				<div class="title-produk">
-				  Paket Special
-				</div>
-  			<div class="form-produk" id="form-produk">
-					<div class="row">
-            <div class="col-md-6">
-              <img :src="url+'/images/paketExample.png'">
-            </div>
-            <div class="col-md-6">
-              <h3> <strike>Rp. 350.000</strike> Rp. 400.000 </h3> 
-              <p class="desc">
-              Satu ekor Hewan Aqiqah + Masak Sate 180 tusuk + gule 30 porsi + Nasi Box 30 porsi Varian isi Nasi Box : Nasi, Cah Buncis Wortel, krupuk Palembang, Buah pisang, sendok, lembar doa, buku risalah
-              </p>
-              <input type="number" name="jumlah_produk" class="jumlah_produk" value="1">
-              <button class="btn-add-cart">Masukan Ke Keranjang</button>
-              <p class="desc">
-              Kategori: Paket Aqiqah aqiqah, gule, Hewan Aqiqah, krupuk Palembang, Nasi Box, Sate
-              </p>
-				    </div>
-				  </div>
-				</div>
-			</div>
-		</div>
-    <md-button class="md-raised md-primary" v-on:click="openModalProduk()">Primary</md-button>
-  </div>
-</template>
-
-<script>
-  import Header from '../header'
-  
-  export default {
-    name : 'detail_produk',
-    data : () => ({
-      url : window.location.origin +  window.location.pathname, 
-      active : null
-    }),
-    components : { Header },
-    mounted() {
-      console.log('Haiiiii Freedom')
-    },
-    methods : {
-      openModalProduk() {
-        $("#produk-modal").addClass('active')
-        $('#form-produk').addClass('active')
-      },
-      closeModalProduk(e) {
-        console.log(e.path[1])
-        console.log(this.$el)
-        if (e.path[1] === this.$el) {
-          $('#produk-modal').removeClass('active')
-        }
-      }
-    }
-  }
-</script>
-
 <style>
-
 .produk-modal-container * {
   box-sizing: border-box;
 }
@@ -153,3 +91,66 @@
   background-color:  #e60000;
 }
 </style>
+
+<template>
+  <div>
+    <Header></Header>
+		<div class="produk-modal-container" id="produk-modal" v-on:click="closeModalProduk">
+			<div class="produk-modal">
+				<div class="title-produk">
+				  Paket Special
+				</div>
+  			<div class="form-produk" id="form-produk">
+					<div class="row">
+            <div class="col-md-6">
+              <img :src="url+'/images/paketExample.png'">
+            </div>
+            <div class="col-md-6">
+              <h3> <strike>Rp. 350.000</strike> Rp. 400.000 </h3> 
+              <p class="desc">
+                Satu ekor Hewan Aqiqah + Masak Sate 180 tusuk + gule 30 porsi + Nasi Box 30 porsi Varian isi Nasi Box : Nasi, Cah Buncis Wortel, krupuk Palembang, Buah pisang, sendok, lembar doa, buku risalah
+              </p>
+              <input type="number" name="jumlah_produk" class="jumlah_produk" value="1" />
+              <button class="btn-add-cart">Masukan Ke Keranjang</button>
+              <p class="desc">
+                Kategori: Paket Aqiqah aqiqah, gule, Hewan Aqiqah, krupuk Palembang, Nasi Box, Sate
+              </p>
+				    </div>
+				  </div>
+				</div>
+			</div>
+		</div>
+    <md-button class="md-raised md-primary" v-on:click="openModalProduk()">Primary</md-button>
+  </div>
+</template>
+
+<script>
+
+import Header from '../header'
+  
+export default {
+  name : 'detail_produk',
+  data : () => ({
+    url : window.location.origin +  window.location.pathname, 
+    active : null
+  }),
+  components : { Header },
+  mounted() {
+    console.log('Haiiiii Freedom')
+  },
+  methods : {
+    openModalProduk() {
+      $("#produk-modal").addClass('active')
+      $('#form-produk').addClass('active')
+    },
+    closeModalProduk(e) {
+      console.log(e.path[1])
+      console.log(this.$el)
+      if (e.path[1] === this.$el) {
+        $('#produk-modal').removeClass('active')
+      }
+    }
+  }
+}
+
+</script>

@@ -14,6 +14,7 @@
           </div>
         </div>
       </div>
+    </div>
 
       <div class="form-group">
         <input type="text" v-on:input="kirim_tempat_lain.company_name = $event.target.value" placeholder="Company Name" class="form-control form-checkout">
@@ -58,8 +59,8 @@
 
 <script>
   
-  import { mapState } from 'vuex'
-  import { LOAD_DATA } from '../../store/lokasi/mutations'
+import { mapState } from 'vuex'
+import { LOAD_DATA } from '../../store/lokasi/mutations'
 
   export default {
     props : ['kirim_tempat_lain', 'select_provinsi', 'select_kabupaten' , 'select_kecamatan', 'select_kelurahan', 'provinsi', 'errors'],
@@ -151,9 +152,43 @@
                 status : 2
               })
           }
-       }
+        break;
+        case "kecamatan":
+          id_wilayah = app.$refs.kabupaten.$el.selectize.getValue()
+          if(id_wilayah){
+            app.kirim_tempat_lain.kabupaten = id_wilayah
+            app.kirim_tempat_lain.kecamatan = null
+            app.kirim_tempat_lain.kelurahan = null
+            selectize = app.$refs.kecamatan.$el.selectize
+            selectize.clearOptions()
+            app.$refs.kelurahan.$el.selectize.clearOptions()
+            app.$refs.kelurahan.$el.selectize.disable()
+          }
+        break;
+        case "kelurahan":
+          id_wilayah = app.$refs.kecamatan.$el.selectize.getValue()
+          if(id_wilayah){
+            app.kirim_tempat_lain.kecamatan = id_wilayah
+            app.kirim_tempat_lain.kelurahan = null
+            selectize = app.$refs.kelurahan.$el.selectize
+            selectize.clearOptions()
+          }
+        break;
+      }
+
+      if(id_wilayah){
+        app.$store.commit(`lokasi/${LOAD_DATA}`,{data : type, status : 2})
+        app.$store.dispatch('lokasi/LOAD_WILAYAH',{
+          type : type,
+          id : id_wilayah,
+          status : 2
+        })
+        selectize.enable()
+        selectize.focus()
+      }
     }
   }
+}
 
 </script>
 
