@@ -1,27 +1,27 @@
 <template>
-   <div>
-      <div class="form-group">
-        <input type="text" v-on:input="pesanan.nama_peserta = $event.target.value" class="form-control" placeholder="Nama Peserta">
-      </div>
-      <div class="form-group">
-        <input type="text" v-on:input="pesanan.ttl_peserta = $event.target.value" class="form-control" placeholder="Tempat & Tanggal Lahir">
-      </div>
-      <div class="form-group">
-        <selectize-component :settings="jenisKelamin" v-on:input="changeJenisKelamin()" ref="jenis_kelamin_peserta">
-          <option v-bind:value="1">Laki-laki</option>
-          <option v-bind:value="2">Perempuan</option>
-        </selectize-component>
-      </div>
-      <div class="form-group">
-        <input type="text" v-on:input="pesanan.nama_ayah = $event.target.value" class="form-control" placeholder="Nama Ayah">
-      </div>
-      <div class="form-group">
-        <input type="text" v-on:input="pesanan.nama_ibu = $event.target.value" class="form-control" placeholder="Nama Ibu">
-      </div>
-      <div class="form-group">
-        <input type="text" v-on:input="pesanan.tempat_lahir = $event.target.value" class="form-control" placeholder="Lahir Di(Nama RSB/Bidan)">
-      </div>
-   </div>
+  <div>
+    <div class="form-group">
+      <input type="text" v-on:input="pesanan.nama_peserta = $event.target.value" class="form-control" placeholder="Nama Peserta">
+    </div>
+    <div class="form-group">
+      <input type="text" v-on:input="pesanan.ttl_peserta = $event.target.value" class="form-control" placeholder="Tempat & Tanggal Lahir">
+    </div>
+    <div class="form-group">
+      <selectize-component :settings="jenisKelamin" v-on:input="changeJenisKelamin()" ref="jenis_kelamin_peserta">
+        <option v-bind:value="1">Laki-laki</option>
+        <option v-bind:value="2">Perempuan</option>
+      </selectize-component>
+    </div>
+    <div class="form-group">
+      <input type="text" v-on:input="pesanan.nama_ayah = $event.target.value" class="form-control" placeholder="Nama Ayah">
+    </div>
+    <div class="form-group">
+      <input type="text" v-on:input="pesanan.nama_ibu = $event.target.value" class="form-control" placeholder="Nama Ibu">
+    </div>
+    <div class="form-group">
+      <input type="text" v-on:input="pesanan.tempat_lahir = $event.target.value" class="form-control" placeholder="Lahir Di(Nama RSB/Bidan)">
+    </div>
+  </div>
 </template>
 
 <script>

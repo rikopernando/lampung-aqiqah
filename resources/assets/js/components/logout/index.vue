@@ -3,20 +3,23 @@
 	  <input type="hidden" name="_token" v-bind:value="token">
 	</form>
 </template>
+
 <script>
-	export default {
-		data: () => ({
-			url : window.location.origin + window.location.pathname,
-			token : $('meta[name="csrf-token"]').attr('content'),
-		}),
-		mounted() {
-			this.logout()
-		},
-		methods: {
-			logout() {
-        document.getElementById('logout-form').submit();
-        this.$store.commit('user/LOGOUT')
-      }
-		}
+
+export default {
+	data: () => ({
+		url : window.location.origin + window.location.pathname,
+		token : $('meta[name="csrf-token"]').attr('content'),
+	}),
+	mounted() {
+		this.logout()
+	},
+	methods: {
+		logout() {
+      document.getElementById('logout-form').submit();
+      this.$store.commit('user/LOGOUT')
+    }
 	}
+}
+
 </script>

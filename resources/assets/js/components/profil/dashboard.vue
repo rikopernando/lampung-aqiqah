@@ -4,12 +4,14 @@
       <md-card-content>
         <p class="md-subheading">
           Halo <b>{{ user.name }}</b> (bukan <b>{{ user.name }}</b> ? <a @click="logout()">Keluar</a>)
-        </p><br>
+        </p>
+        <br>
         <p class="subheading">
           Dari Dashboard akun Anda, Anda dapat melihat pesanan terbaru Anda,
           mengelola alamat pengiriman dan penagihan Anda
           dan mengedit kata sandi dan detail akun Anda.
-        </p><br>
+        </p>
+        <br>
 
         <!-- DASHBOARD CARD -->
         <div class="row" id="portfolio">
@@ -56,13 +58,15 @@
 </template>
 
 <script>
-  export default {
-    props: ["user"],
-    methods: {      
-      logout() {
-        document.getElementById('logout-form').submit();
-        this.$store.commit('user/LOGOUT')
-      }
+
+export default {
+  props: ["user"],
+  methods: {      
+    logout() {
+      document.getElementById('logout-form').submit();
+      this.$store.commit('user/LOGOUT')
     }
   }
+}
+
 </script>
