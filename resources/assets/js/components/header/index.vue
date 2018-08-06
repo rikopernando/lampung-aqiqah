@@ -147,10 +147,28 @@
           </a>
 
           <div class="md-toolbar-section-end">
-            <md-button class="md-icon-button">
+            <md-button class="md-icon-button" v-if="!this.$store.state.user.loggedIn">
               <a href="#" v-on:click="openModal('login')">
                   <i class="fa fa-user icon-shop-mobile"></i>
               </a>
+            </md-button>
+
+            <md-button class="md-icon-button" v-else>
+              <md-menu>
+                <a href="#" class="md-button md-theme-default md-active" md-menu-trigger>
+                  <div class="md-ripple">
+                    <i class="fa fa-user icon-shop-mobile"></i>
+                  </div>
+                </a>
+                <md-menu-content>
+                  <md-menu-item @click="">
+                    <router-link :to="{name: 'logout'}" tag="div">LOGOUT</router-link>
+                  </md-menu-item>
+                  <md-menu-item @click="">
+                    <router-link :to="{name: 'indexAkun'}" tag="div">AKUN SAYA</router-link>
+                  </md-menu-item>
+                </md-menu-content>
+              </md-menu>
             </md-button>
             <md-button class="md-icon-button">
               <a href="#/keranjang-belanja">
@@ -173,31 +191,31 @@
 
           <md-list style="padding: 0px">
             <md-list-item>
-              <md-icon>home</md-icon>
-              <span class="md-list-item-text">
-                <router-link class="md-button md-theme-default md-active side-menu" :to="{name: 'home'}">HOME</router-link>
-              </span>
+              <router-link :to="{name: 'home'}" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+                <md-icon>home</md-icon>
+                <span>Home</span>
+              </router-link>
             </md-list-item>
 
             <md-list-item>
-              <md-icon>store</md-icon>
-              <span class="md-list-item-text">
-                <router-link class="md-button md-theme-default md-active side-menu" :to="{name: 'listProduk'}">PRODUK</router-link>
-              </span>
+              <router-link :to="{name: 'listProduk'}" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+                <md-icon>store</md-icon>
+                <span>Produk</span>
+              </router-link>
             </md-list-item>
 
             <md-list-item>
-              <md-icon>add_shopping_cart</md-icon>
-              <span class="md-list-item-text">
-                <a href="#/pemesanan" class="md-button md-theme-default md-active side-menu">PEMESANAN</a>
-              </span>
+              <a href="#/pemesanan" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+                <md-icon>add_shopping_cart</md-icon>
+                <span>Pemesanan</span>
+              </a>
             </md-list-item>
 
             <md-list-item>
-              <md-icon>local_atm</md-icon>
-              <span class="md-list-item-text">
-                <a href="#/pembayaran" class="md-button md-theme-default md-active side-menu">PEMBAYARAN</a>
-              </span>
+              <a href="#/pembayaran" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+                <md-icon>local_atm</md-icon>
+                <span>Pembayaran</span>
+              </a>
             </md-list-item>
 
           </md-list>
@@ -361,117 +379,3 @@
 			}
     }
 </script>
-
-<style lang="scss" scoped>
-  .link-item {
-    display: inline-block;
-  }
-  .user-modal-container * {
-    box-sizing: border-box;
-  }
-	.user-modal-container {
-		position: fixed;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		left: 0;
-		opacity: 0;
-		visibility: hidden;
-		cursor: pointer;
-		overflow-y: auto;
-		z-index: 3;
-		font-family: 'Lato', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif';
-		font-size: 14px;
-		background-color: rgba(17,17,17,.9);
-		-webkit-transition: all 0.25s linear;
-		-moz-transition: all 0.25s linear;
-		-o-transition: all 0.25s linear;
-		-ms-transition: all 0.25s linear;
-		transition: all 0.25s linear;
-  }
-	.user-modal-container.active {
-		opacity: 1;
-		visibility: visible;
-  }
-	.user-modal-container .user-modal {
-		position: relative;
-		margin: 50px auto;
-		width: 90%;
-		max-width: 500px;
-		background-color: #f6f6f6;
-		cursor: initial;
-	}
-	.user-modal-container .form-login, .user-modal-container .form-register, .user-modal-container .form-password {
-			padding: 75px 25px 25px;
-			display: none;
-	}
-	.user-modal-container .form-login.active, .user-modal-container .form-register.active, .user-modal-container .form-password.active {
-			display: block;
-	}
-	.user-modal-container ul.form-switcher {
-		margin: 0;
-		padding: 0;
-	}
-	.user-modal-container ul.form-switcher li {
-		list-style: none;
-		display: inline-block;
-		width: 50%;
-		float: left;
-		margin: 0;
-	}
-	.user-modal-container ul.form-switcher li a {
-		width: 100%;
-		display: block;
-		height: 50px;
-		line-height: 50px;
-		color: #666666;
-		background-color: #dddddd;
-		text-align: center;
-	}
-	.user-modal-container ul.form-switcher li a.active {
-		color: #000000;
-		background-color: #f6f6f6;
-	}
-	.user-modal-container input {
-		width: 100%;
-		padding: 10px;
-		margin-bottom: 10px;
-		border: 1px solid #eeeeee;
-	}
-	.user-modal-container input[type="submit"] {
-		color: #f6f6f6;
-		border: 0;
-		margin-bottom: 0;
-		background-color: #ff5252;
-		cursor: pointer;
-	}
-	.user-modal-container input[type="submit"]:hover {
-		background-color: #d21d24;
-	}
-	.user-modal-container input[type="submit"]:active {
-		background-color:  #e60000;
-	}
-	.user-modal-container .links {
-		text-align: center;
-		padding-top: 25px;
-	}
-	.user-modal-container .links a {
-		color: #8c7373;
-	}
-	.user-modal-container input[type="submit"].disabled {
-			background-color:  #ff4d4d;
-	}
-  .error-message {
-      background-color:  #ff4d4d;
-      border-radius: 6px;
-  }
-  .text-error {
-    font-weight: bold;
-    color: white;
-    padding: 4px;
-  }
-  .blackLink {
-    color: #868686;
-    text-decoration: none;
-  }
-</style>
