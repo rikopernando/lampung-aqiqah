@@ -53,7 +53,7 @@ class PesananController extends Controller
     {
 
       DB::beginTransaction();
-      
+
       $this->validationPesanan($request);
 
       if(Auth::check()){
@@ -214,99 +214,40 @@ class PesananController extends Controller
 
     public function validationPesanan($request) {
 
+        $rules = [
+          'nama_pemesan' => 'required',
+          'alamat' => 'required',
+          'provinsi'  => 'required',
+          'kabupaten'  => 'required',
+          'kecamatan'  => 'required',
+          'kelurahan'  => 'required',
+          'handphone'  => 'required',
+          'sumber_informasi' => 'required',
+          'nama_peserta' => 'required',
+          'tempat_tanggal_lahir' => 'required',
+          'jenis_kelamin_peserta' => 'required',
+          'nama_ayah' => 'required',
+          'nama_ibu' => 'required',
+        ];
+
         if(Auth::check()) {
-          if($request->kirim_ke_alamat_lain){
-              $this->validate($request, [
-                  'nama_pemesan' => 'required',
-                  'alamat' => 'required',
-                  'provinsi'  => 'required',
-                  'kabupaten'  => 'required',
-                  'kecamatan'  => 'required',
-                  'kelurahan'  => 'required',
-                  'handphone'  => 'required',
-                  'email' => 'required|string|email|max:255',
-                  'sumber_informasi' => 'required',
-                  'nama_peserta' => 'required',
-                  'tempat_tanggal_lahir' => 'required',
-                  'jenis_kelamin_peserta' => 'required',
-                  'nama_ayah' => 'required',
-                  'nama_ibu' => 'required',
-                  'kirim_tempat_lain.nama_depan' =>  'required',
-                  'kirim_tempat_lain.nama_belakang' =>  'required',
-                  'kirim_tempat_lain.company_name' =>  'required',
-                  'kirim_tempat_lain.alamat' =>  'required',
-                  'kirim_tempat_lain.provinsi' =>  'required',
-                  'kirim_tempat_lain.kabupaten' =>  'required',
-                  'kirim_tempat_lain.kecamatan' =>  'required',
-                  'kirim_tempat_lain.kelurahan' =>  'required',
-              ]);
-          }else{
-
-              $this->validate($request, [
-                  'nama_pemesan' => 'required',
-                  'alamat' => 'required',
-                  'provinsi'  => 'required',
-                  'kabupaten'  => 'required',
-                  'kecamatan'  => 'required',
-                  'kelurahan'  => 'required',
-                  'handphone'  => 'required',
-                  'email' => 'required|string|email|max:255',
-                  'sumber_informasi' => 'required',
-                  'nama_peserta' => 'required',
-                  'tempat_tanggal_lahir' => 'required',
-                  'jenis_kelamin_peserta' => 'required',
-                  'nama_ayah' => 'required',
-                  'nama_ibu' => 'required',
-              ]);
-          }
+          $rules['email'] = 'required|string|email|max:255';
         }else{
-
-          if($request->kirim_ke_alamat_lain){
-              $this->validate($request, [
-                  'nama_pemesan' => 'required',
-                  'alamat' => 'required',
-                  'provinsi'  => 'required',
-                  'kabupaten'  => 'required',
-                  'kecamatan'  => 'required',
-                  'kelurahan'  => 'required',
-                  'handphone'  => 'required',
-                  'email' => 'required|string|email|max:255|unique:users',
-                  'sumber_informasi' => 'required',
-                  'nama_peserta' => 'required',
-                  'tempat_tanggal_lahir' => 'required',
-                  'jenis_kelamin_peserta' => 'required',
-                  'nama_ayah' => 'required',
-                  'nama_ibu' => 'required',
-                  'tempat_lahir' =>  'required',
-                  'kirim_tempat_lain.nama_depan' =>  'required',
-                  'kirim_tempat_lain.nama_belakang' =>  'required',
-                  'kirim_tempat_lain.company_name' =>  'required',
-                  'kirim_tempat_lain.alamat' =>  'required',
-                  'kirim_tempat_lain.provinsi' =>  'required',
-                  'kirim_tempat_lain.kabupaten' =>  'required',
-                  'kirim_tempat_lain.kecamatan' =>  'required',
-                  'kirim_tempat_lain.kelurahan' =>  'required',
-              ]);
-          }else{
-
-              $this->validate($request, [
-                  'nama_pemesan' => 'required',
-                  'alamat' => 'required',
-                  'provinsi'  => 'required',
-                  'kabupaten'  => 'required',
-                  'kecamatan'  => 'required',
-                  'kelurahan'  => 'required',
-                  'handphone'  => 'required',
-                  'email' => 'required|string|email|max:255|unique:users',
-                  'sumber_informasi' => 'required',
-                  'nama_peserta' => 'required',
-                  'tempat_tanggal_lahir' => 'required',
-                  'jenis_kelamin_peserta' => 'required',
-                  'nama_ayah' => 'required',
-                  'nama_ibu' => 'required',
-                  'tempat_lahir' =>  'required',
-              ]);
-          }
+          $rules['email'] = 'required|string|email|max:255|unique:users';
         }
+
+        if($request->kirim_ke_alamat_lain){
+          $rules['kirim_tempat_lain.nama_depan'] =  'required';
+          $rules['kirim_tempat_lain.nama_belakang'] =  'required';
+          $rules['kirim_tempat_lain.company_name'] = 'required';
+          $rules['kirim_tempat_lain.alamat'] = 'required';
+          $rules['kirim_tempat_lain.provinsi'] = 'required';
+          $rules['kirim_tempat_lain.kabupaten'] = 'required';
+          $rules['kirim_tempat_lain.kecamatan'] = 'required';
+          $rules['kirim_tempat_lain.kelurahan'] = 'required';
+        }
+    
+        $this->validate($request,$rules);
+
     }
 }
