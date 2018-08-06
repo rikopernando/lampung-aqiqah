@@ -58,7 +58,7 @@ class PesananController extends Controller
 
       if(Auth::check()){
          $pelanggan_id = Auth::User()->id;
-         $keranjang_belanja  = KeranjangBelanja::where('id_pelanggan',$pelanggan_id);
+         $keranjang_belanja = KeranjangBelanja::where('id_pelanggan',$pelanggan_id);
       }else{
          
         $user = User::create([
@@ -228,6 +228,7 @@ class PesananController extends Controller
           'jenis_kelamin_peserta' => 'required',
           'nama_ayah' => 'required',
           'nama_ibu' => 'required',
+          'tempat_lahir' => 'required',
         ];
 
         if(Auth::check()) {

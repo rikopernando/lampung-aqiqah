@@ -4,25 +4,30 @@
         <div class="col-md-6">
           <div class="form-group">
             <input type="text" v-on:input="kirim_tempat_lain.nama_depan = $event.target.value" placeholder="Nama Depan" class="form-control form-checkout">
+            <span v-if="errors['kirim_tempat_lain.nama_depan']" class="error-message"> {{ errors['kirim_tempat_lain.nama_depan'][0] | replace }} </span>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
             <input type="text" v-on:input="kirim_tempat_lain.nama_belakang = $event.target.value" placeholder="Nama Belakang" class="form-control form-checkout">
+            <span v-if="errors['kirim_tempat_lain.nama_belakang']" class="error-message"> {{ errors['kirim_tempat_lain.nama_belakang'][0] | replace }} </span>
           </div>
         </div>
       </div>
 
       <div class="form-group">
         <input type="text" v-on:input="kirim_tempat_lain.company_name = $event.target.value" placeholder="Company Name" class="form-control form-checkout">
+        <span v-if="errors['kirim_tempat_lain.company_name']" class="error-message"> {{ errors['kirim_tempat_lain.company_name'][0] | replace }} </span>
       </div>
       <div class="form-group">
         <input type="text" v-on:input="kirim_tempat_lain.alamat = $event.target.value" placeholder="Alamat" class="form-control form-checkout">
+        <span v-if="errors['kirim_tempat_lain.alamat']" class="error-message"> {{ errors['kirim_tempat_lain.alamat'][0] | replace }} </span>
       </div>
       <div class="form-group">
         <selectize-component :settings="select_provinsi" ref="provinsi" v-on:input="pilihWilayah('kabupaten')">
           <option v-for="provinsi, index in provinsi" v-bind:value="provinsi.id">{{ provinsi.name }} </option> 
         </selectize-component>
+        <span v-if="errors['kirim_tempat_lain.provinsi']" class="error-message"> {{ errors['kirim_tempat_lain.provinsi'][0] | replace }} </span>
       </div>
       <div class="form-group">
         <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kabupaten_lain"></md-progress-bar>
@@ -30,6 +35,7 @@
         <selectize-component :settings="select_kabupaten" ref="kabupaten" v-on:input="pilihWilayah('kecamatan')" v-if="showKabupaten">
           <option v-for="kabupaten, index in kabupaten" v-bind:value="kabupaten.id">{{ kabupaten.name }} </option> 
         </selectize-component>
+        <span v-if="errors['kirim_tempat_lain.kabupaten'] && showKabupaten" class="error-message"> {{ errors['kirim_tempat_lain.kabupaten'][0] | replace }} </span>
       </div>
       <div class="form-group">
         <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kecamatan_lain"></md-progress-bar>
@@ -37,6 +43,7 @@
         <selectize-component :settings="select_kecamatan" ref="kecamatan" v-on:input="pilihWilayah('kelurahan')" v-if="showKecamatan">
           <option v-for="kecamatan, index in kecamatan" v-bind:value="kecamatan.id">{{ kecamatan.name }} </option> 
         </selectize-component>
+        <span v-if="errors['kirim_tempat_lain.kecamatan'] && showKecamatan" class="error-message"> {{ errors['kirim_tempat_lain.kecamatan'][0] | replace }} </span>
       </div>
       <div class="form-group">
         <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kelurahan_lain"></md-progress-bar>
@@ -44,6 +51,7 @@
         <selectize-component :settings="select_kelurahan" ref="kelurahan" v-on:input="changeKelurahan()" v-if="showKelurahan">
           <option v-for="kelurahan, index in kelurahan" v-bind:value="kelurahan.id">{{ kelurahan.name }} </option> 
         </selectize-component>
+        <span v-if="errors['kirim_tempat_lain.kelurahan'] && showKelurahan" class="error-message"> {{ errors['kirim_tempat_lain.kelurahan'][0] | replace }} </span>
       </div>
    </div>
 </template>
@@ -54,7 +62,7 @@
   import { LOAD_DATA } from '../../store/lokasi/mutations'
 
   export default {
-    props : ['kirim_tempat_lain', 'select_provinsi', 'select_kabupaten' , 'select_kecamatan', 'select_kelurahan', 'provinsi'],
+    props : ['kirim_tempat_lain', 'select_provinsi', 'select_kabupaten' , 'select_kecamatan', 'select_kelurahan', 'provinsi', 'errors'],
     data : () => ({
         showKabupaten : false,
         showKecamatan : false,
@@ -71,6 +79,12 @@
         return this.$store.state.lokasi.kelurahan_lain
        }
     }),
+	  filters: {
+      replace: function (value) {
+         var str = value.replace('kirim tempat lain.','')
+         return str
+      },
+  	},
     watch : {
         kabupaten : function () {
           if(Object.keys(this.kabupaten).length){
@@ -146,5 +160,12 @@
 <style lang="scss" scoped>
   .form-checkout {
     font-size: 14px;
+  }
+  .error-message {
+    background-color:  #ff4d4d;
+    border-radius: 2px;
+    font-weight: bold;
+    color: white;
+    padding : 4px;
   }
 </style>

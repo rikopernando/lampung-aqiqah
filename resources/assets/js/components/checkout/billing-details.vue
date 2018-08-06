@@ -2,14 +2,17 @@
   <div>
       <div class="form-group">
         <input type="text" class="form-control form-checkout" placeholder="Nama Pemesan" v-on:input="pesanan.nama_pemesan = $event.target.value" id="nama_pemesan">
+        <span v-if="errors.nama_pemesan" class="error-message"> {{ errors.nama_pemesan[0] }} </span>
       </div>
       <div class="form-group">
         <input type="text" v-on:input="pesanan.alamat = $event.target.value" class="form-control form-checkout" placeholder="Alamat" id="alamat">
+        <span v-if="errors.alamat" class="error-message"> {{ errors.alamat[0] }} </span>
       </div>
       <div class="form-group">
         <selectize-component :settings="select_provinsi" ref="provinsi" v-on:input="pilihWilayah('kabupaten')" v-model="selected_provinsi">
           <option v-for="provinsi, index in provinsi" v-bind:value="provinsi.id">{{ provinsi.name }} </option> 
         </selectize-component>
+        <span v-if="errors.provinsi" class="error-message"> {{ errors.provinsi[0] }} </span>
       </div>
       <div class="form-group">
         <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kabupaten"></md-progress-bar>
@@ -17,6 +20,7 @@
         <selectize-component :settings="select_kabupaten" ref="kabupaten" v-on:input="pilihWilayah('kecamatan')" v-model="selected_kabupaten" v-if="showKabupaten">
           <option v-for="kabupaten, index in kabupaten" v-bind:value="kabupaten.id">{{ kabupaten.name }} </option> 
         </selectize-component>
+        <span v-if="errors.kabupaten" class="error-message"> {{ errors.kabupaten[0] }} </span>
       </div>
       <div class="form-group">
         <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kecamatan"></md-progress-bar>
@@ -24,6 +28,7 @@
         <selectize-component :settings="select_kecamatan" ref="kecamatan" v-on:input="pilihWilayah('kelurahan')" v-model="selected_kecamatan" v-if="showKecamatan">
           <option v-for="kecamatan, index in kecamatan" v-bind:value="kecamatan.id">{{ kecamatan.name }} </option> 
         </selectize-component>
+        <span v-if="errors.kecamatan" class="error-message"> {{ errors.kecamatan[0] }} </span>
       </div>
       <div class="form-group">
         <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kelurahan"></md-progress-bar>
@@ -31,20 +36,25 @@
         <selectize-component :settings="select_kelurahan" ref="kelurahan" v-on:input="changeKelurahan()" v-model="selected_kelurahan" v-if="showKelurahan">
           <option v-for="kelurahan, index in kelurahan" v-bind:value="kelurahan.id">{{ kelurahan.name }} </option> 
         </selectize-component>
+        <span v-if="errors.kelurahan" class="error-message"> {{ errors.kelurahan[0] }} </span>
       </div>
       <div class="form-group">
         <input type="text" v-on:input="pesanan.handphone = $event.target.value" class="form-control form-checkout" placeholder="Handphone" id="handphone">
+        <span v-if="errors.handphone" class="error-message"> {{ errors.handphone[0] }} </span>
       </div>
       <div class="form-group">
         <input type="email" v-on:input="pesanan.email = $event.target.value" class="form-control form-checkout" placeholder="Email" id="email">
+        <span v-if="errors.email" class="error-message"> {{ errors.email[0] }} </span>
       </div>
       <div class="form-group">
         <selectize-component :settings="selectsumberInformasi" v-on:input="changeSumberInformasi()" ref="sumber_informasi">
           <option v-for="sumberinformasi, index in sumber_informasi" v-bind:value="sumberinformasi">{{ sumberinformasi }} </option> 
         </selectize-component>
+        <span v-if="errors.sumber_informasi" class="error-message"> {{ errors.sumber_informasi[0] }} </span>
       </div>
       <div class="form-group">
         <textarea v-on:input="pesanan.catatan = $event.target.value" class="form-control form-checkout" placeholder="Catatan" id="catatan"></textarea>
+        <span v-if="errors.catatan" class="error-message"> {{ errors.catatan[0] }} </span>
       </div>
     </div>
 </template>
@@ -55,7 +65,7 @@
   import { mapState } from 'vuex'
 
   export default {
-      props : ["pesanan" ,"select_provinsi" ,"select_kabupaten", "select_kecamatan" ,"select_kelurahan" ,"selectsumberInformasi", "sumber_informasi" ,"provinsi" ,"kabupaten" ,"kecamatan" ,"kelurahan"],
+      props : ["pesanan" ,"select_provinsi" ,"select_kabupaten", "select_kecamatan" ,"select_kelurahan" ,"selectsumberInformasi", "sumber_informasi" ,"provinsi" ,"kabupaten" ,"kecamatan" ,"kelurahan","errors"],
       mounted () {
         this.setProfile()
       },
@@ -131,8 +141,8 @@
             switch (type) {
                 case "kabupaten":
                   id_wilayah = app.selected_provinsi
+                  app.pesanan.provinsi = id_wilayah
                   if(id_wilayah){
-                      app.pesanan.provinsi = id_wilayah
                       app.pesanan.kabupaten = null 
                       app.pesanan.kecamatan = null
                       app.pesanan.kelurahan = null
@@ -146,8 +156,8 @@
                     break;
                 case "kecamatan":
                   id_wilayah = app.selected_kabupaten
+                  app.pesanan.kabupaten = id_wilayah
                   if(id_wilayah){
-                      app.pesanan.kabupaten = id_wilayah
                       app.pesanan.kecamatan = null
                       app.pesanan.kelurahan = null
                       app.selected_kecamatan = null
@@ -158,8 +168,8 @@
                     break;
                 case "kelurahan":
                   id_wilayah = app.selected_kecamatan
+                  app.pesanan.kecamatan = id_wilayah
                   if(id_wilayah){
-                      app.pesanan.kecamatan = id_wilayah
                       app.pesanan.kelurahan = null
                       app.selected_kelurahan = null
                       app.showKelurahan = false
@@ -193,5 +203,12 @@
   }
   .form-checkout {
     font-size: 14px;
+  }
+  .error-message {
+    background-color:  #ff4d4d;
+    border-radius: 2px;
+    font-weight: bold;
+    color: white;
+    padding : 4px;
   }
 </style>

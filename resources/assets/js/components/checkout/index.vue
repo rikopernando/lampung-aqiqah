@@ -21,8 +21,16 @@
                 <div class="col-md-6">
                   <h4>Billing Details</h4>
 
+                     <md-dialog :md-active.sync="showDialog">
+                          <center><md-dialog-title>Mohon Tunggu ...</md-dialog-title></center>
+                          <md-dialog-content>
+															 <center><md-progress-spinner md-mode="indeterminate"></md-progress-spinner></center>
+                               <center><p> Kami sedang memproses pesanan anda </p> </center>
+                          </md-dialog-content>
+                     </md-dialog>
+
                   <BillingDetails 
-                      :pesanan="pesanan" :select_provinsi="select_provinsi" :select_kabupaten="select_kabupaten"
+                      :pesanan="pesanan" :select_provinsi="select_provinsi" :select_kabupaten="select_kabupaten" :errors="errors"
                       :select_kecamatan="select_kecamatan" :select_kelurahan="select_kelurahan" :selectsumberInformasi="sumberInformasi"
                       :sumber_informasi="sumber_informasi" :provinsi="provinsi" :kabupaten="kabupaten" :kecamatan="kecamatan" :kelurahan="kelurahan"
                       />
@@ -33,10 +41,10 @@
                   <md-checkbox v-model="pesanan.kirim_ke_alamat_lain">Kirim ke alamat lain ?</md-checkbox>
 
                   <KirimTempatLain :kirim_tempat_lain="pesanan.kirim_tempat_lain" :select_provinsi="select_provinsi" :select_kabupaten="select_kabupaten" :select_kecamatan="select_kecamatan" 
-                  :select_kelurahan="select_kelurahan"  :provinsi="provinsi" :kabupaten="kabupaten" :kecamatan="kecamatan" :kelurahan="kelurahan" v-if="pesanan.kirim_ke_alamat_lain" />
+                  :select_kelurahan="select_kelurahan"  :provinsi="provinsi" :kabupaten="kabupaten" :kecamatan="kecamatan" :kelurahan="kelurahan" v-if="pesanan.kirim_ke_alamat_lain" :errors="errors"/>
 
                   <h4>Data Peserta Aqiqah</h4>
-                  <DataPesertaAqiqah :pesanan="pesanan" />
+                  <DataPesertaAqiqah :pesanan="pesanan" :errors="errors" />
                   
                 </div>
               </div>
@@ -109,6 +117,7 @@
   export default {
     data : () => ({
       errors : [],
+      showDialog : false,
     	url: window.location.origin + (window.location.pathname + 'pesanan'),
       jenisKelamin : {
         placeholder : 'Jenis Kelamin'
@@ -164,7 +173,8 @@
     mounted () {
       this.$store.dispatch('lokasi/LOAD_PROVINSI')
 	    this.$store.dispatch('keranjangbelanja/LOAD_SUBTOTAL_LIST')
-    }, 
+      console.log(80)
+    },
 	  filters: {
       pemisahTitik: function (value) {
           var angka = [value];
@@ -195,15 +205,17 @@
     },
     methods : {
       pesanSekarang() {
-        console.log(2)
+        console.log(8)
         const app = this
+        app.showDialog = true
         app.pesanan.total = app.$store.state.keranjangbelanja.total_akhir
         axios.post(app.url,app.pesanan)
         .then((resp) => {
-
+           app.showDialog = false
         })
         .catch((err) => {
            app.errors = err.response.data
+           app.showDialog = false
         })
       }
     }
@@ -259,6 +271,10 @@
     color: white;
     padding : 4px;
   }
+
+	.md-dialog {
+		max-width: 768px;
+	}
 
   table th{background:#da2921 !important; color:#fff !important; padding:5px !important;}
   table td{background:#FFF !important; padding:10px !important;}
