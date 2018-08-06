@@ -1,10 +1,9 @@
 <template>
   <sidebar>
     <div class="col-md-12">
-
       <md-card>
         <ul class="breadcrumb">
-          <li><a href="#">Home</a></li>
+          <li><router-link :to="{name: 'home'}">Home</router-link></li>
           <li><router-link :to="{name: 'user'}">User</router-link></li>
           <li class="active">Tambah</li>
         </ul>

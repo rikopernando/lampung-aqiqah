@@ -1,14 +1,14 @@
 <template>
-  <div class="container">
-    <div class="col-md-12">
-      <md-card md-with-hover>
+  <sidebar>
+    <div class="col-md-12" style="padding: 0">
+      <md-card>
         <ul class="breadcrumb">
-          <li><a href="#/">Home</a></li>
+          <li><router-link :to="{name: 'home'}">Home</router-link></li>
           <li class="active">Produk</li>
         </ul>
       </md-card>
 
-      <md-card md-with-hover>
+      <md-card>
         <md-card-header>
           <div class="header-card">
             <md-icon style="color: white">dns</md-icon>
@@ -88,7 +88,7 @@
         md-cancel-text="Batal"
         @md-confirm="onConfirmDelete" />
     </div>
-  </div>
+  </sidebar>
 </template>
 
 
@@ -124,15 +124,15 @@
     	this.getProdukData();
     },
     filters: {
-        pemisahTitik: function (value) {
-            var angka = [value];
-            var numberFormat = new Intl.NumberFormat('es-ES');
-            var formatted = angka.map(numberFormat.format);
-            return formatted.join('; ');
-        },
-        capitalize: function (value) {
-          return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
-        },
+      pemisahTitik: function (value) {
+        var angka = [value];
+        var numberFormat = new Intl.NumberFormat('es-ES');
+        var formatted = angka.map(numberFormat.format);
+        return formatted.join('; ');
+      },
+      capitalize: function (value) {
+        return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
+      },
     },
     methods: {
     	getProdukData() {

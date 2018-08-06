@@ -21,7 +21,7 @@ class KeranjangBelanjaController extends Controller
         //
     }
 
-        public function tambahProdukKeranjangBelanjaan($id)
+        public function tambahProdukKeranjangBelanjaan($id,$jumlah_edit)
     {
         if(!Session::get('session_id')){
             $session_id    = session()->getId();
@@ -30,7 +30,7 @@ class KeranjangBelanjaController extends Controller
         }
 
         $harga_produk = Produk::select()->where('id', $id)->first();
-        $subtotal = $harga_produk->harga_jual * 1;
+        $subtotal = $harga_produk->harga_jual * $jumlah_edit;
 
         if (Auth::check() == false) {
             $datakeranjang_belanjaan = KeranjangBelanja::where('session_id', $session_id)->Where('id_produk', $id);
@@ -42,13 +42,13 @@ class KeranjangBelanjaController extends Controller
 
             if ($datakeranjang_belanjaan->count() > 0) {
                 $total_tambah_produk = 0;
-                $jumlah_update = $jumlah_produk->jumlah_produk + 1;
+                $jumlah_update = $jumlah_produk->jumlah_produk + $jumlah_edit;
                 $subtotal_update = $subtotal * $jumlah_update;
-                $datakeranjang_belanjaan->update(['jumlah_produk' => $jumlah_produk->jumlah_produk + 1,'subtotal'=> $subtotal_update]);
+                $datakeranjang_belanjaan->update(['jumlah_produk' => $jumlah_produk->jumlah_produk + $jumlah_edit,'subtotal'=> $subtotal_update]);
 
             } else {
                 $total_tambah_produk = 1;
-                $produk = KeranjangBelanja::create(['id_produk' => $id, 'session_id' => $session_id, 'jumlah_produk' => 1,'harga_produk'=>$harga_produk->harga_jual,'subtotal'=> $subtotal]);
+                $produk = KeranjangBelanja::create(['id_produk' => $id, 'session_id' => $session_id, 'jumlah_produk' => $jumlah_edit,'harga_produk'=>$harga_produk->harga_jual,'subtotal'=> $subtotal]);
             }
 
         }else{
@@ -62,12 +62,12 @@ class KeranjangBelanjaController extends Controller
 
             if ($datakeranjang_belanjaan->count() > 0) {
                 $total_tambah_produk = 0;
-                $jumlah_update = $jumlah_produk->jumlah_produk + 1;
+                $jumlah_update = $jumlah_produk->jumlah_produk + $jumlah_edit;
                 $subtotal_update = $subtotal * $jumlah_update;
-                $datakeranjang_belanjaan->update(['jumlah_produk' => $jumlah_produk->jumlah_produk + 1,'subtotal'=> $subtotal_update]);
+                $datakeranjang_belanjaan->update(['jumlah_produk' => $jumlah_produk->jumlah_produk + $jumlah_edit,'subtotal'=> $subtotal_update]);
          } else {
              $total_tambah_produk = 1;
-             $produk = KeranjangBelanja::create(['id_produk' => $id, 'id_pelanggan' => $pelanggan, 'jumlah_produk' => 1,'harga_produk'=>$harga_produk->harga_jual,'subtotal'=> $subtotal]);
+             $produk = KeranjangBelanja::create(['id_produk' => $id, 'id_pelanggan' => $pelanggan, 'jumlah_produk' => $jumlah_edit,'harga_produk'=>$harga_produk->harga_jual,'subtotal'=> $subtotal]);
          }
      }
 
