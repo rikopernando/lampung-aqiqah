@@ -34,6 +34,17 @@ div .icon-shop {
 @media (max-width: 600px) {
   .md-xsmall-hide { display: none; }
   #displaySidenav { display: block; }
+
+  .md-list-item-content {
+    padding: 4px 7px !important;
+    justify-content: flex-start !important;
+  }
+  .md-list-item-content>.md-icon:first-child {
+    margin-right: 5px !important;
+  }
+  .md-theme-default a:not(.md-button) {
+    color: #767676 !important;
+  }
 }
 @media (min-width: 600px) {
   #displaySidenav { display: none; }
