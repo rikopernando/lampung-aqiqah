@@ -5,7 +5,7 @@
           <md-card md-with-hover>
             <ul class="breadcrumb">
               <li><a href="#/">Home</a></li>
-              <li><a href="#/keranjang-belanja">CART</a></li>
+              <li><a href="#/keranjang-belanja" id="keranjang-belanja">CART</a></li>
               <li class="active">Checkout</li>
             </ul>
           </md-card>
@@ -19,7 +19,9 @@
 						<md-card-content>
 							<div class="row">
                 <div class="col-md-6">
+                  <span v-if="Object.keys(errors).length" class="error-message"> Ada kesalahan, silakan periksa kembali formulir anda</span>
                   <h4>Billing Details</h4>
+
 
                      <md-dialog :md-active.sync="showDialog">
                           <center><md-dialog-title>Mohon Tunggu ...</md-dialog-title></center>
@@ -95,7 +97,19 @@
 								</md-step>
 							</md-steppers>
 							
-							<md-button class="md-raised md-accent" type="button" v-on:click="pesanSekarang()">Pesan Sekarang!</md-button>
+							<md-button class="md-raised md-accent" type="button" v-on:click="pesanSekarang()" v-if="this.$store.state.keranjangbelanja.countKeranjang > 0">Pesan Sekarang!</md-button>
+              <div v-else>
+                <div class="row">
+                  <div class="col-md-2 col-xs-6">
+                      <md-button class="md-raised md-accent" type="button" :disabled="true">
+                          Pesan Sekarang!
+                      </md-button>
+                  </div>
+                  <div class="col-md-2 col-xs-6">
+                      <md-button to="/list-produk" class="md-raised md-accent">Lanjut Belanja</md-button>
+                  </div>
+                </div>
+              </div>
 						</md-card-content>
 
           </md-card>
@@ -173,7 +187,8 @@
     mounted () {
       this.$store.dispatch('lokasi/LOAD_PROVINSI')
 	    this.$store.dispatch('keranjangbelanja/LOAD_SUBTOTAL_LIST')
-      console.log(80)
+		  this.data_produk && this.$store.dispatch('keranjangbelanja/LOAD_KERANJANG_LIST')
+      console.log(82)
     },
 	  filters: {
       pemisahTitik: function (value) {
@@ -211,11 +226,14 @@
         app.pesanan.total = app.$store.state.keranjangbelanja.total_akhir
         axios.post(app.url,app.pesanan)
         .then((resp) => {
-           app.showDialog = false
-        })
+            app.showDialog = false
+            app.$router.push('/checkout/order-received')          
+         })
         .catch((err) => {
-           app.errors = err.response.data
-           app.showDialog = false
+          app.errors = err.response.data
+          app.showDialog = false
+		    	document.getElementById("keranjang-belanja").focus({reventScroll:true})
+          console.log(err)
         })
       }
     }
@@ -263,10 +281,7 @@
 
   .error-message {
     background-color:  #ff4d4d;
-    border-radius: 6px;
-  }
-
-  .text-error {
+    border-radius: 2px;
     font-weight: bold;
     color: white;
     padding : 4px;
