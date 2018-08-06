@@ -24,42 +24,27 @@
           </div>
 				</md-card-header>
 
-				<md-card-content>
-          <div class="row">
-            <div class="col-md-3" style="padding: 0px;">
-              <div class="md-medium-size-50 md-small-size-50 md-xsmall-hide">
-                <ul class="nav nav-tabs tabs-left">
-                  <li class="tab-profil active" id="dashboard">
-                    <a style="color: #db4a24" href="#dashboard-v" data-toggle="tab">DASHBOARD</a>
-                  </li>
-                  <li class="tab-profil">
-                    <a style="color: #db4a24" href="#order-v" data-toggle="tab">ORDER</a>
-                  </li>
-                  <li class="tab-profil">
-                    <a style="color: #db4a24" href="#alamat-v" data-toggle="tab">ALAMAT</a>
-                  </li>
-                  <li class="tab-profil">
-                    <a style="color: #db4a24" href="#akun-v" data-toggle="tab">DETAIL AKUN</a>
-                  </li>
-                  <li class="tab-profil">
-                    <a style="color: #db4a24" @click="logout" data-toggle="tab">KELUAR</a>
-                  </li>
-                </ul>
-              </div>
-              <div id="displayTabs" style="padding: 0px !important">
-                <ul class="nav nav-tabs tabs-mobile">
-                  <li class="active" id="dashboard"><a style="color: #db4a24" href="#dashboard-v" data-toggle="tab">DASHBOARD</a></li>
-                  <li><a style="color: #db4a24" href="#order-v" data-toggle="tab">ORDER</a></li>
-                  <li><a style="color: #db4a24" href="#alamat-v" data-toggle="tab">ALAMAT</a></li>
-                  <li><a style="color: #db4a24" href="#akun-v" data-toggle="tab">AKUN</a></li>
-                </ul>
-              </div>
-              <br>
-            </div>
-            <div class="col-md-9">
-              <div class="tab-content">
-                <div class="tab-pane active" id="dashboard-v">
-                  <DashboardTab :user="user"/>
+						<md-card-content>
+              <div class="row">
+                <div class="col-md-3" style="padding: 0px;">
+                  <div class="md-medium-size-50 md-small-size-50 md-xsmall-hide">
+                    <ul class="nav nav-tabs tabs-left">
+                      <li class="tab-profil active" id="dashboard"><a style="color: #db4a24" href="#dashboard-v" data-toggle="tab">DASHBOARD</a></li>
+                      <li class="tab-profil"><a style="color: #db4a24" href="#order-v" data-toggle="tab">ORDER</a></li>
+                      <li class="tab-profil"><a style="color: #db4a24" href="#alamat-v" data-toggle="tab">ALAMAT</a></li>
+                      <li class="tab-profil"><a style="color: #db4a24" href="#akun-v" data-toggle="tab">DETAIL AKUN</a></li>
+                      <li class="tab-profil"><router-link :to="{name: 'logout'}" tag="div" style="color: #db4a24; padding: 10px 15px;">KELUAR</router-link></li>
+                    </ul>
+                  </div>
+
+                  <div id="displayTabs" style="padding: 0px !important">
+                    <ul class="nav nav-tabs tabs-mobile">
+                      <li class="active" id="dashboard"><a style="color: #db4a24" href="#dashboard-v" data-toggle="tab">DASHBOARD</a></li>
+                      <li><a style="color: #db4a24" href="#order-v" data-toggle="tab">ORDER</a></li>
+                      <li><a style="color: #db4a24" href="#alamat-v" data-toggle="tab">ALAMAT</a></li>
+                      <li><a style="color: #db4a24" href="#akun-v" data-toggle="tab">AKUN</a></li>
+                    </ul>
+                  </div><br>
                 </div>
                 <div class="tab-pane" id="order-v">
                   <OrderTab/>
@@ -152,8 +137,31 @@ export default {
     provinsi () {
       return this.$store.state.lokasi.provinsi
     },
-    kabupaten () {
-      return this.$store.state.lokasi.kabupaten
+    computed : mapState ({
+       provinsi () {
+        return this.$store.state.lokasi.provinsi
+       },
+       kabupaten () {
+        return this.$store.state.lokasi.kabupaten
+       },
+       kecamatan () {
+        return this.$store.state.lokasi.kecamatan
+       },
+       kelurahan () {
+        return this.$store.state.lokasi.kelurahan
+       },
+    }),
+    methods: {
+      getProfile(app){
+        axios.get(app.url+"/detail-akun")
+        .then(resp => {
+          app.user = resp.data;
+          app.userAddress = resp.data;
+        })
+        .catch(resp => {
+          console.log(resp);
+        });
+      },
     },
     kecamatan () {
       return this.$store.state.lokasi.kecamatan

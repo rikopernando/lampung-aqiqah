@@ -157,22 +157,33 @@ table td {
 
 <script>
 
-import Header from '../header'
-import Footer from '../footer/footer'
-import { mapState } from 'vuex'
-
-export default {
-	data : () => {
-		return {
-			url : window.location.origin + window.location.pathname,
-			url_picture : window.location.origin + (window.location.pathname) + "image_produks/",
-			filter_produk: 'populer',
-			promptDeleteKeranjang: false,
-			promptGagalEdit:false,
-    	keranjangIdForDelete: '',
-    	snackbarDeleteKeranjang:false,
-	    subtotalIdForDelete: '',
-		}
+  export default {
+		data : () => {
+			return {
+				url : window.location.origin + window.location.pathname,
+				url_picture : window.location.origin + (window.location.pathname) + "image_produks/",
+				filter_produk: 'populer',
+				promptDeleteKeranjang: false,
+				promptGagalEdit:false,
+	    	keranjangIdForDelete: '',
+	    	snackbarDeleteKeranjang:false,
+		    subtotalIdForDelete: '',
+			}
+		},
+		mounted() {
+		  this.$store.dispatch('keranjangbelanja/LOAD_KERANJANG_LIST')
+	    this.$store.dispatch('keranjangbelanja/LOAD_SUBTOTAL_LIST')
+	  },
+		filters: {
+      pemisahTitik: function (value) {
+      var angka = [value];
+      var numberFormat = new Intl.NumberFormat('es-ES');
+      var formatted = angka.map(numberFormat.format);
+      return formatted.join('; ');
+    },
+		  capitalize: function (value) {
+		    return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
+	   },
 	},
 	mounted() {
 	  this.$store.dispatch('keranjangbelanja/LOAD_KERANJANG_LIST')
@@ -227,3 +238,31 @@ export default {
 }
 
 </script>
+
+<style scoped>
+.breadcrumb {
+  padding: 8px 15px;
+  margin-bottom: 22px;
+  margin-top: 22px;
+  list-style: none;
+  background-color: #ffffff;
+  border-radius: 1px;
+}
+.h3, h3 {
+  font-size: 24px;
+  color: black;
+}
+table th {
+	background:#da2921 !important; 
+	color:#fff !important; 
+	padding:4px !important;
+}
+table td {
+	background:#f7e1e1 !important;
+	padding:8px !important;
+}
+.scrollable-menu {
+  max-height: 15px;
+  overflow-x: hidden;
+}
+</style>

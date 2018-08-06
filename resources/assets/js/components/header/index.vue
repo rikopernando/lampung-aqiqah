@@ -367,20 +367,44 @@ export default {
   mounted () {
     this.modal = true
 
-    this.$store.dispatch('keranjangbelanja/LOAD_KERANJANG_LIST')
-  },
-	methods : {
-		openModal(which) {
-      console.log(which)
-			if (this.active !== null) {
-				$('#form-'+this.active).removeClass('active')
-				$('#'+this.active+'-form').removeClass('active')
-			}
-
-      $("#login-modal").addClass('active')
-			$('#form-'+which).addClass('active')
-			$('#'+which+'-form').addClass('active')
-			this.active = which
+    export default {
+			data : () => ({
+        modal : false,
+        showNavigation: false,
+        showSidepanel: false,
+        errors : [],
+        url : window.location.origin + window.location.pathname,
+        token : $('meta[name="csrf-token"]').attr('content'),
+        snackbar: false,
+				active : null,
+				registerSubmit: 'Register',
+				passwordSubmit: 'Reset Password',
+				loginSubmit: 'Login',
+        alertSnackbar : '',
+        register : {
+          name: '',
+          email: '',
+          password: '',
+          password_confirmation: '',
+        },
+        login : {
+          email: '',
+          password: '',
+        },
+        password : {
+          email: '',
+        }
+			}),
+      mounted () {
+        this.modal = true
+      },
+			methods : {
+				openModal(which) {
+          console.log(which)
+					if (this.active !== null) {
+						$('#form-'+this.active).removeClass('active')
+						$('#'+this.active+'-form').removeClass('active')
+					}
 
     },
     closeModal(e) {

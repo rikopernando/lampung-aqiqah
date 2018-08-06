@@ -5,6 +5,7 @@
       <md-card>
         <ul class="breadcrumb">
           <li><a href="#/">Home</a></li>
+              <li><a href="#/keranjang-belanja" id="keranjang-belanja">CART</a></li>
           <li class="active">Checkout</li>
         </ul>
       </md-card>
@@ -15,79 +16,101 @@
           <hr>
 				</md-card-header>
 
-				<md-card-content>
-					<div class="row">
-            <div class="col-md-6">
-              <h5>Billing Details</h5>
-              <BillingDetails 
-                :pesanan="pesanan" :select_provinsi="select_provinsi" :select_kabupaten="select_kabupaten"
-                :select_kecamatan="select_kecamatan" :select_kelurahan="select_kelurahan" :selectsumberInformasi="sumberInformasi"
-                :sumber_informasi="sumber_informasi" :provinsi="provinsi" :kabupaten="kabupaten" :kecamatan="kecamatan" :kelurahan="kelurahan" />
-            </div>
+						<md-card-content>
+							<div class="row">
+                <div class="col-md-6">
+                  <span v-if="Object.keys(errors).length" class="error-message"> Ada kesalahan, silakan periksa kembali formulir anda</span>
+                  <h4>Billing Details</h4>
 
-            <div class="col-md-6">
-              <md-checkbox v-model="kirim_ke_alamat_lain">Kirim ke alamat lain ?</md-checkbox>
-              <KirimTempatLain 
-                :kirim_tempat_lain="kirim_tempat_lain" 
-                :select_provinsi="select_provinsi" 
-                :select_kabupaten="select_kabupaten" 
-                :select_kecamatan="select_kecamatan" 
-                :select_kelurahan="select_kelurahan"  
-                :provinsi="provinsi" 
-                :kabupaten="kabupaten" 
-                :kecamatan="kecamatan" 
-                :kelurahan="kelurahan" 
-                v-if="kirim_ke_alamat_lain" />
 
-              <h5>Data Peserta Aqiqah</h5>
-              <DataPesertaAqiqah :pesanan="pesanan" />
-            </div>
-          </div>
+                     <md-dialog :md-active.sync="showDialog">
+                          <center><md-dialog-title>Mohon Tunggu ...</md-dialog-title></center>
+                          <md-dialog-content>
+															 <center><md-progress-spinner md-mode="indeterminate"></md-progress-spinner></center>
+                               <center><p> Kami sedang memproses pesanan anda </p> </center>
+                          </md-dialog-content>
+                     </md-dialog>
+
+                  <BillingDetails 
+                      :pesanan="pesanan" :select_provinsi="select_provinsi" :select_kabupaten="select_kabupaten" :errors="errors"
+                      :select_kecamatan="select_kecamatan" :select_kelurahan="select_kelurahan" :selectsumberInformasi="sumberInformasi"
+                      :sumber_informasi="sumber_informasi" :provinsi="provinsi" :kabupaten="kabupaten" :kecamatan="kecamatan" :kelurahan="kelurahan"
+                      />
+
+                </div>
+
+                <div class="col-md-6">
+                  <md-checkbox v-model="pesanan.kirim_ke_alamat_lain">Kirim ke alamat lain ?</md-checkbox>
+
+                  <KirimTempatLain :kirim_tempat_lain="pesanan.kirim_tempat_lain" :select_provinsi="select_provinsi" :select_kabupaten="select_kabupaten" :select_kecamatan="select_kecamatan" 
+                  :select_kelurahan="select_kelurahan"  :provinsi="provinsi" :kabupaten="kabupaten" :kecamatan="kecamatan" :kelurahan="kelurahan" v-if="pesanan.kirim_ke_alamat_lain" :errors="errors"/>
+
+                  <h4>Data Peserta Aqiqah</h4>
+                  <DataPesertaAqiqah :pesanan="pesanan" :errors="errors" />
+                  
+                </div>
+              </div>
 
           <h4>Pesanan Anda</h4>
 
-          <table class="table table-striped table-hover">
-            <thead>
-              <th> PRODUCT </th>
-              <th style="text-align:right;"> TOTAL </th>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Paket Premium x 2 </td>
-                <td style="text-align:right; font-size:15px; font-weight:bold;"> Rp. 1.000.000</td>
-              </tr>
-              <tr>
-                <td>Paket Special x 3 </td>
-                <td style="text-align:right; font-size:15px; font-weight:bold;"><strong>Rp. 1.000.000</strong> </td>
-              </tr>
-            </tbody>
-            <tbody>
-              <tr>
-                <th>Subtotal</th>
-                <td style="text-align:right; font-size:17px; font-weight:bold;"> <strong>Rp. 2.000.000</strong></td>
-              </tr>
-              <tr>
-                <th>Total</th>
-                <td style="text-align:right; font-size:17px; font-weight:bold;"><strong>Rp. 2.000.000</strong> </td>
-              </tr>
-            </tbody>
-          </table>
-					
-					<h5>Metode Pembayaran</h5>
-					<md-steppers md-vertical>
-						<md-step id="first" md-label="Transfer Bank">
-							Lakukan pembayaran Anda langsung ke rekening bank kami. Harap gunakan ID Pesanan Anda sebagai referensi pembayaran. Pesanan Anda tidak akan dikirim sampai dana telah masuk ke rekening kami.
-						</md-step>
+              <table class="table table-striped table-hover">
+                <thead>
+                  <th> PRODUCT </th>
+                  <th style="text-align:right;"> TOTAL </th>
+                </thead>
+				    		<tbody v-if="this.$store.state.keranjangbelanja.countKeranjang > 0">
+                  <tr v-for="produks, index in data_produk">
+                    <td style="font-style: oblique;"> {{ produks.produk.nama_produk }} <span style="font-weight:bold">x {{ produks.jumlah_produk }} </span></td>
+                    <td style="text-align:right; font-size:15px; font-weight:bold;"> Rp. {{ produks.subtotal | pemisahTitik }}</td>
+                  </tr>
+                </tbody>
+                <tbody v-else>
+                   <tr v-if="this.$store.state.keranjangbelanja.loading">
+                       <td colspan="2" class="text-center" >
+                         <md-progress-spinner :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
+                       </td>
+                   </tr>
+                   <tr else>
+                       <td colspan="2" class="text-center" style="font-style: oblique 40deg;">Produk Kosong</td>
+                   </tr>
+                </tbody>
+                <tbody v-if="this.$store.state.keranjangbelanja.countKeranjang > 0">
+                  <tr>
+                    <th>Subtotal</th>
+                    <td style="text-align:right; font-size:17px; font-weight:bold;"> <strong>Rp. {{ this.$store.state.keranjangbelanja.subtotal | pemisahTitik }}</strong></td>
+                  </tr>
+                  <tr>
+                    <th>Total</th>
+                    <td style="text-align:right; font-size:17px; font-weight:bold;"><strong>Rp. {{ this.$store.state.keranjangbelanja.total_akhir | pemisahTitik }}</strong> </td>
+                  </tr>
+                </tbody>
+              </table>
+							
+							<h4>Metode Pembayaran</h4>
+							<md-steppers md-vertical>
+								<md-step id="first" md-label="Transfer Bank" v-on:click="pesanan.metode_pembayaran = 'Transfer Bank'">
+										Lakukan pembayaran Anda langsung ke rekening bank kami. Harap gunakan ID Pesanan Anda sebagai referensi pembayaran. Pesanan Anda tidak akan dikirim sampai dana telah masuk ke rekening kami.
+								</md-step>
 
-						<md-step id="second" md-label="Cash On Delivery">
-							Pembayaran di tempat saat barang datang
-						</md-step>
-					</md-steppers>
-					
-					<md-button class="md-raised md-accent" type="submit">Pesan Sekarang!</md-button>
-				</md-card-content>
-      </md-card>
-    </div>
+								<md-step id="second" md-label="Cash On Delivery" v-on:click="pesanan.metode_pembayaran = 'Cash On Delivery'">
+										Pembayaran di tempat saat barang datang
+								</md-step>
+							</md-steppers>
+							
+							<md-button class="md-raised md-accent" type="button" v-on:click="pesanSekarang()" v-if="this.$store.state.keranjangbelanja.countKeranjang > 0">Pesan Sekarang!</md-button>
+              <div v-else>
+                <div class="row">
+                  <div class="col-md-2 col-xs-6">
+                      <md-button class="md-raised md-accent" type="button" :disabled="true">
+                          Pesan Sekarang!
+                      </md-button>
+                  </div>
+                  <div class="col-md-2 col-xs-6">
+                      <md-button to="/list-produk" class="md-raised md-accent">Lanjut Belanja</md-button>
+                  </div>
+                </div>
+              </div>
+						</md-card-content>
 
     <Footer></Footer>
   </div>
@@ -95,86 +118,117 @@
 
 <script>
 
-import { mapState } from 'vuex'
-import { LOAD_DATA } from '../../store/lokasi/mutations'
-import Header from '../header'
-import Footer from '../footer/footer'
-import BillingDetails from './billing-details'
-import KirimTempatLain from './kirim-tempat-lain'
-import DataPesertaAqiqah from './data-peserta-aqiqah'
-
-export default {
-  data : () => ({
-    kirim_ke_alamat_lain : false,
-    jenisKelamin : {
-      placeholder : 'Jenis Kelamin'
+  export default {
+    data : () => ({
+      errors : [],
+      showDialog : false,
+    	url: window.location.origin + (window.location.pathname + 'pesanan'),
+      jenisKelamin : {
+        placeholder : 'Jenis Kelamin'
+      },
+      sumberInformasi : {
+        placeholder : 'Sumber Informasi'
+      },
+      select_provinsi : {
+        placeholder : 'Cari Provinsi ...'
+      },
+      select_kabupaten : {
+        placeholder : 'Cari Kabupaten atau Kota ...'
+      },
+      select_kecamatan : {
+        placeholder : 'Cari Kecamatan ...'
+      },
+      select_kelurahan : {
+        placeholder : 'Cari Kelurahan ...'
+      },
+			sumber_informasi: ['Google','Facebook','Instagram','Teman','Bidan','Website','Spanduk','X-Banner','Televisi','Radio'],
+      pesanan : {
+        nama_pemesan : '',
+        alamat : '',
+        provinsi : '',
+        kelurahan : '',
+        kecamatan : '',
+        kabupaten : '',
+        handphone : '',
+        email : '',
+        sumber_informasi : '',
+        catatan : '',
+        nama_peserta : '',
+        tempat_tanggal_lahir : '',
+        jenis_kelamin_peserta : '',
+        nama_ayah : '',
+        nama_ibu : '',
+        tempat_lahir :'',
+        metode_pembayaran : 'Transfer Bank',
+        total : 0,
+        kirim_ke_alamat_lain : false,
+        kirim_tempat_lain : {
+          nama_depan : '',
+          nama_belakang : '',
+          company_name : '',
+          alamat : '',
+          provinsi : '',
+          kelurahan : '',
+          kecamatan : '',
+          kabupaten : '',
+        }
+      },
+    }),
+    mounted () {
+      this.$store.dispatch('lokasi/LOAD_PROVINSI')
+	    this.$store.dispatch('keranjangbelanja/LOAD_SUBTOTAL_LIST')
+		  this.data_produk && this.$store.dispatch('keranjangbelanja/LOAD_KERANJANG_LIST')
+      console.log(82)
     },
-    sumberInformasi : {
-      placeholder : 'Sumber Informasi'
+	  filters: {
+      pemisahTitik: function (value) {
+          var angka = [value];
+          var numberFormat = new Intl.NumberFormat('es-ES');
+          var formatted = angka.map(numberFormat.format);
+          return formatted.join('; ');
+      },
+  	},
+    computed : mapState ({
+       provinsi () {
+        return this.$store.state.lokasi.provinsi
+       },
+       kabupaten () {
+        return this.$store.state.lokasi.kabupaten
+       },
+       kecamatan () {
+        return this.$store.state.lokasi.kecamatan
+       },
+       kelurahan () {
+        return this.$store.state.lokasi.kelurahan
+       },
+       data_produk () {
+        return this.$store.state.keranjangbelanja.datakeranjang.data_keranjang
+       },
+    }),
+    components : {
+      Header,Footer, BillingDetails, KirimTempatLain, DataPesertaAqiqah
     },
-    select_provinsi : {
-      placeholder : 'Pilih Provinsi'
-    },
-    select_kabupaten : {
-      placeholder : 'Pilih Kabupaten atau Kota'
-    },
-    select_kecamatan : {
-      placeholder : 'Pilih Kecamatan'
-    },
-    select_kelurahan : {
-      placeholder : 'Pilih Kelurahan'
-    },
-		sumber_informasi: ['Google','Facebook','Instagram','Teman','Bidan','Website','Spanduk','X-Banner','Televisi','Radio'],
-    pesanan : {
-      nama_pemesan : '',
-      alamat : '',
-      provinsi : '',
-      kelurahan : '',
-      kecamatan : '',
-      kabupaten : '',
-      handphone : '',
-      email : '',
-      sumber_informasi : '',
-      notes : '',
-      nama_peserta : '',
-      ttl_peserta : '',
-      jenis_kelamin_peserta : '',
-      nama_ayah : '',
-      nama_ibu : '',
-      tempat_lahir :''
-    },
-    kirim_tempat_lain : {
-      nama_depan : '',
-      nama_belakang : '',
-      company_name : '',
-      alamat : '',
-      provinsi : '',
-      kelurahan : '',
-      kecamatan : '',
-      kabupaten : '',
+    methods : {
+      pesanSekarang() {
+        console.log(8)
+        const app = this
+        app.showDialog = true
+        app.pesanan.total = app.$store.state.keranjangbelanja.total_akhir
+        axios.post(app.url,app.pesanan)
+        .then((resp) => {
+            app.showDialog = false
+            app.$router.push('/checkout/order-received')          
+         })
+        .catch((err) => {
+          app.errors = err.response.data
+          app.showDialog = false
+		    	document.getElementById("keranjang-belanja").focus({reventScroll:true})
+          console.log(err)
+        })
+      }
     }
-  }),
-  mounted () {
-    this.$store.dispatch('lokasi/LOAD_PROVINSI')
-  }, 
-  computed : mapState ({
-    provinsi () {
-      return this.$store.state.lokasi.provinsi
-    },
-    kabupaten () {
-      return this.$store.state.lokasi.kabupaten
-    },
-    kecamatan () {
-      return this.$store.state.lokasi.kecamatan
-    },
-    kelurahan () {
-      return this.$store.state.lokasi.kelurahan
-    },
-  }),
-  components : {
-    Header,Footer, BillingDetails, KirimTempatLain, DataPesertaAqiqah
-  },
-}
+  }
+
 </script>
 
 <style lang="scss" scoped> 
@@ -210,7 +264,23 @@ export default {
   margin: 1px;
 }
 
-table th{background:#da2921 !important; color:#fff !important; padding:5px !important;}
-table td{background:#FFF !important; padding:10px !important;}
+  .md-progress-spinner {
+    margin: 14px;
+  }
+
+  .error-message {
+    background-color:  #ff4d4d;
+    border-radius: 2px;
+    font-weight: bold;
+    color: white;
+    padding : 4px;
+  }
+
+	.md-dialog {
+		max-width: 768px;
+	}
+
+  table th{background:#da2921 !important; color:#fff !important; padding:5px !important;}
+  table td{background:#FFF !important; padding:10px !important;}
 
 </style>

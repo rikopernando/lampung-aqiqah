@@ -51,7 +51,7 @@ Route::get('pesanan/pilih-wilayah/{id}/{type}', 'PesananController@pilih_wilayah
 Route::resource('pesanan', 'PesananController');
 
 
-Route::post('/keranjang-belanja/create/{id}', 'KeranjangBelanjaController@tambahProdukKeranjangBelanjaan');
+Route::post('/keranjang-belanja/create/{id}/{jumlah_produk}', 'KeranjangBelanjaController@tambahProdukKeranjangBelanjaan');
 Route::get('/keranjang-belanja/view', 'KeranjangBelanjaController@view');
 Route::get('/keranjang-belanja/subtotal-keranjang-belanja','KeranjangBelanjaController@cekSubtotalKeranjangBelanja');
 Route::post('/keranjang-belanja/edit-jumlah-keranjang/{id}/{operator}', 'KeranjangBelanjaController@editJumlahKeranjang');

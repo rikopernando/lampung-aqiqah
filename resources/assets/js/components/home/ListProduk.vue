@@ -1,28 +1,235 @@
-<style scoped>
-.md-card {
-  border-radius: 10px;
-  flex-wrap: wrap;
-}
-.flexFont {
-  height:3em;
-  padding:3%;
-  margin: 5px;
-  font-family: Helvetica,Arial,sans-serif;
-}
-.card-image {
-  padding: 10px;
-  position: relative;
-}
-img {
-  border-radius: 10px;
-}
+<template>
+  <div>
+    <Header></Header>
+       <div class="produk-modal-container" id="produk-modal" >
+            <div class="produk-modal">
+                <div class="title-produk">
+                     <div class="md-toolbar-section-start"></div>
+                    {{ this.$store.state.detailproduk.detailProduk.nama_produk  }}
+                     <div class="md-toolbar-section-end" style="padding:10px">
+                          <button type="button" @click="closeModalProduk" class="btn btn-danger btn-lg" >X </button>   
+                     </div>
+                </div>
+                <div class="form-produk" id="form-produk">
+                  <div class="row">
+                    <div class="col-md-6">
+                            <img :src="url_picture+'/default.jpg'" v-if="this.$store.state.detailproduk.detailProduk.foto == null">
+                            <img :src="url_picture+'/'+this.$store.state.detailproduk.detailProduk.foto" v-else>
+                    </div>
+                    <div class="col-md-6">
+                      <h3> <strike style="color: #636363;">Rp {{ this.$store.state.detailproduk.detailProduk.harga_coret | pemisahTitik }}</strike> Rp {{ this.$store.state.detailproduk.detailProduk.harga_jual | pemisahTitik }} </h3> 
+                      <p class="desc">
+                      {{ this.$store.state.detailproduk.detailProduk.deskripsi_produk }} 
+                      </p>
+                      <input type="number" name="jumlah_produk" ref="jumlah_produk" class="jumlah_produk" v-model="jumlah_produk">
+                      <button  @click="createKeranjangDetail(id_detail)" class="btn-add-cart">Masukan Ke Keranjang</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
 
-/*MOBILE CSS*/
-@media (max-width: 600px) {
-  .md-xsmall-hide { display: none; }
-  #displayMobile { display: block; }
-  .container {
-    padding: 0px !important;
+      <div class="background" v-bind:style="{ 'background-image': 'url(' + url+'/images/background-batik.jpg' + ')' }">
+        <div class="container">
+
+          <div class="md-medium-size-50 md-small-size-50 md-xsmall-hide">
+
+           <md-empty-state v-if="loading">
+                <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+           </md-empty-state>
+
+            <div class="md-toolbar" style="margin-top: -20px; padding: 30px 0px">
+              <div class="header-title md-toolbar-section-start">
+
+              </div>
+              <div class="header-title md-toolbar-section-end">
+                <md-field style="width: auto">
+                  <label for="movie">Urutkan</label>
+                  <md-select v-model="filter" name="filter" id="filter" @md-selected="produkSort">
+                    <md-option value="1">Default</md-option>
+                    <md-option value="2">Terpopuler</md-option>
+                    <md-option value="3">Termahal</md-option>
+                    <md-option value="4">Termurah</md-option>
+                    <md-option value="5">Terbaru</md-option>
+                  </md-select>
+                </md-field>
+  	           </div>
+  	        </div>
+
+            <div v-for="produk in produks">
+              <div class="col-md-3 col-sm-6 col-xs-6" style="padding: 25px 15px">
+                  <div class="md-layout-item">
+                     <md-card md-with-hover>
+                      <div id="card-atas" @click="openModalProduk(produk.id)">
+                       <md-card-media class="card-image" >
+                          <md-card md-with-hover style="margin-top: -50px!important">
+                            <img :src="url_picture+'/default.jpg'" class="image" v-if="produk.foto == null">
+                            <img :src="url_picture+'/'+produk.foto" class="image" v-else>
+                          </md-card>
+                       </md-card-media>
+                       <p class="flexFont">
+                         <center> {{ produk.nama_produk | capitalize }} </center>
+                       </p>
+                       <md-card-actions class="card-action">
+                         <div class="md-toolbar-section-start harga-coret">Rp {{ produk.harga_coret | pemisahTitik }} </div>
+                         <div class="md-toolbar-section-end harga-jual">Rp {{ produk.harga_jual | pemisahTitik }} </div>
+                       </md-card-actions>
+                       </div>
+                       <div id="card-bawah">
+                       <md-card-actions class="card-action">
+                         <md-button @click="createKeranjang(produk.id)" class="beli-sekarang" style="background-color: #db4a24; color: white">
+                           Masuk Keranjang <span class="bg"></span>
+                         </md-button>
+                       </md-card-actions>
+                     </div>
+                     </md-card>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div id="displayMobile">
+
+           <md-empty-state v-if="loading">
+                <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+           </md-empty-state>
+
+            <div class="md-toolbar" style="padding: 15px 5px">
+                <md-field>
+                  <label for="movie">Urutkan</label>
+                  <md-select v-model="filter" name="filter" id="filter" @md-selected="produkSort">
+                    <md-option value="1">Default</md-option>
+                    <md-option value="2">Terpopuler</md-option>
+                    <md-option value="3">Termahal</md-option>
+                    <md-option value="4">Termurah</md-option>
+                    <md-option value="5">Terbaru</md-option>
+                  </md-select>
+                </md-field>
+  	        </div>
+
+            <div v-for="produk in produks">
+              <div class="col-xs-6" style="padding: 25px 5px">
+                  <div class="md-layout-item">
+                     <md-card md-with-hover >
+                      <div id="card-atas" @click="openModalProduk(produk.id)">
+                       <md-card-media class="card-image" >
+                          <md-card md-with-hover style="margin-top: -50px!important" >
+                            <img :src="url_picture+'/default.jpg'" class="image" v-if="produk.foto == null">
+                            <img :src="url_picture+'/'+produk.foto" class="image" v-else>
+                          </md-card>
+                       </md-card-media>
+                       <p class="flexFont">
+                         <center> {{ produk.nama_produk | capitalize }} </center>
+                       </p>
+                       <md-card-actions class="card-action">
+                         <div class="md-toolbar-section-start harga-coret">Rp {{ produk.harga_coret | pemisahTitik }} </div>
+                         <div class="md-toolbar-section-end harga-jual"> Rp {{ produk.harga_jual | pemisahTitik }} </div>
+                       </md-card-actions>
+                      </div>
+                      <div id="card-bawah">
+                       <md-card-actions class="card-action">
+                         <md-button  @click="createKeranjang(produk.id)" class="md-raised beli-sekarang">
+                           Masuk Keranjang
+                         </md-button>
+                       </md-card-actions>
+                     </div>
+                     </md-card>
+                  </div>
+              </div>
+            </div>
+          </div>
+
+        <!-- Snackbar for Bank delete alert -->
+        <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarBerhasil" md-persistent>
+            <span>Produk Berhasil Masuk Keranjang !</span>
+          </md-snackbar>
+
+        </div>
+      </div>
+
+    <Footer></Footer>
+  </div>
+</template>
+
+<script type="text/javascript">
+  import Header from '../header'
+  import Footer from '../footer/footer'
+
+  export default {
+  	data : () => ({
+  			url : window.location.origin + window.location.pathname,
+        url_picture : window.location.origin + (window.location.pathname) + "image_produks/",
+  			filter: 1,
+        produks: [],
+        loading: true,
+        snackbarBerhasil: false,
+        jumlah_produk:0,
+        id_detail:""
+  	}),
+  	mounted() {
+      this.getProdukData()
+  	},
+    filters: {
+        pemisahTitik: function (value) {
+            var angka = [value];
+            var numberFormat = new Intl.NumberFormat('es-ES');
+            var formatted = angka.map(numberFormat.format);
+            return formatted.join('; ');
+        },
+        capitalize: function (value) {
+          return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
+        },
+    },
+    methods: {
+      getProdukData() {
+    		axios.get(this.url + 'produk/view-produk')
+    		.then(resp => {
+    			this.produks = resp.data;
+    			this.loading = false;
+    		})
+    		.catch(resp => {
+    			console.log('catch getProdukData:', resp);
+    		});
+    	},
+      produkSort() {
+        let app = this;
+        axios.get(app.url+'produk/sort-produk/'+app.filter)
+    		.then(resp => {
+    			app.produks = resp.data;
+    			app.loading = false;
+    		})
+    		.catch(resp => {
+    			console.log('catch getProdukData:', resp);
+    		});
+      },
+      createKeranjang(id){
+        this.$store.dispatch('keranjangbelanja/LOAD_CREATE_LIST',{id :id,jumlah_produk:1})
+        this.snackbarBerhasil = true;
+      },
+      openModalProduk(id_produk) {
+          let app = this;
+          $("#produk-modal").addClass('active')
+          $('#form-produk').addClass('active')
+          app.$store.dispatch('detailproduk/LOAD_DETAIL_PRODUK',{id :id_produk})
+          app.jumlah_produk = 1;
+          app.$refs.jumlah_produk.focus();
+          app.id_detail = id_produk;
+      },
+      closeModalProduk() {
+        $('#produk-modal').removeClass('active');
+        app.id_detail = "";
+      },
+      createKeranjangDetail(id){
+        var jumlah_produk = this.jumlah_produk;
+        this.$store.dispatch('keranjangbelanja/LOAD_CREATE_LIST',{id :id,jumlah_produk:jumlah_produk})
+        $('#produk-modal').removeClass('active');
+        app.id_detail = "";
+        this.snackbarBerhasil = true;
+      },
+    
+    },
+    components : {
+      Header, Footer
+    }
   }
   .beli-sekarang {
     background-color: rgb(219, 74, 36) !important;

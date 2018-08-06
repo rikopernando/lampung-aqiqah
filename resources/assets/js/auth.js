@@ -6,9 +6,10 @@ const url = window.location.origin + window.location.pathname
 
 axios.get(url + 'auth')
 .then((resp) => {
-  if(resp.data) {
-    store.commit(`user/${LOGIN}`, resp.data)
-  }else{
+    store.dispatch('keranjangbelanja/LOAD_KERANJANG_LIST')
+   if(resp.data) {
+    store.commit(`user/${LOGIN}`,resp.data)
+   }else{
     console.log(false)
   }
 })
