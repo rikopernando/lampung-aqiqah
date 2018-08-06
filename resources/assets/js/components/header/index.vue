@@ -156,7 +156,7 @@
               </a>
             </md-button>
             <md-button class="md-icon-button">
-              <a href="#/cart">
+              <a href="#/keranjang-belanja">
                 <md-badge v-bind:md-content="this.$store.state.keranjangbelanja.countKeranjang">
                   <i class="fa fa-shopping-basket icon-shop-mobile"></i>
                 </md-badge>
@@ -263,8 +263,6 @@
 			}),
       mounted () {
         this.modal = true
-
-        this.$store.dispatch('keranjangbelanja/LOAD_KERANJANG_LIST')
       },
 			methods : {
 				openModal(which) {

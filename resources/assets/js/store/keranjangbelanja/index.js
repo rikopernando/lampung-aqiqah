@@ -15,7 +15,6 @@ const getters = {
 
 const mutations = {
     COUNTKERANJANG : (state, data)=> {
-      console.log(data);
       state.loading = false
       state.datakeranjang = data
       state.countKeranjang = data.count_keranjang;
@@ -72,7 +71,6 @@ const mutations = {
     },
     CREATEKERANJANG : (state,{respdata,data})=> {
       if (respdata == 1) {
-          console.log(respdata)
            state.countKeranjang += 1;
         }
     },

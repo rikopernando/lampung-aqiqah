@@ -74,14 +74,16 @@ const routes = [
     name : 'bank',
     component : BankIndex,
     meta : {
-      requiresAuth : true
+      requiresAuth : true,
+      is_admin : true
     }
   },{
     path : '/bank-create',
     name : 'bankCreate',
     component : BankCreate,
     meta : {
-      requiresAuth : true
+      requiresAuth : true,
+      is_admin : true
     }
   },{
     path : '/bank/edit/:id',

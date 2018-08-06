@@ -16,11 +16,7 @@ const mutations = {
        state.is_admin = true
       }
       state.loggedIn = true
-      state.profile = {
-        name : user.name,
-        email : user.email,
-        id : user.id
-      }
+      state.profile = user 
     },
     [LOGOUT] (state) {
       state.is_admin = false
