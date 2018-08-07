@@ -173,33 +173,32 @@
 
           <md-list style="padding: 0px">
             <md-list-item>
-              <md-icon>home</md-icon>
-              <span class="md-list-item-text">
-                <router-link class="md-button md-theme-default md-active side-menu" :to="{name: 'home'}">HOME</router-link>
-              </span>
+              <router-link :to="{name: 'home'}" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+                <md-icon>home</md-icon>
+                <span>Home</span>
+              </router-link>
             </md-list-item>
 
             <md-list-item>
-              <md-icon>store</md-icon>
-              <span class="md-list-item-text">
-                <router-link class="md-button md-theme-default md-active side-menu" :to="{name: 'listProduk'}">PRODUK</router-link>
-              </span>
+              <router-link :to="{name: 'listProduk'}" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+                <md-icon>store</md-icon>
+                <span>Produk</span>
+              </router-link>
             </md-list-item>
 
             <md-list-item>
-              <md-icon>add_shopping_cart</md-icon>
-              <span class="md-list-item-text">
-                <a href="#/pemesanan" class="md-button md-theme-default md-active side-menu">PEMESANAN</a>
-              </span>
+              <a href="#/pemesanan" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+                <md-icon>add_shopping_cart</md-icon>
+                <span>Pemesanan</span>
+              </a>
             </md-list-item>
 
             <md-list-item>
-              <md-icon>local_atm</md-icon>
-              <span class="md-list-item-text">
-                <a href="#/pembayaran" class="md-button md-theme-default md-active side-menu">PEMBAYARAN</a>
-              </span>
+              <a href="#/pembayaran" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+                <md-icon>local_atm</md-icon>
+                <span>Pembayaran</span>
+              </a>
             </md-list-item>
-
           </md-list>
 
           <div class="social-media">
