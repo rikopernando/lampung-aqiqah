@@ -113,31 +113,27 @@
 </template>
 
 <script>
-  export default {
-    data: () => ({
-      url : window.location.origin + window.location.pathname,
-      getFullYear: new Date().getFullYear(),
-      showNavigation: false,
-      showSidepanel: false
-    }),
-    mounted() {
-      this.init()
-    },
-    methods: {
-      init() {
-        let main = document.querySelector(".main");
-        let sidebar = document.querySelector(".sidebar");
-        let menutoggle = document.getElementById("menu-toggle");
 
-        menutoggle.addEventListener("click", function(e) {
-          menutoggle.classList.toggle("active");
-          main.classList.toggle("active");
-          sidebar.classList.toggle("active");
+export default {
+  data: () => ({
+    url : window.location.origin + window.location.pathname,
+    getFullYear: new Date().getFullYear(),
+    showNavigation: false,
+    showSidepanel: false
+  }),    
+  mounted() {
+    this.init()
+  },
+  methods: {
+    init() {
+      var main = document.querySelector(".main");
+      var sidebar = document.querySelector(".sidebar");
+      var menutoggle = document.getElementById("menu-toggle");
 
-          sidebar.classList.contains("active") ? menutoggle.querySelector("i").classList.remove("fa-bars") : menutoggle.querySelector("i").classList.add("fa-bars");
+      sidebar.classList.contains("active") ? menutoggle.querySelector("i").classList.remove("fa-bars") : menutoggle.querySelector("i").classList.add("fa-bars");
 
-        });
-      }
-    }
+    });
   }
+}
+
 </script>

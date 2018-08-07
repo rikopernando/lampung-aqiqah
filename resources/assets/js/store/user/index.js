@@ -1,9 +1,9 @@
 import { LOGIN, LOGOUT } from './mutations'
 
 const state = {
-    profile : {},
-    loggedIn : false,
-    is_admin : false
+  profile : {},
+  loggedIn : false,
+  is_admin : false
 }
 
 const getters = {
@@ -16,16 +16,23 @@ const mutations = {
        state.is_admin = true
       }
       state.loggedIn = true
-      state.profile = {
-        name : user.name,
-        email : user.email,
-        id : user.id
-      }
+      state.profile = user 
     },
     [LOGOUT] (state) {
       state.is_admin = false
       state.loggedIn = false
     }
+    state.loggedIn = true
+    state.profile = {
+      name : user.name,
+      email : user.email,
+      id : user.id
+    }
+  },
+  [LOGOUT] (state) {
+    state.is_admin = false
+    state.loggedIn = false
+  }
 }
 
 const actions = {

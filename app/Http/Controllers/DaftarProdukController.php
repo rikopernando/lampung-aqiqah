@@ -45,6 +45,7 @@ class DaftarProdukController extends Controller
        $respons['harga_coret'] = $dataDetailProduk->harga_coret;
        $respons['harga_jual'] = $dataDetailProduk->harga_jual;
        $respons['deskripsi_produk'] = $dataDetailProduk->deskripsi_produk;
+       $respons['id'] = $dataDetailProduk->id;
        return response()->json($respons);
     }
 

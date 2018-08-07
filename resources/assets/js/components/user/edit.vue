@@ -1,3 +1,41 @@
+<style scoped>
+._spinner-container {
+  position: absolute; 
+  left: 50%;
+}
+._spinner {
+  position: relative; 
+  left: -50%;
+}
+.breadcrumb {
+  border-color: #ffffff;
+  border-style: solid;
+  border-width: 0 1px 4px 1px;
+  padding: 8px 15px;
+  margin-bottom: 35px;
+  list-style: none;
+  background-color: #ffffff;
+  border-radius: 4px;
+}
+.header-card i {
+  background-color: #d44723;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  border-radius: 3px;
+  font-size: 30px !important;
+  margin: -30px 0px 0;
+  position: relative;
+  box-shadow: -4px -3px 0px 0px #ff000045;
+}
+.header-title {
+  color: #867f7f;
+  font-size: 20px;
+  padding: 4px 0px 0px 10px;
+}
+</style>
+
 <template>
   <sidebar>
     <div class="col-md-12">
@@ -55,14 +93,16 @@
     </div>
   </sidebar>
 </template>
+
 <script>
+
 import { validationMixin } from 'vuelidate'
-  import {
-    required,
-    email,
-    minLength,
-    maxLength
-  } from 'vuelidate/lib/validators'
+import {
+  required,
+  email,
+  minLength,
+  maxLength
+} from 'vuelidate/lib/validators'
 
 export default {
   mixins: [validationMixin],
@@ -120,7 +160,7 @@ export default {
     },
     saveForm() {
       this.submitted = true;
-      axios.patch(this.url + this.$route.params.id, this.user)
+      axios.patch(this.url + '/' + this.$route.params.id, this.user)
       .then(resp => {
         this.snackbarEditUser = true;
         this.submitted = false;
@@ -135,43 +175,3 @@ export default {
   }
 }  
 </script>
-
-<style>
-  ._spinner-container {
-    position: absolute; 
-    left: 50%;
-  }
-  ._spinner {
-    position: relative; 
-    left: -50%;
-  }
-  .breadcrumb {
-    border-color: #ffffff;
-    border-style: solid;
-    border-width: 0 1px 4px 1px;
-    padding: 8px 15px;
-    margin-bottom: 35px;
-    list-style: none;
-    background-color: #ffffff;
-    border-radius: 4px;
-  }
-  .header-card i {
-    background-color: #d44723;
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    line-height: 50px;
-    border-radius: 3px;
-    font-size: 30px !important;
-    margin: -30px 0px 0;
-    position: relative;
-    box-shadow: -4px -3px 0px 0px #ff000045;
-  }
-  .header-title {
-    color: #867f7f;
-    font-size: 20px;
-    padding: 4px 0px 0px 10px;
-  }
-</style>
-
-

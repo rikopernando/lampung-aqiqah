@@ -23,11 +23,23 @@
           <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="form-group">
               <label>Nama Lengkap</label>
-              <input style="font-size: 17px;" type="text" class="form-control" placeholder="Nama Lengkap" v-model="userAddress.name" v-on:input="userAddress.nama_pemesan = $event.target.value">
+              <input 
+                style="font-size: 17px;" 
+                type="text" 
+                class="form-control" 
+                placeholder="Nama Lengkap" 
+                v-model="userAddress.name" 
+                v-on:input="userAddress.nama_pemesan = $event.target.value" />
             </div>
             <div class="form-group">
               <label>No. Telepon</label>
-              <input style="font-size: 17px;" type="text" class="form-control" placeholder="No. Telepon" v-model="userAddress.no_telp" v-on:input="userAddress.nama_pemesan = $event.target.value">
+              <input 
+                style="font-size: 17px;" 
+                type="text" 
+                class="form-control" 
+                placeholder="No. Telepon" 
+                v-model="userAddress.no_telp" 
+                v-on:input="userAddress.nama_pemesan = $event.target.value">
             </div>
             <md-field>
               <label>Alamat</label>
@@ -38,7 +50,9 @@
             <div class="form-group">
               <label>Provinsi</label>
               <selectize-component :settings="select_provinsi" ref="provinsi" v-on:input="pilihWilayah('kabupaten')">
-                <option v-for="provinsi, index in provinsi" v-bind:value="provinsi.id">{{ provinsi.name }} </option>
+                <option v-for="provinsi, index in provinsi" v-bind:value="provinsi.id">
+                  {{ provinsi.name }}
+                </option>
               </selectize-component>
             </div>
             <div class="form-group">
@@ -46,7 +60,9 @@
               <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kabupaten"></md-progress-bar>
               <p class="waiting" v-if="this.$store.state.lokasi.load_kabupaten">Mohon tunggu ...</p>
               <selectize-component :settings="select_kabupaten" v-model="userAddress.kabupaten" ref="kabupaten" v-on:input="pilihWilayah('kecamatan')">
-                <option v-for="kabupaten, index in kabupaten" v-bind:value="kabupaten.id">{{ kabupaten.name }} </option>
+                <option v-for="kabupaten, index in kabupaten" v-bind:value="kabupaten.id">
+                  {{ kabupaten.name }}
+                </option>
               </selectize-component>
             </div>
             <div class="form-group">
@@ -54,7 +70,9 @@
               <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kecamatan"></md-progress-bar>
               <p class="waiting" v-if="this.$store.state.lokasi.load_kecamatan">Mohon tunggu ...</p>
               <selectize-component :settings="select_kecamatan" v-model="userAddress.kecamatan" ref="kecamatan" v-on:input="pilihWilayah('kelurahan')">
-                <option v-for="kecamatan, index in kecamatan" v-bind:value="kecamatan.id">{{ kecamatan.name }} </option>
+                <option v-for="kecamatan, index in kecamatan" v-bind:value="kecamatan.id">
+                  {{ kecamatan.name }}
+                </option>
               </selectize-component>
             </div>
             <div class="form-group">
@@ -62,7 +80,9 @@
               <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kelurahan"></md-progress-bar>
               <p class="waiting" v-if="this.$store.state.lokasi.load_kelurahan">Mohon tunggu ...</p>
               <selectize-component :settings="select_kelurahan" v-model="userAddress.kelurahan" ref="kelurahan" v-on:input="changeKelurahan()">
-                <option v-for="kelurahan, index in kelurahan" v-bind:value="kelurahan.id">{{ kelurahan.name }} </option>
+                <option v-for="kelurahan, index in kelurahan" v-bind:value="kelurahan.id">
+                  {{ kelurahan.name }}
+                </option>
               </selectize-component>
             </div>
           </div>
@@ -88,110 +108,111 @@
 </template>
 
 <script type="text/javascript">
-  import { LOAD_DATA } from '../../store/lokasi/mutations'
 
-  export default {
-    props: [
-      "userAddress",
-      "select_provinsi", "select_kabupaten", "select_kecamatan", "select_kelurahan",
-      "provinsi" , "kabupaten" , "kecamatan" , "kelurahan"
-   ],
-   data : () => ({
-     url: window.location.origin + (window.location.pathname + 'user'),
-     notifMessage: '',
-     notifSuccess: false
-   }),
-    mounted() {
-      this.$refs.kabupaten.$el.selectize.disable()
-      this.$refs.kelurahan.$el.selectize.disable()
-      this.$refs.kecamatan.$el.selectize.disable()
+import { LOAD_DATA } from '../../store/lokasi/mutations'
+
+export default {
+  props: [
+    "userAddress",
+    "select_provinsi", "select_kabupaten", "select_kecamatan", "select_kelurahan",
+    "provinsi" , "kabupaten" , "kecamatan" , "kelurahan"
+ ],
+ data : () => ({
+   url: window.location.origin + (window.location.pathname + 'user'),
+   notifMessage: '',
+   notifSuccess: false
+ }),
+  mounted() {
+    this.$refs.kabupaten.$el.selectize.disable()
+    this.$refs.kelurahan.$el.selectize.disable()
+    this.$refs.kecamatan.$el.selectize.disable()
+  },
+  methods: {
+    changeKelurahan () {
+      this.userAddress.kelurahan = this.$refs.kelurahan.$el.selectize.getValue()
     },
-    methods: {
-      changeKelurahan () {
-          this.userAddress.kelurahan = this.$refs.kelurahan.$el.selectize.getValue()
-      },
-      pilihWilayah(type) {
-        const app = this
-        var selectize
-        var id_wilayah
+    pilihWilayah(type) {
+      const app = this
+      var selectize
+      var id_wilayah
 
-          switch (type) {
-              case "kabupaten":
-                id_wilayah = app.$refs.provinsi.$el.selectize.getValue()
-                if(id_wilayah){
-                    app.userAddress.provinsi = id_wilayah
-                    app.userAddress.kabupaten = null
-                    app.userAddress.kecamatan = null
-                    app.userAddress.kelurahan = null
-                    selectize = app.$refs.kabupaten.$el.selectize
-                    app.$refs.kecamatan.$el.selectize.disable()
-                    app.$refs.kelurahan.$el.selectize.disable()
-                }
-                  break;
-              case "kecamatan":
-                id_wilayah = app.$refs.kabupaten.$el.selectize.getValue()
-                if(id_wilayah){
-                    app.userAddress.kabupaten = id_wilayah
-                    app.userAddress.kecamatan = null
-                    app.userAddress.kelurahan = null
-                    selectize = app.$refs.kecamatan.$el.selectize
-                    selectize.clearOptions()
-                    app.$refs.kelurahan.$el.selectize.clearOptions()
-                    app.$refs.kelurahan.$el.selectize.disable()
-                }
-                  break;
-              case "kelurahan":
-                id_wilayah = app.$refs.kecamatan.$el.selectize.getValue()
-                if(id_wilayah){
-                    app.userAddress.kecamatan = id_wilayah
-                    app.userAddress.kelurahan = null
-                    selectize = app.$refs.kelurahan.$el.selectize
-                    selectize.clearOptions()
-                }
-                  break;
+      switch (type) {
+        case "kabupaten":
+          id_wilayah = app.$refs.provinsi.$el.selectize.getValue()
+          if(id_wilayah){
+            app.userAddress.provinsi = id_wilayah
+            app.userAddress.kabupaten = null
+            app.userAddress.kecamatan = null
+            app.userAddress.kelurahan = null
+            selectize = app.$refs.kabupaten.$el.selectize
+            app.$refs.kecamatan.$el.selectize.disable()
+            app.$refs.kelurahan.$el.selectize.disable()
           }
+        break;
+        case "kecamatan":
+          id_wilayah = app.$refs.kabupaten.$el.selectize.getValue()
+          if(id_wilayah){
+            app.userAddress.kabupaten = id_wilayah
+            app.userAddress.kecamatan = null
+            app.userAddress.kelurahan = null
+            selectize = app.$refs.kecamatan.$el.selectize
+            selectize.clearOptions()
+            app.$refs.kelurahan.$el.selectize.clearOptions()
+            app.$refs.kelurahan.$el.selectize.disable()
+          }
+        break;
+        case "kelurahan":
+          id_wilayah = app.$refs.kecamatan.$el.selectize.getValue()
+          if(id_wilayah){
+            app.userAddress.kecamatan = id_wilayah
+            app.userAddress.kelurahan = null
+            selectize = app.$refs.kelurahan.$el.selectize
+            selectize.clearOptions()
+          }
+        break;
+      }
 
-        if(id_wilayah){
-            app.$store.commit(`lokasi/${LOAD_DATA}`,{data : type, status : 1})
-            app.$store.dispatch('lokasi/LOAD_WILAYAH',{
-              type : type,
-              id : id_wilayah,
-              status : 1
-            })
+      if(id_wilayah){
+        app.$store.commit(`lokasi/${LOAD_DATA}`, {data : type, status : 1})
+        app.$store.dispatch('lokasi/LOAD_WILAYAH', {
+          type : type,
+          id : id_wilayah,
+          status : 1
+        })
+        selectize.enable()
+        selectize.focus()
+      }
+    },
+    ubahAlamat() {
+      $("#tableAlamat").hide();
+      $("#btnUbah").hide();
 
-            selectize.enable()
-            selectize.focus()
-        }
-      },
-      ubahAlamat() {
-        $("#tableAlamat").hide();
-        $("#btnUbah").hide();
+      $("#inputAlamat").show();
+      $("#btnSimpan").show();
+    },
+    simpanAlamat() {
+      const app = this;
 
-        $("#inputAlamat").show();
-        $("#btnSimpan").show();
-      },
-      simpanAlamat() {
-        const app = this;
+      axios.put(app.url+'/simpan-alamat', app.userAddress)
+			.then(function (resp) {
+        app.notifMessage = `Berhasil Mengubah Alamat`
+        app.notifSuccess = true;
 
-        axios.put(app.url+'/simpan-alamat', app.userAddress)
-  			.then(function (resp) {
-          app.notifMessage = `Berhasil Mengubah Alamat`
-          app.notifSuccess = true;
+        $("#tableAlamat").show();
+        $("#btnUbah").show();
 
-          $("#tableAlamat").show();
-          $("#btnUbah").show();
-
-          $("#inputAlamat").hide();
-          $("#btnSimpan").hide();
-  			})
-  			.catch(function (resp) {
-          console.log(resp);
-  				app.errors = resp.response
-  			});
-      },
-      redirectTo() {
-        window.location.replace(window.location.origin+(window.location.pathname)+"#/akun")
-      },
-    }
+        $("#inputAlamat").hide();
+        $("#btnSimpan").hide();
+			})
+			.catch(function (resp) {
+        console.log(resp);
+				app.errors = resp.response
+			});
+    },
+    redirectTo() {
+      window.location.replace(window.location.origin+(window.location.pathname)+"#/akun")
+    },
   }
+}
+
 </script>

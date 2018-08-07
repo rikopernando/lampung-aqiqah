@@ -1,7 +1,7 @@
 import { DATADETAILPRODUK } from './mutations'
 
 const state = {
-    detailProduk : {},
+  detailProduk : {},
 }
 
 const getters = {
@@ -9,11 +9,10 @@ const getters = {
 }
 
 const mutations = {
-    DATADETAILPRODUK : (state, data)=> {
-      console.log(data);
-      state.detailProduk = data;
-    },
-    
+  DATADETAILPRODUK : (state, data)=> {
+    console.log(data);
+    state.detailProduk = data;
+  },  
 }
 
 const actions = {      
@@ -26,7 +25,6 @@ const actions = {
       console.log('Terjadi Kesalahan :', err);
     });
   },
-
 }
 
 export default {
