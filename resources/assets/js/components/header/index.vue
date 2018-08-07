@@ -255,38 +255,29 @@
           <img src="https://rumahaqiqah.org/wp-content/uploads/2018/01/rumahaqiqah3.png" alt="Aqiqah Lampung">
         </a>
 
-          <div class="md-toolbar-section-end">
-            <md-button class="md-icon-button" v-if="!this.$store.state.user.loggedIn">
-              <a href="#" v-on:click="openModal('login')">
-                  <i class="fa fa-user icon-shop-mobile"></i>
-              </a>
-            </md-button>
+        <div class="md-toolbar-section-end">
+          <md-button class="md-icon-button">
+            <a href="#" v-on:click="openModal('login')">
+              <i class="fa fa-user icon-shop-mobile"></i>
+            </a>
+          </md-button>
+          <md-button class="md-icon-button">
+            <a href="#/keranjang-belanja">
+              <md-badge v-bind:md-content="this.$store.state.keranjangbelanja.countKeranjang">
+                <i class="fa fa-shopping-basket icon-shop-mobile"></i>
+              </md-badge>
+            </a>
+          </md-button>
+        </div>
+      </md-toolbar>
 
-            <md-button class="md-icon-button" v-else>
-              <md-menu>
-                <a href="#" class="md-button md-theme-default md-active" md-menu-trigger>
-                  <div class="md-ripple">
-                    <i class="fa fa-user icon-shop-mobile"></i>
-                  </div>
-                </a>
-                <md-menu-content>
-                  <md-menu-item @click="">
-                    <router-link :to="{name: 'logout'}" tag="div">LOGOUT</router-link>
-                  </md-menu-item>
-                  <md-menu-item @click="">
-                    <router-link :to="{name: 'indexAkun'}" tag="div">AKUN SAYA</router-link>
-                  </md-menu-item>
-                </md-menu-content>
-              </md-menu>
-            </md-button>
-            <md-button class="md-icon-button">
-              <a href="#/keranjang-belanja">
-                <md-badge v-bind:md-content="this.$store.state.keranjangbelanja.countKeranjang">
-                  <i class="fa fa-shopping-basket icon-shop-mobile"></i>
-                </md-badge>
-              </a>
-            </md-button>
-          </div>
+      <md-drawer :md-active.sync="showNavigation">
+        <md-toolbar class="md-transparent" md-elevation="0">
+          <span class="md-title">
+            <a href="#/" class="md-toolbar-section-end">
+                <img src="https://rumahaqiqah.org/wp-content/uploads/2018/01/rumahaqiqah3.png" alt="Aqiqah Lampung">
+            </a>
+          </span>
         </md-toolbar>
 
         <md-list style="padding: 0px">
@@ -297,60 +288,50 @@
             </span>
           </md-list-item>
 
-          <md-list style="padding: 0px">
-            <md-list-item>
-              <router-link :to="{name: 'home'}" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
-                <md-icon>home</md-icon>
-                <span>Home</span>
-              </router-link>
-            </md-list-item>
+          <md-list-item>
+            <md-icon>store</md-icon>
+            <span class="md-list-item-text">
+              <router-link class="md-button md-theme-default md-active side-menu" :to="{name: 'listProduk'}">PRODUK</router-link>
+            </span>
+          </md-list-item>
 
-            <md-list-item>
-              <router-link :to="{name: 'listProduk'}" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
-                <md-icon>store</md-icon>
-                <span>Produk</span>
-              </router-link>
-            </md-list-item>
+          <md-list-item>
+            <md-icon>add_shopping_cart</md-icon>
+            <span class="md-list-item-text">
+              <a href="#/pemesanan" class="md-button md-theme-default md-active side-menu">PEMESANAN</a>
+            </span>
+          </md-list-item>
 
-            <md-list-item>
-              <a href="#/pemesanan" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
-                <md-icon>add_shopping_cart</md-icon>
-                <span>Pemesanan</span>
-              </a>
-            </md-list-item>
+          <md-list-item>
+            <md-icon>local_atm</md-icon>
+            <span class="md-list-item-text">
+              <a href="#/pembayaran" class="md-button md-theme-default md-active side-menu">PEMBAYARAN</a>
+            </span>
+          </md-list-item>
+        </md-list>
 
-            <md-list-item>
-              <a href="#/pembayaran" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
-                <md-icon>local_atm</md-icon>
-                <span>Pembayaran</span>
-              </a>
-            </md-list-item>
-
-          </md-list>
-
-          <div class="social-media">
-            <md-button class="md-icon-button">
-              <a href="#/facebook">
-                <i class="fa fa-facebook-f" style="color: #868686;"></i>
-                <md-tooltip md-direction="bottom">Follow On Facebook </md-tooltip>
-              </a>
-            </md-button>
-            <md-button class="md-icon-button">
-              <a href="#/instagram">
-                <i class="fa fa-instagram" style="color: #868686;"></i>
-                <md-tooltip md-direction="bottom">Follow On Instagram </md-tooltip>
-              </a>
-            </md-button>
-            <md-button class="md-icon-button">
-              <a href="#/whatsapp">
-                <i class="fa fa-whatsapp" style="color: #868686;"></i>
-                <md-tooltip md-direction="bottom">Send us Whatsapp </md-tooltip>
-              </a>
-            </md-button>
-          </div>
-        </md-drawer>
-
-      </div>
+        <div class="social-media">
+          <md-button class="md-icon-button">
+            <a href="#/facebook">
+              <i class="fa fa-facebook-f" style="color: #868686;"></i>
+              <md-tooltip md-direction="bottom">Follow On Facebook </md-tooltip>
+            </a>
+          </md-button>
+          <md-button class="md-icon-button">
+            <a href="#/instagram">
+              <i class="fa fa-instagram" style="color: #868686;"></i>
+              <md-tooltip md-direction="bottom">Follow On Instagram </md-tooltip>
+            </a>
+          </md-button>
+          <md-button class="md-icon-button">
+            <a href="#/whatsapp">
+              <i class="fa fa-whatsapp" style="color: #868686;"></i>
+              <md-tooltip md-direction="bottom">Send us Whatsapp </md-tooltip>
+            </a>
+          </md-button>
+        </div>
+      </md-drawer>
+    </div>
   </div>
 </template>
 
