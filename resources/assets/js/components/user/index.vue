@@ -1,49 +1,3 @@
-<style scoped>
-@media (max-width: 620px) {
-  .media-screen-medium-hide {
-    display: block;
-  }
-  .media-screen-xsmall-hide {
-    display: none
-  }
-}
-@media (min-width: 621px) {
-  .media-screen-xsmall-hide {
-    display: block;
-  }
-  .media-screen-medium-hide {
-    display: none;
-  }
-}
-.breadcrumb {
-  border-color: #ffffff;
-  border-style: solid;
-  border-width: 0 1px 4px 1px;
-  padding: 8px 15px;
-  margin-bottom: 35px;
-  list-style: none;
-  background-color: #ffffff;
-  border-radius: 4px;
-}
-.header-card i {
-  background-color: #d44723;
-  width: 50px;
-  height: 50px;
-  text-align: center;
-  line-height: 50px;
-  border-radius: 3px;
-  font-size: 30px !important;
-  margin: -30px 0px 0;
-  position: relative;
-  box-shadow: -4px -3px 0px 0px #ff000045;
-}
-.header-title {
-  color: #867f7f;
-  font-size: 20px;
-  padding: 4px 0px 0px 10px;
-}
-</style>
-
 <template>
   <sidebar>
     <div class="col-md-12" style="padding: 0">
@@ -134,65 +88,109 @@
 </template>
 
 <script>
+  const toLower = text => {
+    return text.toString().toLowerCase();
+  };
 
-const toLower = text => {
-  return text.toString().toLowerCase();
-};
+  const searchUser = (items, term, searchBy) => {
+    if (term) {
+      return items.filter(item => toLower(item[searchBy]).includes(toLower(term)));
+    }
 
-const searchUser = (items, term, searchBy) => {
-  if (term) {
-    return items.filter(item => toLower(item[searchBy]).includes(toLower(term)));
-  }
+    return items;
+  };
 
-  return items;
-};
-
-export default {
-  data: () => ({
-  	url: window.location.origin + (window.location.pathname + 'user/'),
-    search: null,
-    promptDeleteUser: false,
-		snackbarDeleteUser: false,
-    userIdForDelete: '',
-    searched: [],
-    users: [],
-    searchBy: 'name',
-    loading: true
-  }),
-  created() {
-  	this.getUserData();
-  },
-  methods: {
-  	getUserData() {
-  		axios.get(this.url + 'view')
-  		.then(resp => {
-  			this.users = resp.data;
-  			this.searched = resp.data;
-  			this.loading = false;
-  		})
-  		.catch(resp => {
-  			console.log('catch getUserData:', resp);
-  		});
-  	},
-  	onConfirmDelete() {
-  		axios.delete(this.url + this.userIdForDelete)
-  		.then(resp => {
-  			this.userIdForDelete = '';
-  			this.snackbarDeleteUser = true;
-  			this.getUserData();
-  		})
-  		.catch(resp => {
-  			console.log('catch onConfirmDelete:', resp);
-  		})
-  	},
-  	deleteUser(userId) {
-  		this.promptDeleteUser = true;
-  		this.userIdForDelete = userId;
-  	},
-    searchOnTable() {
-      this.searched = searchUser(this.users, this.search, this.searchBy);
+  export default {
+    data: () => ({
+    	url: window.location.origin + (window.location.pathname + 'user/'),
+      search: null,
+	    promptDeleteUser: false,
+			snackbarDeleteUser: false,
+	    userIdForDelete: '',
+      searched: [],
+      users: [],
+      searchBy: 'name',
+      loading: true
+    }),
+    created() {
+    	this.getUserData();
+    },
+    methods: {
+    	getUserData() {
+    		axios.get(this.url + 'view')
+    		.then(resp => {
+    			this.users = resp.data;
+    			this.searched = resp.data;
+    			this.loading = false;
+    		})
+    		.catch(resp => {
+    			console.log('catch getUserData:', resp);
+    		});
+    	},
+    	onConfirmDelete() {
+    		axios.delete(this.url + this.userIdForDelete)
+    		.then(resp => {
+    			this.userIdForDelete = '';
+    			this.snackbarDeleteUser = true;
+    			this.getUserData();
+    		})
+    		.catch(resp => {
+    			console.log('catch onConfirmDelete:', resp);
+    		})
+    	},
+    	deleteUser(userId) {
+    		this.promptDeleteUser = true;
+    		this.userIdForDelete = userId;
+    	},
+      searchOnTable() {
+        this.searched = searchUser(this.users, this.search, this.searchBy);
+      }
     }
   }
-}
-
 </script>
+
+<style scoped>
+	@media (max-width: 620px) {
+		.media-screen-medium-hide {
+			display: block;
+		}
+		.media-screen-xsmall-hide {
+			display: none
+		}
+	}
+	@media (min-width: 621px) {
+		.media-screen-xsmall-hide {
+			display: block;
+		}
+		.media-screen-medium-hide {
+			display: none;
+		}
+	}
+	.breadcrumb {
+    border-color: #ffffff;
+    border-style: solid;
+    border-width: 0 1px 4px 1px;
+    padding: 8px 15px;
+    margin-bottom: 35px;
+    list-style: none;
+    background-color: #ffffff;
+    border-radius: 4px;
+  }
+  .header-card i {
+    background-color: #d44723;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 3px;
+    font-size: 30px !important;
+    margin: -30px 0px 0;
+    position: relative;
+    box-shadow: -4px -3px 0px 0px #ff000045;
+  }
+  .header-title {
+    color: #867f7f;
+    font-size: 20px;
+    padding: 4px 0px 0px 10px;
+  }
+</style>

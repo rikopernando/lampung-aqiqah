@@ -1,20 +1,20 @@
 <template>
   <div>
     <Header></Header>
-    <div class="container">
-      <md-card>
-        <ul class="breadcrumb">
-          <li><a href="#/">Home</a></li>
+      <div class="container">
+          <md-card md-with-hover>
+            <ul class="breadcrumb">
+              <li><a href="#/">Home</a></li>
               <li><a href="#/keranjang-belanja" id="keranjang-belanja">CART</a></li>
-          <li class="active">Checkout</li>
-        </ul>
-      </md-card>
+              <li class="active">Checkout</li>
+            </ul>
+          </md-card>
 
-      <md-card>
-				<md-card-header>
-					<div class="md-title">Checkout</div>
-          <hr>
-				</md-card-header>
+          <md-card md-with-hover>
+						<md-card-header>
+							<div class="md-title">Checkout</div>
+              <hr>
+						</md-card-header>
 
 						<md-card-content>
 							<div class="row">
@@ -51,7 +51,7 @@
                 </div>
               </div>
 
-          <h4>Pesanan Anda</h4>
+              <h4>Pesanan Anda</h4>
 
               <table class="table table-striped table-hover">
                 <thead>
@@ -112,11 +112,21 @@
               </div>
 						</md-card-content>
 
+          </md-card>
+      </div>
     <Footer></Footer>
   </div>
 </template>
 
 <script>
+  
+  import { mapState } from 'vuex'
+  import { LOAD_DATA } from '../../store/lokasi/mutations'
+  import Header from '../header'
+  import Footer from '../footer/footer'
+  import BillingDetails from './billing-details'
+  import KirimTempatLain from './kirim-tempat-lain'
+  import DataPesertaAqiqah from './data-peserta-aqiqah'
 
   export default {
     data : () => ({
@@ -231,38 +241,39 @@
 
 </script>
 
-<style lang="scss" scoped> 
-.card-checkout {
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 15px;
-  padding-right: 15px;
-  background-color: #ffffff;
-}
+<style lang="scss" scoped>
+  
+  .card-checkout {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: #ffffff;
+  }
 
-.breadcrumb {
-  border-color: #ffffff;
-  border-style: solid;
-  border-width: 0 1px 4px 1px;
-  padding: 8px 15px;
-  margin-bottom: 35px;
-  margin-top: 22px;
-  list-style: none;
-  background-color: #ffffff;
-  border-radius: 4px;
-}
+  .breadcrumb {
+    border-color: #ffffff;
+    border-style: solid;
+    border-width: 0 1px 4px 1px;
+    padding: 8px 15px;
+    margin-bottom: 35px;
+    margin-top: 22px;
+    list-style: none;
+    background-color: #ffffff;
+    border-radius: 4px;
+  }
 	
-.total-price {
-	background-color : #ff5252;
-}	
+	.total-price {
+		background-color : #ff5252;
+	}	
 
-.md-table + .md-table {
-  margin-top: 16px
-}
+  .md-table + .md-table {
+    margin-top: 16px
+  }
 
-.md-progress-bar {
-  margin: 1px;
-}
+  .md-progress-bar {
+    margin: 1px;
+  }
 
   .md-progress-spinner {
     margin: 14px;

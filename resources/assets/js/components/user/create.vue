@@ -1,41 +1,3 @@
-<style scoped>
-._spinner-container {
-  position: absolute; 
-  left: 50%;
-}
-._spinner {
-  position: relative; 
-  left: -50%;
-}
-.breadcrumb {
-  border-color: #ffffff;
-  border-style: solid;
-  border-width: 0 1px 4px 1px;
-  padding: 8px 15px;
-  margin-bottom: 35px;
-  list-style: none;
-  background-color: #ffffff;
-  border-radius: 4px;
-}
-.header-card i {
-  background-color: #d44723;
-  width: 50px;
-  height: 50px;
-  text-align: center;
-  line-height: 50px;
-  border-radius: 3px;
-  font-size: 30px !important;
-  margin: -30px 0px 0;
-  position: relative;
-  box-shadow: -4px -3px 0px 0px #ff000045;
-}
-.header-title {
-  color: #867f7f;
-  font-size: 20px;
-  padding: 4px 0px 0px 10px;
-}
-</style>
-
 <template>
   <sidebar>
     <div class="col-md-12">
@@ -92,24 +54,22 @@
         </md-card-content>
       </md-card>
 
-      <!-- Snackbar for user create alert -->
+      <!-- Snackbar for user edit alert -->
       <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="snackbarCreateUser" @md-closed="redirectToUserList">
         <span>Berhasil menambahkan User!</span>
       </md-snackbar>
     </div>
   </sidebar>
 </template>
-
 <script>
-
 import { validationMixin } from 'vuelidate'
-import {
-  required,
-  email,
-  minLength,
-  maxLength,
-  sameAs
-} from 'vuelidate/lib/validators'
+  import {
+    required,
+    email,
+    minLength,
+    maxLength,
+    sameAs
+  } from 'vuelidate/lib/validators'
 
 export default {
   mixins: [validationMixin],
@@ -143,6 +103,8 @@ export default {
       }
     }
   },
+  mounted() {
+  },
   methods: {
     getValidationClass (fieldName) {
       const field = this.$v.user[fieldName]
@@ -173,9 +135,48 @@ export default {
       });
     },
     redirectToUserList() {
-      this.$router.replace('/user');  
+      // this.$router.replace('/user');  
     }
   }
 }  
-
 </script>
+
+<style>
+  ._spinner-container {
+    position: absolute; 
+    left: 50%;
+  }
+  ._spinner {
+    position: relative; 
+    left: -50%;
+  }
+  .breadcrumb {
+    border-color: #ffffff;
+    border-style: solid;
+    border-width: 0 1px 4px 1px;
+    padding: 8px 15px;
+    margin-bottom: 35px;
+    list-style: none;
+    background-color: #ffffff;
+    border-radius: 4px;
+  }
+  .header-card i {
+    background-color: #d44723;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 3px;
+    font-size: 30px !important;
+    margin: -30px 0px 0;
+    position: relative;
+    box-shadow: -4px -3px 0px 0px #ff000045;
+  }
+  .header-title {
+    color: #867f7f;
+    font-size: 20px;
+    padding: 4px 0px 0px 10px;
+  }
+</style>
+
+
