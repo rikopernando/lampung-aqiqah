@@ -1,3 +1,4 @@
+
 <style lang="scss" scoped>
 .md-toolbar.md-theme-default {
    background-color:#d21d24;
@@ -62,15 +63,15 @@
       <!-- class div slider-->
       <vueper-slides fade slide-content-outside="top" slide-content-outside-class="max-widthed" :touchable="false" :slide-ratio="0.2" :bullets="false">
         <vueper-slide 
-          v-for="(slide, i) in slides" 
-          :key="i" 
-          :image="slide.image">
+            v-for="(slide, i) in slides" 
+            :key="i" 
+            :image="slide.image">
         </vueper-slide>
       </vueper-slides>
       <md-toolbar class="md-dense">
         <div class="md-toolbar-section-start"></div>
         <h3 class="md-title"><b>MENGAPA MEMILIH AQIQAH LAMPUNG ?</b></h3>
-        <div class="md-toolbar-section-end"></div>
+         <div class="md-toolbar-section-end"></div>
       </md-toolbar>
     </div>
     <!-- class div slider-->
@@ -98,7 +99,7 @@
           <p class="desc">Hewan Aqiqah disembelih sesuai standar syar’i dan kesehatan, dan di lakukan oleh Team kami yang berpengalaman</p>
         </div>
         <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100">
-          <h2 class="headDesc"><i class="fa fa-child"></i> Memberdayakan</h2>
+        <h2 class="headDesc"><i class="fa fa-child"></i> Memberdayakan</h2>
           <p class="desc">Dengan memesan layanan aqiqah kepada kami berarti  telah ikut meningkatkan kesejahteraan peternak lokal</p>
         </div>
         <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100"> 
@@ -118,7 +119,7 @@
         </div>
         <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100"> 
           <h2 class="headDesc"><i class="fa fa-puzzle-piece"></i> Pilihan Paket</h2>
-          <p class="desc">Anda dapat memilih paket sesuai keinginan, Anda juga bisa berkonsultasi dengan customer service kami.</p>  
+            <p class="desc">Anda dapat memilih paket sesuai keinginan, Anda juga bisa berkonsultasi dengan customer service kami.</p>  
         </div>
       </div>
     </div>
@@ -126,7 +127,7 @@
     
     <md-toolbar class="md-dense">
       <div class="md-toolbar-section-start"></div>
-      <h3 class="md-title"><b>PRODUK TERBARU</b></h3>
+        <h3 class="md-title"><b>PRODUK TERBARU</b></h3>
       <div class="md-toolbar-section-end"></div>
     </md-toolbar>
   </div>
@@ -134,28 +135,26 @@
 </template>
 
 <script>
+  import { VueperSlides, VueperSlide } from 'vueperslides'
+  export default {
+    components: { VueperSlides, VueperSlide },
 
-import { VueperSlides, VueperSlide } from 'vueperslides'
-
-export default {
-  components: { VueperSlides, VueperSlide },
-  data : () => {
-    return {
-      slides : [
-      {
-        title: 'Slider 1',
-        content: 'Slide Content',
-        image : window.location.origin + window.location.pathname+'images/banner-sate-crop.jpg',
-      },{
-        title: 'Slider 2',
-        content: 'Slide Content',
-        image : window.location.origin + window.location.pathname+'images/banner-web-crop.jpeg',
-      }]
+    data : () => {
+      return {
+        slides : [
+        {
+          title: 'Slider 1',
+          content: 'Slide Content',
+          image : window.location.origin + window.location.pathname+'images/banner-sate-crop.jpg',
+        },{
+          title: 'Slider 2',
+          content: 'Slide Content',
+          image : window.location.origin + window.location.pathname+'images/banner-web-crop.jpeg',
+        }]
+      }
+    },
+    mounted() {
+      console.log()
     }
-  },
-  mounted() {
-    console.log()
   }
-}
-
 </script>

@@ -9,8 +9,7 @@
           Dari Dashboard akun Anda, Anda dapat melihat pesanan terbaru Anda,
           mengelola alamat pengiriman dan penagihan Anda
           dan mengedit kata sandi dan detail akun Anda.
-        </p>
-        <br>
+        </p><br>
 
         <!-- DASHBOARD CARD -->
         <div class="row" id="portfolio">
@@ -66,6 +65,4 @@
       }
     }
   }
-}
-
 </script>

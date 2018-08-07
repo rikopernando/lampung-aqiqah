@@ -57,54 +57,9 @@
         <span v-if="errors.catatan" class="error-message"> {{ errors.catatan[0] }} </span>
       </div>
     </div>
-    <div class="form-group">
-      <input type="text" v-on:input="pesanan.alamat = $event.target.value" class="form-control" placeholder="Alamat">
-    </div>
-    <div class="form-group">
-      <selectize-component :settings="select_provinsi" ref="provinsi" v-on:input="pilihWilayah('kabupaten')">
-        <option v-for="provinsi, index in provinsi" v-bind:value="provinsi.id">{{ provinsi.name }} </option> 
-      </selectize-component>
-    </div>
-    <div class="form-group">
-      <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kabupaten"></md-progress-bar>
-      <p class="waiting" v-if="this.$store.state.lokasi.load_kabupaten">Mohon tunggu ...</p>
-      <selectize-component :settings="select_kabupaten" ref="kabupaten" v-on:input="pilihWilayah('kecamatan')">
-        <option v-for="kabupaten, index in kabupaten" v-bind:value="kabupaten.id">{{ kabupaten.name }} </option> 
-      </selectize-component>
-    </div>
-    <div class="form-group">
-      <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kecamatan"></md-progress-bar>
-      <p class="waiting" v-if="this.$store.state.lokasi.load_kecamatan">Mohon tunggu ...</p>
-      <selectize-component :settings="select_kecamatan" ref="kecamatan" v-on:input="pilihWilayah('kelurahan')">
-        <option v-for="kecamatan, index in kecamatan" v-bind:value="kecamatan.id">{{ kecamatan.name }} </option> 
-      </selectize-component>
-    </div>
-    <div class="form-group">
-      <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kelurahan"></md-progress-bar>
-      <p class="waiting" v-if="this.$store.state.lokasi.load_kelurahan">Mohon tunggu ...</p>
-      <selectize-component :settings="select_kelurahan" ref="kelurahan" v-on:input="changeKelurahan()">
-        <option v-for="kelurahan, index in kelurahan" v-bind:value="kelurahan.id">{{ kelurahan.name }} </option> 
-      </selectize-component>
-    </div>
-    <div class="form-group">
-      <input type="text" v-on:input="pesanan.handphone = $event.target.value" class="form-control" placeholder="Handphone">
-    </div>
-    <div class="form-group">
-      <input type="email" v-on:input="pesanan.email = $event.target.value" class="form-control" placeholder="Email">
-    </div>
-    <div class="form-group">
-      <selectize-component :settings="selectsumberInformasi" v-on:input="changeSumberInformasi()" ref="sumber_informasi">
-        <option v-for="sumberinformasi, index in sumber_informasi" v-bind:value="sumberinformasi">{{ sumberinformasi }} </option> 
-      </selectize-component>
-    </div>
-    <div class="form-group">
-      <textarea v-on:input="pesanan.notes = $event.target.value" class="form-control" placeholder="Catatan"></textarea>
-    </div>
-  </div>
 </template>
 
 <script>
-import { LOAD_DATA } from '../../store/lokasi/mutations'
 
   import { LOAD_DATA } from '../../store/lokasi/mutations'
   import { mapState } from 'vuex'
@@ -236,43 +191,10 @@ import { LOAD_DATA } from '../../store/lokasi/mutations'
                 status : 1
               })
           }
-        break;
-        case "kecamatan":
-          id_wilayah = app.$refs.kabupaten.$el.selectize.getValue()
-          if(id_wilayah){
-            app.pesanan.kabupaten = id_wilayah
-            app.pesanan.kecamatan = null
-            app.pesanan.kelurahan = null
-            selectize = app.$refs.kecamatan.$el.selectize
-            selectize.clearOptions()
-            app.$refs.kelurahan.$el.selectize.clearOptions()
-            app.$refs.kelurahan.$el.selectize.disable()
-          }
-        break;
-        case "kelurahan":
-          id_wilayah = app.$refs.kecamatan.$el.selectize.getValue()
-          if(id_wilayah){
-            app.pesanan.kecamatan = id_wilayah
-            app.pesanan.kelurahan = null
-            selectize = app.$refs.kelurahan.$el.selectize
-            selectize.clearOptions()
-          }
-        break;
+        }
       }
-       
-      if(id_wilayah){
-        app.$store.commit(`lokasi/${LOAD_DATA}`,{data : type, status : 1})
-        app.$store.dispatch('lokasi/LOAD_WILAYAH',{
-          type : type,
-          id : id_wilayah,
-          status : 1
-        })
-        selectize.enable()
-        selectize.focus()
-      }
-    }
   }
-}
+
 </script>
 
 <style lang="scss" scoped>
