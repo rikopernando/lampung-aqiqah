@@ -182,6 +182,10 @@ footer {
     padding-left: 75px;
     transition: all .2s ease-in-out;
   }
+  .dekstop-menu {
+    text-transform: uppercase;
+    color: #767676;
+  }
   footer {
     font-size: 15px !important;
     text-align: right;
