@@ -136,7 +136,7 @@ class PesananController extends Controller
     {
         $pesanan = Pesanan::with('pelanggan')->find($id);
         $detail_pesanan = DetailPesanan::with('produk')->where('id_pesanan',$pesanan->id)->get();
-        $kirim_tempat_lain = KirimTempatLain::where('id_pesanan',$pesanan->id)->get();
+        $kirim_tempat_lain = KirimTempatLain::where('id_pesanan',$pesanan->id);
         
         $data_pesanan = [
             ['header' => 'Nomor Order', 'content' => '#'.$pesanan->id], 
@@ -151,6 +151,8 @@ class PesananController extends Controller
         $pesanan->jenis_kelamin == 1 ? $jenis_kelamin = 'Laki - Laki' : $jenis_kelamin = 'Perempuan';
 
         $pemesan = [
+           ['judul' => 'Nama', 'isi' => $pesanan->pelanggan->name], 
+           ['judul' => 'Alamat', 'isi' => $pesanan->pelanggan->alamat], 
            ['judul' => 'Kelurahan', 'isi' => $pesanan->Kelurahan], 
            ['judul' => 'Kecamatan', 'isi' => $pesanan->Kecamatan], 
            ['judul' => 'Kabupaten', 'isi' => $pesanan->Kabupaten], 
@@ -164,10 +166,25 @@ class PesananController extends Controller
            ['judul' => 'Lahir Di (Nama RSB / Bidan)', 'isi' => $pesanan->tempat_lahir]
         ];
 
+        if($kirim_tempat_lain->count() > 0){
+
+            $alamat_kirim = [
+               ['judul' => 'Nama', 'isi' => $kirim_tempat_lain->first()->nama_depan." ".$kirim_tempat_lain->first()->nama_belakang], 
+               ['judul' => 'Company Name', 'isi' => $kirim_tempat_lain->first()->company_name], 
+               ['judul' => 'Alamat', 'isi' => $kirim_tempat_lain->first()->alamat], 
+               ['judul' => 'Kelurahan', 'isi' => $kirim_tempat_lain->first()->KelurahanKirim], 
+               ['judul' => 'Kecamatan', 'isi' => $kirim_tempat_lain->first()->KecamatanKirim], 
+               ['judul' => 'Kabupaten', 'isi' => $kirim_tempat_lain->first()->KabupatenKirim], 
+               ['judul' => 'Provinsi', 'isi' => $kirim_tempat_lain->first()->ProvinsiKirim], 
+            ];
+        }else{
+            $alamat_kirim = [];
+        }
+
         $response['pesanan'] = $data_pesanan;
         $response['pemesan'] = $pemesan;
         $response['detail_pesanan'] = $detail_pesanan;
-        $response['kirim_tempat_lain'] = $kirim_tempat_lain;
+        $response['kirim_tempat_lain'] = $alamat_kirim;
         $response['subtotal'] = $pesanan->total;
 
         return $response; 

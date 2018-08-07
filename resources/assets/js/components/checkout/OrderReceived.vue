@@ -70,6 +70,20 @@
                       </tr>
                     </tbody>
                   </table>
+
+                  <table class="table table-striped table-hover" v-if="data_pesanan.kirim_tempat_lain.length">
+                    <thead>
+                      <th>ALAMAT KIRIM</th> <th></th> <th></th>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <tr v-for="data, index in data_pesanan.kirim_tempat_lain" style="text-transform: uppercase">
+                          <td width="20%;">{{ data.judul }}</td> <td width="5%;">: </td>
+                          <td>{{ data.isi }}</td>
+                        </tr>
+                      </tr>
+                    </tbody>
+                  </table>
               </div>
 
 						</md-card-content>
