@@ -5,6 +5,7 @@
           <md-card md-with-hover>
             <ul class="breadcrumb">
               <li><a href="#/">Home</a></li>
+              <li><a href="#/keranjang-belanja">Keranjang</a></li>
               <li><a href="#/checkout">Checkout</a></li>
               <li class="active">Pesanan Diterima</li>
             </ul>
@@ -18,56 +19,58 @@
 
 						<md-card-content>
 
-              <span class="md-subheading" style="font-weight: bold">
-                Terima kasih. Pesanan Anda telah diterima.
-              </span>
+              <div v-if="loading">
+                <center><md-progress-spinner md-mode="indeterminate"></md-progress-spinner></center>
+              </div>
+              <div v-else>
+                  <span class="md-subheading" style="font-weight: bold">
+                    Terima kasih. Pesanan Anda telah diterima.
+                  </span>
 
-              <ul class="order-detail">
-                <li v-for="data, index in dataPesanan">
-                  <span class="list-header">{{ data.header }}</span><br>
-                  <span class="list-content">{{ data.content }}</span>
-                </li>
-              </ul>
-              <br>
+                  <ul class="order-detail">
+                    <li v-for="data, index in data_pesanan.pesanan">
+                      <span class="list-header">{{ data.header }}</span><br>
+                      <span class="list-content" v-if="data.header == 'Total'">{{ data.content | pemisahTitik }}</span>
+                      <span class="list-content" v-else>{{ data.content }}</span>
+                    </li>
+                  </ul>
+                  <br>
 
-              <h4>Detail Order</h4>
+                  <h4>Detail Order</h4>
 
-              <table class="table table-striped table-hover">
-                <thead>
-                  <th> PRODUK </th> <th></th> <th></th> <th></th>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Paket Premium</td> <td width="1%">x</td> <td>1</td>
-                    <td style="text-align:right; font-size:15px; font-weight:bold;"> Rp. 3.200.000</td>
-                  </tr>
-                  <tr>
-                    <td>Paket Special</td> <td width="1%">x</td> <td>1</td>
-                    <td style="text-align:right; font-size:15px; font-weight:bold;"> Rp. 3.500.000</td>
-                  </tr>
-                </tbody>
-                <tbody>
-                  <tr>
-                    <th class="subtotal" style="padding-top: 13px !important">TOTAL AKHIR</th>
-                    <td></td> <td></td>
-                    <td class="subtotal" style="text-align:right; font-size:17px; font-weight:bold;"> <strong>Rp. 6.700.000</strong></td>
-                  </tr>
-                </tbody>
-              </table>
+                  <table class="table table-striped table-hover">
+                    <thead>
+                      <th> PRODUK </th> <th></th> <th></th> <th></th>
+                    </thead>
+                    <tbody v-if="data_pesanan.detail_pesanan.length">
+                      <tr v-for="detail_pesanans, index in data_pesanan.detail_pesanan">
+                        <td>{{detail_pesanans.produk.nama_produk}}</td> <td width="1%">x</td> <td>{{ detail_pesanans.jumlah_produk | pemisahTitik }}</td>
+                        <td style="text-align:right; font-size:15px; font-weight:bold;"> Rp. {{ detail_pesanans.subtotal | pemisahTitik }}</td>
+                      </tr>
+                    </tbody>
+                    <tbody>
+                      <tr>
+                        <th class="subtotal" style="padding-top: 13px !important">TOTAL AKHIR</th>
+                        <td></td> <td></td>
+                        <td class="subtotal" style="text-align:right; font-size:17px; font-weight:bold;"> <strong>Rp. {{ data_pesanan.subtotal | pemisahTitik }}</strong></td>
+                      </tr>
+                    </tbody>
+                  </table>
 
-              <table class="table table-striped table-hover">
-                <thead>
-                  <th> PEMESAN </th> <th></th> <th></th>
-                </thead>
-                <tbody>
-                  <tr>
-                    <tr v-for="data, index in dataPemesan" style="text-transform: uppercase">
-                      <td width="20%;">{{ data.judul }}</td> <td width="5%;">: </td>
-                      <td>{{ data.isi }}</td>
-                    </tr>
-                  </tr>
-                </tbody>
-              </table>
+                  <table class="table table-striped table-hover">
+                    <thead>
+                      <th> PEMESAN </th> <th></th> <th></th>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <tr v-for="data, index in data_pesanan.pemesan" style="text-transform: uppercase">
+                          <td width="20%;">{{ data.judul }}</td> <td width="5%;">: </td>
+                          <td>{{ data.isi }}</td>
+                        </tr>
+                      </tr>
+                    </tbody>
+                  </table>
+              </div>
 
 						</md-card-content>
 
@@ -84,29 +87,38 @@
 
   export default {
     data : () => ({
-      dataPesanan: [
-        { header: 'Nomor Order', content: '#519' },
-        { header: 'Tanggal', content: '27 Juli 2018' },
-        { header: 'Total', content: 'Rp. 6.700.000' },
-        { header: 'Metode Pembayaran', content: 'Transfer Bank' },
-        { header: 'Bank', content: 'BNI SYARIAH' },
-        { header: 'Nomor Rekening', content: '3737-8899-21' },
-        { header: 'Atas Nama', content: 'Iwan Setiawan' },
-      ],
-      dataPemesan: [
-        { judul: 'Kecamatan', isi: 'Kemiling' },
-        { judul: 'Sumber Informasi', isi: 'Website' },
-        { judul: 'Nama Peserta', isi: 'Muhammad Zamhari' },
-        { judul: 'Tempat, Tanggal Lahir', isi: 'Lampung, 13 Juli 2015' },
-        { judul: 'Jenis Kelamin', isi: 'Laki - Laki' },
-        { judul: 'Nama Ayah', isi: 'Sujarwono' },
-        { judul: 'Nama Ibu', isi: 'Siti Hanifah' },
-        { judul: 'Lahir Di (Nama RSB / Bidan)', isi: 'RS Ibu dan Anak Asih' },
-      ]
+      loading : true,
+    	url: window.location.origin + window.location.pathname,
+      data_pesanan : {}
     }),
     components : {
       Header,Footer
     },
+	  filters: {
+      pemisahTitik: function (value) {
+          var angka = [value];
+          var numberFormat = new Intl.NumberFormat('es-ES');
+          var formatted = angka.map(numberFormat.format);
+          return formatted.join('; ');
+      },
+  	},
+    mounted() {
+     this.getDataPesanan()
+    },
+    methods : {
+      getDataPesanan() {
+        const app = this 
+        const id = app.$router.app._route.params.id
+        axios.get(app.url+'pesanan/'+id)
+        .then((resp) => {
+          app.data_pesanan = resp.data
+          app.loading = false
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      }
+    }
   }
 
 </script>

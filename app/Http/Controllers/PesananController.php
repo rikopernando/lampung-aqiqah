@@ -123,7 +123,7 @@ class PesananController extends Controller
 
       DB::commit();
 
-      return $new_pesanan;
+      return $new_pesanan->id;
     }
 
     /**
@@ -134,7 +134,43 @@ class PesananController extends Controller
      */
     public function show($id)
     {
-        //
+        $pesanan = Pesanan::with('pelanggan')->find($id);
+        $detail_pesanan = DetailPesanan::with('produk')->where('id_pesanan',$pesanan->id)->get();
+        $kirim_tempat_lain = KirimTempatLain::where('id_pesanan',$pesanan->id)->get();
+        
+        $data_pesanan = [
+            ['header' => 'Nomor Order', 'content' => '#'.$pesanan->id], 
+            ['header' => 'Tanggal', 'content' => $pesanan->Tanggal], 
+            ['header' => 'Total', 'content' => $pesanan->total], 
+            ['header' => 'Metode Pembayaran', 'content' => $pesanan->metode_pembayaran], 
+            ['header' => 'Bank', 'content' => 'BNI SYARIAH'], 
+            ['header' => 'Nomor Rekening', 'content' => '3737-8899-21'], 
+            ['header' => 'Atas Nama', 'content' => 'IWAN SETIAWAN'], 
+        ];
+
+        $pesanan->jenis_kelamin == 1 ? $jenis_kelamin = 'Laki - Laki' : $jenis_kelamin = 'Perempuan';
+
+        $pemesan = [
+           ['judul' => 'Kelurahan', 'isi' => $pesanan->Kelurahan], 
+           ['judul' => 'Kecamatan', 'isi' => $pesanan->Kecamatan], 
+           ['judul' => 'Kabupaten', 'isi' => $pesanan->Kabupaten], 
+           ['judul' => 'Provinsi', 'isi' => $pesanan->Provinsi], 
+           ['judul' => 'Sumber Informasi', 'isi' => $pesanan->sumber_informasi], 
+           ['judul' => 'Nama Peserta', 'isi' => $pesanan->nama_peserta], 
+           ['judul' => 'Tempat, Tanggal Lahir', 'isi' => $pesanan->tempat_tanggal_lahir], 
+           ['judul' => 'Jenis Kelamin', 'isi' => $jenis_kelamin], 
+           ['judul' => 'Nama Ayah', 'isi' => $pesanan->nama_ayah], 
+           ['judul' => 'Nama Ibu', 'isi' => $pesanan->nama_ibu], 
+           ['judul' => 'Lahir Di (Nama RSB / Bidan)', 'isi' => $pesanan->tempat_lahir]
+        ];
+
+        $response['pesanan'] = $data_pesanan;
+        $response['pemesan'] = $pemesan;
+        $response['detail_pesanan'] = $detail_pesanan;
+        $response['kirim_tempat_lain'] = $kirim_tempat_lain;
+        $response['subtotal'] = $pesanan->total;
+
+        return $response; 
     }
 
     /**

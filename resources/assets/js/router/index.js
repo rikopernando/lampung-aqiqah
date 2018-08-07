@@ -135,7 +135,7 @@ const routes = [
     name : 'checkout',
     component : Checkout
   },{
-    path : '/checkout/order-received',
+    path : '/checkout/order-received/:id',
     name : 'receivedOrder',
     component : OrderReceived
   },{ 

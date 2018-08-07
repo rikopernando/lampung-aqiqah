@@ -5,7 +5,7 @@
           <md-card md-with-hover>
             <ul class="breadcrumb">
               <li><a href="#/">Home</a></li>
-              <li><a href="#/keranjang-belanja" id="keranjang-belanja">CART</a></li>
+              <li><a href="#/keranjang-belanja" id="keranjang-belanja">Keranjang</a></li>
               <li class="active">Checkout</li>
             </ul>
           </md-card>
@@ -188,7 +188,7 @@
       this.$store.dispatch('lokasi/LOAD_PROVINSI')
 	    this.$store.dispatch('keranjangbelanja/LOAD_SUBTOTAL_LIST')
 		  this.data_produk && this.$store.dispatch('keranjangbelanja/LOAD_KERANJANG_LIST')
-      console.log(82)
+      console.log(84)
     },
 	  filters: {
       pemisahTitik: function (value) {
@@ -220,14 +220,13 @@
     },
     methods : {
       pesanSekarang() {
-        console.log(8)
         const app = this
         app.showDialog = true
         app.pesanan.total = app.$store.state.keranjangbelanja.total_akhir
         axios.post(app.url,app.pesanan)
         .then((resp) => {
             app.showDialog = false
-            app.$router.push('/checkout/order-received')          
+            app.$router.push(`/checkout/order-received/${resp.data}`)          
          })
         .catch((err) => {
           app.errors = err.response.data
