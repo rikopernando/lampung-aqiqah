@@ -117,7 +117,7 @@
     },
     methods: {
     	getUserData() {
-    		axios.get(this.url + 'view')
+    		axios.get(this.url)
     		.then(resp => {
     			this.users = resp.data;
     			this.searched = resp.data;
