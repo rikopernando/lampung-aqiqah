@@ -20,7 +20,7 @@
         <selectize-component :settings="select_kabupaten" ref="kabupaten" v-on:input="pilihWilayah('kecamatan')" v-model="selected_kabupaten" v-if="showKabupaten">
           <option v-for="kabupaten, index in kabupaten" v-bind:value="kabupaten.id">{{ kabupaten.name }} </option> 
         </selectize-component>
-        <span v-if="errors.kabupaten" class="error-message"> {{ errors.kabupaten[0] }} </span>
+        <span v-if="errors.kabupaten && showKabupaten" class="error-message"> {{ errors.kabupaten[0] }} </span>
       </div>
       <div class="form-group">
         <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kecamatan"></md-progress-bar>
@@ -28,7 +28,7 @@
         <selectize-component :settings="select_kecamatan" ref="kecamatan" v-on:input="pilihWilayah('kelurahan')" v-model="selected_kecamatan" v-if="showKecamatan">
           <option v-for="kecamatan, index in kecamatan" v-bind:value="kecamatan.id">{{ kecamatan.name }} </option> 
         </selectize-component>
-        <span v-if="errors.kecamatan" class="error-message"> {{ errors.kecamatan[0] }} </span>
+        <span v-if="errors.kecamatan && showKecamatan" class="error-message"> {{ errors.kecamatan[0] }} </span>
       </div>
       <div class="form-group">
         <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kelurahan"></md-progress-bar>
@@ -36,7 +36,7 @@
         <selectize-component :settings="select_kelurahan" ref="kelurahan" v-on:input="changeKelurahan()" v-model="selected_kelurahan" v-if="showKelurahan">
           <option v-for="kelurahan, index in kelurahan" v-bind:value="kelurahan.id">{{ kelurahan.name }} </option> 
         </selectize-component>
-        <span v-if="errors.kelurahan" class="error-message"> {{ errors.kelurahan[0] }} </span>
+        <span v-if="errors.kelurahan && showKelurahan" class="error-message"> {{ errors.kelurahan[0] }} </span>
       </div>
       <div class="form-group">
         <input type="text" v-on:input="pesanan.handphone = $event.target.value" class="form-control form-checkout" placeholder="Handphone" id="handphone">

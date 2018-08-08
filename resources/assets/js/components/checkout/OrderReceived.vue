@@ -36,8 +36,6 @@
                   </ul>
                   <br>
 
-                  <h4>Detail Order</h4>
-
                   <table class="table table-striped table-hover">
                     <thead>
                       <th> PRODUK </th> <th></th> <th></th> <th></th>
@@ -163,24 +161,54 @@
     & br {padding: 5px 0px}
 	}
 
-  ul.order-detail {
-    margin: 0 0 3em;
-    padding: 0px;
-    list-style: none;
+  /*MOBILE CSS*/
+  @media (max-width: 600px) {
+    .md-xsmall-hide { display: none; }
+/*    #displayMobile { display: block; }*/
+			ul.order-detail {
+				margin: 0 0 15em;
+				padding: 0px;
+				list-style: none;
+			}
+
+      ul.order-detail li {
+				float: left;
+				margin-right: 1em;
+				text-transform: uppercase;
+				font-size: 10px;
+				border-right: 1px dashed #d3ced2;
+				padding-right: 1em;
+				margin-left: 0;
+				margin-bottom: 10px;
+				padding-left: 0;
+				list-style-type: none;
+				width: 139px;
+      }
   }
 
-  ul.order-detail li {
-    float: left;
-    margin-right: 2em;
-    text-transform: uppercase;
-    font-size: 12px;
-    border-right: 1px dashed #d3ced2;
-    padding-right: 2em;
-    margin-left: 0;
-    padding-left: 0;
-    list-style-type: none;
-  }
+  /* DEKSTOP CSS */
+  @media (min-width: 600px) {
+/*    #displayMobile { display: none; }*/
+			ul.order-detail {
+				margin: 0 0 3em;
+				padding: 0px;
+				list-style: none;
+			}
+
+      ul.order-detail li {
+        float: left;
+        margin-right: 2em;
+        text-transform: uppercase;
+        font-size: 12px;
+        border-right: 1px dashed #d3ced2;
+        padding-right: 2em;
+        margin-left: 0;
+        padding-left: 0;
+        list-style-type: none;
+      }
   
+  }
+
   table th{background:#da2921 !important; color:#fff !important; padding:5px !important;}
   .subtotal {background:#fff !important; color:#da2921 !important; padding-top:13px !important;}
   table td{background:#FFF !important; padding:10px !important;}

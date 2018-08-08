@@ -71,8 +71,8 @@ class PesananController extends Controller
         $user->attachRole($memberRole);
 
         $pelanggan_id = $user->id;
-        $session_id    = $this->getSessionId();
-        $keranjang_belanja  = KeranjangBelanja::where('session_id',$session_id);
+        $session_id = $this->getSessionId();
+        $keranjang_belanja = KeranjangBelanja::where('session_id',$session_id);
       }
 
       $update_alamat_user = User::find($pelanggan_id);
@@ -142,7 +142,7 @@ class PesananController extends Controller
             ['header' => 'Nomor Order', 'content' => '#'.$pesanan->id], 
             ['header' => 'Tanggal', 'content' => $pesanan->Tanggal], 
             ['header' => 'Total', 'content' => $pesanan->total], 
-            ['header' => 'Metode Pembayaran', 'content' => $pesanan->metode_pembayaran], 
+            ['header' => 'Pembayaran', 'content' => $pesanan->metode_pembayaran], 
             ['header' => 'Bank', 'content' => 'BNI SYARIAH'], 
             ['header' => 'Nomor Rekening', 'content' => '3737-8899-21'], 
             ['header' => 'Atas Nama', 'content' => 'IWAN SETIAWAN'], 
