@@ -16,7 +16,6 @@ import KeranjangBelanja from '../components/keranjangbelanja/KeranjangBelanja'
 import ProdukIndex from '../components/produk/ProdukIndex'
 import ProdukCreate from '../components/produk/ProdukCreate'
 import ProdukEdit from '../components/produk/ProdukEdit'
-import DetailProduk from '../components/list-produk/detail_produk'
 import ProdukList from '../components/home/ListProduk'
 
 import Checkout from '../components/checkout'
@@ -98,11 +97,7 @@ const routes = [
   },
 
   // Produk
-  {
-    path : '/detail-produk',
-    name : 'DetailProduk',
-    component : DetailProduk,
-  },{
+{
     path : '/list-produk',
     name : 'listProduk',
     component : ProdukList
