@@ -6,7 +6,7 @@
 	    	<div class="head">
 	        <span class="md-title">Download Katalog</span>
 	    	</div>
-	      <div> 
+	      <div>
       		<md-field>
 			      <label>Nama</label>
 			      <md-input></md-input>
@@ -75,5 +75,5 @@
   .head {
   	margin-bottom: 10px;
   }
-  
+
 </style>
