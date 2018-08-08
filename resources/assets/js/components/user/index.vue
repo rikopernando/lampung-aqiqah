@@ -102,7 +102,7 @@
 
   export default {
     data: () => ({
-    	url: window.location.origin + (window.location.pathname + 'user/'),
+    	url: window.location.origin + (window.location.pathname + 'user'),
       search: null,
 	    promptDeleteUser: false,
 			snackbarDeleteUser: false,
