@@ -20,8 +20,7 @@
       </md-table>
 
       <md-dialog-actions>
-        <md-button class="md-primary" @click="showDialog = false">Close</md-button>
-        <md-button class="md-primary" @click="showDialog = false">Save</md-button>
+        <md-button class="md-primary" @click="showDialog = false">Tutup</md-button>
       </md-dialog-actions>
     </md-dialog>
 
@@ -51,7 +50,6 @@
           </md-card-header-text>
         </md-card-header>
         <md-card-content>
-          <!-- <md-button :to="`/user/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah User</md-button> -->
       		<md-table v-model="searched" md-sort="name" md-sort-order="asc" md-fixed-header>
 			      <md-table-empty-state v-if="loading">
 					    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
@@ -101,7 +99,7 @@ const toLower = text => {
 
 const searchLaporanOrder = (items, term) => {
   if (term) {
-    return items.filter(item => toLower(item.name).includes(toLower(term)));
+    return items.filter(item => toLower(item.nama_pelanggan).includes(toLower(term)));
   }
 
   return items;
@@ -109,24 +107,20 @@ const searchLaporanOrder = (items, term) => {
 
 export default {
   data: () => ({
-  	url: window.location.origin + (window.location.pathname + 'laporan-order/'),
+  	url: window.location.origin + (window.location.pathname + 'laporan-order'),
     search: null,
-    promptDeleteUser: false,
-		snackbarDeleteUser: false,
-    userIdForDelete: '',
     searched: {},
     laporan_order: {},
     loading: true,
     showDialog: false,
     detail_order: {},
-    id_laporan: 1
   }),
   created() {
   	this.getLaporanOrderData();
   },
   methods: {
     getLaporanOrderData() {
-      axios.get(this.url + 'view')
+      axios.get(this.url)
       .then(resp => {
         this.laporan_order = resp.data;
         this.searched = resp.data;
@@ -136,21 +130,6 @@ export default {
       .catch(resp => {
         console.log('catch getLaporanOrderData:', resp);
       })
-  	},
-  	onConfirmDelete() {
-  		axios.delete(this.url + this.userIdForDelete)
-  		.then(resp => {
-  			this.userIdForDelete = '';
-  			this.snackbarDeleteUser = true;
-  			this.getLaporanOrderData();
-  		})
-  		.catch(resp => {
-  			console.log('catch onConfirmDelete:', resp);
-  		})
-  	},
-  	deleteUser(userId) {
-  		this.promptDeleteUser = true;
-  		this.userIdForDelete = userId;
   	},
     searchOnTable() {
       this.searched = searchLaporanOrder(this.laporan_order, this.search);
