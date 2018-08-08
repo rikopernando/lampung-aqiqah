@@ -62,7 +62,7 @@
             <md-table-empty-state v-else-if="banks.length == 0" md-label="Tidak ada data"
                 md-description="Belum ada data Bank yang tersimpan.">
             </md-table-empty-state>
-            <md-table-empty-state v-else-if="banks.length > 0 && search != null" md-label="Tidak ada User ditemukan"
+            <md-table-empty-state v-else-if="banks.length > 0 && search != null" md-label="Tidak ada Bank ditemukan"
                 :md-description="`Tidak ada Bank ditemukan untuk kata kunci '${search}'. Cobalah menggunakan kata kunci yang lain.`">
             </md-table-empty-state>
 
