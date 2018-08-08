@@ -58,9 +58,10 @@ class BankController extends Controller
             'nama_bank' => $request->nama_bank,
             'atas_nama' => $request->atas_nama,
             'no_rek' => $request->no_rek,
+            'default'    => $request->default == "true" ? 1 : 0,
         ]);
 
-        return 1;
+        return response($master_bank);
     }
 
 

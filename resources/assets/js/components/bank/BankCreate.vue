@@ -39,6 +39,7 @@
               <label for="no_rek">No Rekening</label>
               <md-input type="no_rek" name="no_rek" id="no_rek" autocomplete="off" v-model="bank.no_rek" />
             </md-field>
+            <md-switch v-model="bank.default">Default : {{ bank.default ? 'Ya' : 'Tidak' }}</md-switch>
             <md-card-actions>
               <md-button type="submit" class="md-primary">Submit Bank</md-button>
             </md-card-actions>
@@ -62,6 +63,7 @@ export default {
       nama_bank: '',
       atas_nama: '',
       no_rek: '',
+      default:false
     },
     snackbarTambahBank: false
   }),

@@ -66,11 +66,12 @@
                 :md-description="`Tidak ada Bank ditemukan untuk kata kunci '${search}'. Cobalah menggunakan kata kunci yang lain.`">
             </md-table-empty-state>
 
-            <md-table-row slot="md-table-row" slot-scope="{ item }">
-              <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
-              <md-table-cell md-label="Nama Bank" md-sort-by="nama_bank">{{ item.nama_bank }}</md-table-cell>
-              <md-table-cell md-label="a.n Bank" md-sort-by="atas_nama">{{ item.atas_nama }}</md-table-cell>
-              <md-table-cell md-label="No Rekening" md-sort-by="no_rek">{{ item.no_rek }}</md-table-cell>
+            <md-table-row slot="md-table-row" slot-scope="{ item }" >
+              <md-table-cell md-label="ID" md-sort-by="id" md-numeric  >{{ item.id }}</md-table-cell>
+              <md-table-cell md-label="Nama Bank" md-sort-by="nama_bank" >{{ item.nama_bank }}</md-table-cell>
+              <md-table-cell md-label="a.n Bank" md-sort-by="atas_nama" >{{ item.atas_nama }}</md-table-cell>
+              <md-table-cell md-label="No Rekening" md-sort-by="no_rek" style="text-align:right;">{{ item.no_rek }}</md-table-cell>
+              <md-table-cell md-label="Default" md-sort-by="default" style="text-align:right;">{{ item.default == 1 ? 'Ya':'Tidak' }}</md-table-cell>
                <md-table-cell md-label="Aksi">
                 <md-button :to="`/bank/edit/${item.id}`" class="md-fab md-dense md-primary">
                   <md-icon>edit</md-icon>
