@@ -51,7 +51,7 @@
         <md-card-content>
 
           <div class="md-toolbar-section-start">
-                  <md-button :to="`/bank-create`" class="md-dense md-raised" style="background-color: #d44723; color: white"> Tambah Bank</md-button>
+                  <md-button :to="`/bank/create`" class="md-dense md-raised" style="background-color: #d44723; color: white"> Tambah Bank</md-button>
           </div>
           <div class="md-toolbar-section-end"></div>
 
@@ -71,9 +71,15 @@
               <md-table-cell md-label="Nama Bank" md-sort-by="nama_bank">{{ item.nama_bank }}</md-table-cell>
               <md-table-cell md-label="a.n Bank" md-sort-by="atas_nama">{{ item.atas_nama }}</md-table-cell>
               <md-table-cell md-label="No Rekening" md-sort-by="no_rek">{{ item.no_rek }}</md-table-cell>
-              <md-table-cell md-label="Aksi">
-                <md-button :to="`/bank/edit/${item.id}`" class="md-dense md-raised md-primary">Edit</md-button>
-                <md-button @click="deleteBank(item.id)" class="md-dense md-raised md-accent">Hapus</md-button>
+               <md-table-cell md-label="Aksi">
+                <md-button :to="`/bank/edit/${item.id}`" class="md-fab md-dense md-primary">
+                  <md-icon>edit</md-icon>
+                  <md-tooltip md-direction="top">Edit</md-tooltip>
+                </md-button>
+                <md-button @click="deleteBank(item.id)" class="md-fab md-dense md-plain">
+                  <md-icon>delete_forever</md-icon>
+                  <md-tooltip md-direction="top">Hapus</md-tooltip>
+                </md-button>
               </md-table-cell>
             </md-table-row>
           </md-table>
