@@ -9,6 +9,7 @@ use App\Role;
 use App\DetailPesanan;
 use App\KeranjangBelanja;
 use App\KirimTempatLain;
+use App\Produk;
 use App\LaporanOrder;
 use DB;
 use Session;
@@ -61,7 +62,7 @@ class PesananController extends Controller
          $pelanggan_id = Auth::User()->id;
          $keranjang_belanja = KeranjangBelanja::where('id_pelanggan',$pelanggan_id);
       }else{
-         
+
         $user = User::create([
             'name' => $request->nama_pemesan,
             'email' => $request->email,
@@ -72,8 +73,8 @@ class PesananController extends Controller
         $user->attachRole($memberRole);
 
         $pelanggan_id = $user->id;
-        $session_id    = $this->getSessionId();
-        $keranjang_belanja  = KeranjangBelanja::where('session_id',$session_id);
+        $session_id = $this->getSessionId();
+        $keranjang_belanja = KeranjangBelanja::where('session_id',$session_id);
       }
 
       $update_alamat_user = User::find($pelanggan_id);
@@ -94,7 +95,7 @@ class PesananController extends Controller
         'total' => $request->total,
         'metode_pembayaran' => $request->metode_pembayaran
       ]);
-      
+
       if($request->kirim_ke_alamat_lain){
 
           $new_kirim_tempat_lain = KirimTempatLain::create([
@@ -107,11 +108,11 @@ class PesananController extends Controller
              'kabupaten' => $request->kirim_tempat_lain['kabupaten'],
              'kecamatan' => $request->kirim_tempat_lain['kecamatan'],
              'kelurahan' => $request->kirim_tempat_lain['kelurahan']
-          ]); 
+          ]);
 
       }
 
-       
+
       foreach($keranjang_belanja->get() as $data) {
         $new_detail_pesanan = DetailPesanan::create([
           'id_pesanan' => $new_pesanan->id, 'id_produk' => $data->id_produk, 'pelanggan_id' => $pelanggan_id, 'jumlah_produk' => $data->jumlah_produk, 'harga_produk' => $data->harga_produk, 'potongan' => $data->potongan, 'subtotal' => $data->subtotal
@@ -127,7 +128,7 @@ class PesananController extends Controller
 
       DB::commit();
 
-      return $new_pesanan;
+      return $new_pesanan->id;
     }
 
     /**
@@ -138,7 +139,71 @@ class PesananController extends Controller
      */
     public function show($id)
     {
-        //
+        $pesanan = Pesanan::with('pelanggan')->where('id',$id);
+
+        if($pesanan->count() > 0){
+            
+            $pesanan = $pesanan->first();
+            $detail_pesanan = DetailPesanan::with('produk')->where('id_pesanan',$pesanan->id)->get();
+            $kirim_tempat_lain = KirimTempatLain::where('id_pesanan',$pesanan->id);
+            
+            $data_pesanan = [
+                ['header' => 'Nomor Order', 'content' => '#'.$pesanan->id], 
+                ['header' => 'Tanggal', 'content' => $pesanan->Tanggal], 
+                ['header' => 'Total', 'content' => $pesanan->total], 
+                ['header' => 'Pembayaran', 'content' => $pesanan->metode_pembayaran], 
+            ];
+
+            if($pesanan->metode_pembayaran == 'Transfer Bank'){
+              array_push($data_pesanan,
+                ['header' => 'Bank', 'content' => 'BNI SYARIAH'], 
+                ['header' => 'Nomor Rekening', 'content' => '3737-8899-21'], 
+                ['header' => 'Atas Nama', 'content' => 'IWAN SETIAWAN']);
+            }
+
+            $pesanan->jenis_kelamin == 1 ? $jenis_kelamin = 'Laki - Laki' : $jenis_kelamin = 'Perempuan';
+
+            $pemesan = [
+               ['judul' => 'Nama', 'isi' => $pesanan->pelanggan->name], 
+               ['judul' => 'Alamat', 'isi' => $pesanan->pelanggan->alamat], 
+               ['judul' => 'Kelurahan', 'isi' => $pesanan->Kelurahan], 
+               ['judul' => 'Kecamatan', 'isi' => $pesanan->Kecamatan], 
+               ['judul' => 'Kabupaten', 'isi' => $pesanan->Kabupaten], 
+               ['judul' => 'Provinsi', 'isi' => $pesanan->Provinsi], 
+               ['judul' => 'Sumber Informasi', 'isi' => $pesanan->sumber_informasi], 
+               ['judul' => 'Nama Peserta', 'isi' => $pesanan->nama_peserta], 
+               ['judul' => 'Tempat, Tanggal Lahir', 'isi' => $pesanan->tempat_tanggal_lahir], 
+               ['judul' => 'Jenis Kelamin', 'isi' => $jenis_kelamin], 
+               ['judul' => 'Nama Ayah', 'isi' => $pesanan->nama_ayah], 
+               ['judul' => 'Nama Ibu', 'isi' => $pesanan->nama_ibu], 
+               ['judul' => 'Lahir Di (Nama RSB / Bidan)', 'isi' => $pesanan->tempat_lahir]
+            ];
+
+            if($kirim_tempat_lain->count() > 0){
+
+                $alamat_kirim = [
+                   ['judul' => 'Nama', 'isi' => $kirim_tempat_lain->first()->nama_depan." ".$kirim_tempat_lain->first()->nama_belakang], 
+                   ['judul' => 'Company Name', 'isi' => $kirim_tempat_lain->first()->company_name], 
+                   ['judul' => 'Alamat', 'isi' => $kirim_tempat_lain->first()->alamat], 
+                   ['judul' => 'Kelurahan', 'isi' => $kirim_tempat_lain->first()->KelurahanKirim], 
+                   ['judul' => 'Kecamatan', 'isi' => $kirim_tempat_lain->first()->KecamatanKirim], 
+                   ['judul' => 'Kabupaten', 'isi' => $kirim_tempat_lain->first()->KabupatenKirim], 
+                   ['judul' => 'Provinsi', 'isi' => $kirim_tempat_lain->first()->ProvinsiKirim], 
+                ];
+            }else{
+                $alamat_kirim = [];
+            }
+
+            $response['pesanan'] = $data_pesanan;
+            $response['pemesan'] = $pemesan;
+            $response['detail_pesanan'] = $detail_pesanan;
+            $response['kirim_tempat_lain'] = $alamat_kirim;
+            $response['subtotal'] = $pesanan->total;
+
+            return $response; 
+        }else{
+            return $pesanan->count();
+        }
     }
 
     /**
@@ -251,8 +316,20 @@ class PesananController extends Controller
           $rules['kirim_tempat_lain.kecamatan'] = 'required';
           $rules['kirim_tempat_lain.kelurahan'] = 'required';
         }
-    
+
         $this->validate($request,$rules);
 
+    }
+
+    public function history_order() {
+        return response(Pesanan::where('pelanggan_id',Auth::User()->id)->get());
+    }
+
+    public function detail_order($id) {
+        $detail_pesanan = DetailPesanan::with(["produk"])
+          ->where("id_pesanan", $id)
+          ->where("pelanggan_id", Auth::user()->id)
+          ->get();
+        return response($detail_pesanan);
     }
 }

@@ -55,7 +55,7 @@
                     </div>
 
                     <div class="tab-pane" id="order-v">
-                      <OrderTab/>
+                      <OrderTab :orders="orders" :searched="searched"/>
                     </div>
 
                     <div class="tab-pane" id="alamat-v">
@@ -94,8 +94,11 @@
     data : () => ({
     	urlOrigin: window.location.origin + (window.location.pathname),
     	url: window.location.origin + (window.location.pathname + 'user'),
+    	urlOrder: window.location.origin + (window.location.pathname + 'pesanan'),
       token : $('meta[name="csrf-token"]').attr('content'),
       errors: [],
+      orders: [],
+      searched: [],
       user: {
         name: '',
         email: '',
@@ -133,6 +136,7 @@
       let app = this;
 
       app.getProfile(app)
+      app.getOrder(app)
       app.$store.dispatch('lokasi/LOAD_PROVINSI')
     },
     computed : mapState ({
@@ -155,6 +159,16 @@
         .then(resp => {
           app.user = resp.data;
           app.userAddress = resp.data;
+        })
+        .catch(resp => {
+          console.log(resp);
+        });
+      },
+      getOrder(app){
+        axios.get(app.urlOrder+"/history-order")
+        .then(resp => {
+          app.orders = resp.data;
+          app.searched = resp.data;
         })
         .catch(resp => {
           console.log(resp);
