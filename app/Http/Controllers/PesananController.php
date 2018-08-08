@@ -10,6 +10,7 @@ use App\DetailPesanan;
 use App\KeranjangBelanja;
 use App\KirimTempatLain;
 use App\Produk;
+use App\LaporanOrder;
 use DB;
 use Session;
 use Illuminate\Http\Request;
@@ -113,14 +114,17 @@ class PesananController extends Controller
 
 
       foreach($keranjang_belanja->get() as $data) {
-
-          $new_detail_pesanan = DetailPesanan::create([
-            'id_pesanan' => $new_pesanan->id, 'id_produk' => $data->id_produk, 'pelanggan_id' => $pelanggan_id, 'jumlah_produk' => $data->jumlah_produk, 'harga_produk' => $data->harga_produk, 'potongan' => $data->potongan, 'subtotal' => $data->subtotal
-          ]);
-
+        $new_detail_pesanan = DetailPesanan::create([
+          'id_pesanan' => $new_pesanan->id, 'id_produk' => $data->id_produk, 'pelanggan_id' => $pelanggan_id, 'jumlah_produk' => $data->jumlah_produk, 'harga_produk' => $data->harga_produk, 'potongan' => $data->potongan, 'subtotal' => $data->subtotal
+        ]);            
       }
 
       $keranjang_belanja->delete();
+
+      LaporanOrder::create([
+        'id_pelanggan' => $pelanggan_id,
+        'id_pesanan' => $new_pesanan->id
+      ]);
 
       DB::commit();
 

@@ -28,6 +28,9 @@ import Dashboard from '../components/dashboard/index'
 
 import Logout from '../components/logout/index'
 
+// LAPORAN
+import LaporanOrder from '../components/laporan_order/index'
+
 const routes = [
   {
     path : '/',
@@ -152,6 +155,13 @@ const routes = [
     path : '/logout',
     name : 'logout',
     component : Logout
+  },
+
+  // Laporan
+  {
+    path : '/laporan-order',
+    name : 'laporanOrder',
+    component : LaporanOrder
   }
 ]
 
