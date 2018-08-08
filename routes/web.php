@@ -49,6 +49,7 @@ Route::resource('produk', 'ProdukController');
 Route::get('pesanan/provinsi', 'PesananController@provinsi');
 Route::get('pesanan/pilih-wilayah/{id}/{type}', 'PesananController@pilih_wilayah');
 Route::get('pesanan/history-order', 'PesananController@history_order');
+Route::get('pesanan/detail-order/{id}', 'PesananController@detail_order');
 Route::resource('pesanan', 'PesananController');
 
 

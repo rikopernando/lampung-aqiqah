@@ -9,6 +9,7 @@ use App\Role;
 use App\DetailPesanan;
 use App\KeranjangBelanja;
 use App\KirimTempatLain;
+use App\Produk;
 use DB;
 use Session;
 use Illuminate\Http\Request;
@@ -254,5 +255,13 @@ class PesananController extends Controller
 
     public function history_order() {
         return response(Pesanan::where('pelanggan_id',Auth::User()->id)->get());
+    }
+
+    public function detail_order($id) {
+        $detail_pesanan = DetailPesanan::with(["produk"])
+          ->where("id_pesanan", $id)
+          ->where("pelanggan_id", Auth::user()->id)
+          ->get();
+        return response($detail_pesanan);
     }
 }
