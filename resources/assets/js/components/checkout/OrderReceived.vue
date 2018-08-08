@@ -23,6 +23,14 @@
                 <center><md-progress-spinner md-mode="indeterminate"></md-progress-spinner></center>
               </div>
               <div v-else>
+
+                <div v-if="status">
+										<md-empty-state
+											md-description="Tidak ada pesanan yang diterima">
+                      <md-button to="/list-produk" class="md-accent md-raised">Lanjut Belanja</md-button>
+										</md-empty-state>
+                </div>
+                <div v-else>
                   <span class="md-subheading" style="font-weight: bold">
                     Terima kasih. Pesanan Anda telah diterima.
                   </span>
@@ -83,6 +91,7 @@
                     </tbody>
                   </table>
               </div>
+             </div>
 
 						</md-card-content>
 
@@ -101,7 +110,8 @@
     data : () => ({
       loading : true,
     	url: window.location.origin + window.location.pathname,
-      data_pesanan : {}
+      data_pesanan : {},
+      status : false,
     }),
     components : {
       Header,Footer
@@ -123,8 +133,9 @@
         const id = app.$router.app._route.params.id
         axios.get(app.url+'pesanan/'+id)
         .then((resp) => {
-          app.data_pesanan = resp.data
+          resp.data == 0 ? app.status = true : app.data_pesanan = resp.data
           app.loading = false
+          console.log(app.status)
         })
         .catch((err) => {
           console.log(err)
@@ -166,7 +177,7 @@
     .md-xsmall-hide { display: none; }
 /*    #displayMobile { display: block; }*/
 			ul.order-detail {
-				margin: 0 0 15em;
+				margin: 0 0 3em;
 				padding: 0px;
 				list-style: none;
 			}

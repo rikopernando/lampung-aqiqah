@@ -121,7 +121,6 @@
 <script>
   
   import { mapState } from 'vuex'
-  import { LOAD_DATA } from '../../store/lokasi/mutations'
   import Header from '../header'
   import Footer from '../footer/footer'
   import BillingDetails from './billing-details'
@@ -188,7 +187,6 @@
       this.$store.dispatch('lokasi/LOAD_PROVINSI')
 	    this.$store.dispatch('keranjangbelanja/LOAD_SUBTOTAL_LIST')
 		  this.data_produk && this.$store.dispatch('keranjangbelanja/LOAD_KERANJANG_LIST')
-      console.log(84)
     },
 	  filters: {
       pemisahTitik: function (value) {
@@ -227,6 +225,7 @@
         .then((resp) => {
             app.showDialog = false
             app.$router.push(`/checkout/order-received/${resp.data}`)          
+            app.$store.commit('keranjangbelanja/CLEARKERANJANG')
          })
         .catch((err) => {
           app.errors = err.response.data
