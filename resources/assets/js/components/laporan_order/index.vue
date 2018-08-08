@@ -99,7 +99,7 @@ const toLower = text => {
 
 const searchLaporanOrder = (items, term) => {
   if (term) {
-    return items.filter(item => toLower(item.name).includes(toLower(term)));
+    return items.filter(item => toLower(item.nama_pelanggan).includes(toLower(term)));
   }
 
   return items;
