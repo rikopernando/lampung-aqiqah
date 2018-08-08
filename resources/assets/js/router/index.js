@@ -39,7 +39,11 @@ const routes = [
   {
     path : '/dashboard',
     name : 'dashboard',
-    component : Dashboard
+    component : Dashboard,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
   },
 
   // User
@@ -130,7 +134,7 @@ const routes = [
     name : 'checkout',
     component : Checkout
   },{
-    path : '/checkout/order-received',
+    path : '/checkout/order-received/:id',
     name : 'receivedOrder',
     component : OrderReceived
   },{ 
@@ -142,7 +146,7 @@ const routes = [
     name : 'indexAkun',
     component : AkunIndex,
     meta : {
-      requiresAuth : false,
+      requiresAuth : true,
     }
   },{
     path : '/logout',
