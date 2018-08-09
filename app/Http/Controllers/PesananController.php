@@ -9,6 +9,7 @@ use App\Role;
 use App\DetailPesanan;
 use App\KeranjangBelanja;
 use App\KirimTempatLain;
+use App\Produk;
 use DB;
 use Session;
 use Illuminate\Http\Request;
@@ -60,7 +61,7 @@ class PesananController extends Controller
          $pelanggan_id = Auth::User()->id;
          $keranjang_belanja = KeranjangBelanja::where('id_pelanggan',$pelanggan_id);
       }else{
-         
+
         $user = User::create([
             'name' => $request->nama_pemesan,
             'email' => $request->email,
@@ -93,7 +94,7 @@ class PesananController extends Controller
         'total' => $request->total,
         'metode_pembayaran' => $request->metode_pembayaran
       ]);
-      
+
       if($request->kirim_ke_alamat_lain){
 
           $new_kirim_tempat_lain = KirimTempatLain::create([
@@ -106,17 +107,17 @@ class PesananController extends Controller
              'kabupaten' => $request->kirim_tempat_lain['kabupaten'],
              'kecamatan' => $request->kirim_tempat_lain['kecamatan'],
              'kelurahan' => $request->kirim_tempat_lain['kelurahan']
-          ]); 
+          ]);
 
       }
 
-       
+
       foreach($keranjang_belanja->get() as $data) {
 
           $new_detail_pesanan = DetailPesanan::create([
             'id_pesanan' => $new_pesanan->id, 'id_produk' => $data->id_produk, 'pelanggan_id' => $pelanggan_id, 'jumlah_produk' => $data->jumlah_produk, 'harga_produk' => $data->harga_produk, 'potongan' => $data->potongan, 'subtotal' => $data->subtotal
           ]);
-            
+
       }
 
       $keranjang_belanja->delete();
@@ -247,8 +248,20 @@ class PesananController extends Controller
           $rules['kirim_tempat_lain.kecamatan'] = 'required';
           $rules['kirim_tempat_lain.kelurahan'] = 'required';
         }
-    
+
         $this->validate($request,$rules);
 
+    }
+
+    public function history_order() {
+        return response(Pesanan::where('pelanggan_id',Auth::User()->id)->get());
+    }
+
+    public function detail_order($id) {
+        $detail_pesanan = DetailPesanan::with(["produk"])
+          ->where("id_pesanan", $id)
+          ->where("pelanggan_id", Auth::user()->id)
+          ->get();
+        return response($detail_pesanan);
     }
 }

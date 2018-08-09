@@ -152,6 +152,18 @@ class ProdukController extends Controller
       $update_produk->save();
     }
 
+    public function updateTampilProduk($id, $boolean) {
+      $update_produk = Produk::find($id);
+      $update_produk->update([
+        'tampil_produk'  => $boolean == "true" ? 1 : 2,
+      ]);
+      $update_produk->save();
+    }
+
+    public function jumlahTampil() {
+      return response(Produk::where('tampil_produk', 1)->count());
+    }
+
     /**
      * Remove the specified resource from storage.
      *

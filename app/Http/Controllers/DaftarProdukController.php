@@ -19,7 +19,7 @@ class DaftarProdukController extends Controller
     }
 
     public function viewProdukTerbaru(){
-       return response(Produk::select()->where('stok', 1)->orderBy('id', 'DESC')->limit(4)->get());
+       return response(Produk::select()->where('stok', 1)->where('tampil_produk', 1)->orderBy('id', 'DESC')->get());
     }
 
     public function sortProduk($filter) {

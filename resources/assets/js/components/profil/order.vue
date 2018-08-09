@@ -2,13 +2,28 @@
   <div>
     <md-card>
       <md-card-content>
-        <div class="md-subheading">
-          <span>Belum Ada Pesanan Yang Dibuat.</span>
-          <md-button class="md-dense md-raised" style="background-color: #d44723; color: white">
-            <a href="#/list-produk" style="color: white">Lanjutkan Belanja</a>
-          </md-button>
-        </div>
+        <HistoryOrder
+          :orders="orders" :searched="searched"
+          :search="search" :searchBy="searchBy"
+          :loading="loading"
+        />
       </md-card-content>
     </md-card>
   </div>
 </template>
+
+<script>
+  import HistoryOrder from './history-order'
+
+  export default{
+    props: ["orders", "searched"],
+    data: () => ({      
+      search: null,
+      loading: false,
+      searchBy: 'nama_peserta',
+    }),
+    components: {
+      HistoryOrder
+    }
+  }
+</script>
