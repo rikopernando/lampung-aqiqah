@@ -2,6 +2,7 @@ import { DATADETAILPRODUK } from './mutations'
 
 const state = {
     detailProduk : {},
+    loadingModal:true,
 }
 
 const getters = {
@@ -12,6 +13,8 @@ const mutations = {
     DATADETAILPRODUK : (state, data)=> {
       console.log(data);
       state.detailProduk = data;
+      state.loadingModal = false;
+
     },
     
 }

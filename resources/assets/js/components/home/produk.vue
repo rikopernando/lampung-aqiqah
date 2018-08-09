@@ -11,6 +11,9 @@
                           <button type="button" @click="closeModalProduk" class="btn btn-danger btn-lg" >X </button>   
                      </div>
                 </div>
+                <md-empty-state v-if="this.$store.state.detailproduk.loadingModal">
+                              <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+              </md-empty-state>
                 <div class="form-produk" id="form-produk">
                   <div class="row">
                     <div class="col-md-6">
