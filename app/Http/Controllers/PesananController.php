@@ -122,6 +122,8 @@ class PesananController extends Controller
 
       $keranjang_belanja->delete();
 
+      $new_pesanan->pesananDiterima();
+
       DB::commit();
 
       return $new_pesanan->id;
@@ -328,4 +330,5 @@ class PesananController extends Controller
           ->get();
         return response($detail_pesanan);
     }
+
 }

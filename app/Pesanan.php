@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Indonesia;
+use Mail;
 
 class Pesanan extends Model
 {
@@ -55,5 +56,14 @@ class Pesanan extends Model
                 );
         $split = explode('-', $tanggal);
         return $split[2] . ' ' . $bulan[ (int)$split[1] ] . ' ' . $split[0];
+    }
+
+    public function pesananDiterima(){
+        $pesanan = $this;
+        Mail::send('mails.demo', compact('pesanan'), function ($message) use ($pesanan) {
+              $message->from('verifikasi@andaglos.id','Aqiqah Lampung');
+              $message->to($pesanan->pelanggan->email);
+              $message->subject('Pesanan Anda Telah Kami Terima');
+        });
     }
 }
