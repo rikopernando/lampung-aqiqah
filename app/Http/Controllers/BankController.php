@@ -110,7 +110,16 @@ class BankController extends Controller
             'no_rek' => 'required|unique:banks,no_rek,'.$id.'|numeric',
         ]);
 
-        Bank::whereId($id)->update($request->all());
+       $cekDefaultBank = Bank::select()->where('default',1)->where('id','!=',$id)->count();
+        if ($cekDefaultBank > 0 AND $request->default == true) {
+                $status = 1;
+        }else{
+                $status = 0; 
+                Bank::whereId($id)->update($request->all());
+        }
+
+        return response($status);
+        
     }
 
     /**
