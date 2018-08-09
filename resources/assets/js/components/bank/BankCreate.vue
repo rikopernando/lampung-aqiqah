@@ -9,6 +9,11 @@
         </ul>
       </md-card>
 
+      <md-dialog-alert 
+        :md-active.sync="promptGagalDefault"
+        md-title="Gagal !!"
+        md-content="Default Bank Sudah terpakai !" />
+
       <md-card>
         <md-card-header>
           <div class="header-card">
@@ -59,6 +64,7 @@ export default {
   data: () => ({
     errors: [],
     url: window.location.origin + window.location.pathname,
+    promptGagalDefault:false,
     bank: {
       nama_bank: '',
       atas_nama: '',
@@ -72,7 +78,13 @@ export default {
       const app = this;
       axios.post(app.url+'bank', app.bank)
       .then((resp) => {
-        this.snackbarTambahBank = true;
+        if (resp.data > 0) {
+          app.promptGagalDefault = true;
+          app.bank.default = false;
+        }else{
+          app.snackbarTambahBank = true;
+        }
+        
       })
       .catch((err) => {
         this.errors = err.response.data
