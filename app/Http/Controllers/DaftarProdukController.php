@@ -14,12 +14,14 @@ class DaftarProdukController extends Controller
      */
 
 
-    public function viewProduk() {
-        return response(Produk::select()->where('stok', 1)->get());
-    }
-
-    public function viewProdukTerbaru(){
-       return response(Produk::select()->where('stok', 1)->orderBy('id', 'DESC')->limit(4)->get());
+    public function viewProduk($tampil_produk) {
+        $daftarProduk = Produk::select()->where('stok', 1);
+        if ($tampil_produk > 0) {
+            $tampilDaftarProduk = $daftarProduk->where('tampil_produk',1)->orderBy('id', 'DESC')->get();
+        }else{
+            $tampilDaftarProduk = $daftarProduk->orderBy('id', 'DESC')->get();
+        }
+        return response($tampilDaftarProduk);
     }
 
     public function sortProduk($filter) {

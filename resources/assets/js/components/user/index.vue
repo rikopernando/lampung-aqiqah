@@ -70,10 +70,16 @@
 			        <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
 			        <md-table-cell md-label="Nama" md-sort-by="name">{{ item.name }}</md-table-cell>
 			        <md-table-cell md-label="Email" md-sort-by="email">{{ item.email }}</md-table-cell>
-			        <md-table-cell md-label="Aksi">
-			        	<md-button :to="`/user/edit/${item.id}`" class="md-dense md-raised md-primary">Edit</md-button>
-			        	<md-button @click="deleteUser(item.id)" class="md-dense md-raised md-accent">Hapus</md-button>
-			        </md-table-cell>
+               <md-table-cell md-label="Aksi">
+                <md-button :to="`/user/edit/${item.id}`" class="md-fab md-dense md-primary">
+                  <md-icon>edit</md-icon>
+                  <md-tooltip md-direction="top">Edit</md-tooltip>
+                </md-button>
+                <md-button @click="deleteUser(item.id)" class="md-fab md-dense md-plain">
+                  <md-icon>delete_forever</md-icon>
+                  <md-tooltip md-direction="top">Hapus</md-tooltip>
+                </md-button>
+              </md-table-cell>
 			      </md-table-row>
 			    </md-table>  	
         </md-card-content>
@@ -102,7 +108,7 @@
 
   export default {
     data: () => ({
-    	url: window.location.origin + (window.location.pathname + 'user'),
+    	url: window.location.origin + (window.location.pathname + 'user/'),
       search: null,
 	    promptDeleteUser: false,
 			snackbarDeleteUser: false,
@@ -117,7 +123,7 @@
     },
     methods: {
     	getUserData() {
-    		axios.get(this.url)
+    		axios.get(this.url+ 'view')
     		.then(resp => {
     			this.users = resp.data;
     			this.searched = resp.data;
