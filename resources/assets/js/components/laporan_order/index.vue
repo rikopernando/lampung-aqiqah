@@ -5,6 +5,7 @@
         Produk
       </md-dialog-title>
 
+      <!-- Dialog untuk menampilkan tabel detail order -->
       <md-table v-model="detail_order" md-sort="nama_produk" md-sort-order="asc">
         <md-table-row slot="md-table-row" slot-scope="{ item }">
           <md-table-cell md-label="Produk" md-sort-by="nama_produk">
