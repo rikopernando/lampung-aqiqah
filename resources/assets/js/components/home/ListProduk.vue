@@ -37,7 +37,7 @@
 
           <div class="md-medium-size-50 md-small-size-50 md-xsmall-hide">
 
-           <md-empty-state v-if="loading">
+           <md-empty-state v-if="this.$store.state.daftarproduk.loading">
                 <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
            </md-empty-state>
 
@@ -92,7 +92,7 @@
           </div>
           <div id="displayMobile">
 
-           <md-empty-state v-if="loading">
+           <md-empty-state v-if="this.$store.state.daftarproduk.loading">
                 <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
            </md-empty-state>
 
