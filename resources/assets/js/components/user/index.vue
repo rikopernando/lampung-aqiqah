@@ -128,7 +128,7 @@
     		});
     	},
     	onConfirmDelete() {
-    		axios.delete(this.url + this.userIdForDelete)
+    		axios.delete(this.url + '/' + this.userIdForDelete)
     		.then(resp => {
     			this.userIdForDelete = '';
     			this.snackbarDeleteUser = true;
