@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\DetailPesanan;
+use App\KirimTempatLain;
 use Indonesia;
 use Mail;
 
@@ -60,12 +61,16 @@ class Pesanan extends Model
     }
 
     public function pesananDiterima(){
+
         $pesanan = $this;
         $detail_pesanan = DetailPesanan::with('produk')->where('id_pesanan',$pesanan->id)->get();
-        Mail::send('mails.pesanan_diterima', compact('pesanan','detail_pesanan'), function ($message) use ($pesanan) {
+        $kirim_tempat_lain = KirimTempatLain::where('id_pesanan',$pesanan->id);
+
+        Mail::send('mails.pesanan_diterima', compact('pesanan','detail_pesanan','kirim_tempat_lain'), function ($message) use ($pesanan) {
               $message->from('verifikasi@andaglos.id','Aqiqah Lampung');
               $message->to($pesanan->pelanggan->email);
               $message->subject('Pesanan Anda Telah Kami Terima');
         });
+
     }
 }

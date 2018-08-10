@@ -252,7 +252,7 @@
             <div class="content">
 
                 <!-- START CENTERED WHITE CONTAINER -->
-                <span class="preheader">Email Untuk Kamu !.</span>
+                <span class="preheader"></span>
                 <table class="main">
 
                     <!-- START MAIN CONTENT AREA -->
@@ -333,16 +333,25 @@
                                                 <li>Dimohon untuk menyiapkan uang pas saat anda menerima pesanan.</li>
                                               </ul>
                                               <hr>
-                                              @endif
-
-                                              @if($pesanan->metode_pembayaran == 'Transfer Bank')
+                                              @else
                                               <p>Pembayaran dapat dilakukan ke Rekening Bank <b>{{strtoupper('BNI SYARIAH')}} (78978-5454-454)</b> a/n <b>Iwan Setiawan</b></p>
                                               @endif
 
-                                              <p>Pesanan Anda akan dikirimkan ke: <b>Riko Pernando</b> </p>
-                                              <p><b>Jl. LIntas Liwa
-                                                Phone: 085658780793</b></p>
-                                                <br>
+                                              @if($kirim_tempat_lain->count() > 0)
+                                                  <p>Pesanan Anda akan dikirimkan ke: <b>{{ $kirim_tempat_lain->first()->company_name }}</b> a/n <b>{{ $kirim_tempat_lain->first()->nama_depan }} {{ $kirim_tempat_lain->first()->nama_belakang }}</b> 
+                                                  </p>
+                                                  <p>
+                                                    <b>{{ $kirim_tempat_lain->first()->alamat }} </b>
+                                                  </p>
+                                              @else
+                                                  <p>Pesanan Anda akan dikirimkan ke: <b>{{ $pesanan->pelanggan->name }}</b> </p>
+                                                  <p>
+                                                    <b>{{ $pesanan->pelanggan->alamat }}
+                                                    Phone: {{ $pesanan->pelanggan->no_telp }}</b>
+                                                  </p>
+                                              @endif
+                                              <br>
+
                                                 <center><p>Jika Anda membutuhkan bantuan, silahkan hubungi kami di <b>072178789</b> atau email ke <b>admin@gmail.com</b> </p></center><p>
                                                   Salam,<br>
 

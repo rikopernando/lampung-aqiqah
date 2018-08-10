@@ -31,9 +31,9 @@
 										</md-empty-state>
                 </div>
                 <div v-else>
-                  <span class="md-subheading" style="font-weight: bold">
-                    Terima kasih. Pesanan Anda telah diterima.
-                  </span>
+									<div class="alert alert-success" role="alert">
+                    Terima kasih. Pesanan Anda telah diterima, Kami telah mengirimkan email konfirmasi ke email anda.
+									</div>
 
                   <ul class="order-detail">
                     <li v-for="data, index in data_pesanan.pesanan">
