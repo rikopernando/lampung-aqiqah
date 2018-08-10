@@ -8,6 +8,16 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class ProdukController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function view() {
         return response(Produk::select()->get());
     }
@@ -140,6 +150,18 @@ class ProdukController extends Controller
       }
 
       $update_produk->save();
+    }
+
+    public function updateTampilProduk($id, $boolean) {
+      $update_produk = Produk::find($id);
+      $update_produk->update([
+        'tampil_produk'  => $boolean == "true" ? 1 : 2,
+      ]);
+      $update_produk->save();
+    }
+
+    public function jumlahTampil() {
+      return response(Produk::where('tampil_produk', 1)->count());
     }
 
     /**

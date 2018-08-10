@@ -1,14 +1,14 @@
 <template>
-  <div class="container">
-    <div class="col-md-12">
-      <md-card md-with-hover>
+  <sidebar>
+    <div class="col-md-12" style="padding: 0">
+      <md-card>
         <ul class="breadcrumb">
-          <li><a href="#/">Home</a></li>
+          <li><router-link :to="{name: 'home'}">Home</router-link></li>
           <li class="active">Produk</li>
         </ul>
       </md-card>
 
-      <md-card md-with-hover>
+      <md-card>
         <md-card-header>
           <div class="header-card">
             <md-icon style="color: white">dns</md-icon>
@@ -40,7 +40,6 @@
 
         <md-card-content>
           <md-button :to="`/produk/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah Produk</md-button>
-
           <md-table v-model="searched" md-sort="name" md-sort-order="asc" md-fixed-header>
             <md-table-empty-state v-if="loading">
       		    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
@@ -52,7 +51,12 @@
                 :md-description="`Tidak ada User ditemukan untuk kata kunci '${search}'. Cobalah menggunakan kata kunci yang lain.`">
             </md-table-empty-state>
 
-            <md-table-row slot="md-table-row" slot-scope="{ item }">
+            <md-table-row slot="md-table-row" slot-scope="{item}">
+              <md-table-cell md-label="Tampil Produk" style="text-align: center; padding-left: 15px;">
+                <md-checkbox v-model="item.tampil_produk"
+                  :disabled="(item.tampil_produk == false && maxChecked >= 4) || item.stok == 2"
+                  @change="tampilProduk(item.id, item.tampil_produk, item.nama_produk)" />
+              </md-table-cell>
               <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
               <md-table-cell md-label="Nama`" md-sort-by="nama_produk">{{ item.nama_produk | capitalize }}</md-table-cell>
               <md-table-cell md-label="Harga Coret" md-sort-by="harga_coret">{{ item.harga_coret | pemisahTitik }}</md-table-cell>
@@ -88,7 +92,7 @@
         md-cancel-text="Batal"
         @md-confirm="onConfirmDelete" />
     </div>
-  </div>
+  </sidebar>
 </template>
 
 
@@ -118,34 +122,65 @@
       searched: [],
       produks: [],
       searchBy: 'nama_produk',
-      loading: true
+      loading: true,
+      maxChecked: 0
     }),
     created() {
     	this.getProdukData();
     },
     filters: {
-        pemisahTitik: function (value) {
-            var angka = [value];
-            var numberFormat = new Intl.NumberFormat('es-ES');
-            var formatted = angka.map(numberFormat.format);
-            return formatted.join('; ');
-        },
-        capitalize: function (value) {
-          return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
-        },
+      pemisahTitik: function (value) {
+        var angka = [value];
+        var numberFormat = new Intl.NumberFormat('es-ES');
+        var formatted = angka.map(numberFormat.format);
+        return formatted.join('; ');
+      },
+      capitalize: function (value) {
+        return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
+      },
     },
     methods: {
     	getProdukData() {
-    		axios.get(this.url + 'view')
+        let app = this;
+    		axios.get(app.url + 'view')
     		.then(resp => {
-    			this.produks = resp.data;
-    			this.searched = resp.data;
-    			this.loading = false;
+          $.each(resp.data, function (i, item) {
+            resp.data[i].tampil_produk = item.tampil_produk == 1 ? true : false;
+          });
+
+          app.produks = resp.data;
+      		app.searched = resp.data;
+          app.jumlahTampil(app)
+
+    			app.loading = false;
     		})
     		.catch(resp => {
-    			console.log('catch getProdukData:', resp);
+    			console.log(resp);
     		});
     	},
+      tampilProduk(id, data, nama) {
+        let app = this;
+        let hasil = data == true ? "Ditampilkan" : "Disembunyikan";
+
+    		axios.get(app.url+"update-tampil-produk/"+id+"/"+data)
+    		.then(resp => {
+          app.jumlahTampil(app)
+          app.notifMessage = `${nama.replace(/(^|\s)\S/g, l => l.toUpperCase())} Berhasil ${hasil}.`
+          app.notifSuccess = true;
+    		})
+    		.catch(resp => {
+    			console.log('catch onConfirmDelete:', resp);
+    		})
+      },
+      jumlahTampil(app) {
+        axios.get(app.url+"jumlah-tampil")
+    		.then(resp => {
+          app.maxChecked = resp.data
+    		})
+    		.catch(resp => {
+    			console.log(resp);
+    		})
+      },
     	onConfirmDelete() {
         let app = this;
     		axios.delete(app.url + app.produkId)
@@ -223,5 +258,11 @@
     color: #867f7f;
     font-size: 20px;
     padding: 4px 0px 0px 10px;
+  }
+  .checkbox-list {
+    padding-right: 0px !important
+  }
+  .md-table table {
+    width: 0% !important;
   }
 </style>

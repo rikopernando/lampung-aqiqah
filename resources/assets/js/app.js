@@ -6,19 +6,28 @@ import routes from './router'
 import store from './store'
 import VueRouter from 'vue-router'
 import VueMaterial from 'vue-material'
+import vSelect from 'vue-select'
+import Sidebar from './components/sidebar/index'
 
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css' // This line here
 import './auth'
 
 window.Vue.use(VueRouter)
+window.$ = window.jQuery = require('jquery')
 
+
+// Global Vue Components
+Vue.component('sidebar', Sidebar)
+Vue.component('selectize-component', require('vue2-selectize'))
+Vue.component('v-select',vSelect)
 Vue.use(VueMaterial)
 
 
 const router = new VueRouter({ routes })
 
 router.beforeEach((to, from, next) => {
+
 	const loggedIn = store.state.user.loggedIn
 	const is_admin = store.state.user.is_admin
   if (to.matched.some(record => record.meta.requiresAuth)) {
@@ -39,5 +48,6 @@ router.beforeEach((to, from, next) => {
 })
 
 const app = new Vue({
-    router,store
+    router,
+    store
 }).$mount('#app')

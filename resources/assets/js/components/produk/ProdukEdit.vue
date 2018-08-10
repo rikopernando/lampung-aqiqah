@@ -1,15 +1,15 @@
 <template>
-  <div class="container">
-    <div class="col-md-12">
-      <md-card md-with-hover style="border-radius: 10px">
+  <sidebar>
+    <div class="col-md-12" style="padding: 0">
+      <md-card>
         <ul class="breadcrumb">
-          <li><a href="#/">Home</a></li>
-          <li><a href="#/produk">Produk</a></li>
+          <li><router-link :to="{name: 'home'}">Home</router-link></li>
+          <li><router-link :to="{name: 'produk'}">Produk</router-link></li>
           <li class="active">Edit Produk</li>
         </ul>
       </md-card>
 
-      <md-card md-with-hover style="border-radius: 10px">
+      <md-card>
         <md-card-header>
           <div class="header-card">
             <md-icon style="color: white">dns</md-icon>
@@ -47,7 +47,7 @@
             <md-file v-model="produk.foto" id="foto" accept="image/*" @change="onFileChange" />
           </md-field>
 
-          <md-card md-with-hover class="thumbnail-foto" v-if="produk.foto != null">
+          <md-card class="thumbnail-foto" v-if="produk.foto != null">
             <md-card-media-cover md-text-scrim>
                 <md-card-media md-ratio="16:9">
                   <img :src="url_picture+'/'+produk.foto" alt="Foto Produk">
@@ -63,9 +63,10 @@
           </md-card>
 
           <div class="md-toolbar-section-end">
-            <md-button @click="editProduk" class="md-dense md-raised" style="background-color: #d44723; color: white">
+            <md-button v-if="!loading" @click="editProduk" class="md-dense md-raised" style="background-color: #d44723; color: white">
               Simpan
             </md-button>
+            <md-progress-spinner v-else :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
           </div>
 
           <!-- Snackbar for success alert -->
@@ -77,7 +78,7 @@
       </md-card>
 
     </div>
-  </div>
+  </sidebar>
 </template>
 
 
@@ -144,6 +145,7 @@
         let app = this;
   			let dataProduk = app.inputData(app);
 
+        app.loading = true;
         axios.post(app.url+"/"+app.produkId, dataProduk)
         .then(resp => {
           app.notifMessage = `Berhasil Mengubah Produk ${app.produk.nama_produk}`
@@ -152,6 +154,7 @@
         .catch(resp => {
           console.log(resp);
   				app.errors = resp.response.data
+          app.loading = false;
         });
       },
   		inputData(app) {

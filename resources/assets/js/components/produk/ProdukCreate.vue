@@ -1,15 +1,15 @@
 <template>
-  <div class="container">
-    <div class="col-md-12">
-      <md-card md-with-hover style="border-radius: 10px">
+  <sidebar>
+    <div class="col-md-12" style="padding: 0">
+      <md-card>
         <ul class="breadcrumb">
-          <li><a href="#/">Home</a></li>
-          <li><a href="#/produk">Produk</a></li>
+          <li><router-link :to="{name: 'home'}">Home</router-link></li>
+          <li><router-link :to="{name: 'produk'}">Produk</router-link></li>
           <li class="active">Tambah Produk</li>
         </ul>
       </md-card>
 
-      <md-card md-with-hover style="border-radius: 10px">
+      <md-card>
         <md-card-header>
           <div class="header-card">
             <md-icon style="color: white">dns</md-icon>
@@ -45,7 +45,7 @@
             <md-file v-model="produk.foto" id="foto" accept="image/*" @change="onFileChange" />
           </md-field>
 
-          <md-card md-with-hover class="thumbnail-foto" v-if="produk.foto != ''">
+          <md-card class="thumbnail-foto" v-if="produk.foto != ''">
             <md-card-media-cover md-text-scrim>
                 <md-card-media md-ratio="16:9">
                   <img :src="previewFoto" alt="Foto Produk">
@@ -61,9 +61,10 @@
 
 
           <div class="md-toolbar-section-end">
-            <md-button @click="createProduk" class="md-dense md-raised" style="background-color: #d44723; color: white">
+            <md-button v-if="!loading" @click="createProduk" class="md-dense md-raised" style="background-color: #d44723; color: white">
               Submit
             </md-button>
+            <md-progress-spinner v-else :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
           </div>
 
           <!-- Snackbar for success alert -->
@@ -75,7 +76,7 @@
       </md-card>
 
     </div>
-  </div>
+  </sidebar>
 </template>
 
 
@@ -95,7 +96,8 @@
       },
       previewFoto: '',
       notifMessage: '',
-      notifSuccess: false
+      notifSuccess: false,
+      loading: false,
     }),
     methods: {
       onFileChange(e) {
@@ -121,6 +123,7 @@
   			let app = this;
   			let dataProduk = app.inputData(app);
 
+        app.loading = true;
         axios.post(app.url, dataProduk)
   			.then((resp) => {
           app.notifMessage = `Berhasil Menambah Produk ${app.produk.nama_produk}`
@@ -129,18 +132,19 @@
   			.catch((resp) => {
           app.$refs.nama_produk.$el.focus()
   				app.errors = resp.response.data
+          app.loading = false;
   			});
   		},
   		inputData(app) {
   			let dataProduk = new FormData();
-            if (document.getElementById('foto').files[0] != undefined) {
-              dataProduk.append('foto', document.getElementById('foto').files[0]);
-            }
-            dataProduk.append('nama_produk', app.produk.nama_produk);
-      			dataProduk.append('harga_coret', app.produk.harga_coret);
-      			dataProduk.append('harga_jual', app.produk.harga_jual);
-      			dataProduk.append('stok', app.produk.stok);
-      			dataProduk.append('deskripsi_produk', app.produk.deskripsi_produk);
+        if (document.getElementById('foto').files[0] != undefined) {
+          dataProduk.append('foto', document.getElementById('foto').files[0]);
+        }
+        dataProduk.append('nama_produk', app.produk.nama_produk);
+  			dataProduk.append('harga_coret', app.produk.harga_coret);
+  			dataProduk.append('harga_jual', app.produk.harga_jual);
+  			dataProduk.append('stok', app.produk.stok);
+  			dataProduk.append('deskripsi_produk', app.produk.deskripsi_produk);
 
   			return dataProduk;
   		},
@@ -169,7 +173,6 @@
 		}
 	}
 </style>
-
 
 <style scoped>
   .breadcrumb {

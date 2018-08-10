@@ -8,6 +8,15 @@ use App\Bank;
 class BankController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -44,14 +53,19 @@ class BankController extends Controller
             'atas_nama' => 'required',
             'no_rek' => 'required|unique:banks,no_rek|numeric',
         ]);
-
-        $master_bank = Bank::create([
+        $cekDefaultBank = Bank::select()->where('default',1)->count();
+        if ($cekDefaultBank > 0 AND $request->default == true) {
+                $status = 1;
+        }else{
+                $status = 0; 
+            $master_bank = Bank::create([
             'nama_bank' => $request->nama_bank,
             'atas_nama' => $request->atas_nama,
             'no_rek' => $request->no_rek,
-        ]);
-
-        return 1;
+            'default'    => $request->default == "true" ? 1 : 0,
+             ]);
+        }
+        return response($status);
     }
 
 
@@ -96,7 +110,16 @@ class BankController extends Controller
             'no_rek' => 'required|unique:banks,no_rek,'.$id.'|numeric',
         ]);
 
-        Bank::whereId($id)->update($request->all());
+       $cekDefaultBank = Bank::select()->where('default',1)->where('id','!=',$id)->count();
+        if ($cekDefaultBank > 0 AND $request->default == true) {
+                $status = 1;
+        }else{
+                $status = 0; 
+                Bank::whereId($id)->update($request->all());
+        }
+
+        return response($status);
+        
     }
 
     /**

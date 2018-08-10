@@ -5,9 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Role;
+use Auth;
 
 class UserController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     /**
      * Display a listing of the resource.
@@ -16,11 +27,63 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return response(User::select()->get());
     }
 
     public function view() {
-        return response(User::select()->get());
+        // 
+    }
+
+    public function detailAkun() {
+        return response(User::where('id',Auth::User()->id)->first());
+    }
+
+    public function simpanDetailAkun(Request $request) {
+
+      $this->validate($request, [
+          'name'      => 'required|string|max:255',
+          'email'     => 'required|string|email|max:255|unique:users,email,'. $request->id,
+      ]);
+
+      if ($request->password != "") {
+        $this->validate($request, [
+            'password'  => 'required|min:6|confirmed'
+        ]);
+
+        $user = User::where('id', $request->id)->update([
+            'password'  => bcrypt($request->password)
+        ]);
+      }
+
+        $user = User::where('id', $request->id)->update([
+            'name'    => $request->name,
+            'email'   => $request->email,
+        ]);
+
+    }
+
+    public function simpanAlamat(Request $request) {
+
+      $this->validate($request, [
+          'name'        => 'required|string|max:255',
+          'no_telp'     => 'required|numeric',
+          'alamat'      => 'required',
+          'provinsi'    => 'required',
+          'kabupaten'   => 'required',
+          'kecamatan'   => 'required',
+          'kelurahan'   => 'required'
+      ]);
+
+      $user = User::where('id', $request->id)->update([
+        'name'=> $request->name,
+        'no_telp'=> $request->no_telp,
+        'alamat'=> $request->alamat,
+        'provinsi'=> $request->provinsi,
+        'kabupaten'=> $request->kabupaten,
+        'kecamatan'=> $request->kecamatan,
+        'kelurahan'=> $request->kelurahan,
+      ]);
+
     }
 
     /**
