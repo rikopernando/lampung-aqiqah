@@ -7,5 +7,5 @@ use Yajra\Auditable\AuditableTrait;
 
 class Produk extends Model
 {
-  protected $fillable = ['nama_produk', 'harga_coret', 'harga_jual', 'stok', 'deskripsi_produk', 'foto'];
+  protected $fillable = ['nama_produk', 'harga_coret', 'harga_jual', 'stok', 'deskripsi_produk', 'foto', 'tampil_produk'];
 }

@@ -70,10 +70,16 @@
 			        <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
 			        <md-table-cell md-label="Nama" md-sort-by="name">{{ item.name }}</md-table-cell>
 			        <md-table-cell md-label="Email" md-sort-by="email">{{ item.email }}</md-table-cell>
-			        <md-table-cell md-label="Aksi">
-			        	<md-button :to="`/user/edit/${item.id}`" class="md-dense md-raised md-primary">Edit</md-button>
-			        	<md-button @click="deleteUser(item.id)" class="md-dense md-raised md-accent">Hapus</md-button>
-			        </md-table-cell>
+               <md-table-cell md-label="Aksi">
+                <md-button :to="`/user/edit/${item.id}`" class="md-fab md-dense md-primary">
+                  <md-icon>edit</md-icon>
+                  <md-tooltip md-direction="top">Edit</md-tooltip>
+                </md-button>
+                <md-button @click="deleteUser(item.id)" class="md-fab md-dense md-plain">
+                  <md-icon>delete_forever</md-icon>
+                  <md-tooltip md-direction="top">Hapus</md-tooltip>
+                </md-button>
+              </md-table-cell>
 			      </md-table-row>
 			    </md-table>  	
         </md-card-content>
