@@ -74,6 +74,14 @@ const mutations = {
            state.countKeranjang += 1;
         }
     },
+    CLEARKERANJANG : (state) => {
+        state.datakeranjang = {};
+        state.loading = true;
+        state.subtotal = 0;
+        state.total_akhir = 0;
+        state.status = null;
+        state.countKeranjang = 0;
+    }
 }
 
 const actions = {      

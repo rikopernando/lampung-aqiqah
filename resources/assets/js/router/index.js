@@ -28,6 +28,9 @@ import Dashboard from '../components/dashboard/index'
 
 import Logout from '../components/logout/index'
 
+// LAPORAN
+import LaporanOrder from '../components/laporan_order/index'
+
 const routes = [
   {
     path : '/',
@@ -39,7 +42,11 @@ const routes = [
   {
     path : '/dashboard',
     name : 'dashboard',
-    component : Dashboard
+    component : Dashboard,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
   },
 
   // User
@@ -130,7 +137,7 @@ const routes = [
     name : 'checkout',
     component : Checkout
   },{
-    path : '/checkout/order-received',
+    path : '/checkout/order-received/:id',
     name : 'receivedOrder',
     component : OrderReceived
   },{ 
@@ -142,12 +149,19 @@ const routes = [
     name : 'indexAkun',
     component : AkunIndex,
     meta : {
-      requiresAuth : false,
+      requiresAuth : true,
     }
   },{
     path : '/logout',
     name : 'logout',
     component : Logout
+  },
+
+  // Laporan
+  {
+    path : '/laporan-order',
+    name : 'laporanOrder',
+    component : LaporanOrder
   }
 ]
 

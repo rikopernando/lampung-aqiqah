@@ -44,7 +44,8 @@ Route::get('/produk/update-tampil-produk/{id}/{boolean}', 'ProdukController@upda
 Route::get('/produk/jumlah-tampil', 'ProdukController@jumlahTampil');
 Route::resource('produk', 'ProdukController');
 
-
+// Laporan Order
+Route::resource('laporan-order', 'LaporanOrderController');
 
 // Pesanan
 Route::get('pesanan/provinsi', 'PesananController@provinsi');
