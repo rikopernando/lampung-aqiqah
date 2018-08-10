@@ -117,21 +117,21 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
+
   export default {
     name: 'ElevationExample',
     data : () => {
       return {
         url : window.location.origin + window.location.pathname,
         url_picture : window.location.origin + (window.location.pathname) + "image_produks/",
-        produks:[],
-        loading: true,
         snackbarBerhasil: false,
         jumlah_produk:0,
         id_detail:""
       }
     },
     mounted() {
-      this.getProdukTerbaruData();
+      this.$store.dispatch('daftarproduk/LOAD_DAFTAR_PRODUK',{tampil_produk :1 });
     },
     filters: {
         pemisahTitik: function (value) {
@@ -144,17 +144,12 @@
           return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
    },
   },
+  computed : mapState ({    
+      produks(){
+        return this.$store.state.daftarproduk.daftarProduk
+      }
+  }),
   methods:{
-        getProdukTerbaruData() {
-        axios.get(this.url + 'produk/view-produk-terbaru')
-        .then(resp => {
-          this.produks = resp.data;
-          this.loading = false;
-        })
-        .catch(resp => {
-          console.log('catch getProdukData:', resp);
-        });
-      },
       createKeranjang(id){
         this.$store.dispatch('keranjangbelanja/LOAD_CREATE_LIST',{id :id,jumlah_produk:1})
         this.snackbarBerhasil = true;
