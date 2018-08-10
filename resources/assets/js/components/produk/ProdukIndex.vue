@@ -44,11 +44,11 @@
             <md-table-empty-state v-if="loading">
       		    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
             </md-table-empty-state>
-            <md-table-empty-state v-else-if="produks.length == 0" md-label="Tidak ada data"
-                md-description="Belum ada data User yang tersimpan.">
+            <md-table-empty-state v-else-if="produks.length == 0" md-label="Tidak Ada Data"
+                md-description="Belum Ada Produk Yang Tersimpan.">
             </md-table-empty-state>
-            <md-table-empty-state v-else-if="produks.length > 0 && search != null" md-label="Tidak ada User ditemukan"
-                :md-description="`Tidak ada User ditemukan untuk kata kunci '${search}'. Cobalah menggunakan kata kunci yang lain.`">
+            <md-table-empty-state v-else-if="produks.length > 0 && search != null" md-label="Produk Tidak Ditemukan"
+                :md-description="`Tidak Ada Produk Dengan Kata Kunci '${search}'. Cobalah Menggunakan Kata Kunci Lain.`">
             </md-table-empty-state>
 
             <md-table-row slot="md-table-row" slot-scope="{item}">
