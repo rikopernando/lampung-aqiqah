@@ -7,7 +7,7 @@
           <div class="user-modal">
             <ul class="form-switcher">
               <li v-on:click="flip('register')"><a href="#" id="register-form">Register</a></li>
-              <li v-on:click="flip('login')"><a href="#" id="login-form">Login</a></li>
+              <li v-on:click="flip('login')"><a hr ef="#" id="login-form">Login</a></li>
             </ul>
             <div class="form-register" id="form-register">
                   <ul class="error-message">
@@ -148,9 +148,24 @@
 
           <div class="md-toolbar-section-end">
             <md-button class="md-icon-button">
-              <a href="#" v-on:click="openModal('login')">
+              <a href="#" v-on:click="openModal('login')" v-if="!this.$store.state.user.loggedIn">
                   <i class="fa fa-user icon-shop-mobile"></i>
               </a>
+              <md-menu v-else>
+                  <a href="#" class="md-button md-theme-default md-active" md-menu-trigger>
+                    <div class="md-ripple">
+                      <i class="fa fa-user icon-shop-mobile"></i>
+                    </div>
+                  </a>
+                  <md-menu-content>
+                    <md-menu-item @click="">
+                      <router-link :to="{name: 'logout'}" tag="div">LOGOUT</router-link>
+                    </md-menu-item>
+                    <md-menu-item @click="">
+                      <router-link :to="{name: 'indexAkun'}" tag="div">AKUN SAYA</router-link>
+                    </md-menu-item>
+                  </md-menu-content>
+              </md-menu>
             </md-button>
             <md-button class="md-icon-button">
               <a href="#/keranjang-belanja">
