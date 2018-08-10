@@ -126,7 +126,6 @@ export default {
       this.submitted = true;
       axios.post(this.url, this.user)
       .then(resp => {
-        console.log(resp)
         this.snackbarCreateUser = true;
         this.submitted = false;
       })
@@ -135,7 +134,7 @@ export default {
       });
     },
     redirectToUserList() {
-      // this.$router.replace('/user');  
+      this.$router.replace('/user');  
     }
   }
 }  
