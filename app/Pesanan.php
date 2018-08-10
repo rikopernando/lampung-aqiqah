@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\DetailPesanan;
 use Indonesia;
 use Mail;
 
@@ -60,7 +61,8 @@ class Pesanan extends Model
 
     public function pesananDiterima(){
         $pesanan = $this;
-        Mail::send('mails.demo', compact('pesanan'), function ($message) use ($pesanan) {
+        $detail_pesanan = DetailPesanan::with('produk')->where('id_pesanan',$pesanan->id)->get();
+        Mail::send('mails.pesanan_diterima', compact('pesanan','detail_pesanan'), function ($message) use ($pesanan) {
               $message->from('verifikasi@andaglos.id','Aqiqah Lampung');
               $message->to($pesanan->pelanggan->email);
               $message->subject('Pesanan Anda Telah Kami Terima');

@@ -5,7 +5,7 @@
           <md-card md-with-hover>
             <ul class="breadcrumb">
               <li><a href="#/">Home</a></li>
-              <li><a href="#/keranjang-belanja">Keranjang</a></li>
+              <li><a href="#/keranjang-belanja" id="keranjang-belanja">Keranjang</a></li>
               <li><a href="#/checkout">Checkout</a></li>
               <li class="active">Pesanan Diterima</li>
             </ul>
@@ -126,6 +126,7 @@
   	},
     mounted() {
      this.getDataPesanan()
+		 document.getElementById("keranjang-belanja").focus({reventScroll:true})
     },
     methods : {
       getDataPesanan() {
