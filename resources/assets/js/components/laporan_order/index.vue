@@ -125,7 +125,6 @@ export default {
         this.laporan_order = resp.data;
         this.searched = resp.data;
         this.loading = false;
-        console.log('then', this.laporan_order);
       })
       .catch(resp => {
         console.log('catch getLaporanOrderData:', resp);
@@ -138,7 +137,6 @@ export default {
     showDialogDetailOrder(detail_order) {
       this.showDialog = true;
       this.detail_order = detail_order;
-      console.log(detail_order)
     }
   }
 }
