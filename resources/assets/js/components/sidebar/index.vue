@@ -41,6 +41,11 @@
               <md-icon>account_box</md-icon><span class="dekstop-menu">User</span>
             </router-link>
           </li>
+          <li>
+            <router-link :to="{name: 'laporanOrder'}">
+              <md-icon>notes</md-icon><span class="dekstop-menu">Laporan Order</span>
+            </router-link>
+          </li>
         </ul>
 
         <footer>
