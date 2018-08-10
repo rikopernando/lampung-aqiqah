@@ -5,6 +5,7 @@ import user from './user'
 import lokasi from './lokasi'
 import keranjangbelanja from './keranjangbelanja'
 import detailproduk from './detailproduk'
+import daftarproduk from './daftarproduk'
 
 Vue.use(Vuex)
 
@@ -13,7 +14,7 @@ const store = new Vuex.Store({
     awesome: true
   },
   modules : {
-    user,lokasi,keranjangbelanja,detailproduk
+    user,lokasi,keranjangbelanja,detailproduk,daftarproduk
   }
 })
 
