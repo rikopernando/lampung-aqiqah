@@ -44,7 +44,7 @@ Route::post('/produk/{id}', 'ProdukController@update');
 Route::resource('produk', 'ProdukController');
 
 // Laporan Order
-Route::resource('laporan-order', 'LaporanOrderController');
+Route::get('laporan-order/view', 'LaporanOrderController@view');
 
 // Pesanan
 Route::get('pesanan/provinsi', 'PesananController@provinsi');

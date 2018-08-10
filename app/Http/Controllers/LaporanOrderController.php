@@ -10,19 +10,13 @@ use Illuminate\Support\Facades\DB;
 
 class LaporanOrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function view()
     {
         $dataLaporan = [];
-        $laporan_order = DB::table('laporan_orders')
-                            ->join('users', 'laporan_orders.id_pelanggan', '=', 'users.id')
-                            ->join('pesanans', 'laporan_orders.id_pesanan', '=', 'pesanans.id')
-                            ->select('users.name as nama_pelanggan', 'laporan_orders.id_pesanan', 'pesanans.created_at as waktu_pesan', 'laporan_orders.id as id_laporan', 'pesanans.total')
-                            ->get();
+        $laporan_order = DB::table('pesanans')
+            ->join('users', 'pesanans.pelanggan_id', '=', 'users.id')
+            ->select('users.name as nama_pelanggan', 'pesanans.id as id_pesanan', 'pesanans.created_at as waktu_pesan', 'pesanans.total')
+            ->get();
 
         foreach ($laporan_order as $laporan) {
             $detail_order_array = [];
@@ -39,7 +33,7 @@ class LaporanOrderController extends Controller
             }
 
             $dataLaporan[] = [
-                'id_laporan' => $laporan->id_laporan,
+                'id_laporan' => $laporan->id_pesanan,
                 'nama_pelanggan' => $laporan->nama_pelanggan,
                 'waktu' => $laporan->waktu_pesan,
                 'total' => $laporan->total,
@@ -47,70 +41,5 @@ class LaporanOrderController extends Controller
             ];
         }
         return response($dataLaporan);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

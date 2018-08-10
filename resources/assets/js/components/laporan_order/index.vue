@@ -120,7 +120,7 @@ export default {
   },
   methods: {
     getLaporanOrderData() {
-      axios.get(this.url)
+      axios.get(this.url + '/' + 'view')
       .then(resp => {
         this.laporan_order = resp.data;
         this.searched = resp.data;
