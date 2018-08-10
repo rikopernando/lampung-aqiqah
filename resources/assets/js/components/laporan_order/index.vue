@@ -78,7 +78,7 @@
               <md-table-cell md-label="Total" md-sort-by="total">
                 {{ item.total }}
               </md-table-cell>
-			        <md-table-cell md-label="Detail Order" md-sort-by="detail_order">
+			        <md-table-cell md-label="Detail Order">
                 <md-button @click="showDialogDetailOrder(item.detail_order)" class="md-dense md-raised md-primary">
                   Detail Order
                 </md-button>
