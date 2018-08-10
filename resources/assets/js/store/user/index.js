@@ -12,7 +12,7 @@ const getters = {
 
 const mutations = {
     [LOGIN] (state, user) {
-      if(user.role.role_id === "1"){
+      if(user.role.role_id === 1){
        state.is_admin = true
       }
       state.loggedIn = true
