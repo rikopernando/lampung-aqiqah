@@ -16,7 +16,6 @@ use Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-
 class PesananController extends Controller
 {
     /**
@@ -120,6 +119,8 @@ class PesananController extends Controller
       }
 
       $keranjang_belanja->delete();
+
+      $new_pesanan->pesananDiterima();
 
       LaporanOrder::create([
         'id_pelanggan' => $pelanggan_id,
@@ -332,4 +333,5 @@ class PesananController extends Controller
           ->get();
         return response($detail_pesanan);
     }
+
 }

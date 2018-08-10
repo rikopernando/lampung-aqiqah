@@ -5,7 +5,7 @@
           <md-card md-with-hover>
             <ul class="breadcrumb">
               <li><a href="#/">Home</a></li>
-              <li><a href="#/keranjang-belanja">Keranjang</a></li>
+              <li><a href="#/keranjang-belanja" id="keranjang-belanja">Keranjang</a></li>
               <li><a href="#/checkout">Checkout</a></li>
               <li class="active">Pesanan Diterima</li>
             </ul>
@@ -31,9 +31,9 @@
 										</md-empty-state>
                 </div>
                 <div v-else>
-                  <span class="md-subheading" style="font-weight: bold">
-                    Terima kasih. Pesanan Anda telah diterima.
-                  </span>
+									<div class="alert alert-success" role="alert">
+                    Terima kasih. Pesanan Anda telah diterima, Kami telah mengirimkan email konfirmasi ke email anda.
+									</div>
 
                   <ul class="order-detail">
                     <li v-for="data, index in data_pesanan.pesanan">
@@ -126,6 +126,7 @@
   	},
     mounted() {
      this.getDataPesanan()
+		 document.getElementById("keranjang-belanja").focus({reventScroll:true})
     },
     methods : {
       getDataPesanan() {
