@@ -43,9 +43,13 @@ class BankController extends Controller
     public function updateDefaultBank($id, $boolean) {
       $update_bank = Bank::find($id);
       $update_bank->update([
-        'default'  => $boolean == "true" ? 1 : 0,
+        'default'  => 1,
       ]);
-      $update_bank->save();
+
+      $updateNonDefault = Bank::where('id','!=',$id);
+      $updateNonDefault->update([
+        'default'  => 0,
+      ]);
     }
 
     /**
