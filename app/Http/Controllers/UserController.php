@@ -27,11 +27,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+       
     }
 
     public function view() {
-        return response(User::select()->get());
+         return response(User::select()->get());
     }
 
     public function detailAkun() {

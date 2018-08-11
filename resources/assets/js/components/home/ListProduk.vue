@@ -10,6 +10,9 @@
                           <button type="button" @click="closeModalProduk" class="btn btn-danger btn-lg" >X </button>   
                      </div>
                 </div>
+               <md-empty-state v-if="this.$store.state.detailproduk.loadingModal">
+                  <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+              </md-empty-state>
                 <div class="form-produk" id="form-produk">
                   <div class="row">
                     <div class="col-md-6">
@@ -34,7 +37,7 @@
 
           <div class="md-medium-size-50 md-small-size-50 md-xsmall-hide">
 
-           <md-empty-state v-if="loading">
+           <md-empty-state v-if="this.$store.state.daftarproduk.loading">
                 <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
            </md-empty-state>
 
@@ -89,7 +92,7 @@
           </div>
           <div id="displayMobile">
 
-           <md-empty-state v-if="loading">
+           <md-empty-state v-if="this.$store.state.daftarproduk.loading">
                 <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
            </md-empty-state>
 
@@ -153,20 +156,20 @@
 <script type="text/javascript">
   import Header from '../header'
   import Footer from '../footer/footer'
+  import { mapState } from 'vuex'
 
   export default {
   	data : () => ({
   			url : window.location.origin + window.location.pathname,
         url_picture : window.location.origin + (window.location.pathname) + "image_produks/",
   			filter: 1,
-        produks: [],
         loading: true,
         snackbarBerhasil: false,
         jumlah_produk:0,
         id_detail:""
   	}),
   	mounted() {
-      this.getProdukData()
+      this.$store.dispatch('daftarproduk/LOAD_DAFTAR_PRODUK',{tampil_produk :0 });
   	},
     filters: {
         pemisahTitik: function (value) {
@@ -179,17 +182,12 @@
           return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
         },
     },
+    computed : mapState ({    
+      produks(){
+        return this.$store.state.daftarproduk.daftarProduk
+      }
+    }),
     methods: {
-      getProdukData() {
-    		axios.get(this.url + 'produk/view-produk')
-    		.then(resp => {
-    			this.produks = resp.data;
-    			this.loading = false;
-    		})
-    		.catch(resp => {
-    			console.log('catch getProdukData:', resp);
-    		});
-    	},
       produkSort() {
         let app = this;
         axios.get(app.url+'produk/sort-produk/'+app.filter)

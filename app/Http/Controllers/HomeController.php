@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\User;
+use Session;
+use App\KeranjangBelanja;
 
 class HomeController extends Controller
 {
@@ -26,7 +28,9 @@ class HomeController extends Controller
     public function index()
     {
         if(Auth::check()){
-            return User::with('role')->where('id',Auth::User()->id)->first();
+             $session = Session::get('session_id');
+             $keranjang_belanja = KeranjangBelanja::where('session_id',$session)->update(['id_pelanggan' => Auth::User()->id,'session_id' => null]);
+             return User::with('role')->where('id',Auth::User()->id)->first();
         }else{
             return Auth::User();
         }

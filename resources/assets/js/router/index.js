@@ -16,7 +16,6 @@ import KeranjangBelanja from '../components/keranjangbelanja/KeranjangBelanja'
 import ProdukIndex from '../components/produk/ProdukIndex'
 import ProdukCreate from '../components/produk/ProdukCreate'
 import ProdukEdit from '../components/produk/ProdukEdit'
-import DetailProduk from '../components/list-produk/detail_produk'
 import ProdukList from '../components/home/ListProduk'
 
 import Checkout from '../components/checkout'
@@ -29,6 +28,9 @@ import Dashboard from '../components/dashboard/index'
 
 import Logout from '../components/logout/index'
 
+// LAPORAN
+import LaporanOrder from '../components/laporan_order/index'
+
 const routes = [
   {
     path : '/',
@@ -40,7 +42,11 @@ const routes = [
   {
     path : '/dashboard',
     name : 'dashboard',
-    component : Dashboard
+    component : Dashboard,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
   },
 
   // User
@@ -98,11 +104,7 @@ const routes = [
   },
 
   // Produk
-  {
-    path : '/detail-produk',
-    name : 'DetailProduk',
-    component : DetailProduk,
-  },{
+{
     path : '/list-produk',
     name : 'listProduk',
     component : ProdukList
@@ -135,7 +137,7 @@ const routes = [
     name : 'checkout',
     component : Checkout
   },{
-    path : '/checkout/order-received',
+    path : '/checkout/order-received/:id',
     name : 'receivedOrder',
     component : OrderReceived
   },{ 
@@ -147,12 +149,19 @@ const routes = [
     name : 'indexAkun',
     component : AkunIndex,
     meta : {
-      requiresAuth : false,
+      requiresAuth : true,
     }
   },{
     path : '/logout',
     name : 'logout',
     component : Logout
+  },
+
+  // Laporan
+  {
+    path : '/laporan-order',
+    name : 'laporanOrder',
+    component : LaporanOrder
   }
 ]
 
