@@ -94,6 +94,14 @@
   .col-xs-6 {
     width: 50% !important;
   }
+
+  .header-detail {
+    padding-left: 10px;
+    font-size: 15px;
+  }
+  .kembali-detail {
+    padding-right: 10px;
+  }
 }
 
 @media (min-width: 600px) {
@@ -110,6 +118,12 @@
 
     object-fit: cover;
     object-position: center right;
+  }
+  .header-detail {
+    padding-left: 50px;
+  }
+  .kembali-detail {
+    padding-right: 50px;
   }
 }
 .tabs-left {
