@@ -145,6 +145,9 @@
         <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarBerhasil" md-persistent>
             <span>Produk Berhasil Masuk Keranjang !</span>
           </md-snackbar>
+        <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarAdmin" md-persistent>
+            <span>Untuk belanja produk silakan login sebagai pelanggan</span>
+          </md-snackbar>
 
         </div>
       </div>
@@ -165,6 +168,7 @@
   			filter: 1,
         loading: true,
         snackbarBerhasil: false,
+        snackbarAdmin: false,
         jumlah_produk:0,
         id_detail:""
   	}),
@@ -185,6 +189,9 @@
     computed : mapState ({    
       produks(){
         return this.$store.state.daftarproduk.daftarProduk
+      },
+      is_admin(){
+        return this.$store.state.user.is_admin
       }
     }),
     methods: {
@@ -200,8 +207,12 @@
     		});
       },
       createKeranjang(id){
-        this.$store.dispatch('keranjangbelanja/LOAD_CREATE_LIST',{id :id,jumlah_produk:1})
-        this.snackbarBerhasil = true;
+        if(this.is_admin) {
+            this.snackbarAdmin = true;
+        }else{
+            this.$store.dispatch('keranjangbelanja/LOAD_CREATE_LIST',{id :id,jumlah_produk:1})
+            this.snackbarBerhasil = true;
+        }
       },
       openModalProduk(id_produk) {
           let app = this;
