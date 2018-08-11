@@ -2,6 +2,7 @@
   <div>
     <link rel="stylesheet" :href="url + 'css/sidebar-admin.css'">
     <div id="dekstopVersion" class="md-medium-size-50 md-small-size-50 md-xsmall-hide">
+
       <!-- Header -->
       <div class="header">
         <a href="#dashboard" id="menu-toggle" class="">
@@ -18,6 +19,7 @@
           </div>
         </div>
       </div>
+
       <!-- Sidebar -->
       <div class="sidebar">
         <ul>
@@ -49,7 +51,7 @@
         </ul>
 
         <footer>
-          Copyright © {{ getFullYear }}
+          Copyright © {{ tahun }}
           <a href="https://andaglos.id/">
               PT. Andaglos Global Teknologi.
           </a>
@@ -110,10 +112,11 @@
         </md-list>
       </md-drawer>
     </div>
-      <!-- Content -->
-      <div class="main">
-        <slot/>
-      </div>
+    
+    <!-- Content -->
+    <div class="main">
+      <slot/>
+    </div>
   </div>
 </template>
 
@@ -122,7 +125,7 @@
 export default {
   data: () => ({
     url : window.location.origin + window.location.pathname,
-    getFullYear: new Date().getFullYear(),
+    tahun: new Date().getFullYear(),
     showNavigation: false,
     showSidepanel: false
   }),
