@@ -8,12 +8,7 @@
           <li class="active">Tambah Bank</li>
         </ul>
       </md-card>
-
-      <md-dialog-alert 
-        :md-active.sync="promptGagalDefault"
-        md-title="Gagal !!"
-        md-content="Default Bank Sudah terpakai !" />
-
+      
       <md-card>
         <md-card-header>
           <div class="header-card">
@@ -44,7 +39,6 @@
               <label for="no_rek">No Rekening</label>
               <md-input type="no_rek" name="no_rek" id="no_rek" autocomplete="off" v-model="bank.no_rek" />
             </md-field>
-            <md-switch v-model="bank.default">Default : {{ bank.default ? 'Ya' : 'Tidak' }}</md-switch>
             <md-card-actions>
               <md-button type="submit" class="md-primary">Submit Bank</md-button>
             </md-card-actions>
@@ -64,13 +58,11 @@ export default {
   data: () => ({
     errors: [],
     url: window.location.origin + window.location.pathname,
-    promptGagalDefault:false,
     bank: {
       nama_bank: '',
       atas_nama: '',
-      no_rek: '',
-      default:false
-    },
+      no_rek: ''
+      },
     snackbarTambahBank: false
   }),
   methods: {
@@ -78,13 +70,7 @@ export default {
       const app = this;
       axios.post(app.url+'bank', app.bank)
       .then((resp) => {
-        if (resp.data > 0) {
-          app.promptGagalDefault = true;
-          app.bank.default = false;
-        }else{
           app.snackbarTambahBank = true;
-        }
-        
       })
       .catch((err) => {
         this.errors = err.response.data
