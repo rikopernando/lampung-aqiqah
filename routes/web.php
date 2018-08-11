@@ -36,6 +36,8 @@ Route::resource('user', 'UserController');
 
 //Bank
 Route::get('/bank/view', 'BankController@view');
+Route::get('/bank/update-default-bank/{id}/{boolean}', 'BankController@updateDefaultBank');
+Route::get('/bank/count-default', 'BankController@countDefault');
 Route::resource('bank', 'BankController');
 //Produk
 Route::get('/produk/view', 'ProdukController@view');
