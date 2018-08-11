@@ -130,22 +130,17 @@ export default {
     showSidepanel: false
   }),
   mounted() {
-    this.init()
-  },
-  methods: {
-    init() {
-      var main = document.querySelector(".main");
-      var sidebar = document.querySelector(".sidebar");
-      var menutoggle = document.getElementById("menu-toggle");
+    var main = document.querySelector(".main");
+    var sidebar = document.querySelector(".sidebar");
+    var menutoggle = document.getElementById("menu-toggle");
 
-      menutoggle.addEventListener("click", function(e) {
-        menutoggle.classList.toggle("active");
-        main.classList.toggle("active");
-        sidebar.classList.toggle("active");
+    menutoggle.addEventListener("click", function(e) {
+      menutoggle.classList.toggle("active");
+      main.classList.toggle("active");
+      sidebar.classList.toggle("active");
 
-        sidebar.classList.contains("active") ? menutoggle.querySelector("i").classList.remove("fa-bars") : menutoggle.querySelector("i").classList.add("fa-bars");
-      });
-    }
+      sidebar.classList.contains("active") ? menutoggle.querySelector("i").classList.remove("fa-bars") : menutoggle.querySelector("i").classList.add("fa-bars");
+    });
   }
 }
 
