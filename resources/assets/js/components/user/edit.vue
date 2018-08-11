@@ -120,7 +120,7 @@ export default {
     },
     saveForm() {
       this.submitted = true;
-      axios.patch(this.url + this.$route.params.id, this.user)
+      axios.patch(this.url + '/' + this.$route.params.id, this.user)
       .then(resp => {
         this.snackbarEditUser = true;
         this.submitted = false;

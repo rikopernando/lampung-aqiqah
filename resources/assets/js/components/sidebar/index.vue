@@ -134,7 +134,6 @@ export default {
       var main = document.querySelector(".main");
       var sidebar = document.querySelector(".sidebar");
       var menutoggle = document.getElementById("menu-toggle");
-      console.log(menutoggle)
 
       menutoggle.addEventListener("click", function(e) {
         menutoggle.classList.toggle("active");
