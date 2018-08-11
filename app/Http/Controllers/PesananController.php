@@ -10,7 +10,6 @@ use App\DetailPesanan;
 use App\KeranjangBelanja;
 use App\KirimTempatLain;
 use App\Produk;
-use App\LaporanOrder;
 use DB;
 use Session;
 use Illuminate\Http\Request;
@@ -121,11 +120,6 @@ class PesananController extends Controller
       $keranjang_belanja->delete();
 
       $new_pesanan->pesananDiterima();
-
-      LaporanOrder::create([
-        'id_pelanggan' => $pelanggan_id,
-        'id_pesanan' => $new_pesanan->id
-      ]);
 
       DB::commit();
 
