@@ -64,7 +64,7 @@
         <md-button class="md-icon-button" @click="showNavigation = true">
           <md-icon>menu</md-icon>
         </md-button>
-        <span class="md-title">My Title</span>
+        <span class="md-title">Aqiqah Lampung</span>
 
         <div class="md-toolbar-section-end">
           <md-button class="md-icon-button">
