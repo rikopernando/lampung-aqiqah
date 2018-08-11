@@ -334,7 +334,7 @@
                                               </ul>
                                               <hr>
                                               @else
-                                              <p>Pembayaran dapat dilakukan ke Rekening Bank <b>{{strtoupper('BNI SYARIAH')}} (78978-5454-454)</b> a/n <b>Iwan Setiawan</b></p>
+                                              <p>Pembayaran dapat dilakukan ke Rekening Bank <b>{{strtoupper($bank->nama_bank)}} ({{ $bank->no_rek }})</b> a/n <b> {{ $bank->atas_nama }}</b></p>
                                               @endif
 
                                               @if($kirim_tempat_lain->count() > 0)

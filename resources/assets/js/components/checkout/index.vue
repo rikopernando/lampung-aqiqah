@@ -60,7 +60,7 @@
                 </thead>
 				    		<tbody v-if="this.$store.state.keranjangbelanja.countKeranjang > 0">
                   <tr v-for="produks, index in data_produk">
-                    <td style="font-style: oblique;"> {{ produks.produk.nama_produk }} <span style="font-weight:bold">x {{ produks.jumlah_produk }} </span></td>
+                    <td style="font-style: oblique;"> {{ produks.produk.nama_produk | capitalize }} <span style="font-weight:bold">x {{ produks.jumlah_produk }} </span></td>
                     <td style="text-align:right; font-size:15px; font-weight:bold;"> Rp. {{ produks.subtotal | pemisahTitik }}</td>
                   </tr>
                 </tbody>
@@ -195,6 +195,9 @@
           var formatted = angka.map(numberFormat.format);
           return formatted.join('; ');
       },
+		  capitalize: function (value) {
+		    return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
+	    },
   	},
     computed : mapState ({
        provinsi () {
