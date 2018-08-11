@@ -17,6 +17,11 @@
       md-cancel-text="Batal"
       @md-confirm="onConfirmDelete" />
 
+      <md-dialog-alert 
+        :md-active.sync="promptDefaultKosong"
+        md-title="Peringatan !!"
+        md-content="Default Bank harus terpilih ,silahkan pilih salah satu kembali !" />
+
       <md-card>
         <md-card-header>
           <div class="header-card">
@@ -70,8 +75,12 @@
               <md-table-cell md-label="ID" md-sort-by="id" md-numeric  >{{ item.id }}</md-table-cell>
               <md-table-cell md-label="Nama Bank" md-sort-by="nama_bank" >{{ item.nama_bank }}</md-table-cell>
               <md-table-cell md-label="a.n Bank" md-sort-by="atas_nama" >{{ item.atas_nama }}</md-table-cell>
-              <md-table-cell md-label="No Rekening" md-sort-by="no_rek" style="text-align:right;">{{ item.no_rek }}</md-table-cell>
-              <md-table-cell md-label="Default" md-sort-by="default" style="text-align:right;">{{ item.default == 1 ? 'Ya':'Tidak' }}</md-table-cell>
+              <md-table-cell md-label="No Rekening" md-sort-by="no_rek" >{{ item.no_rek }}</md-table-cell>
+              <md-table-cell md-label="Default" style="text-align: center; padding-left: 15px;">
+                <md-checkbox v-model="item.default"
+                  :disabled="(item.default == false && maxChecked >= 1)"
+                  @change="tampilDefault(item.id, item.default, item.nama_bank)" />
+              </md-table-cell>
                <md-table-cell md-label="Aksi">
                 <md-button :to="`/bank/edit/${item.id}`" class="md-fab md-dense md-primary">
                   <md-icon>edit</md-icon>
@@ -88,6 +97,11 @@
           <!-- Snackbar for Bank delete alert -->
         <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarDeleteBank" md-persistent>
             <span>Bank berhasil dihapus!</span>
+          </md-snackbar>
+
+         <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="notifSuccess">
+            <span id="span-snackbar">{{notifMessage}}</span>
+            <span><md-icon style="color: white">done_all</md-icon></span>
           </md-snackbar>
 
         </md-card-content>
@@ -116,27 +130,68 @@
       search: null,
 	    promptDeleteBank: false,
 			snackbarDeleteBank: false,
+      promptDefaultKosong: false,
 	    bankIdForDelete: '',
       searched: [],
       banks: [],
+      notifMessage: '',
+      notifSuccess: false,
       searchBy: 'nama_bank',
-      loading: true
+      loading: true,
+      maxChecked: 0
     }),
     created() {
     	this.getBankData();
     },
     methods: {
     	getBankData() {
-    		axios.get(this.url + 'view')
+        let app = this;
+    		axios.get(app.url + 'view')
     		.then(resp => {
-    			this.banks = resp.data;
-    			this.searched = resp.data;
-    			this.loading = false;
+          $.each(resp.data.daftarBank, function (i, item) {
+            resp.data.daftarBank[i].default = item.default == 1 ? true : false;
+          });
+
+    			app.banks = resp.data.daftarBank;
+    			app.searched = resp.data.daftarBank;
+          app.countDefault(app);
+
+    			app.loading = false;
     		})
     		.catch(resp => {
     			console.log('Terjadi Kesalahan Data Bank :', resp);
     		});
     	},
+      tampilDefault(id, data, nama) {
+        let app = this;
+        let hasil = data == true ? "Default" : "Tidak Default";
+
+        axios.get(app.url+"update-default-bank/"+id+"/"+data)
+        .then(resp => {
+          app.countDefault(app);
+          app.notifMessage = `Bank ${nama.replace(/(^|\s)\S/g, l => l.toUpperCase())} Berhasil update ${hasil}.`
+          app.notifSuccess = true;
+
+        })
+        .catch(resp => {
+          console.log('catch onConfirm:', resp);
+        })
+
+      },
+      countDefault(app) {
+        axios.get(app.url+"count-default")
+        .then(resp => {
+          app.maxChecked = resp.data
+         if (app.maxChecked == 0) {
+            app.promptDefaultKosong = true;
+          }else{
+            app.promptDefaultKosong = false;
+          }
+        })
+        .catch(resp => {
+          console.log(resp);
+        })
+      },
     	onConfirmDelete() {
     		axios.delete(this.url + this.bankIdForDelete)
     		.then(resp => {
@@ -151,6 +206,7 @@
     	deleteBank(bankId) {
     		this.promptDeleteBank = true;
     		this.bankIdForDelete = bankId;
+        app.countDefault(app);
     	},
       searchOnTable() {
         this.searched = searchBank(this.banks, this.search, this.searchBy);
