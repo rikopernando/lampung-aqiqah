@@ -10,6 +10,7 @@ use App\DetailPesanan;
 use App\KeranjangBelanja;
 use App\KirimTempatLain;
 use App\Produk;
+use App\Bank;
 use DB;
 use Session;
 use Illuminate\Http\Request;
@@ -150,10 +151,11 @@ class PesananController extends Controller
             ];
 
             if($pesanan->metode_pembayaran == 'Transfer Bank'){
+              $bank = Bank::where('default',1)->first();
               array_push($data_pesanan,
-                ['header' => 'Bank', 'content' => 'BNI SYARIAH'], 
-                ['header' => 'Nomor Rekening', 'content' => '3737-8899-21'], 
-                ['header' => 'Atas Nama', 'content' => 'IWAN SETIAWAN']);
+                ['header' => 'Bank', 'content' => $bank->nama_bank], 
+                ['header' => 'Nomor Rekening', 'content' => $bank->no_rek], 
+                ['header' => 'Atas Nama', 'content' => $bank->atas_nama]);
             }
 
             $pesanan->jenis_kelamin == 1 ? $jenis_kelamin = 'Laki - Laki' : $jenis_kelamin = 'Perempuan';
