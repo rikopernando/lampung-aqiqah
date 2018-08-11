@@ -62,7 +62,7 @@
               <md-table-cell md-label="Harga Coret" md-sort-by="harga_coret">{{ item.harga_coret | pemisahTitik }}</md-table-cell>
               <md-table-cell md-label="Harga Jual" md-sort-by="harga_jual">{{ item.harga_jual | pemisahTitik }}</md-table-cell>
               <md-table-cell md-label="Stok" md-sort-by="stok">
-                <span style="color: green" v-if="item.stok === 1">Tersedia</span>
+                <span style="color: green" v-if="item.stok == 1">Tersedia</span>
                 <span style="color: red" v-else>Tidak Tersedia</span>
               </md-table-cell>
               <md-table-cell md-label="Aksi">
