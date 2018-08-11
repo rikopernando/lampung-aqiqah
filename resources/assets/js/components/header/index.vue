@@ -87,6 +87,11 @@
                 <div class="label-nav-main">HOME</div>
               </div>
             </a>
+            <a href="#/dashboard" class="md-button md-theme-default md-active" v-if="this.$store.state.user.is_admin">
+              <div class="md-ripple">
+                <div class="label-nav-main">Dashboard</div>
+              </div>
+            </a>
             <router-link class="md-button md-theme-default md-active" :to="{name: 'listProduk'}">
               <div class="md-ripple">
                 <div class="label-nav-main">PRODUK</div>
@@ -191,6 +196,13 @@
               <router-link :to="{name: 'home'}" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
                 <md-icon>home</md-icon>
                 <span>Home</span>
+              </router-link>
+            </md-list-item>
+
+            <md-list-item>
+              <router-link :to="{name: 'dashboard'}" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important" v-if="this.$store.state.user.is_admin">
+                <md-icon>dashboard</md-icon>
+                <span>Dashboard</span>
               </router-link>
             </md-list-item>
 

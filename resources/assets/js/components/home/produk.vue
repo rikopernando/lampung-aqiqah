@@ -112,6 +112,9 @@
         <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarBerhasil" md-persistent>
             <span>Produk Berhasil Masuk Keranjang !</span>
           </md-snackbar>
+        <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarAdmin" md-persistent>
+            <span>Untuk belanja produk silakan login sebagai pelanggan</span>
+          </md-snackbar>
   </div>
   </div>
 </template>
@@ -126,8 +129,9 @@
         url : window.location.origin + window.location.pathname,
         url_picture : window.location.origin + (window.location.pathname) + "image_produks/",
         snackbarBerhasil: false,
+        snackbarAdmin: false,
         jumlah_produk:0,
-        id_detail:""
+        id_detail:"",
       }
     },
     mounted() {
@@ -147,12 +151,19 @@
   computed : mapState ({    
       produks(){
         return this.$store.state.daftarproduk.daftarProduk
+      },
+      is_admin(){
+        return this.$store.state.user.is_admin
       }
   }),
   methods:{
       createKeranjang(id){
-        this.$store.dispatch('keranjangbelanja/LOAD_CREATE_LIST',{id :id,jumlah_produk:1})
-        this.snackbarBerhasil = true;
+        if(this.is_admin) {
+            this.snackbarAdmin = true;
+        }else{
+            this.$store.dispatch('keranjangbelanja/LOAD_CREATE_LIST',{id :id,jumlah_produk:1})
+            this.snackbarBerhasil = true;
+        }
       },
       openModalProduk(id_produk) {
           let app = this;
@@ -169,11 +180,11 @@
       },
       createKeranjangDetail(id){
         console.log(id)
-        var jumlah_produk = this.jumlah_produk;
-        this.$store.dispatch('keranjangbelanja/LOAD_CREATE_LIST',{id :id,jumlah_produk:jumlah_produk})
-        $('#produk-modal').removeClass('active');
-        app.id_detail = "";
-        this.snackbarBerhasil = true;
+            var jumlah_produk = this.jumlah_produk;
+            this.$store.dispatch('keranjangbelanja/LOAD_CREATE_LIST',{id :id,jumlah_produk:jumlah_produk})
+            $('#produk-modal').removeClass('active');
+            app.id_detail = "";
+            this.snackbarBerhasil = true;
       },
   }
 }
