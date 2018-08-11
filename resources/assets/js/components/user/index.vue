@@ -108,7 +108,7 @@
 
   export default {
     data: () => ({
-    	url: window.location.origin + (window.location.pathname + 'user/'),
+    	url: window.location.origin + (window.location.pathname + 'user'),
       search: null,
 	    promptDeleteUser: false,
 			snackbarDeleteUser: false,
@@ -123,7 +123,7 @@
     },
     methods: {
     	getUserData() {
-    		axios.get(this.url+ 'view')
+    		axios.get(this.url + '/' + 'view')
     		.then(resp => {
     			this.users = resp.data;
     			this.searched = resp.data;
