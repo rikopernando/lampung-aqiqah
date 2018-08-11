@@ -146,7 +146,7 @@
         },
         capitalize: function (value) {
           return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
-   },
+        },
   },
   computed : mapState ({    
       produks(){

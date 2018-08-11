@@ -64,7 +64,7 @@
         <md-button class="md-icon-button" @click="showNavigation = true">
           <md-icon>menu</md-icon>
         </md-button>
-        <span class="md-title">My Title</span>
+        <span class="md-title">Aqiqah Lampung</span>
 
         <div class="md-toolbar-section-end">
           <md-button class="md-icon-button">
@@ -130,22 +130,17 @@ export default {
     showSidepanel: false
   }),
   mounted() {
-    this.init()
-  },
-  methods: {
-    init() {
-      var main = document.querySelector(".main");
-      var sidebar = document.querySelector(".sidebar");
-      var menutoggle = document.getElementById("menu-toggle");
+    var main = document.querySelector(".main");
+    var sidebar = document.querySelector(".sidebar");
+    var menutoggle = document.getElementById("menu-toggle");
 
-      menutoggle.addEventListener("click", function(e) {
-        menutoggle.classList.toggle("active");
-        main.classList.toggle("active");
-        sidebar.classList.toggle("active");
+    menutoggle.addEventListener("click", function(e) {
+      menutoggle.classList.toggle("active");
+      main.classList.toggle("active");
+      sidebar.classList.toggle("active");
 
-        sidebar.classList.contains("active") ? menutoggle.querySelector("i").classList.remove("fa-bars") : menutoggle.querySelector("i").classList.add("fa-bars");
-      });
-    }
+      sidebar.classList.contains("active") ? menutoggle.querySelector("i").classList.remove("fa-bars") : menutoggle.querySelector("i").classList.add("fa-bars");
+    });
   }
 }
 
