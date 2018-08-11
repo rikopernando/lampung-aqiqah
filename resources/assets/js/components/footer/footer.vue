@@ -75,12 +75,8 @@
 export default {
   data: function () {
   	return {
-  		tahun: 0
+  		tahun: new Date().getFullYear()
   	}
-  },
-  created() {
-  	let date = new Date();
-  	this.tahun = date.getFullYear();
   }
 }
 </script>
