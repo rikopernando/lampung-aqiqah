@@ -52,7 +52,6 @@
         <md-button :to="{name: 'tentangKami'}" style="color: white; font-size: 12px">
           Tentang Kami
         </md-button>
-        <md-button href="#/kritik-saran" style="color: white; font-size: 12px">Ruang Saran dan Pengaduan</md-button>
         <md-button class="md-icon-button">
           <a href="#/facebook">
             <i class="fa fa-facebook-f icon-link"></i>
