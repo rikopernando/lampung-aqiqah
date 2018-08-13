@@ -33,43 +33,31 @@
               <md-tab id="tab-pages" md-label="Keunggulan Kami">
                 <ol>
                   <li>
-                    Kambing sehat, cukup umur, dari peternakan sendiri, sertifikat dokter hewan
+                    Kami memberikan bebas biaya Pengiriman untuk wilayah Bandar Lampung dan sekitarnya dengan radius maksimal 30 KM
                   </li>
                   <li>
-                    Kambing dapat dipilih dan dipotong langsung
+                    Pesanan kami antar sesuai permintaan secara langsung dan dikirim sesuai jadwal ke alamat Pemesan Layanan Aqiqah
                   </li>
                   <li>
-                    5% dari keuntungan disalurkan ke zakat dan kegiatan sosial Islam
+                    Daging Aqiqah dimasak menggunakan bumbu tradisional dan rempah-rempah alami oleh juru masak berpengalaman
                   </li>
                   <li>
-                    Menu pilihan : Malbi, Kare, Gule, Tongseng, Sop dan Sate
+                    Hewan Aqiqah disembelih sesuai standar syar’i dan kesehatan, dan di lakukan oleh Team kami yang berpengalaman
                   </li>
                   <li>
-                    Pembelian dapat dilakukan melalui telepon, Whastapp
+                    Dengan memesan layanan aqiqah kepada kami berarti telah ikut meningkatkan kesejahteraan peternak lokal
                   </li>
                   <li>
-                    Pembayaran dapat dilakukan secara Cash maupun Transfer
+                    Aqiqah Peduli mendistribusikan aqiqah Anda ke daerah miskin, daerah rawan gizi, Rumah Yatim Piatu, Pondok Pesantren
                   </li>
                   <li>
-                    Bersedia menyalurkan aqiqah Anda ke rumah yatim piatu dan dhuafa
+                    Kami dokumentasikan pemotongan untuk ayah bunda jika tidak bisa menyaksikan pemotongan secara langsung
                   </li>
                   <li>
-                    Gratis biaya potong dan antar (Wilayah Bandar Lampung), wilayah tertentu dikenakan ongkos kirim
+                    Pembayaran dapat dilakukan dengan cara transfer dengan fitur Invoice dan konfirmasi pembayaran secara Real-Time
                   </li>
                   <li>
-                    Sertifikat Aqiqah dan Risalah Aqiqah
-                  </li>
-                  <li>
-                    Kerjasama dengan lembaga amil zakat Dompet Dhuafa, Yatim Mandiri, dan DPU Darut Tauhid
-                  </li>
-                  <li>
-                    Mendapatkan Sertifikat Aqiqah dan Mugh yang sangat cantik.
-                  </li>
-                  <li>
-                    Terdapat Taman Bermain untuk anak-anak.
-                  </li>
-                  <li>
-                    Menyediakan area selfi dengan Objek 3 Dimensi, Objek hewan (burung, kelinci, kambing perah) dll.
+                    Anda dapat memilih paket sesuai keinginan, Anda juga bisa berkonsultasi dengan customer service kami.
                   </li>
                 </ol>
               </md-tab>
