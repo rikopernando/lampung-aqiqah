@@ -90,12 +90,15 @@
                   Belum Selesai
                 </div>
                 <div v-else-if="item.status_pesanan == 2">
-                  Selesai
+                  <span style="color: blue;">Selesai</span>
                 </div>
               </md-table-cell>
 			        <md-table-cell md-label="Detail Order">
-                <md-button @click="showDialogDetailOrder(item.detail_order)" class="md-dense md-primary">
+                <!-- <md-button @click="showDialogDetailOrder(item.detail_order)" class="md-dense md-primary">
                   Detail Order
+                </md-button> -->
+                <md-button class="md-dense md-primary">
+                  <router-link :to="{name: 'detailOrder'}">Detail Order</router-link>
                 </md-button>
               </md-table-cell>
 			      </md-table-row>
@@ -135,7 +138,7 @@ export default {
   },
   filters: {
     currency(number) {
-      return accounting.formatMoney(number, 'Rp. ', '2', '.', ',')
+      return accounting.formatMoney(number, '', '2', '.', ',')
     }
   },
   methods: {
