@@ -27,7 +27,29 @@ class BankController extends Controller
     }
 
     public function view() {
-        return response(Bank::select()->get());
+        $daftarBank = Bank::select()->get();
+        $respons['daftarBank'] = $daftarBank;
+
+        return response($respons);
+
+    }
+
+    public function countDefault(){
+         $countDefaultBank = Bank::select()->where('default',1)->count();
+         return response($countDefaultBank);
+    }
+
+
+    public function updateDefaultBank($id, $boolean) {
+      $update_bank = Bank::find($id);
+      $update_bank->update([
+        'default'  => 1,
+      ]);
+
+      $updateNonDefault = Bank::where('id','!=',$id);
+      $updateNonDefault->update([
+        'default'  => 0,
+      ]);
     }
 
     /**
@@ -53,19 +75,15 @@ class BankController extends Controller
             'atas_nama' => 'required',
             'no_rek' => 'required|unique:banks,no_rek|numeric',
         ]);
-        $cekDefaultBank = Bank::select()->where('default',1)->count();
-        if ($cekDefaultBank > 0 AND $request->default == true) {
-                $status = 1;
-        }else{
-                $status = 0; 
-            $master_bank = Bank::create([
+
+        $master_bank = Bank::create([
             'nama_bank' => $request->nama_bank,
             'atas_nama' => $request->atas_nama,
             'no_rek' => $request->no_rek,
-            'default'    => $request->default == "true" ? 1 : 0,
-             ]);
-        }
-        return response($status);
+            'default' => 0
+        ]);
+        
+        return response($master_bank);
     }
 
 
@@ -110,15 +128,14 @@ class BankController extends Controller
             'no_rek' => 'required|unique:banks,no_rek,'.$id.'|numeric',
         ]);
 
-       $cekDefaultBank = Bank::select()->where('default',1)->where('id','!=',$id)->count();
-        if ($cekDefaultBank > 0 AND $request->default == true) {
-                $status = 1;
-        }else{
-                $status = 0; 
-                Bank::whereId($id)->update($request->all());
-        }
-
-        return response($status);
+       $update_bank = Bank::whereId($id);
+       $update_bank->update([
+        'nama_bank'=>$request->nama_bank,
+        'atas_nama'=>$request->atas_nama,
+        'no_rek'=>$request->no_rek
+        ]);
+        
+     return response(1);
         
     }
 

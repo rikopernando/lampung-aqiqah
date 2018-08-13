@@ -16,8 +16,7 @@ Route::get('/', function () {
 });
 
 //Daftar Produk
-Route::get('/produk/view-produk', 'DaftarProdukController@viewProduk');
-Route::get('/produk/view-produk-terbaru', 'DaftarProdukController@viewProdukTerbaru');
+Route::get('/produk/view-produk/{tampil_produk}', 'DaftarProdukController@viewProduk');
 Route::get('/produk/sort-produk/{filter}', 'DaftarProdukController@sortProduk');
 Route::get('/produk/lihat-detail/{id_produk}', 'DaftarProdukController@detailProduk');
 
@@ -37,6 +36,8 @@ Route::resource('user', 'UserController');
 
 //Bank
 Route::get('/bank/view', 'BankController@view');
+Route::get('/bank/update-default-bank/{id}/{boolean}', 'BankController@updateDefaultBank');
+Route::get('/bank/count-default', 'BankController@countDefault');
 Route::resource('bank', 'BankController');
 //Produk
 Route::get('/produk/view', 'ProdukController@view');
@@ -46,7 +47,7 @@ Route::get('/produk/jumlah-tampil', 'ProdukController@jumlahTampil');
 Route::resource('produk', 'ProdukController');
 
 // Laporan Order
-Route::resource('laporan-order', 'LaporanOrderController');
+Route::get('laporan-order/view', 'LaporanOrderController@view');
 
 // Pesanan
 Route::get('pesanan/provinsi', 'PesananController@provinsi');

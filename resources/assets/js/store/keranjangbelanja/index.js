@@ -28,7 +28,7 @@ const mutations = {
           var subtotal = parseInt(state.subtotal) - parseInt(data.subtotal)
           state.subtotal = subtotal;
           state.total_akhir = subtotal;
-          state.countKeranjang -= 1;
+          state.countKeranjang -= parseInt(1);
 
         function cekTbs(tbs) { 
           return tbs.id_keranjang_belanja === data.id
@@ -48,8 +48,8 @@ const mutations = {
         }
 
         var index = state.datakeranjang.data_keranjang.findIndex(cekTbs)
-        state.datakeranjang.data_keranjang[index].jumlah_produk += 1
-        state.datakeranjang.data_keranjang[index].subtotal += data.harga_produk
+        state.datakeranjang.data_keranjang[index].jumlah_produk += parseInt(1)
+        state.datakeranjang.data_keranjang[index].subtotal += parseInt(data.harga_produk)
     },
     KURANGJUMLAHKERANJANG : (state,{respdata,data})=> {
         if (respdata.status == 0){
@@ -64,14 +64,14 @@ const mutations = {
           }
 
           var index = state.datakeranjang.data_keranjang.findIndex(cekTbs)
-          state.datakeranjang.data_keranjang[index].jumlah_produk -= 1
-          state.datakeranjang.data_keranjang[index].subtotal -= data.harga_produk
+          state.datakeranjang.data_keranjang[index].jumlah_produk -= parseInt(1)
+          state.datakeranjang.data_keranjang[index].subtotal -= parseInt(data.harga_produk)
           state.status = respdata.status;
         }
     },
     CREATEKERANJANG : (state,{respdata,data})=> {
       if (respdata == 1) {
-           state.countKeranjang += 1;
+           state.countKeranjang += parseInt(1);
         }
     },
     CLEARKERANJANG : (state) => {

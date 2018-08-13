@@ -2,6 +2,7 @@
   <div>
     <link rel="stylesheet" :href="url + 'css/sidebar-admin.css'">
     <div id="dekstopVersion" class="md-medium-size-50 md-small-size-50 md-xsmall-hide">
+
       <!-- Header -->
       <div class="header">
         <a href="#dashboard" id="menu-toggle" class="">
@@ -18,6 +19,7 @@
           </div>
         </div>
       </div>
+
       <!-- Sidebar -->
       <div class="sidebar">
         <ul>
@@ -49,7 +51,7 @@
         </ul>
 
         <footer>
-          Copyright © {{ getFullYear }}
+          Copyright © {{ tahun }}
           <a href="https://andaglos.id/">
               PT. Andaglos Global Teknologi.
           </a>
@@ -62,7 +64,7 @@
         <md-button class="md-icon-button" @click="showNavigation = true">
           <md-icon>menu</md-icon>
         </md-button>
-        <span class="md-title">My Title</span>
+        <span class="md-title">Aqiqah Lampung</span>
 
         <div class="md-toolbar-section-end">
           <md-button class="md-icon-button">
@@ -110,10 +112,11 @@
         </md-list>
       </md-drawer>
     </div>
-      <!-- Content -->
-      <div class="main">
-        <slot/>
-      </div>
+    
+    <!-- Content -->
+    <div class="main">
+      <slot/>
+    </div>
   </div>
 </template>
 
@@ -122,28 +125,22 @@
 export default {
   data: () => ({
     url : window.location.origin + window.location.pathname,
-    getFullYear: new Date().getFullYear(),
+    tahun: new Date().getFullYear(),
     showNavigation: false,
     showSidepanel: false
   }),
   mounted() {
-    this.init()
-  },
-  methods: {
-    init() {
-      var main = document.querySelector(".main");
-      var sidebar = document.querySelector(".sidebar");
-      var menutoggle = document.getElementById("menu-toggle");
-      console.log(menutoggle)
+    var main = document.querySelector(".main");
+    var sidebar = document.querySelector(".sidebar");
+    var menutoggle = document.getElementById("menu-toggle");
 
-      menutoggle.addEventListener("click", function(e) {
-        menutoggle.classList.toggle("active");
-        main.classList.toggle("active");
-        sidebar.classList.toggle("active");
+    menutoggle.addEventListener("click", function(e) {
+      menutoggle.classList.toggle("active");
+      main.classList.toggle("active");
+      sidebar.classList.toggle("active");
 
-        sidebar.classList.contains("active") ? menutoggle.querySelector("i").classList.remove("fa-bars") : menutoggle.querySelector("i").classList.add("fa-bars");
-      });
-    }
+      sidebar.classList.contains("active") ? menutoggle.querySelector("i").classList.remove("fa-bars") : menutoggle.querySelector("i").classList.add("fa-bars");
+    });
   }
 }
 

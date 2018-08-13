@@ -37,7 +37,7 @@
           <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="form-group">
               <label>Provinsi</label>
-              <selectize-component :settings="select_provinsi" ref="provinsi" v-on:input="pilihWilayah('kabupaten')">
+              <selectize-component :settings="select_provinsi" v-model="selected_provinsi" ref="provinsi" v-on:input="pilihWilayah('kabupaten')">
                 <option v-for="provinsi, index in provinsi" v-bind:value="provinsi.id">{{ provinsi.name }} </option>
               </selectize-component>
             </div>
@@ -53,7 +53,7 @@
               <label>Kecamatan</label>
               <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kecamatan"></md-progress-bar>
               <p class="waiting" v-if="this.$store.state.lokasi.load_kecamatan">Mohon tunggu ...</p>
-              <selectize-component :settings="select_kecamatan" v-model="userAddress.kecamatan" ref="kecamatan" v-on:input="pilihWilayah('kelurahan')">
+              <selectize-component :settings="select_kecamatan" v-model="selected_kecamatan" ref="kecamatan" v-on:input="pilihWilayah('kelurahan')">
                 <option v-for="kecamatan, index in kecamatan" v-bind:value="kecamatan.id">{{ kecamatan.name }} </option>
               </selectize-component>
             </div>
@@ -61,7 +61,7 @@
               <label>Kelurahan</label>
               <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kelurahan"></md-progress-bar>
               <p class="waiting" v-if="this.$store.state.lokasi.load_kelurahan">Mohon tunggu ...</p>
-              <selectize-component :settings="select_kelurahan" v-model="userAddress.kelurahan" ref="kelurahan" v-on:input="changeKelurahan()">
+              <selectize-component :settings="select_kelurahan" v-model="selected_kelurahan" ref="kelurahan" v-on:input="changeKelurahan()">
                 <option v-for="kelurahan, index in kelurahan" v-bind:value="kelurahan.id">{{ kelurahan.name }} </option>
               </selectize-component>
             </div>
@@ -89,24 +89,76 @@
 
 <script type="text/javascript">
   import { LOAD_DATA } from '../../store/lokasi/mutations'
+  import { mapState } from 'vuex'
 
   export default {
     props: [
       "userAddress",
       "select_provinsi", "select_kabupaten", "select_kecamatan", "select_kelurahan",
       "provinsi" , "kabupaten" , "kecamatan" , "kelurahan"
-   ],
-   data : () => ({
-     url: window.location.origin + (window.location.pathname + 'user'),
-     notifMessage: '',
-     notifSuccess: false
-   }),
+    ],
+    data : () => ({
+      url: window.location.origin + (window.location.pathname + 'user'),
+      notifMessage: '',
+      selected_provinsi : '',
+      selected_kabupaten : '',
+      selected_kecamatan : '',
+      selected_kelurahan : '',
+      notifSuccess: false,
+      showKabupaten : false,
+      showKecamatan : false,
+      showKelurahan : false,
+    }),
+    computed : mapState ({
+      profile () {
+         return this.$store.state.user.profile
+      },
+    }),
+    watch : {
+      kabupaten : function () {
+       if(Object.keys(this.kabupaten).length){
+         this.showKabupaten = true
+         this.selected_kabupaten && this.setWilayah('kecamatan',this.selected_kabupaten)
+       }
+      },
+      kecamatan : function () {
+       if(Object.keys(this.kecamatan).length){
+         this.showKecamatan = true
+         this.selected_kecamatan && this.setWilayah('kelurahan',this.selected_kecamatan)
+       }
+      },
+      kelurahan : function () {
+       if(Object.keys(this.kelurahan).length){
+         this.showKelurahan = true
+       }
+      },
+      profile : function () {
+        this.getAddress()
+      }
+    },
     mounted() {
-      this.$refs.kabupaten.$el.selectize.disable()
-      this.$refs.kelurahan.$el.selectize.disable()
-      this.$refs.kecamatan.$el.selectize.disable()
+      this.getAddress()
     },
     methods: {
+      getAddress() {
+        const app = this;
+
+        if (Object.keys(this.profile).length) {
+          app.userAddress.name = app.profile.name
+          app.userAddress.no_telp = app.profile.no_telp
+          app.userAddress.alamat = app.profile.alamat
+          app.userAddress.provinsi = app.profile.provinsi
+          app.userAddress.kabupaten = app.profile.kabupaten
+          app.userAddress.kecamatan = app.profile.kecamatan
+          app.userAddress.kelurahan = app.profile.kelurahan
+          app.selected_provinsi = app.profile.provinsi
+          app.selected_kabupaten = app.profile.kabupaten
+          app.selected_kecamatan = app.profile.kecamatan
+          app.selected_kelurahan = app.profile.kelurahan
+
+          app.setWilayah('kabupaten',app.selected_provinsi)
+        }
+      },
       changeKelurahan () {
           this.userAddress.kelurahan = this.$refs.kelurahan.$el.selectize.getValue()
       },
@@ -152,15 +204,21 @@
           }
 
         if(id_wilayah){
+          app.setWilayah(type,id_wilayah)
+          selectize.enable()
+          selectize.focus()
+        }
+      },
+      setWilayah(type,id_wilayah) {
+        const app = this
+
+        if(id_wilayah){
             app.$store.commit(`lokasi/${LOAD_DATA}`,{data : type, status : 1})
             app.$store.dispatch('lokasi/LOAD_WILAYAH',{
               type : type,
               id : id_wilayah,
               status : 1
             })
-
-            selectize.enable()
-            selectize.focus()
         }
       },
       ubahAlamat() {

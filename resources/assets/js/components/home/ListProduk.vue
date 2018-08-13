@@ -37,7 +37,7 @@
 
           <div class="md-medium-size-50 md-small-size-50 md-xsmall-hide">
 
-           <md-empty-state v-if="loading">
+           <md-empty-state v-if="this.$store.state.daftarproduk.loading">
                 <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
            </md-empty-state>
 
@@ -92,7 +92,7 @@
           </div>
           <div id="displayMobile">
 
-           <md-empty-state v-if="loading">
+           <md-empty-state v-if="this.$store.state.daftarproduk.loading">
                 <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
            </md-empty-state>
 
@@ -145,6 +145,9 @@
         <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarBerhasil" md-persistent>
             <span>Produk Berhasil Masuk Keranjang !</span>
           </md-snackbar>
+        <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarAdmin" md-persistent>
+            <span>Untuk belanja produk silakan login sebagai pelanggan</span>
+          </md-snackbar>
 
         </div>
       </div>
@@ -156,20 +159,21 @@
 <script type="text/javascript">
   import Header from '../header'
   import Footer from '../footer/footer'
+  import { mapState } from 'vuex'
 
   export default {
   	data : () => ({
   			url : window.location.origin + window.location.pathname,
         url_picture : window.location.origin + (window.location.pathname) + "image_produks/",
   			filter: 1,
-        produks: [],
         loading: true,
         snackbarBerhasil: false,
+        snackbarAdmin: false,
         jumlah_produk:0,
         id_detail:""
   	}),
   	mounted() {
-      this.getProdukData()
+      this.$store.dispatch('daftarproduk/LOAD_DAFTAR_PRODUK',{tampil_produk :0 });
   	},
     filters: {
         pemisahTitik: function (value) {
@@ -182,17 +186,15 @@
           return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
         },
     },
+    computed : mapState ({    
+      produks(){
+        return this.$store.state.daftarproduk.daftarProduk
+      },
+      is_admin(){
+        return this.$store.state.user.is_admin
+      }
+    }),
     methods: {
-      getProdukData() {
-    		axios.get(this.url + 'produk/view-produk')
-    		.then(resp => {
-    			this.produks = resp.data;
-    			this.loading = false;
-    		})
-    		.catch(resp => {
-    			console.log('catch getProdukData:', resp);
-    		});
-    	},
       produkSort() {
         let app = this;
         axios.get(app.url+'produk/sort-produk/'+app.filter)
@@ -205,8 +207,12 @@
     		});
       },
       createKeranjang(id){
-        this.$store.dispatch('keranjangbelanja/LOAD_CREATE_LIST',{id :id,jumlah_produk:1})
-        this.snackbarBerhasil = true;
+        if(this.is_admin) {
+            this.snackbarAdmin = true;
+        }else{
+            this.$store.dispatch('keranjangbelanja/LOAD_CREATE_LIST',{id :id,jumlah_produk:1})
+            this.snackbarBerhasil = true;
+        }
       },
       openModalProduk(id_produk) {
           let app = this;

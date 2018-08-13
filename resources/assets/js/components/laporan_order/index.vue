@@ -5,13 +5,14 @@
         Produk
       </md-dialog-title>
 
+      <!-- Dialog untuk menampilkan tabel detail order -->
       <md-table v-model="detail_order" md-sort="nama_produk" md-sort-order="asc">
         <md-table-row slot="md-table-row" slot-scope="{ item }">
           <md-table-cell md-label="Produk" md-sort-by="nama_produk">
             {{ item.nama_produk }}
           </md-table-cell>
           <md-table-cell md-label="Harga" md-sort-by="harga">
-            {{ item.harga }}
+            {{ item.harga | currency }}
           </md-table-cell>
           <md-table-cell md-label="Qty" md-sort-by="qty">
             {{ item.qty }}
@@ -72,13 +73,13 @@
 			        <md-table-cell md-label="Pelanggan" md-sort-by="nama_pelanggan">
                 {{ item.nama_pelanggan }}
               </md-table-cell>
-			        <md-table-cell md-label="Waktu" md-sort-by="waktu">
+			        <md-table-cell md-label="Waktu" md-sort-by="waktu" title="ambil">
                 {{ item.waktu }}
               </md-table-cell>
               <md-table-cell md-label="Total" md-sort-by="total">
-                {{ item.total }}
+                {{ item.total | currency }}
               </md-table-cell>
-			        <md-table-cell md-label="Detail Order" md-sort-by="detail_order">
+			        <md-table-cell md-label="Detail Order">
                 <md-button @click="showDialogDetailOrder(item.detail_order)" class="md-dense md-raised md-primary">
                   Detail Order
                 </md-button>
@@ -118,14 +119,18 @@ export default {
   created() {
   	this.getLaporanOrderData();
   },
+  filters: {
+    currency(number) {
+      return accounting.formatMoney(number, 'Rp. ', '2', '.', ',')
+    }
+  },
   methods: {
     getLaporanOrderData() {
-      axios.get(this.url)
+      axios.get(this.url + '/' + 'view')
       .then(resp => {
         this.laporan_order = resp.data;
         this.searched = resp.data;
         this.loading = false;
-        console.log('then', this.laporan_order);
       })
       .catch(resp => {
         console.log('catch getLaporanOrderData:', resp);
@@ -138,7 +143,6 @@ export default {
     showDialogDetailOrder(detail_order) {
       this.showDialog = true;
       this.detail_order = detail_order;
-      console.log(detail_order)
     }
   }
 }

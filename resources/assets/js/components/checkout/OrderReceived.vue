@@ -50,7 +50,7 @@
                     </thead>
                     <tbody v-if="data_pesanan.detail_pesanan.length">
                       <tr v-for="detail_pesanans, index in data_pesanan.detail_pesanan">
-                        <td>{{detail_pesanans.produk.nama_produk}}</td> <td width="1%">x</td> <td>{{ detail_pesanans.jumlah_produk | pemisahTitik }}</td>
+                        <td style="font-style: oblique;">{{detail_pesanans.produk.nama_produk | capitalize}}</td> <td width="1%">x</td> <td>{{ detail_pesanans.jumlah_produk | pemisahTitik }}</td>
                         <td style="text-align:right; font-size:15px; font-weight:bold;"> Rp. {{ detail_pesanans.subtotal | pemisahTitik }}</td>
                       </tr>
                     </tbody>
@@ -123,6 +123,9 @@
           var formatted = angka.map(numberFormat.format);
           return formatted.join('; ');
       },
+		  capitalize: function (value) {
+		    return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
+	    },
   	},
     mounted() {
      this.getDataPesanan()

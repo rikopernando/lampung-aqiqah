@@ -44,11 +44,11 @@
             <md-table-empty-state v-if="loading">
       		    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
             </md-table-empty-state>
-            <md-table-empty-state v-else-if="produks.length == 0" md-label="Tidak ada data"
-                md-description="Belum ada data User yang tersimpan.">
+            <md-table-empty-state v-else-if="produks.length == 0" md-label="Tidak Ada Data"
+                md-description="Belum Ada Produk Yang Tersimpan.">
             </md-table-empty-state>
-            <md-table-empty-state v-else-if="produks.length > 0 && search != null" md-label="Tidak ada User ditemukan"
-                :md-description="`Tidak ada User ditemukan untuk kata kunci '${search}'. Cobalah menggunakan kata kunci yang lain.`">
+            <md-table-empty-state v-else-if="produks.length > 0 && search != null" md-label="Produk Tidak Ditemukan"
+                :md-description="`Tidak Ada Produk Dengan Kata Kunci '${search}'. Cobalah Menggunakan Kata Kunci Lain.`">
             </md-table-empty-state>
 
             <md-table-row slot="md-table-row" slot-scope="{item}">
@@ -62,7 +62,7 @@
               <md-table-cell md-label="Harga Coret" md-sort-by="harga_coret">{{ item.harga_coret | pemisahTitik }}</md-table-cell>
               <md-table-cell md-label="Harga Jual" md-sort-by="harga_jual">{{ item.harga_jual | pemisahTitik }}</md-table-cell>
               <md-table-cell md-label="Stok" md-sort-by="stok">
-                <span style="color: green" v-if="item.stok === 1">Tersedia</span>
+                <span style="color: green" v-if="item.stok == 1">Tersedia</span>
                 <span style="color: red" v-else>Tidak Tersedia</span>
               </md-table-cell>
               <md-table-cell md-label="Aksi">

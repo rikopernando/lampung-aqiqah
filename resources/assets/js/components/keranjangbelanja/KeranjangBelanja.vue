@@ -5,7 +5,7 @@
       <md-card md-with-hover>
 				<ul class="breadcrumb">
 				  <li><router-link :to="`/`">Home</router-link></li>
-				  <li class="active">Keranjang Belanja</li>
+				  <li class="active">Keranjang</li>
 				</ul>
 			</md-card>
 
