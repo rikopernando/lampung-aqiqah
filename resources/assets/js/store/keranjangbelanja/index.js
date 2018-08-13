@@ -48,8 +48,11 @@ const mutations = {
         }
 
         var index = state.datakeranjang.data_keranjang.findIndex(cekTbs)
-        state.datakeranjang.data_keranjang[index].jumlah_produk += parseInt(1)
-        state.datakeranjang.data_keranjang[index].subtotal += parseInt(data.harga_produk)
+        var tambahJumlahKeranjang = parseInt(state.datakeranjang.data_keranjang[index].jumlah_produk) + parseInt(1)
+        var tambahSubtotalKeranjang = parseInt(state.datakeranjang.data_keranjang[index].subtotal) + parseInt(data.harga_produk)
+
+        state.datakeranjang.data_keranjang[index].jumlah_produk = tambahJumlahKeranjang;
+        state.datakeranjang.data_keranjang[index].subtotal = tambahSubtotalKeranjang;
     },
     KURANGJUMLAHKERANJANG : (state,{respdata,data})=> {
         if (respdata.status == 0){
@@ -64,8 +67,11 @@ const mutations = {
           }
 
           var index = state.datakeranjang.data_keranjang.findIndex(cekTbs)
-          state.datakeranjang.data_keranjang[index].jumlah_produk -= parseInt(1)
-          state.datakeranjang.data_keranjang[index].subtotal -= parseInt(data.harga_produk)
+          var tambahJumlahKeranjang = parseInt(state.datakeranjang.data_keranjang[index].jumlah_produk) - parseInt(1)
+          var tambahSubtotalKeranjang = parseInt(state.datakeranjang.data_keranjang[index].subtotal) - parseInt(data.harga_produk)
+
+          state.datakeranjang.data_keranjang[index].jumlah_produk = tambahJumlahKeranjang;
+          state.datakeranjang.data_keranjang[index].subtotal = tambahSubtotalKeranjang;
           state.status = respdata.status;
         }
     },
