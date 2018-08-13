@@ -109,6 +109,9 @@
         }
       }
     },
+		mounted() {
+			this.kritikSaran()
+		},
     methods: {
       getValidationClass (fieldName) {
         const field = this.$v.dataKatalog[fieldName]
@@ -129,10 +132,28 @@
           this.downloadKatalog()
         }
       },
-
       downloadKatalog() {
         window.open(this.urlKatalog, '_blank')
-      }
+      },
+			kritikSaran() {
+				(function () {
+			      var options = {
+			          facebook: "770455909707113", // Facebook page ID
+			          whatsapp: "+6282281597835", // WhatsApp number
+			          telegram: "IbnMP", // Telegram bot username
+			          call: "082281597835", // Call phone number
+			          call_to_action: "Hubungi Kami", // Call to action
+			          button_color: "#FF6550", // Color of button
+			          position: "right", // Position may be 'right' or 'left'
+			          order: "whatsapp,facebook,telegram,call", // Order of buttons
+			      };
+
+			      var proto = document.location.protocol, host = "whatshelp.io", url = proto + "//static." + host;
+			      var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = url + '/widget-send-button/js/init.js';
+			      s.onload = function () { WhWidgetSendButton.init(host, proto, options); };
+			      var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x);
+			  })();
+			}
     }
   }
 </script>
