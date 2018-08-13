@@ -1,12 +1,7 @@
 <template>
   <sidebar>
     <div class="col-md-12" style="padding: 0">
-      <md-card>
-        <ul class="breadcrumb">
-          <li><router-link :to="{ name: 'home' }">Home</router-link></li>
-          <li class="active">Bank</li>
-        </ul>
-      </md-card>
+
 
   	<!-- Prompt delete bank -->
   	<md-dialog-confirm
@@ -22,31 +17,39 @@
         md-title="Peringatan !!"
         md-content="Maaf bank telah disetting default , tidak bisa dihapus silakan pindahkan default bank lain !!" />
 
+
+      <md-card>
+        <ul class="breadcrumb">
+          <li><router-link :to="{ name: 'home' }">Home</router-link></li>
+          <li class="active">Bank</li>
+        </ul>
+      </md-card>
+
       <md-card>
         <md-card-header>
           <div class="header-card">
             <md-icon style="color: white">account_balance</md-icon>
           </div>
           <md-card-header-text>
-            <div class="md-toolbar" style="margin-top: -20px; padding: 0px">
-              <div class="header-title md-toolbar-section-start">Bank</div>
+            <div class="md-toolbar" style="margin-top: -20px; padding: 4px">
+              <div class="header-title md-toolbar-section-start" style="padding-right:10px">Bank</div>
               <div class="header-title md-toolbar-section-end">
-                <div class="md-layout-item md-medium-size-50 md-small-size-50 md-xsmall-size-100">
+                <div class="md-layout">
+                <div class="md-layout-item md-medium-size-60 md-small-size-60 md-xsmall-size-60">
                   <md-field md-inline>
-                    <label class="media-screen-xsmall-hide" style="font-weight: 400">Cari Berdasarkan...</label>
-                    <label class="media-screen-medium-hide" style="font-weight: 400">Cari Nama Bank...</label>
-                     <label class="media-screen-medium-hide" style="font-weight: 400">Cari No Rekening...</label>
+                      <label class="media-screen-xsmall-hide">Cari Dengan ...</label>
+                      <label class="media-screen-medium-hide">Cari Dengan ...</label>
                     <md-input v-model="search" @input="searchOnTable" />
                   </md-field>
                 </div>
-
-                <div class="md-layout-item md-medium-size-50 md-small-size-50 md-xsmall-hide">
+                <div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
                   <md-field>
                     <md-select v-model="searchBy" @md-selected="searchOnTable" name="searchBy" id="searchBy" md-dense>
                       <md-option value="nama_bank">Nama Bank</md-option>
-                      <md-option value="no_rek">No Rekening</md-option>
+                      <md-option value="no_rek">No Rek</md-option>
                     </md-select>
                   </md-field>
+                  </div>
                 </div>
               </div>
             </div>
@@ -55,12 +58,10 @@
 
         <md-card-content>
 
-          <div class="md-toolbar-section-start">
-                  <md-button :to="`/bank/create`" class="md-dense md-raised" style="background-color: #d44723; color: white"> Tambah Bank</md-button>
-          </div>
-          <div class="md-toolbar-section-end"></div>
+       <md-button :to="`/bank/create`" class="md-dense md-raised" style="background-color: #d44723; color: white"> Tambah Bank</md-button>
 
-          <md-table v-model="searched" md-sort="name" md-sort-order="asc" md-fixed-header>
+
+         <md-table v-model="searched" md-sort="name" md-sort-order="asc" md-fixed-header>
             <md-table-empty-state v-if="loading">
               <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
             </md-table-empty-state>
@@ -197,7 +198,7 @@
 </script>
 
 <style scoped>
-	@media (max-width: 600px) {
+	@media (max-width: 620px) {
 		.media-screen-medium-hide {
 			display: block;
 		}
@@ -205,7 +206,7 @@
 			display: none
 		}
 	}
-	@media (min-width: 601px) {
+	@media (min-width: 621px) {
 		.media-screen-xsmall-hide {
 			display: block;
 		}
@@ -243,7 +244,17 @@
     font-size: 20px;
     padding: 4px 0px 0px 10px;
   }
-  .button-tambah{
-    background-color:#d54624; 
+  .checkbox-list {
+    padding-right: 0px !important
+  }
+  .md-table table {
+    width: 0% !important;
+  }
+  .md-table-row {
+  background:#f7e1e1 !important;
+  padding:8px !important;
+  }
+  .md-layout-item{
+    padding:5px !important;
   }
 </style>
