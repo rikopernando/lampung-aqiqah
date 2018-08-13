@@ -15,7 +15,7 @@ class LaporanOrderController extends Controller
         $dataLaporan = [];
         $laporan_order = DB::table('pesanans')
             ->join('users', 'pesanans.pelanggan_id', '=', 'users.id')
-            ->select('users.name as nama_pelanggan', 'pesanans.id as id_pesanan', 'pesanans.created_at as waktu_pesan', 'pesanans.total')
+            ->select('users.name as nama_pelanggan', 'pesanans.id as id_pesanan', 'pesanans.created_at as waktu_pesan', 'pesanans.total', 'pesanans.status_pesanan')
             ->get();
 
         foreach ($laporan_order as $laporan) {
@@ -37,7 +37,8 @@ class LaporanOrderController extends Controller
                 'nama_pelanggan' => $laporan->nama_pelanggan,
                 'waktu' => $laporan->waktu_pesan,
                 'total' => $laporan->total,
-                'detail_order' => $detail_order_array
+                'detail_order' => $detail_order_array,
+                'status_pesanan' => $laporan->status_pesanan
             ];
         }
         return response($dataLaporan);

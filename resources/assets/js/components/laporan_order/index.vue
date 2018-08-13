@@ -59,7 +59,7 @@
 			      	v-else-if="laporan_order.length == 0"
 			        md-label="Tidak ada data"
 			        md-description="Belum ada data Laporan yang tersimpan.">
-			      </md-table-empty-state>      	
+			      </md-table-empty-state>    	
 			      <md-table-empty-state
 			      	v-else-if="laporan_order.length > 0 && search != null"
 			        md-label="Tidak ada Laporan ditemukan"
@@ -79,8 +79,22 @@
               <md-table-cell md-label="Total" md-sort-by="total">
                 {{ item.total | currency }}
               </md-table-cell>
+              <md-table-cell md-label="Status Pesanan">
+                <div v-if="item.status_pesanan == null">
+                  Belum Dikonfirmasi
+                </div>
+                <div v-else-if="item.status_pesanan == 0">
+                  <span style="color: red;">Ditolak/Dibatalkan</span>
+                </div>
+                <div v-else-if="item.status_pesanan == 1">
+                  Belum Selesai
+                </div>
+                <div v-else-if="item.status_pesanan == 2">
+                  Selesai
+                </div>
+              </md-table-cell>
 			        <md-table-cell md-label="Detail Order">
-                <md-button @click="showDialogDetailOrder(item.detail_order)" class="md-dense md-raised md-primary">
+                <md-button @click="showDialogDetailOrder(item.detail_order)" class="md-dense md-primary">
                   Detail Order
                 </md-button>
               </md-table-cell>
@@ -128,6 +142,7 @@ export default {
     getLaporanOrderData() {
       axios.get(this.url + '/' + 'view')
       .then(resp => {
+        console.log(resp.data)
         this.laporan_order = resp.data;
         this.searched = resp.data;
         this.loading = false;
