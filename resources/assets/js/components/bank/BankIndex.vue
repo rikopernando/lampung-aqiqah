@@ -154,14 +154,11 @@
     	},
       tampilDefault(id, data, nama) {
         let app = this;
-        let hasil = data == true ? "Default" : "Tidak Default";
-        console.log('sas')
         axios.get(app.url+"update-default-bank/"+id+"/"+data)
         .then(resp => {
-          app.notifMessage = `Bank ${nama.replace(/(^|\s)\S/g, l => l.toUpperCase())} Berhasil update ${hasil}.`
+          app.notifMessage = `Bank ${nama.replace(/(^|\s)\S/g, l => l.toUpperCase())} Berhasil update Default.`
           app.notifSuccess = true;
           this.getBankData();
-
         })
         .catch(resp => {
           console.log('catch onConfirm:', resp);
