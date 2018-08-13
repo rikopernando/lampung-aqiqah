@@ -1,3 +1,41 @@
+<style>
+  ._spinner-container {
+    position: absolute; 
+    left: 50%;
+  }
+  ._spinner {
+    position: relative; 
+    left: -50%;
+  }
+  .breadcrumb {
+    border-color: #ffffff;
+    border-style: solid;
+    border-width: 0 1px 4px 1px;
+    padding: 8px 15px;
+    margin-bottom: 35px;
+    list-style: none;
+    background-color: #ffffff;
+    border-radius: 4px;
+  }
+  .header-card i {
+    background-color: #d44723;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 3px;
+    font-size: 30px !important;
+    margin: -30px 0px 0;
+    position: relative;
+    box-shadow: -4px -3px 0px 0px #ff000045;
+  }
+  .header-title {
+    color: #867f7f;
+    font-size: 20px;
+    padding: 4px 0px 0px 10px;
+  }
+</style>
+
 <template>
   <sidebar>
     <div class="col-md-12">
@@ -23,27 +61,42 @@
         </md-card-header>
         <md-card-content>
           <form novalidate v-on:submit.prevent="validateUser">
+
+            <!-- Loading -->
             <div v-if="loading" class="_spinner-container">
               <div class="_spinner">
-                <md-progress-spinner :md-diameter="80" :md-stroke="5" md-mode="indeterminate"></md-progress-spinner>
+                <md-progress-spinner 
+                  :md-diameter="80" 
+                  :md-stroke="5" 
+                  md-mode="indeterminate">
+                </md-progress-spinner>
               </div>
             </div>
+
             <md-field :class="getValidationClass('name')">
               <label v-if="!loading" for="name">Nama</label>
               <md-input name="name" id="name" v-model="user.name" />
               <span class="md-error" v-if="!$v.user.name.required">Tolong isi kolom Nama</span>
               <span class="md-error" v-else-if="!$v.user.name.minlength">Nama setidaknya mengandung 3 karakter</span>
             </md-field>
+
             <md-field :class="getValidationClass('email')">
               <label v-if="!loading" for="email">Email</label>
               <md-input type="email" name="email" id="email" v-model="user.email" />
               <span class="md-error" v-if="!$v.user.email.required">Tolong isi kolom Email</span>
               <span class="md-error" v-else-if="!$v.user.email.email">Format Email salah</span>
             </md-field>
+
             <md-card-actions>
-              <md-progress-spinner v-if="submitted" :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
+              <md-progress-spinner 
+                v-if="submitted" 
+                :md-diameter="30" 
+                :md-stroke="3" 
+                md-mode="indeterminate">
+              </md-progress-spinner>
               <md-button v-else type="submit" class="md-primary">Edit User</md-button>
             </md-card-actions>
+
           </form>
         </md-card-content>
       </md-card>
@@ -55,14 +108,16 @@
     </div>
   </sidebar>
 </template>
+
 <script>
+
 import { validationMixin } from 'vuelidate'
-  import {
-    required,
-    email,
-    minLength,
-    maxLength
-  } from 'vuelidate/lib/validators'
+import {
+  required,
+  email,
+  minLength,
+  maxLength
+} from 'vuelidate/lib/validators'
 
 export default {
   mixins: [validationMixin],
@@ -92,7 +147,7 @@ export default {
     this.getDataUser(this.$route.params.id);
   },
   methods: {
-    getValidationClass (fieldName) {
+    getValidationClass(fieldName) {
       const field = this.$v.user[fieldName]
 
       if (field) {
@@ -135,43 +190,3 @@ export default {
   }
 }  
 </script>
-
-<style>
-  ._spinner-container {
-    position: absolute; 
-    left: 50%;
-  }
-  ._spinner {
-    position: relative; 
-    left: -50%;
-  }
-  .breadcrumb {
-    border-color: #ffffff;
-    border-style: solid;
-    border-width: 0 1px 4px 1px;
-    padding: 8px 15px;
-    margin-bottom: 35px;
-    list-style: none;
-    background-color: #ffffff;
-    border-radius: 4px;
-  }
-  .header-card i {
-    background-color: #d44723;
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    line-height: 50px;
-    border-radius: 3px;
-    font-size: 30px !important;
-    margin: -30px 0px 0;
-    position: relative;
-    box-shadow: -4px -3px 0px 0px #ff000045;
-  }
-  .header-title {
-    color: #867f7f;
-    font-size: 20px;
-    padding: 4px 0px 0px 10px;
-  }
-</style>
-
-

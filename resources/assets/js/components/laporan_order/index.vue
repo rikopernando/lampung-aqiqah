@@ -12,7 +12,7 @@
             {{ item.nama_produk }}
           </md-table-cell>
           <md-table-cell md-label="Harga" md-sort-by="harga">
-            {{ item.harga }}
+            {{ item.harga | currency }}
           </md-table-cell>
           <md-table-cell md-label="Qty" md-sort-by="qty">
             {{ item.qty }}
@@ -73,11 +73,11 @@
 			        <md-table-cell md-label="Pelanggan" md-sort-by="nama_pelanggan">
                 {{ item.nama_pelanggan }}
               </md-table-cell>
-			        <md-table-cell md-label="Waktu" md-sort-by="waktu">
+			        <md-table-cell md-label="Waktu" md-sort-by="waktu" title="ambil">
                 {{ item.waktu }}
               </md-table-cell>
               <md-table-cell md-label="Total" md-sort-by="total">
-                {{ item.total }}
+                {{ item.total | currency }}
               </md-table-cell>
 			        <md-table-cell md-label="Detail Order">
                 <md-button @click="showDialogDetailOrder(item.detail_order)" class="md-dense md-raised md-primary">
@@ -118,6 +118,11 @@ export default {
   }),
   created() {
   	this.getLaporanOrderData();
+  },
+  filters: {
+    currency(number) {
+      return accounting.formatMoney(number, 'Rp. ', '2', '.', ',')
+    }
   },
   methods: {
     getLaporanOrderData() {

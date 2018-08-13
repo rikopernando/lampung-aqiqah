@@ -18,9 +18,9 @@
       @md-confirm="onConfirmDelete" />
 
       <md-dialog-alert 
-        :md-active.sync="promptDefaultKosong"
+        :md-active.sync="promptGagalHapus"
         md-title="Peringatan !!"
-        md-content="Default Bank harus terpilih ,silahkan pilih salah satu kembali !" />
+        md-content="Maaf bank telah disetting default , tidak bisa dihapus silakan pindahkan default bank lain !!" />
 
       <md-card>
         <md-card-header>
@@ -77,16 +77,14 @@
               <md-table-cell md-label="a.n Bank" md-sort-by="atas_nama" >{{ item.atas_nama }}</md-table-cell>
               <md-table-cell md-label="No Rekening" md-sort-by="no_rek" >{{ item.no_rek }}</md-table-cell>
               <md-table-cell md-label="Default" style="text-align: center; padding-left: 15px;">
-                <md-checkbox v-model="item.default"
-                  :disabled="(item.default == false && maxChecked >= 1)"
-                  @change="tampilDefault(item.id, item.default, item.nama_bank)" />
+                <md-radio v-model="item.default"  @change="tampilDefault(item.id,item.default,item.nama_bank)" :value="false"></md-radio>
               </md-table-cell>
                <md-table-cell md-label="Aksi">
                 <md-button :to="`/bank/edit/${item.id}`" class="md-fab md-dense md-primary">
                   <md-icon>edit</md-icon>
                   <md-tooltip md-direction="top">Edit</md-tooltip>
                 </md-button>
-                <md-button @click="deleteBank(item.id)" class="md-fab md-dense md-plain">
+                <md-button @click="deleteBank(item.id,item.default)" class="md-fab md-dense md-plain">
                   <md-icon>delete_forever</md-icon>
                   <md-tooltip md-direction="top">Hapus</md-tooltip>
                 </md-button>
@@ -130,7 +128,7 @@
       search: null,
 	    promptDeleteBank: false,
 			snackbarDeleteBank: false,
-      promptDefaultKosong: false,
+      promptGagalHapus : false,
 	    bankIdForDelete: '',
       searched: [],
       banks: [],
@@ -138,7 +136,6 @@
       notifSuccess: false,
       searchBy: 'nama_bank',
       loading: true,
-      maxChecked: 0
     }),
     created() {
     	this.getBankData();
@@ -149,12 +146,10 @@
     		axios.get(app.url + 'view')
     		.then(resp => {
           $.each(resp.data.daftarBank, function (i, item) {
-            resp.data.daftarBank[i].default = item.default == 1 ? true : false;
+            resp.data.daftarBank[i].default = item.default == 1 ? false: true;
           });
-
     			app.banks = resp.data.daftarBank;
     			app.searched = resp.data.daftarBank;
-          app.countDefault(app);
 
     			app.loading = false;
     		})
@@ -164,33 +159,16 @@
     	},
       tampilDefault(id, data, nama) {
         let app = this;
-        let hasil = data == true ? "Default" : "Tidak Default";
-
         axios.get(app.url+"update-default-bank/"+id+"/"+data)
         .then(resp => {
-          app.countDefault(app);
-          app.notifMessage = `Bank ${nama.replace(/(^|\s)\S/g, l => l.toUpperCase())} Berhasil update ${hasil}.`
+          app.notifMessage = `Bank ${nama.replace(/(^|\s)\S/g, l => l.toUpperCase())} Berhasil update Default.`
           app.notifSuccess = true;
-
+          this.getBankData();
         })
         .catch(resp => {
           console.log('catch onConfirm:', resp);
         })
 
-      },
-      countDefault(app) {
-        axios.get(app.url+"count-default")
-        .then(resp => {
-          app.maxChecked = resp.data
-         if (app.maxChecked == 0) {
-            app.promptDefaultKosong = true;
-          }else{
-            app.promptDefaultKosong = false;
-          }
-        })
-        .catch(resp => {
-          console.log(resp);
-        })
       },
     	onConfirmDelete() {
     		axios.delete(this.url + this.bankIdForDelete)
@@ -203,10 +181,13 @@
     			console.log('Terjadi Kesalahan Konfirmasi Delete :', resp);
     		})
     	},
-    	deleteBank(bankId) {
-    		this.promptDeleteBank = true;
-    		this.bankIdForDelete = bankId;
-        app.countDefault(app);
+    	deleteBank(bankId,bankDefault) {
+        if (bankDefault == false) {
+          this.promptGagalHapus = true;
+        }else{
+          this.promptDeleteBank = true;
+          this.bankIdForDelete = bankId;
+        }   
     	},
       searchOnTable() {
         this.searched = searchBank(this.banks, this.search, this.searchBy);
