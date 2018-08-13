@@ -17,6 +17,10 @@
       md-cancel-text="Batal"
       @md-confirm="onConfirmDelete" />
 
+      <md-dialog-alert 
+        :md-active.sync="promptGagalHapus"
+        md-title="Peringatan !!"
+        md-content="Maaf bank telah disetting default , tidak bisa dihapus silakan pindahkan default bank lain !!" />
 
       <md-card>
         <md-card-header>
@@ -80,7 +84,7 @@
                   <md-icon>edit</md-icon>
                   <md-tooltip md-direction="top">Edit</md-tooltip>
                 </md-button>
-                <md-button @click="deleteBank(item.id)" class="md-fab md-dense md-plain">
+                <md-button @click="deleteBank(item.id,item.default)" class="md-fab md-dense md-plain">
                   <md-icon>delete_forever</md-icon>
                   <md-tooltip md-direction="top">Hapus</md-tooltip>
                 </md-button>
@@ -124,6 +128,7 @@
       search: null,
 	    promptDeleteBank: false,
 			snackbarDeleteBank: false,
+      promptGagalHapus : false,
 	    bankIdForDelete: '',
       searched: [],
       banks: [],
@@ -176,10 +181,13 @@
     			console.log('Terjadi Kesalahan Konfirmasi Delete :', resp);
     		})
     	},
-    	deleteBank(bankId) {
-    		this.promptDeleteBank = true;
-    		this.bankIdForDelete = bankId;
-        app.countDefault(app);
+    	deleteBank(bankId,bankDefault) {
+        if (bankDefault == false) {
+          this.promptGagalHapus = true;
+        }else{
+          this.promptDeleteBank = true;
+          this.bankIdForDelete = bankId;
+        }   
     	},
       searchOnTable() {
         this.searched = searchBank(this.banks, this.search, this.searchBy);
