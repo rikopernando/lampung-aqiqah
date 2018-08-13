@@ -24,7 +24,7 @@
         <div id="app">
             <router-view></router-view>
         </div>
-        <script src="{{ asset('js/app.js?v=1.50')}}" type="text/javascript"></script>
+        <script src="{{ asset('js/app.js?v=1.51')}}" type="text/javascript"></script>
         <!-- jQuery CDN - Slim version (=without AJAX) -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <!-- Popper.JS -->

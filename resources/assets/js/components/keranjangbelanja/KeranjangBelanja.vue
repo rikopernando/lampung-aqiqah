@@ -17,11 +17,6 @@
 		    md-cancel-text="Batal"
 		    @md-confirm="onConfirmDelete" />
 
-    	<md-dialog-alert 
-    		:md-active.sync="promptGagalEdit"
-      	md-title="Gagal !!"
-      	md-content="Produk tidak bisa dengan jumlah 0 ,Silakan hapus produk " />
-
 	    <div class="row">
 		    <div class="col-md-1"></div>
     		<div class="col-md-7">
@@ -61,7 +56,8 @@
 
 				                 	<td class="product-quantity" data-title="Jumlah" style="text-align:right">
 					               	   <div class="quantity buttons_added">
-					               	   		<button class="btn btn-md" @click="kurangJumlahKeranjang(keranjangbelanja.id_keranjang_belanja,keranjangbelanja.harga_produk)" style="background-color:#da2921;color:white;">&nbsp;( - )</button>
+					               	   		<button class="btn btn-md" :disabled="true" style="background-color:#da2921;color:white;" v-if="keranjangbelanja.jumlah_produk == 1">&nbsp;( - )</button>
+					               	   		<button class="btn btn-md" @click="kurangJumlahKeranjang(keranjangbelanja.id_keranjang_belanja,keranjangbelanja.harga_produk)" style="background-color:#da2921;color:white;" v-else>&nbsp;( - )</button>
 
 									    	<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol"></span><b>{{ keranjangbelanja.jumlah_produk | pemisahTitik }}</b></span>
 
@@ -126,7 +122,6 @@
 				url_picture : window.location.origin + (window.location.pathname) + "image_produks/",
 				filter_produk: 'populer',
 				promptDeleteKeranjang: false,
-				promptGagalEdit:false,
 	    	keranjangIdForDelete: '',
 	    	snackbarDeleteKeranjang:false,
 		    subtotalIdForDelete: '',
@@ -171,11 +166,6 @@
     kurangJumlahKeranjang(id,harga_produk){
     	var operator = "-";
     	this.$store.dispatch('keranjangbelanja/LOAD_KURANG_JUMLAH_LIST',{id_keranjang_belanja :id,harga_produk:harga_produk,operator:operator})
-    	if(this.$store.state.keranjangbelanja.status == 0){
-    		this.promptGagalEdit = true;
-    	}else{
-    		this.promptGagalEdit = false;
-    	}
     }
 	},
 
