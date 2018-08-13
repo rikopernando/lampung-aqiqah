@@ -49,7 +49,9 @@
         <md-button href="#/list-produk" style="color: white; font-size: 12px">Pemesanan</md-button>
         <md-button href="#/keranjang-belanja" style="color: white; font-size: 12px">Pembayaran</md-button>
         <md-button href="#/keagenan" style="color: white; font-size: 12px">Keagenan</md-button>
-        <md-button href="#/informasi" style="color: white; font-size: 12px">Informasi</md-button>
+        <md-button :to="{name: 'tentangKami'}" style="color: white; font-size: 12px">
+          Tentang Kami
+        </md-button>
         <md-button href="#/kritik-saran" style="color: white; font-size: 12px">Ruang Saran dan Pengaduan</md-button>
         <md-button class="md-icon-button">
           <a href="#/facebook">
