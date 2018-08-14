@@ -34,6 +34,10 @@ import LaporanOrder from '../components/laporan_order/index'
 // TENTANG KAMI
 import TentangKami from '../components/header/tentang-kami'
 
+// TESTIMONI
+import TestimoniIndex from '../components/testimoni'
+
+
 const routes = [
   {
     path : '/',
@@ -166,6 +170,10 @@ const routes = [
     path : '/tentang-kami',
     name : 'tentangKami',
     component : TentangKami
+  },{
+    path : '/testimoni',
+    name : 'testimoni',
+    component : TestimoniIndex
   }
 ]
 
