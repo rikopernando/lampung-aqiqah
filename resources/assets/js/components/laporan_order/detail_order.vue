@@ -49,7 +49,7 @@
       		<md-tabs class="md-transparent" md-alignment="fixed">
 
             <md-tab md-label="Info Pemesan">
-              <md-table v-model="detail_order[0]">
+              <md-table v-model="infoPemesan">
                 <md-table-row slot="md-table-row" slot-scope="{ item }">
                   <md-table-cell md-label="Entri">
                     {{ item.entri }}
@@ -65,7 +65,7 @@
             </md-tab>
 
             <md-tab md-label="Detail Peserta">
-              <md-table v-model="detail_order[1]">
+              <md-table v-model="detailPeserta">
                 <md-table-row slot="md-table-row" slot-scope="{ item }">
                   <md-table-cell md-label="Entri">
                     {{ item.entri }}
@@ -81,7 +81,7 @@
             </md-tab>
 
             <md-tab md-label="Alamat Pengiriman">
-              <md-table v-model="detail_order[2]">
+              <md-table v-model="alamatPengiriman">
                 <md-table-row slot="md-table-row" slot-scope="{ item }">
                   <md-table-cell md-label="Entri">
                     {{ item.entri }}
@@ -110,7 +110,9 @@ export default {
   	url: window.location.origin + (window.location.pathname + 'laporan-order'),
     loading: true,
     showDialog: false,
-    detail_order: {},
+    infoPemesan: {},
+    detailPeserta: {},
+    alamatPengiriman: {}
   }),
   created() {
   	this.getLaporanOrderData();
@@ -125,8 +127,9 @@ export default {
       axios.get(this.url + '/detail-order/' + this.$route.params.id_pesanan)
       .then(resp => {
         console.log(resp.data)
-        this.detail_order = resp.data;
-        this.searched = resp.data;
+        this.infoPemesan = resp.data[0];
+        this.detailPeserta = resp.data[1];
+        this.alamatPengiriman = resp.data[2];
         this.loading = false;
       })
       .catch(resp => {
@@ -135,7 +138,6 @@ export default {
   	},
     showDialogDetailOrder(detail_order) {
       this.showDialog = true;
-      this.detail_order = detail_order;
     }
   }
 }
