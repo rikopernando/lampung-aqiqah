@@ -63,3 +63,7 @@ Route::get('/keranjang-belanja/subtotal-keranjang-belanja','KeranjangBelanjaCont
 Route::post('/keranjang-belanja/edit-jumlah-keranjang/{id}/{operator}', 'KeranjangBelanjaController@editJumlahKeranjang');
 Route::post('/keranjang-belanja/jumlah-pesanan', 'KeranjangBelanjaController@jumlahPesanan');
 Route::resource('keranjang-belanja', 'KeranjangBelanjaController');
+
+//Testimoni
+Route::get('/testimoni/view', 'TestimoniController@view');
+Route::resource('testimoni', 'TestimoniController');
