@@ -67,8 +67,8 @@
 			      </md-table-empty-state>
 
 			      <md-table-row slot="md-table-row" slot-scope="{ item }">
-			        <md-table-cell md-label="ID Order" md-sort-by="id_laporan" md-numeric>
-                {{ item.id_laporan }}
+			        <md-table-cell md-label="ID Order" md-sort-by="id_pesanan" md-numeric>
+                {{ item.id_pesanan }}
               </md-table-cell>
 			        <md-table-cell md-label="Pelanggan" md-sort-by="nama_pelanggan">
                 {{ item.nama_pelanggan }}
@@ -97,8 +97,8 @@
                 <!-- <md-button @click="showDialogDetailOrder(item.detail_order)" class="md-dense md-primary">
                   Detail Order
                 </md-button> -->
-                <md-button class="md-dense md-primary">
-                  <router-link :to="{name: 'detailOrder'}">Detail Order</router-link>
+                <md-button :to="`/laporan-order/detail-order/${item.id_pesanan}`" class="md-dense md-primary">
+                  Detail Order
                 </md-button>
               </md-table-cell>
 			      </md-table-row>
