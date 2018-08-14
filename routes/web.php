@@ -48,7 +48,6 @@ Route::resource('produk', 'ProdukController');
 
 // Laporan Order
 Route::get('laporan-order/view', 'LaporanOrderController@view');
-Route::get('laporan-order/detail-order/{id_pesanan}', 'LaporanOrderController@detail_order');
 
 // Pesanan
 Route::get('pesanan/provinsi', 'PesananController@provinsi');
