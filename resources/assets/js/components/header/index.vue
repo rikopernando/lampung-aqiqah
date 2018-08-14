@@ -34,7 +34,11 @@
                 </div>
             </div>
             <div class="form-password" id="form-password">
+								<div class="alert alert-success" role="alert" v-if="successSendEmail">
+                    Kami telah mengirimkan tautan Reset Password Anda melalui email!
+								</div>
                 <input type="text" name="email" placeholder="Email" v-model="password.email" autocomplete="off">
+                <input type="hidden" name="token" v-model="password.token" autocomplete="off">
                 <input type="submit" v-on:click="submit('password')" v-model="passwordSubmit" id="passwordSubmit">
             </div>
           </div>
@@ -282,7 +286,9 @@
         },
         password : {
           email: '',
-        }
+          token : $('meta[name="csrf-token"]').attr('content'),
+        },
+        successSendEmail : false
 			}),
       mounted () {
         this.modal = true
@@ -332,6 +338,7 @@
               break;
             case 'password':
               this.passwordSubmit = 'Resetting Password ...'
+              this.prosesKirimLinkLupaPassword()
           }
         },
 				prosesRegister() {
@@ -368,6 +375,21 @@
             console.log(app.errors)
             $('#loginSubmit').removeClass('disabled')
             app.loginSubmit = "Login"
+          })
+        },
+        prosesKirimLinkLupaPassword(){
+          const app = this
+          axios.post(app.url+'password/email', app.password)
+          .then((resp) => {
+            console.log(resp.data)
+            app.successSendEmail = true
+            app.passwordSubmit = "Reset Password"
+          })
+          .catch((err) => {
+            app.errors = err.response.data
+            console.log(app.errors)
+            $('#passwordSubmit').removeClass('disabled')
+            app.passwordSubmit = "Reset Password"
           })
         },
         keranjangBelanja() {
