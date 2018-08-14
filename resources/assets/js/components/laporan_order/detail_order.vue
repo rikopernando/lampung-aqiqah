@@ -49,7 +49,8 @@
       		<md-tabs class="md-transparent" md-alignment="fixed">
 
             <md-tab md-label="Info Pemesan">
-              <md-table v-model="infoPemesan">
+              <md-progress-bar v-if="loading" md-mode="indeterminate"></md-progress-bar>
+              <md-table v-else v-model="infoPemesan">
                 <md-table-row slot="md-table-row" slot-scope="{ item }">
                   <md-table-cell md-label="Entri">
                     {{ item.entri }}
