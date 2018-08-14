@@ -84,6 +84,7 @@
     mixins: [validationMixin],
     data: () => ({
       urlKatalog: 'https://gdurl.com/f4i3/download',
+      tahun:0,
       error: {
         nama: '',
         email: '',
@@ -111,6 +112,8 @@
     },
 		mounted() {
 			this.kritikSaran()
+      let date = new Date(); 
+      this.tahun = date.getFullYear(); 
 		},
     methods: {
       getValidationClass (fieldName) {
