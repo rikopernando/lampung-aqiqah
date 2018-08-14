@@ -5,21 +5,6 @@
         Produk
       </md-dialog-title>
 
-      <!-- Dialog untuk menampilkan tabel detail order -->
-      <md-table v-model="detail_order" md-sort="nama_produk" md-sort-order="asc">
-        <md-table-row slot="md-table-row" slot-scope="{ item }">
-          <md-table-cell md-label="Produk" md-sort-by="nama_produk">
-            {{ item.nama_produk }}
-          </md-table-cell>
-          <md-table-cell md-label="Harga" md-sort-by="harga">
-            {{ item.harga | currency }}
-          </md-table-cell>
-          <md-table-cell md-label="Qty" md-sort-by="qty">
-            {{ item.qty }}
-          </md-table-cell>
-        </md-table-row>
-      </md-table>
-
       <md-dialog-actions>
         <md-button class="md-primary" @click="showDialog = false">Tutup</md-button>
       </md-dialog-actions>
@@ -68,12 +53,13 @@
 
 			      <md-table-row slot="md-table-row" slot-scope="{ item }">
 			        <md-table-cell md-label="ID Order" md-sort-by="id_laporan" md-numeric>
-                {{ item.id_laporan }}
+                {{ item.id_pesanan }}
               </md-table-cell>
 			        <md-table-cell md-label="Pelanggan" md-sort-by="nama_pelanggan">
                 {{ item.nama_pelanggan }}
               </md-table-cell>
-			        <md-table-cell md-label="Waktu" md-sort-by="waktu" title="ambil">
+			        <md-table-cell md-label="Waktu" md-sort-by="waktu">
+                <md-tooltip md-direction="top">{{ item.timeago }}</md-tooltip>
                 {{ item.waktu }}
               </md-table-cell>
               <md-table-cell md-label="Total" md-sort-by="total">
@@ -94,9 +80,6 @@
                 </div>
               </md-table-cell>
 			        <md-table-cell md-label="Detail Order">
-                <!-- <md-button @click="showDialogDetailOrder(item.detail_order)" class="md-dense md-primary">
-                  Detail Order
-                </md-button> -->
                 <md-button :to="`/laporan-order/detail-order/${item.id_pesanan}`" class="md-dense md-primary">
                   Detail Order
                 </md-button>
