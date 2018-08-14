@@ -1,5 +1,4 @@
 <template>
-  <div>
     <sidebar>
       <div class="col-md-12" style="padding: 0">
         <md-card>
@@ -101,7 +100,6 @@
           @md-confirm="onConfirmDelete" />
       </div>
     </sidebar>
-  </div>
 </template>
 
 <script>
@@ -153,10 +151,6 @@
       }
     },
     methods: {
-      getData(app) {
-        let data = app.$store.state.testimoni.daftarTestimoni;
-        console.log(data);
-      },
       searchOnTable() {
         const app = this;
 
