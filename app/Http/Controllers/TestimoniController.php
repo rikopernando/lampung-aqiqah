@@ -3,9 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Testimoni;
 
 class TestimoniController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function view() {
+        return response(Testimoni::select()->get());
+    }
+
     /**
      * Display a listing of the resource.
      *
