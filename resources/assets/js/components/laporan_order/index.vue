@@ -97,8 +97,8 @@
                 <!-- <md-button @click="showDialogDetailOrder(item.detail_order)" class="md-dense md-primary">
                   Detail Order
                 </md-button> -->
-                <md-button class="md-dense md-primary">
-                  <router-link :to="{name: 'detailOrder'}">Detail Order</router-link>
+                <md-button :to="`/laporan-order/detail-order/${item.id_pesanan}`" class="md-dense md-primary">
+                  Detail Order
                 </md-button>
               </md-table-cell>
 			      </md-table-row>
