@@ -125,6 +125,7 @@ class TestimoniController extends Controller
      */
     public function destroy($id)
     {
-        //
+      $testimoni = Testimoni::destroy($id);
+      return response(200);
     }
 }
