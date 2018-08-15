@@ -73,7 +73,7 @@
                     <md-icon>edit</md-icon>
                     <md-tooltip md-direction="top">Edit</md-tooltip>
                   </md-button>
-                  <md-button  @click="deleteProduk(item.id, item.nama_lengkap)" class="md-fab md-dense md-plain">
+                  <md-button  @click="deleteTestimoni(item.id, item.nama_lengkap)" class="md-fab md-dense md-plain">
                     <md-icon>delete_forever</md-icon>
                     <md-tooltip md-direction="top">Hapus</md-tooltip>
                   </md-button>
@@ -127,6 +127,8 @@
       notifMessage: '',
       notifSuccess: false,
       searchBy: 'nama_lengkap',
+      testimoniId: '',
+      testimoniDelete: ''
     }),
     mounted() {
       const app = this;
@@ -156,7 +158,28 @@
 
         app.searched = searchTestimoni(app.testimonis, app.search, app.searchBy);
       },
+    	deleteTestimoni(testimoniId, namaLengkap) {
+        let app = this;
+
+    		app.promptDelete = true;
+    		app.testimoniId = testimoniId;
+    		app.testimoniDelete = namaLengkap;
+    		app.notifMessage = `Apakah Anda Yakin Menghapus Testimoni <strong>${namaLengkap}</strong> ?`;
+    	},
       onConfirmDelete() {
+        let app = this;
+    		axios.delete(app.url + app.testimoniId)
+    		.then(resp => {
+          app.notifMessage = `Berhasil Menghapus Testimoni ${app.testimoniDelete}.`
+    			app.testimoniId = '';
+    			app.testimoniDelete = '';
+    			app.snackbarDelete = true;
+          app.notifSuccess = true;
+    			app.$store.dispatch('testimoni/LOAD_TESTIMONI');
+    		})
+    		.catch(resp => {
+    			console.log('catch onConfirmDelete:', resp);
+    		})
       }
     }
   }
