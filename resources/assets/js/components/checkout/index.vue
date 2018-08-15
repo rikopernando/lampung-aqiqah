@@ -244,14 +244,6 @@
 
 <style lang="scss" scoped>
   
-  .card-checkout {
-    margin-right: auto;
-    margin-left: auto;
-    padding-left: 15px;
-    padding-right: 15px;
-    background-color: #ffffff;
-  }
-
   .breadcrumb {
     border-color: #ffffff;
     border-style: solid;
