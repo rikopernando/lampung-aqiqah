@@ -50,7 +50,7 @@ Route::resource('produk', 'ProdukController');
 Route::get('laporan-order/view', 'LaporanOrderController@view');
 Route::get('laporan-order/detail-order/{id_pesanan}', 'LaporanOrderController@detail_order');
 Route::get('laporan-order/info-pesanan/{id_pesanan}', 'LaporanOrderController@infoPesanan');
-Route::get('laporan-order/konfirmasi-pesanan/{id_pesanan}', 'LaporanOrderController@konfirmasiPesanan');
+Route::post('laporan-order/ubah-status-pesanan', 'LaporanOrderController@ubahStatusPesanan');
 Route::get('laporan-order/status-pesanan/{id_pesanan}', 'LaporanOrderController@statusPesanan');
 
 // Pesanan

@@ -47,6 +47,25 @@
 <template>
 	<sidebar>
 		<div class="col-md-12" style="padding: 0">
+
+      <!-- Prompt batalkan pesanan -->
+      <md-dialog-confirm
+        :md-active.sync="promptBatalkanPesanan"
+        md-title="Batalkan Pesanan?"
+        md-content="Apakah Anda yakin ingin membatalkan pesanan ini?"
+        md-confirm-text="Ya"
+        md-cancel-text="Batal"
+        @md-confirm="batalkanPesanan" />
+
+      <!-- Prompt selesaikan pesanan -->
+      <md-dialog-confirm
+        :md-active.sync="promptSelesaikanPesanan"
+        md-title="Selesaikan Pesanan?"
+        md-content="Apakah Anda yakin ingin selesaikan pesanan ini?"
+        md-confirm-text="Ya"
+        md-cancel-text="Batal"
+        @md-confirm="selesaikanPesanan" />
+
 			<md-card>
       	<ul class="breadcrumb">
           <li><router-link :to="{name: 'home'}">Home</router-link></li>
@@ -119,9 +138,16 @@
             </md-tab>
 
             <md-tab md-label="Info Pesanan">
-              <div v-if="statusPesanan == null" class="md-toolbar" style="margin-top: -20px; padding: 0px">
+              <div v-if="statusPesanan == 0" class="md-toolbar" style="margin-top: -20px; padding: 0px">
                 <div class="header-title md-toolbar-section-start">
-                  <md-button class="md-dense md-raised md-accent">Batalkan</md-button>
+                  <md-button class="md-dense md-raised" disabled>Pesanan telah dibatalkan</md-button>
+                </div>
+                <div class="header-title md-toolbar-section-end">
+                </div>
+              </div>
+              <div v-else-if="statusPesanan == null" class="md-toolbar" style="margin-top: -20px; padding: 0px">
+                <div class="header-title md-toolbar-section-start">
+                  <md-button @click="promptBatalkanPesanan = true" class="md-dense md-raised md-accent">Batalkan</md-button>
                 </div>
                 <div class="header-title md-toolbar-section-end">
                   <md-button @click="konfirmasiPesanan()" class="md-dense md-raised md-primary">Konfirmasi</md-button>
@@ -129,10 +155,17 @@
               </div>
               <div v-else-if="statusPesanan == 1" class="md-toolbar" style="margin-top: -20px; padding: 0px">
                 <div class="header-title md-toolbar-section-start">
-                  <md-button class="md-dense md-raised md-accent">Batal Konfirmasi</md-button>
+                  <md-button @click="batalKonfirmasiPesanan()" class="md-dense md-raised md-accent">Batal Konfirmasi</md-button>
                 </div>
                 <div class="header-title md-toolbar-section-end">
-                  <md-button class="md-dense md-raised md-primary">Selesaikan</md-button>
+                  <md-button @click="selesaikanPesanan()" class="md-dense md-raised md-primary">Selesaikan</md-button>
+                </div>
+              </div>
+              <div v-else-if="statusPesanan == 2" class="md-toolbar" style="margin-top: -20px; padding: 0px">
+                <div class="header-title md-toolbar-section-start">
+                  <md-button @click="batalSelesaikanPesanan()" class="md-dense md-raised md-accent">Batal Selesaikan Pesanan</md-button>
+                </div>
+                <div class="header-title md-toolbar-section-end">
                 </div>
               </div>
 
@@ -154,6 +187,32 @@
           </md-tabs>
         </md-card-content>
       </md-card>
+
+      <!-- Snackbar pesanan dibatalkan -->
+      <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarBatalkanPesanan" md-persistent>
+        <span>Pesanan berhasil dibatalkan!</span>
+      </md-snackbar>
+
+      <!-- Snackbar pesanan diselesaikan -->
+      <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarKonfirmasiPesanan" md-persistent>
+        <span>Pesanan berhasil dikonfirmasi!</span>
+      </md-snackbar>
+
+      <!-- Snackbar pesanan diselesaikan -->
+      <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarBatalKonfirmasiPesanan" md-persistent>
+        <span>Konfirmasi Pesanan berhasil dibatalkan!</span>
+      </md-snackbar>
+
+      <!-- Snackbar pesanan diselesaikan -->
+      <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarSelesaikanPesanan" md-persistent>
+        <span>Pesanan berhasil diselesaikan!</span>
+      </md-snackbar>
+
+      <!-- Snackbar pesanan diselesaikan -->
+      <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarBatalSelesaikanPesanan" md-persistent>
+        <span>Selesaikan Pesanan berhasil dibatalkan!</span>
+      </md-snackbar>
+
 		</div>
 	</sidebar>
 </template>
@@ -168,7 +227,14 @@ export default {
     detailPeserta: {},
     alamatPengiriman: {},
     infoPesanan: {},
-    statusPesanan: null
+    statusPesanan: null,
+    promptBatalkanPesanan: false,
+    promptSelesaikanPesanan: false,
+    snackbarBatalkanPesanan: false,
+    snackbarKonfirmasiPesanan: false,
+    snackbarBatalKonfirmasiPesanan: false,
+    snackbarSelesaikanPesanan: false,
+    snackbarBatalSelesaikanPesanan: false,
   }),
   created() {
     this.getLaporanOrderData();
@@ -211,15 +277,59 @@ export default {
         console.log('catch getStatusPesanan:', resp);
       })
     },
-    konfirmasiPesanan() {
-      axios.get(this.url + '/konfirmasi-pesanan/' + this.$route.params.id_pesanan)
+    batalkanPesanan() {
+      axios.post(this.url + '/ubah-status-pesanan', { id_pesanan: this.$route.params.id_pesanan, angka: 0 })
       .then(resp => {
         this.getStatusPesanan();
+        this.snackbarBatalkanPesanan = true;
+      })
+      .catch(resp => {
+        console.log('catch batalkanPesanan:', resp);
+      })
+    },
+    konfirmasiPesanan() {
+      axios.post(this.url + '/ubah-status-pesanan', { id_pesanan: this.$route.params.id_pesanan, angka: 1 })
+      .then(resp => {
+        this.getStatusPesanan();
+        this.snackbarKonfirmasiPesanan = true;
       })
       .catch(resp => {
         console.log('catch konfirmasiPesanan:', resp);
       })
-    }
+    },
+    batalKonfirmasiPesanan() {
+      axios.post(this.url + '/ubah-status-pesanan', { id_pesanan: this.$route.params.id_pesanan, angka: null })
+      .then(resp => {
+        console.log('then batalKonfirmasiPesanan:', resp.data);
+        this.getStatusPesanan();
+        this.snackbarBatalKonfirmasiPesanan = true;
+      })
+      .catch(resp => {
+        console.log('catch batalKonfirmasiPesanan:', resp);
+      });
+    },
+    selesaikanPesanan() {
+      axios.post(this.url + '/ubah-status-pesanan', { id_pesanan: this.$route.params.id_pesanan, angka: 2 })
+      .then(resp => {
+        console.log('then selesaikanPesanan:', resp.data);
+        this.getStatusPesanan();
+        this.snackbarSelesaikanPesanan = true;
+      })
+      .catch(resp => {
+        console.log('catch selesaikanPesanan:', resp);
+      });
+    },
+    batalSelesaikanPesanan() {
+      axios.post(this.url + '/ubah-status-pesanan', { id_pesanan: this.$route.params.id_pesanan, angka: 1 })
+      .then(resp => {
+        console.log('then batalSelesaikanPesanan:', resp.data);
+        this.getStatusPesanan();
+        this.snackbarBatalSelesaikanPesanan = true;
+      })
+      .catch(resp => {
+        console.log('catch batalSelesaikanPesanan:', resp);
+      });
+    },
   }
 }
 	
