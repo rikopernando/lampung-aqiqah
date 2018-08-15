@@ -34,6 +34,12 @@ import LaporanOrder from '../components/laporan_order/index'
 //Form ForgotPassword 
 import ForgotPassword from '../components/forgot_password/'
 
+// TENTANG KAMI
+import TentangKami from '../components/header/tentang-kami'
+
+// TESTIMONI
+import TestimoniIndex from '../components/testimoni'
+
 const routes = [
   {
     path : '/',
@@ -105,9 +111,8 @@ const routes = [
       is_admin : true
     }
   },
-
   // Produk
-{
+  {
     path : '/list-produk',
     name : 'listProduk',
     component : ProdukList
@@ -143,10 +148,10 @@ const routes = [
     path : '/checkout/order-received/:id',
     name : 'receivedOrder',
     component : OrderReceived
-  },{ 
-    path : '/keranjang-belanja', 
-    name : 'keranjangBelanja', 
-    component : KeranjangBelanja 
+  },{
+    path : '/keranjang-belanja',
+    name : 'keranjangBelanja',
+    component : KeranjangBelanja
   },{
     path : '/akun',
     name : 'indexAkun',
@@ -158,19 +163,23 @@ const routes = [
     path : '/logout',
     name : 'logout',
     component : Logout
-  },
-
-  // Laporan
-  {
+  },{
     path : '/laporan-order',
     name : 'laporanOrder',
     component : LaporanOrder
   },
-  // ForgotPassword 
   {
     path : '/password-reset/:token',
     name : 'forgotPassword',
     component : ForgotPassword 
+  },{
+    path : '/tentang-kami',
+    name : 'tentangKami',
+    component : TentangKami
+  },{
+    path : '/testimoni',
+    name : 'testimoni',
+    component : TestimoniIndex
   }
 ]
 

@@ -12,10 +12,12 @@
         <div class="logo">
           Aqiqah Lampung
           <div class="pull-right">
+            <router-link :to="{name: 'logout'}" tag="div">
             <md-icon style="color: white">power_settings_new</md-icon>
             <span class="btn" style="color: white; font-weight: bold">
-              <router-link :to="{name: 'logout'}" tag="div">Logout</router-link>
+              Logout
             </span>
+            </router-link>
           </div>
         </div>
       </div>

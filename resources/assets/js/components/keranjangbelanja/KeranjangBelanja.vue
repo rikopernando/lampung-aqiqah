@@ -57,9 +57,9 @@
 				                 	<td class="product-quantity" data-title="Jumlah" style="text-align:right">
 					               	   <div class="quantity buttons_added">
 					               	   		<button class="btn btn-md" :disabled="true" style="background-color:#da2921;color:white;" v-if="keranjangbelanja.jumlah_produk == 1">&nbsp;( - )</button>
-					               	   		<button class="btn btn-md" @click="kurangJumlahKeranjang(keranjangbelanja.id_keranjang_belanja,keranjangbelanja.harga_produk)" style="background-color:#da2921;color:white;" v-else>&nbsp;( - )</button>
+					               	   		<button class="btn btn-md" @click="kurangJumlahKeranjang(keranjangbelanja.id_keranjang_belanja,keranjangbelanja.harga_produk)" style="background-color:#da2921;color:white;" v-else>&nbsp;( - )</button><br class="enter">
 
-									    	<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol"></span><b>{{ keranjangbelanja.jumlah_produk | pemisahTitik }}</b></span>
+									    	<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol jumlahPoduk"></span><b>{{ keranjangbelanja.jumlah_produk | pemisahTitik }}</b></span><br class="enter">
 
 									    	<button class="btn btn-md" @click="tambahJumlahKeranjang(keranjangbelanja.id_keranjang_belanja,keranjangbelanja.harga_produk)" style="background-color:#da2921;color:white;">( + )</button>
 									   	</div>
@@ -201,4 +201,13 @@ table td {
   max-height: 15px;
   overflow-x: hidden;
 }
+
+  @media (max-width: 600px) {
+    .enter { display: block; }
+  }
+
+  /* DEKSTOP CSS */
+  @media (min-width: 600px) {
+    .enter { display: none; }
+  }
 </style>

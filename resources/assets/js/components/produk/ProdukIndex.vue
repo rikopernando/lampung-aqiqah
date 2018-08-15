@@ -14,17 +14,18 @@
             <md-icon style="color: white">dns</md-icon>
           </div>
           <md-card-header-text>
-            <div class="md-toolbar" style="margin-top: -20px; padding: 0px">
-              <div class="header-title md-toolbar-section-start">Produk</div>
+            <div class="md-toolbar" style="margin-top: -20px; padding: 4px">
+              <div class="header-title md-toolbar-section-start" style="padding-right:10px">Produk</div>
               <div class="header-title md-toolbar-section-end">
-                <div class="md-layout-item md-medium-size-50 md-small-size-50 md-xsmall-size-100">
+                <div class="md-layout">
+                <div class="md-layout-item md-medium-size-60 md-small-size-60 md-xsmall-size-60">
                   <md-field md-inline>
-                    <label class="media-screen-xsmall-hide" style="font-weight: 400">Cari Berdasarkan...</label>
-                    <label class="media-screen-medium-hide" style="font-weight: 400">Cari Produk...</label>
+                      <label class="media-screen-xsmall-hide">Cari Dengan ...</label>
+                      <label class="media-screen-medium-hide">Cari Dengan ...</label>
                     <md-input v-model="search" @input="searchOnTable" />
                   </md-field>
                 </div>
-                <div class="md-layout-item md-medium-size-50 md-small-size-50 md-xsmall-hide">
+                <div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
                   <md-field>
                     <md-select v-model="searchBy" @md-selected="searchOnTable" name="searchBy" id="searchBy" md-dense>
                       <md-option value="nama_produk">Nama</md-option>
@@ -32,6 +33,7 @@
                       <md-option value="harga_jual">Harga Jual</md-option>
                     </md-select>
                   </md-field>
+                  </div>
                 </div>
               </div>
             </div>
@@ -212,7 +214,7 @@
 </script>
 
 <style scoped>
-	@media (max-width: 600px) {
+	@media (max-width: 620px) {
 		.media-screen-medium-hide {
 			display: block;
 		}
@@ -220,7 +222,7 @@
 			display: none
 		}
 	}
-	@media (min-width: 601px) {
+	@media (min-width: 621px) {
 		.media-screen-xsmall-hide {
 			display: block;
 		}
@@ -264,5 +266,12 @@
   }
   .md-table table {
     width: 0% !important;
+  }
+  .md-table-row {
+  background:#f7e1e1 !important;
+  padding:8px !important;
+  }
+  .md-layout-item{
+    padding:5px !important;
   }
 </style>
