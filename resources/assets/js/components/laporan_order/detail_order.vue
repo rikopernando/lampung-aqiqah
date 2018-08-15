@@ -184,7 +184,6 @@ export default {
     getLaporanOrderData() {
       axios.get(this.url + '/detail-order/' + this.$route.params.id_pesanan)
       .then(resp => {
-        console.log(resp.data)
         this.infoPemesan = resp.data[0];
         this.detailPeserta = resp.data[1];
         this.alamatPengiriman = resp.data[2];
@@ -197,7 +196,6 @@ export default {
     getInfoPesanan() {
       axios.get(this.url + '/info-pesanan/' + this.$route.params.id_pesanan)
       .then(resp => {
-        console.log('then getInfoPesanan:', resp.data);
         this.infoPesanan = resp.data;
       })
       .catch(resp => {
@@ -207,9 +205,7 @@ export default {
     getStatusPesanan() {
       axios.get(this.url + '/status-pesanan/' + this.$route.params.id_pesanan)
       .then(resp => {
-        // console.log('then getStatusPesanan:', resp.data.status_pesanan);
         this.statusPesanan = resp.data.status_pesanan;
-        console.log('then getStatusPesanan:', this.status_pesanan);
       })
       .catch(resp => {
         console.log('catch getStatusPesanan:', resp);
@@ -218,7 +214,6 @@ export default {
     konfirmasiPesanan() {
       axios.get(this.url + '/konfirmasi-pesanan/' + this.$route.params.id_pesanan)
       .then(resp => {
-        console.log('then konfirmasiPesanan:', resp.data);
         this.getStatusPesanan();
       })
       .catch(resp => {
