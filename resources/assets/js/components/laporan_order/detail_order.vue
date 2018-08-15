@@ -57,6 +57,24 @@
         md-cancel-text="Batal"
         @md-confirm="batalkanPesanan" />
 
+      <!-- Prompt konfirmasi pesanan -->
+      <md-dialog-confirm
+        :md-active.sync="promptKonfirmasiPesanan"
+        md-title="Konfirmasi Pesanan?"
+        md-content="Apakah Anda yakin ingin mengonfirmasi pesanan ini?"
+        md-confirm-text="Ya"
+        md-cancel-text="Batal"
+        @md-confirm="konfirmasiPesanan" />
+
+      <!-- Prompt batal konfirmasi pesanan -->
+      <md-dialog-confirm
+        :md-active.sync="promptBatalKonfirmasiPesanan"
+        md-title="Batalkan Konfirmasi Pesanan?"
+        md-content="Apakah Anda yakin ingin membatalkan konfirmasi pesanan ini?"
+        md-confirm-text="Ya"
+        md-cancel-text="Batal"
+        @md-confirm="batalKonfirmasiPesanan" />
+
       <!-- Prompt selesaikan pesanan -->
       <md-dialog-confirm
         :md-active.sync="promptSelesaikanPesanan"
@@ -65,6 +83,15 @@
         md-confirm-text="Ya"
         md-cancel-text="Batal"
         @md-confirm="selesaikanPesanan" />
+
+      <!-- Prompt selesaikan pesanan -->
+      <md-dialog-confirm
+        :md-active.sync="promptBatalSelesaikanPesanan"
+        md-title="Batal Selesaikan Pesanan?"
+        md-content="Apakah Anda yakin ingin membatalkan penyelesaian pesanan ini?"
+        md-confirm-text="Ya"
+        md-cancel-text="Batal"
+        @md-confirm="batalSelesaikanPesanan" />
 
 			<md-card>
       	<ul class="breadcrumb">
@@ -150,20 +177,20 @@
                   <md-button @click="promptBatalkanPesanan = true" class="md-dense md-raised md-accent">Batalkan</md-button>
                 </div>
                 <div class="header-title md-toolbar-section-end">
-                  <md-button @click="konfirmasiPesanan()" class="md-dense md-raised md-primary">Konfirmasi</md-button>
+                  <md-button @click="promptKonfirmasiPesanan = true" class="md-dense md-raised md-primary">Konfirmasi</md-button>
                 </div>
               </div>
               <div v-else-if="statusPesanan == 1" class="md-toolbar" style="margin-top: -20px; padding: 0px">
                 <div class="header-title md-toolbar-section-start">
-                  <md-button @click="batalKonfirmasiPesanan()" class="md-dense md-raised md-accent">Batal Konfirmasi</md-button>
+                  <md-button @click="promptBatalKonfirmasiPesanan = true" class="md-dense md-raised md-accent">Batal Konfirmasi</md-button>
                 </div>
                 <div class="header-title md-toolbar-section-end">
-                  <md-button @click="selesaikanPesanan()" class="md-dense md-raised md-primary">Selesaikan</md-button>
+                  <md-button @click="promptSelesaikanPesanan = true" class="md-dense md-raised md-primary">Selesaikan</md-button>
                 </div>
               </div>
               <div v-else-if="statusPesanan == 2" class="md-toolbar" style="margin-top: -20px; padding: 0px">
                 <div class="header-title md-toolbar-section-start">
-                  <md-button @click="batalSelesaikanPesanan()" class="md-dense md-raised md-accent">Batal Selesaikan Pesanan</md-button>
+                  <md-button @click="promptBatalSelesaikanPesanan = true" class="md-dense md-raised md-accent">Batal Selesaikan Pesanan</md-button>
                 </div>
                 <div class="header-title md-toolbar-section-end">
                 </div>
@@ -228,8 +255,15 @@ export default {
     alamatPengiriman: {},
     infoPesanan: {},
     statusPesanan: null,
+
+    // prompt
     promptBatalkanPesanan: false,
+    promptKonfirmasiPesanan: false,
+    promptBatalKonfirmasiPesanan: false,
     promptSelesaikanPesanan: false,
+    promptBatalSelesaikanPesanan: false,
+
+    // snackbar
     snackbarBatalkanPesanan: false,
     snackbarKonfirmasiPesanan: false,
     snackbarBatalKonfirmasiPesanan: false,
