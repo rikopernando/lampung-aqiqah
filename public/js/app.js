@@ -46061,6 +46061,8 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_testimoni___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19__components_testimoni__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__components_testimoni_create__ = __webpack_require__(227);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__components_testimoni_create___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20__components_testimoni_create__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_testimoni_edit__ = __webpack_require__(266);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_testimoni_edit___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_21__components_testimoni_edit__);
 
 
 // USER
@@ -46097,6 +46099,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 
 // TESTIMONI
+
 
 
 
@@ -46239,6 +46242,10 @@ var routes = [{
   path: '/testimoni/create',
   name: 'createTestimoni',
   component: __WEBPACK_IMPORTED_MODULE_20__components_testimoni_create___default.a
+}, {
+  path: '/testimoni/edit/:id',
+  name: 'editTestimoni',
+  component: __WEBPACK_IMPORTED_MODULE_21__components_testimoni_edit___default.a
 }];
 
 /* harmony default export */ __webpack_exports__["a"] = (routes);
@@ -66218,7 +66225,7 @@ var searchTestimoni = function searchTestimoni(items, term, searchBy) {
       });
     },
     selengkapnya: function selengkapnya(value) {
-      return value.substr(0, 80);
+      return value.substr(0, 50);
     }
   },
   methods: {
@@ -101629,6 +101636,643 @@ exports.push([module.i, ":root{--md-theme-default-primary:#448aff;--md-theme-def
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 258 */,
+/* 259 */,
+/* 260 */,
+/* 261 */,
+/* 262 */,
+/* 263 */,
+/* 264 */,
+/* 265 */,
+/* 266 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(267)
+  __webpack_require__(269)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(271)
+/* template */
+var __vue_template__ = __webpack_require__(272)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-621f011c"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/testimoni/edit.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-621f011c", Component.options)
+  } else {
+    hotAPI.reload("data-v-621f011c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 267 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(268);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("1052ccba", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-621f011c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./edit.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-621f011c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./edit.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 268 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n@media (max-width: 600px) {\n.media-screen-medium-hide[data-v-621f011c] {\n\t\tdisplay: block;\n}\n.media-screen-xsmall-hide[data-v-621f011c] {\n\t\tdisplay: none\n}\n}\n@media (min-width: 601px) {\n.media-screen-xsmall-hide[data-v-621f011c] {\n\t\tdisplay: block;\n}\n.media-screen-medium-hide[data-v-621f011c] {\n\t\tdisplay: none;\n}\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 269 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(270);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("a67e6dce", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-621f011c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=1!./edit.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-621f011c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=1!./edit.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 270 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.breadcrumb[data-v-621f011c] {\n  border-color: #ffffff;\n  border-style: solid;\n  border-width: 0 1px 4px 1px;\n  padding: 8px 15px;\n  margin-bottom: 35px;\n  list-style: none;\n  background-color: #ffffff;\n  border-radius: 4px;\n}\n.header-card i[data-v-621f011c] {\n  background-color: #d44723;\n  width: 50px;\n  height: 50px;\n  text-align: center;\n  line-height: 50px;\n  border-radius: 3px;\n  font-size: 30px !important;\n  margin: -30px 0px 0;\n  position: relative;\n  -webkit-box-shadow: -4px -3px 0px 0px #ff000045;\n          box-shadow: -4px -3px 0px 0px #ff000045;\n}\n.header-title[data-v-621f011c] {\n  color: #867f7f;\n  font-size: 20px;\n  padding: 4px 0px 0px 10px;\n}\nspan-error[data-v-621f011c] {\n  color: white;\n  height: 20px;\n  position: absolute;\n  bottom: -22px;\n  font-size: 12px;\n  -webkit-transition: .3s cubic-bezier(.4,0,.2,1);\n  transition: .3s cubic-bezier(.4,0,.2,1);\n}\n.label-danger[data-v-621f011c] {\n  background-color: red;\n  border-radius: 12px;\n  padding: 0px 10px;\n  text-transform: uppercase;\n  font-size: 10px;\n  font-weight: bold\n}\n.thumbnail-foto[data-v-621f011c] {\n  width: 25%;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 271 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      url: window.location.origin + (window.location.pathname + 'testimoni'),
+      url_picture: window.location.origin + window.location.pathname + "image_produks/",
+      errors: [],
+      testimoniId: null,
+      testimoni: {
+        nama_lengkap: '',
+        profesi: '',
+        testimoni: '',
+        foto: null,
+        id: ''
+      },
+      previewFoto: '',
+      notifMessage: '',
+      notifSuccess: false,
+      loading: false
+    };
+  },
+  mounted: function mounted() {
+    var app = this;
+    var id = app.$route.params.id;
+
+    app.testimoniId = id;
+    app.getTestimoni(app, id);
+  },
+
+  methods: {
+    getTestimoni: function getTestimoni(app, id) {
+      axios.get(app.url + "/" + id).then(function (resp) {
+        console.log(resp.data);
+        app.testimoni = resp.data;
+        app.testimoni.id = id;
+        resp.data.stok === 1 ? app.testimoni.stok = true : app.testimoni.stok = false;
+      }).catch(function (resp) {
+        console.log('catch getTestimoni:', resp);
+      });
+    },
+    onFileChange: function onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
+      this.createImage(files[0]);
+    },
+    createImage: function createImage(file) {
+      var image = new Image();
+      var reader = new FileReader();
+      var app = this;
+
+      reader.onload = function (e) {
+        app.previewFoto = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+    removeImage: function removeImage() {
+      this.testimoni.foto = null;
+    },
+    editTestimoni: function editTestimoni() {
+      var app = this;
+      var dataTestimoni = app.inputData(app);
+
+      app.loading = true;
+      axios.post(app.url + "/" + app.testimoniId, dataTestimoni).then(function (resp) {
+        app.notifMessage = 'Berhasil Mengubah Testimoni ' + app.testimoni.nama_lengkap;
+        app.notifSuccess = true;
+      }).catch(function (resp) {
+        console.log(resp);
+        app.errors = resp.response.data;
+        app.loading = false;
+      });
+    },
+    inputData: function inputData(app) {
+      var dataTestimoni = new FormData();
+      if (document.getElementById('foto').files[0] != undefined) {
+        dataTestimoni.append('foto', document.getElementById('foto').files[0]);
+      }
+      dataTestimoni.append('nama_lengkap', app.testimoni.nama_lengkap);
+      dataTestimoni.append('profesi', app.testimoni.profesi);
+      dataTestimoni.append('testimoni', app.testimoni.testimoni);
+
+      return dataTestimoni;
+    },
+    redirectToTestimoni: function redirectToTestimoni() {
+      this.$router.replace('/testimoni');
+    }
+  }
+});
+
+/***/ }),
+/* 272 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("sidebar", [
+    _c(
+      "div",
+      { staticClass: "col-md-12", staticStyle: { padding: "0" } },
+      [
+        _c("md-card", [
+          _c("ul", { staticClass: "breadcrumb" }, [
+            _c(
+              "li",
+              [
+                _c("router-link", { attrs: { to: { name: "home" } } }, [
+                  _vm._v("Home")
+                ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              [
+                _c("router-link", { attrs: { to: { name: "testimoni" } } }, [
+                  _vm._v("Testimoni")
+                ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("li", { staticClass: "active" }, [_vm._v("Edit Testimoni")])
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "md-card",
+          [
+            _c(
+              "md-card-header",
+              [
+                _c(
+                  "div",
+                  { staticClass: "header-card" },
+                  [
+                    _c("md-icon", { staticStyle: { color: "white" } }, [
+                      _vm._v("rate_review")
+                    ])
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("md-card-header-text", [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "md-toolbar",
+                      staticStyle: { "margin-top": "-20px", padding: "0px" }
+                    },
+                    [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "header-title md-toolbar-section-start"
+                        },
+                        [_vm._v("Testimoni")]
+                      )
+                    ]
+                  )
+                ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "md-card-content",
+              [
+                _c(
+                  "md-field",
+                  [
+                    _c("label", { attrs: { for: "nama_lengkap" } }, [
+                      _vm._v("Nama Lengkap")
+                    ]),
+                    _vm._v(" "),
+                    _c("md-input", {
+                      ref: "nama_lengkap",
+                      attrs: { name: "nama_lengkap", id: "nama_lengkap" },
+                      model: {
+                        value: _vm.testimoni.nama_lengkap,
+                        callback: function($$v) {
+                          _vm.$set(_vm.testimoni, "nama_lengkap", $$v)
+                        },
+                        expression: "testimoni.nama_lengkap"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.nama_lengkap
+                      ? _c("span-error", { staticClass: "label-danger" }, [
+                          _vm._v(_vm._s(_vm.errors.nama_lengkap[0]))
+                        ])
+                      : _vm._e()
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "md-field",
+                  [
+                    _c("label", { attrs: { for: "profesi" } }, [
+                      _vm._v("Profesi")
+                    ]),
+                    _vm._v(" "),
+                    _c("md-input", {
+                      ref: "profesi",
+                      attrs: { name: "profesi", id: "profesi" },
+                      model: {
+                        value: _vm.testimoni.profesi,
+                        callback: function($$v) {
+                          _vm.$set(_vm.testimoni, "profesi", $$v)
+                        },
+                        expression: "testimoni.profesi"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.profesi
+                      ? _c("span-error", { staticClass: "label-danger" }, [
+                          _vm._v(_vm._s(_vm.errors.profesi[0]))
+                        ])
+                      : _vm._e()
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "md-field",
+                  [
+                    _c("label", [_vm._v("Testimoni")]),
+                    _vm._v(" "),
+                    _c("md-textarea", {
+                      model: {
+                        value: _vm.testimoni.testimoni,
+                        callback: function($$v) {
+                          _vm.$set(_vm.testimoni, "testimoni", $$v)
+                        },
+                        expression: "testimoni.testimoni"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.testimoni
+                      ? _c("span-error", { staticClass: "label-danger" }, [
+                          _vm._v(_vm._s(_vm.errors.testimoni[0]))
+                        ])
+                      : _vm._e()
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "md-field",
+                  [
+                    _c("label", [_vm._v("Foto")]),
+                    _vm._v(" "),
+                    _c("md-file", {
+                      attrs: { id: "foto", accept: "image/*" },
+                      on: { change: _vm.onFileChange },
+                      model: {
+                        value: _vm.testimoni.foto,
+                        callback: function($$v) {
+                          _vm.$set(_vm.testimoni, "foto", $$v)
+                        },
+                        expression: "testimoni.foto"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _vm.testimoni.foto != null
+                  ? _c(
+                      "md-card",
+                      { staticClass: "thumbnail-foto" },
+                      [
+                        _c(
+                          "md-card-media-cover",
+                          { attrs: { "md-text-scrim": "" } },
+                          [
+                            _c(
+                              "md-card-media",
+                              { attrs: { "md-ratio": "16:9" } },
+                              [
+                                _c("img", {
+                                  attrs: {
+                                    src:
+                                      _vm.url_picture +
+                                      "/" +
+                                      _vm.testimoni.foto,
+                                    alt: "Foto"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _vm.previewFoto != ""
+                                  ? _c("img", {
+                                      attrs: {
+                                        src: _vm.previewFoto,
+                                        alt: "Foto"
+                                      }
+                                    })
+                                  : _vm._e()
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "md-card-area",
+                              [
+                                _c(
+                                  "md-card-actions",
+                                  [
+                                    _c(
+                                      "md-button",
+                                      { on: { click: _vm.removeImage } },
+                                      [_vm._v("Hapus Foto")]
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "md-toolbar-section-end" },
+                  [
+                    !_vm.loading
+                      ? _c(
+                          "md-button",
+                          {
+                            staticClass: "md-dense md-raised",
+                            staticStyle: {
+                              "background-color": "#d44723",
+                              color: "white"
+                            },
+                            on: { click: _vm.editTestimoni }
+                          },
+                          [_vm._v("\n            Simpan\n          ")]
+                        )
+                      : _c("md-progress-spinner", {
+                          attrs: {
+                            "md-diameter": 30,
+                            "md-stroke": 3,
+                            "md-mode": "indeterminate"
+                          }
+                        })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "md-snackbar",
+                  {
+                    attrs: {
+                      "md-position": "center",
+                      "md-duration": 1500,
+                      "md-active": _vm.notifSuccess
+                    },
+                    on: {
+                      "update:mdActive": function($event) {
+                        _vm.notifSuccess = $event
+                      },
+                      "md-closed": _vm.redirectToTestimoni
+                    }
+                  },
+                  [
+                    _c("span", { attrs: { id: "span-snackbar" } }, [
+                      _vm._v(_vm._s(_vm.notifMessage))
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      [
+                        _c("md-icon", { staticStyle: { color: "white" } }, [
+                          _vm._v("done_all")
+                        ])
+                      ],
+                      1
+                    )
+                  ]
+                )
+              ],
+              1
+            )
+          ],
+          1
+        )
+      ],
+      1
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-621f011c", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
