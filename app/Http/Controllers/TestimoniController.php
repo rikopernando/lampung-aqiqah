@@ -91,7 +91,7 @@ class TestimoniController extends Controller
      */
     public function show($id)
     {
-        //
+        return response(Testimoni::whereId($id)->first());
     }
 
     /**
