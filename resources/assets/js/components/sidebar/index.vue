@@ -129,6 +129,13 @@
               <span>User</span>
             </router-link>
           </md-list-item>
+
+          <md-list-item>
+            <router-link :to="{name: 'laporanOrder'}" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+              <md-icon>notes</md-icon>
+              <span>Laporan Order</span>
+            </router-link>
+          </md-list-item>
         </md-list>
       </md-drawer>
     </div>
