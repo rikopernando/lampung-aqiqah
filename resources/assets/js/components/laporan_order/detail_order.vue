@@ -1,20 +1,4 @@
 <style scoped>
-  @media (max-width: 620px) {
-    .media-screen-medium-hide {
-      display: block;
-    }
-    .media-screen-xsmall-hide {
-      display: none
-    }
-  }
-  @media (min-width: 621px) {
-    .media-screen-xsmall-hide {
-      display: block;
-    }
-    .media-screen-medium-hide {
-      display: none;
-    }
-  }
   .breadcrumb {
     border-color: #ffffff;
     border-style: solid;
@@ -113,9 +97,8 @@
           </md-card-header-text>
         </md-card-header>
         <md-card-content>
-      		<md-tabs class="md-transparent" md-alignment="fixed">
-
-            <md-tab md-label="Info Pemesan">
+          <md-tabs class="md-transparent" md-alignment="fixed">
+            <md-tab :md-label="tabInfoPemesan.label" :md-icon="tabInfoPemesan.icon">
               <md-progress-bar v-if="loading" md-mode="indeterminate"></md-progress-bar>
               <md-table v-else v-model="infoPemesan">
                 <md-table-row slot="md-table-row" slot-scope="{ item }">
@@ -132,7 +115,7 @@
               </md-table>
             </md-tab>
 
-            <md-tab md-label="Detail Peserta">
+            <md-tab :md-label="tabDetailPeserta.label" :md-icon="tabDetailPeserta.icon">
               <md-table v-model="detailPeserta">
                 <md-table-row slot="md-table-row" slot-scope="{ item }">
                   <md-table-cell md-label="Entri">
@@ -148,7 +131,7 @@
               </md-table>
             </md-tab>
 
-            <md-tab md-label="Alamat Pengiriman">
+            <md-tab :md-label="tabAlamatPengiriman.label" :md-icon="tabAlamatPengiriman.icon">
               <md-table v-model="alamatPengiriman">
                 <md-table-row slot="md-table-row" slot-scope="{ item }">
                   <md-table-cell md-label="Entri">
@@ -164,7 +147,7 @@
               </md-table>
             </md-tab>
 
-            <md-tab md-label="Info Pesanan">
+            <md-tab :md-label="tabInfoPesanan.label" :md-icon="tabInfoPesanan.icon">
               <div v-if="statusPesanan == 0" class="md-toolbar" style="margin-top: -20px; padding: 0px">
                 <div class="header-title md-toolbar-section-start">
                   <md-button class="md-dense md-raised" disabled>Pesanan telah dibatalkan</md-button>
@@ -210,10 +193,9 @@
                 </md-table-row>
               </md-table>
             </md-tab>
-
           </md-tabs>
         </md-card-content>
-      </md-card>
+      </md-card> 
 
       <!-- Snackbar pesanan dibatalkan -->
       <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarBatalkanPesanan" md-persistent>
@@ -248,7 +230,7 @@
 
 export default {
   data: () => ({
-  	url: window.location.origin + (window.location.pathname + 'laporan-order'),
+    url: window.location.origin + (window.location.pathname + 'laporan-order'),
     loading: true,
     infoPemesan: {},
     detailPeserta: {},
@@ -269,10 +251,79 @@ export default {
     snackbarBatalKonfirmasiPesanan: false,
     snackbarSelesaikanPesanan: false,
     snackbarBatalSelesaikanPesanan: false,
+    windowWidth: 0,
+
+    // tab
+    tabInfoPemesan: {
+      label: 'Info Pemesan',
+      icon: 'home'
+    },
+    tabDetailPeserta: {
+      label: 'Detail Peserta',
+      icon: 'pages'
+    },
+    tabAlamatPengiriman: {
+      label: 'Alamat Pengiriman',
+      icon: 'notes'
+    },
+    tabInfoPesanan: {
+      label: 'Info Pesanan',
+      icon: 'fastfood'
+    }
   }),
+  watch: {
+    windowWidth(width) {
+      console.log(this.tabInfoPemesan)
+      if (width > 660) {
+        // desktop tampil
+        this.tabInfoPemesan = {
+          label: 'Info Pemesan',
+          icon: ''
+        }
+        this.tabDetailPeserta = {
+          label: 'Detail Peserta',
+          icon: ''
+        }
+        this.tabAlamatPengiriman = {
+          label: 'Alamat Pengiriman',
+          icon: ''
+        }
+        this.tabInfoPesanan = {
+          label: 'Info Pesanan',
+          icon: ''
+        }
+      } else {
+        // mobile tampil        
+        this.tabInfoPemesan = {
+          label: '',
+          icon: 'home'
+        }
+        this.tabDetailPeserta = {
+          label: '',
+          icon: 'pages'
+        }
+        this.tabAlamatPengiriman = {
+          label: '',
+          icon: 'notes'
+        }
+        this.tabInfoPesanan = {
+          label: '',
+          icon: 'fastfood'
+        }
+      }
+    }
+  },
+  mounted() {
+    this.windowWidth = screen.width;
+    this.$nextTick(() => {
+      window.addEventListener('resize', () => {
+        this.windowWidth = window.innerWidth
+      });
+    })
+  },
   created() {
     this.getLaporanOrderData();
-  	this.getInfoPesanan();
+    this.getInfoPesanan();
     this.getStatusPesanan();
   },
   filters: {
@@ -292,7 +343,7 @@ export default {
       .catch(resp => {
         console.log('catch getLaporanOrderData:', resp);
       })
-  	},
+    },
     getInfoPesanan() {
       axios.get(this.url + '/info-pesanan/' + this.$route.params.id_pesanan)
       .then(resp => {
