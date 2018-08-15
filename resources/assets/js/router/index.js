@@ -30,6 +30,7 @@ import Logout from '../components/logout/index'
 
 // LAPORAN
 import LaporanOrder from '../components/laporan_order/index'
+import DetailOrder from '../components/laporan_order/detail_order'
 
 //Form ForgotPassword 
 import ForgotPassword from '../components/forgot_password/'
@@ -168,6 +169,10 @@ const routes = [
     path : '/laporan-order',
     name : 'laporanOrder',
     component : LaporanOrder
+  },{
+    path : '/laporan-order/detail-order/:id_pesanan',
+    name : 'detailOrder',
+    component : DetailOrder
   },
   {
     path : '/password-reset/:token',
