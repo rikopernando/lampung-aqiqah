@@ -1,5 +1,5 @@
 <?php
 
 return [
-	'table_prefix'			=> 'indonesia_',
+	'table_prefix'			=> '',
 ];

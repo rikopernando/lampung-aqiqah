@@ -31,6 +31,9 @@ import Logout from '../components/logout/index'
 // LAPORAN
 import LaporanOrder from '../components/laporan_order/index'
 
+//Form ForgotPassword 
+import ForgotPassword from '../components/forgot_password/'
+
 const routes = [
   {
     path : '/',
@@ -162,6 +165,12 @@ const routes = [
     path : '/laporan-order',
     name : 'laporanOrder',
     component : LaporanOrder
+  },
+  // ForgotPassword 
+  {
+    path : '/password-reset/:token',
+    name : 'forgotPassword',
+    component : ForgotPassword 
   }
 ]
 

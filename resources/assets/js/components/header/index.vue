@@ -37,6 +37,9 @@
 								<div class="alert alert-success" role="alert" v-if="successSendEmail">
                     Kami telah mengirimkan tautan Reset Password Anda melalui email!
 								</div>
+                  <ul class="error-message">
+                    <li class="text-error" v-for="err in errors"> {{ err.toString() }} </li>
+                  </ul>
                 <input type="text" name="email" placeholder="Email" v-model="password.email" autocomplete="off">
                 <input type="hidden" name="token" v-model="password.token" autocomplete="off">
                 <input type="submit" v-on:click="submit('password')" v-model="passwordSubmit" id="passwordSubmit">
@@ -384,6 +387,8 @@
             console.log(resp.data)
             app.successSendEmail = true
             app.passwordSubmit = "Reset Password"
+            $('#passwordSubmit').removeClass('disabled')
+            app.password.email = ""
           })
           .catch((err) => {
             app.errors = err.response.data
