@@ -149,7 +149,7 @@
         return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
       },
       selengkapnya: (value) => {
-        return value.substr(0, 80);
+        return value.substr(0, 50);
       }
     },
     methods: {
