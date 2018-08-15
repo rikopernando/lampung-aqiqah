@@ -31,6 +31,14 @@ import Logout from '../components/logout/index'
 // LAPORAN
 import LaporanOrder from '../components/laporan_order/index'
 
+// TENTANG KAMI
+import TentangKami from '../components/header/tentang-kami'
+
+// TESTIMONI
+import TestimoniIndex from '../components/testimoni'
+import TestimoniCreate from '../components/testimoni/create'
+
+
 const routes = [
   {
     path : '/',
@@ -140,10 +148,10 @@ const routes = [
     path : '/checkout/order-received/:id',
     name : 'receivedOrder',
     component : OrderReceived
-  },{ 
-    path : '/keranjang-belanja', 
-    name : 'keranjangBelanja', 
-    component : KeranjangBelanja 
+  },{
+    path : '/keranjang-belanja',
+    name : 'keranjangBelanja',
+    component : KeranjangBelanja
   },{
     path : '/akun',
     name : 'indexAkun',
@@ -155,13 +163,22 @@ const routes = [
     path : '/logout',
     name : 'logout',
     component : Logout
-  },
-
-  // Laporan
-  {
+  },{
     path : '/laporan-order',
     name : 'laporanOrder',
     component : LaporanOrder
+  },{
+    path : '/tentang-kami',
+    name : 'tentangKami',
+    component : TentangKami
+  },{
+    path : '/testimoni',
+    name : 'testimoni',
+    component : TestimoniIndex
+  },{
+    path : '/testimoni/create',
+    name : 'createTestimoni',
+    component : TestimoniCreate
   }
 ]
 
