@@ -70,10 +70,10 @@
                   Belum Dikonfirmasi
                 </div>
                 <div v-else-if="item.status_pesanan == 0">
-                  <span style="color: red;">Ditolak/Dibatalkan</span>
+                  <span style="color: red;">Dibatalkan</span>
                 </div>
                 <div v-else-if="item.status_pesanan == 1">
-                  Belum Selesai
+                  <span style="color: green;">Belum Selesai</span>
                 </div>
                 <div v-else-if="item.status_pesanan == 2">
                   <span style="color: blue;">Selesai</span>
