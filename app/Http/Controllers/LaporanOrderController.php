@@ -164,38 +164,38 @@ class LaporanOrderController extends Controller
     public function timeago($waktu) {
 
         if ($waktu < 59) {
-            $str = 'Selesai dalam ' . $waktu . ' detik';
+            $str = 'Dipesan ' . $waktu . ' detik yang lalu';
         }
         else if ($waktu > 59 && $waktu < 3600) {
             if (($waktu % 60) == 0) {
-                $str = 'Selesai dalam ' . (ceil($waktu / 60) - 1) . ' menit';
+                $str = 'Dipesan ' . (ceil($waktu / 60) - 1) . ' menit yang lalu';
             } else {
-                $str = 'Selesai dalam ' . (ceil($waktu / 60) - 1) . ' menit ' . ceil(($waktu % 60) - 1) . ' detik';
+                $str = 'Dipesan ' . (ceil($waktu / 60) - 1) . ' menit ' . ceil(($waktu % 60) - 1) . ' detik yang lalu';
             }
         }
 
         // 86400 detik adalah 1 hari
         // Jika lebih dari 1 jam dan kurang dari 1 hari
         else if ($waktu > 3599 && $waktu < 86400) {
-            $str = 'Selesai dalam ' . (ceil(($waktu / 3600)) - 1) . ' jam';
+            $str = 'Dipesan ' . (ceil(($waktu / 3600)) - 1) . ' jam yang lalu';
         }
 
         // 604800 detik adalah 1 minggu
         // Jika lebih dari 1 hari dan kurang dari 1 minggu
         else if ($waktu > 86400 && $waktu < 604800) {
-            $str = 'Selesai dalam ' . (ceil(($waktu / 86400)) - 1) . ' hari';
+            $str = 'Dipesan ' . (ceil(($waktu / 86400)) - 1) . ' hari yang lalu';
         }
 
         // 2592000 detik adalah 1 bulan
         // Jika lebih dari 1 minggu dan kurang dari 1 bulan
         else if ($waktu > 604800 && $waktu < 2592000) {
             if (($waktu % 604800) < 86400) {
-                $str = 'Selesai dalam ' . (ceil(($waktu / 604800)) - 1) . ' minggu';
+                $str = 'Dipesan ' . (ceil(($waktu / 604800)) - 1) . ' minggu yang lalu';
             }
 
             // Jika sisa bagi lebih dari 1 hari
             else {
-                $str = 'Selesai dalam ' . (ceil(($waktu / 604800)) - 1) . ' minggu ' . ceil(($waktu % 604800) / 86400 - 1) . ' hari';
+                $str = 'Dipesan ' . (ceil(($waktu / 604800)) - 1) . ' minggu ' . ceil(($waktu % 604800) / 86400 - 1) . ' hari yang lalu';
             }
         }
 
@@ -205,17 +205,17 @@ class LaporanOrderController extends Controller
             // Jika sisa bagi kurang dari 1 minggu
             if (($waktu % 2592000) < 604800) {
                 // Maka hanya tampilkan jumlah bulannya
-                $str = 'Selesai dalam ' . (ceil(($waktu / 2592000)) - 1) . ' bulan';
+                $str = 'Dipesan ' . (ceil(($waktu / 2592000)) - 1) . ' bulan yang lalu';
             } else {
                 // Jika sisa bagi (bulan dilanjutkan dengan minggu) kurang dari 1 hari
                 if (($waktu % 2592000 % 604800) < 86400) {
                     // Maka hanya tampilkan jumlah bulan dan kelebihan minggunya
-                    $str = 'Selesai dalam ' . (ceil(($waktu / 2592000)) - 1) . ' bulan ' . (ceil(($waktu % 2592000) / 604800) - 1) . ' minggu';
+                    $str = 'Dipesan ' . (ceil(($waktu / 2592000)) - 1) . ' bulan ' . (ceil(($waktu % 2592000) / 604800) - 1) . ' minggu yang lalu';
                 }
                 // Jika sisa bagi (bulan dilanjutkan dengan minggu) lebih dari 1 hari
                 else {
                     // Maka tampilkan jumlah bulan, kelebihan minggu dan harinya
-                    $str = 'Selesai dalam ' . (ceil(($waktu / 2592000)) - 1) . ' bulan ' . (ceil(($waktu % 2592000) / 604800) - 1) . ' minggu ' . (ceil(($waktu % 2592000 % 604800) / 86400) - 1) . ' hari';
+                    $str = 'Dipesan ' . (ceil(($waktu / 2592000)) - 1) . ' bulan ' . (ceil(($waktu % 2592000) / 604800) - 1) . ' minggu ' . (ceil(($waktu % 2592000 % 604800) / 86400) - 1) . ' hari yang lalu';
                 }
             }
         }
@@ -226,9 +226,9 @@ class LaporanOrderController extends Controller
         }
     }
 
-    public function konfirmasiPesanan($id_pesanan) {
+    public function ubahStatusPesanan(Request $request) {
         return Pesanan::whereId($id_pesanan)->update([
-            'status_pesanan' => 1
+            'status_pesanan' => $action_number
         ]);
     }
 }
