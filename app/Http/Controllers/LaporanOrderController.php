@@ -227,8 +227,8 @@ class LaporanOrderController extends Controller
     }
 
     public function ubahStatusPesanan(Request $request) {
-        return Pesanan::whereId($id_pesanan)->update([
-            'status_pesanan' => $action_number
+        return Pesanan::whereId($request->id_pesanan)->update([
+            'status_pesanan' => $request->angka
         ]);
     }
 }
