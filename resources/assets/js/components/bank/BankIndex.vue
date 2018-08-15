@@ -1,12 +1,7 @@
 <template>
   <sidebar>
     <div class="col-md-12" style="padding: 0">
-      <md-card>
-        <ul class="breadcrumb">
-          <li><router-link :to="{ name: 'home' }">Home</router-link></li>
-          <li class="active">Bank</li>
-        </ul>
-      </md-card>
+
 
   	<!-- Prompt delete bank -->
   	<md-dialog-confirm
@@ -18,9 +13,17 @@
       @md-confirm="onConfirmDelete" />
 
       <md-dialog-alert 
-        :md-active.sync="promptDefaultKosong"
+        :md-active.sync="promptGagalHapus"
         md-title="Peringatan !!"
-        md-content="Default Bank harus terpilih ,silahkan pilih salah satu kembali !" />
+        md-content="Maaf bank telah disetting default , tidak bisa dihapus silakan pindahkan default bank lain !!" />
+
+
+      <md-card>
+        <ul class="breadcrumb">
+          <li><router-link :to="{ name: 'home' }">Home</router-link></li>
+          <li class="active">Bank</li>
+        </ul>
+      </md-card>
 
       <md-card>
         <md-card-header>
@@ -28,25 +31,25 @@
             <md-icon style="color: white">account_balance</md-icon>
           </div>
           <md-card-header-text>
-            <div class="md-toolbar" style="margin-top: -20px; padding: 0px">
-              <div class="header-title md-toolbar-section-start">Bank</div>
+            <div class="md-toolbar" style="margin-top: -20px; padding: 4px">
+              <div class="header-title md-toolbar-section-start" style="padding-right:10px">Bank</div>
               <div class="header-title md-toolbar-section-end">
-                <div class="md-layout-item md-medium-size-50 md-small-size-50 md-xsmall-size-100">
+                <div class="md-layout">
+                <div class="md-layout-item md-medium-size-60 md-small-size-60 md-xsmall-size-60">
                   <md-field md-inline>
-                    <label class="media-screen-xsmall-hide" style="font-weight: 400">Cari Berdasarkan...</label>
-                    <label class="media-screen-medium-hide" style="font-weight: 400">Cari Nama Bank...</label>
-                     <label class="media-screen-medium-hide" style="font-weight: 400">Cari No Rekening...</label>
+                      <label class="media-screen-xsmall-hide">Cari Dengan ...</label>
+                      <label class="media-screen-medium-hide">Cari Dengan ...</label>
                     <md-input v-model="search" @input="searchOnTable" />
                   </md-field>
                 </div>
-
-                <div class="md-layout-item md-medium-size-50 md-small-size-50 md-xsmall-hide">
+                <div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
                   <md-field>
                     <md-select v-model="searchBy" @md-selected="searchOnTable" name="searchBy" id="searchBy" md-dense>
                       <md-option value="nama_bank">Nama Bank</md-option>
-                      <md-option value="no_rek">No Rekening</md-option>
+                      <md-option value="no_rek">No Rek</md-option>
                     </md-select>
                   </md-field>
+                  </div>
                 </div>
               </div>
             </div>
@@ -55,12 +58,10 @@
 
         <md-card-content>
 
-          <div class="md-toolbar-section-start">
-                  <md-button :to="`/bank/create`" class="md-dense md-raised" style="background-color: #d44723; color: white"> Tambah Bank</md-button>
-          </div>
-          <div class="md-toolbar-section-end"></div>
+       <md-button :to="`/bank/create`" class="md-dense md-raised" style="background-color: #d44723; color: white"> Tambah Bank</md-button>
 
-          <md-table v-model="searched" md-sort="name" md-sort-order="asc" md-fixed-header>
+
+         <md-table v-model="searched" md-sort="name" md-sort-order="asc" md-fixed-header>
             <md-table-empty-state v-if="loading">
               <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
             </md-table-empty-state>
@@ -77,16 +78,14 @@
               <md-table-cell md-label="a.n Bank" md-sort-by="atas_nama" >{{ item.atas_nama }}</md-table-cell>
               <md-table-cell md-label="No Rekening" md-sort-by="no_rek" >{{ item.no_rek }}</md-table-cell>
               <md-table-cell md-label="Default" style="text-align: center; padding-left: 15px;">
-                <md-checkbox v-model="item.default"
-                  :disabled="(item.default == false && maxChecked >= 1)"
-                  @change="tampilDefault(item.id, item.default, item.nama_bank)" />
+                <md-radio v-model="item.default"  @change="tampilDefault(item.id,item.default,item.nama_bank)" :value="false"></md-radio>
               </md-table-cell>
                <md-table-cell md-label="Aksi">
                 <md-button :to="`/bank/edit/${item.id}`" class="md-fab md-dense md-primary">
                   <md-icon>edit</md-icon>
                   <md-tooltip md-direction="top">Edit</md-tooltip>
                 </md-button>
-                <md-button @click="deleteBank(item.id)" class="md-fab md-dense md-plain">
+                <md-button @click="deleteBank(item.id,item.default)" class="md-fab md-dense md-plain">
                   <md-icon>delete_forever</md-icon>
                   <md-tooltip md-direction="top">Hapus</md-tooltip>
                 </md-button>
@@ -130,7 +129,7 @@
       search: null,
 	    promptDeleteBank: false,
 			snackbarDeleteBank: false,
-      promptDefaultKosong: false,
+      promptGagalHapus : false,
 	    bankIdForDelete: '',
       searched: [],
       banks: [],
@@ -138,7 +137,6 @@
       notifSuccess: false,
       searchBy: 'nama_bank',
       loading: true,
-      maxChecked: 0
     }),
     created() {
     	this.getBankData();
@@ -149,12 +147,10 @@
     		axios.get(app.url + 'view')
     		.then(resp => {
           $.each(resp.data.daftarBank, function (i, item) {
-            resp.data.daftarBank[i].default = item.default == 1 ? true : false;
+            resp.data.daftarBank[i].default = item.default == 1 ? false: true;
           });
-
     			app.banks = resp.data.daftarBank;
     			app.searched = resp.data.daftarBank;
-          app.countDefault(app);
 
     			app.loading = false;
     		})
@@ -164,33 +160,16 @@
     	},
       tampilDefault(id, data, nama) {
         let app = this;
-        let hasil = data == true ? "Default" : "Tidak Default";
-
         axios.get(app.url+"update-default-bank/"+id+"/"+data)
         .then(resp => {
-          app.countDefault(app);
-          app.notifMessage = `Bank ${nama.replace(/(^|\s)\S/g, l => l.toUpperCase())} Berhasil update ${hasil}.`
+          app.notifMessage = `Bank ${nama.replace(/(^|\s)\S/g, l => l.toUpperCase())} Berhasil update Default.`
           app.notifSuccess = true;
-
+          this.getBankData();
         })
         .catch(resp => {
           console.log('catch onConfirm:', resp);
         })
 
-      },
-      countDefault(app) {
-        axios.get(app.url+"count-default")
-        .then(resp => {
-          app.maxChecked = resp.data
-         if (app.maxChecked == 0) {
-            app.promptDefaultKosong = true;
-          }else{
-            app.promptDefaultKosong = false;
-          }
-        })
-        .catch(resp => {
-          console.log(resp);
-        })
       },
     	onConfirmDelete() {
     		axios.delete(this.url + this.bankIdForDelete)
@@ -203,10 +182,13 @@
     			console.log('Terjadi Kesalahan Konfirmasi Delete :', resp);
     		})
     	},
-    	deleteBank(bankId) {
-    		this.promptDeleteBank = true;
-    		this.bankIdForDelete = bankId;
-        app.countDefault(app);
+    	deleteBank(bankId,bankDefault) {
+        if (bankDefault == false) {
+          this.promptGagalHapus = true;
+        }else{
+          this.promptDeleteBank = true;
+          this.bankIdForDelete = bankId;
+        }   
     	},
       searchOnTable() {
         this.searched = searchBank(this.banks, this.search, this.searchBy);
@@ -216,7 +198,7 @@
 </script>
 
 <style scoped>
-	@media (max-width: 600px) {
+	@media (max-width: 620px) {
 		.media-screen-medium-hide {
 			display: block;
 		}
@@ -224,7 +206,7 @@
 			display: none
 		}
 	}
-	@media (min-width: 601px) {
+	@media (min-width: 621px) {
 		.media-screen-xsmall-hide {
 			display: block;
 		}
@@ -262,7 +244,17 @@
     font-size: 20px;
     padding: 4px 0px 0px 10px;
   }
-  .button-tambah{
-    background-color:#d54624; 
+  .checkbox-list {
+    padding-right: 0px !important
+  }
+  .md-table table {
+    width: 0% !important;
+  }
+  .md-table-row {
+  background:#f7e1e1 !important;
+  padding:8px !important;
+  }
+  .md-layout-item{
+    padding:5px !important;
   }
 </style>

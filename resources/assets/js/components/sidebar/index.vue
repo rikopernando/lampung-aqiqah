@@ -12,10 +12,12 @@
         <div class="logo">
           Aqiqah Lampung
           <div class="pull-right">
+            <router-link :to="{name: 'logout'}" tag="div">
             <md-icon style="color: white">power_settings_new</md-icon>
             <span class="btn" style="color: white; font-weight: bold">
-              <router-link :to="{name: 'logout'}" tag="div">Logout</router-link>
+              Logout
             </span>
+            </router-link>
           </div>
         </div>
       </div>
@@ -47,6 +49,24 @@
             <router-link :to="{name: 'laporanOrder'}">
               <md-icon>notes</md-icon><span class="dekstop-menu">Laporan Order</span>
             </router-link>
+          </li>
+          <li>
+            <router-link to="" data-toggle="collapse" href="#settings" style="background: #ffffff">
+              <md-icon>settings_applications</md-icon>
+              <span class="dekstop-menu">Setting</span>
+              <md-icon style="padding-left: 80px;">keyboard_arrow_down</md-icon>
+            </router-link>
+
+            <div class="collapse" id="settings">
+              <ul>
+                <li>
+                  <router-link :to="{name: 'testimoni'}" class="drop-menu">
+                    <span>TM</span>
+                    <span class="dekstop-menu">Testimoni</span>
+                  </router-link>
+                </li>
+              </ul>
+            </div>
           </li>
         </ul>
 
@@ -112,7 +132,7 @@
         </md-list>
       </md-drawer>
     </div>
-    
+
     <!-- Content -->
     <div class="main">
       <slot/>
@@ -145,3 +165,10 @@ export default {
 }
 
 </script>
+
+<style scoped>
+  .drop-menu {
+    background: #eaeaea;
+    padding-left: 63px !important;
+  }
+</style>

@@ -7,7 +7,7 @@
             <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>Aqiqah Lampung</title>
 
         <!-- Fonts -->
         <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
@@ -24,7 +24,7 @@
         <div id="app">
             <router-view></router-view>
         </div>
-        <script src="{{ asset('js/app.js?v=1.50')}}" type="text/javascript"></script>
+        <script src="{{ asset('js/app.js?v=1.59')}}" type="text/javascript"></script>
         <!-- jQuery CDN - Slim version (=without AJAX) -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <!-- Popper.JS -->

@@ -42,6 +42,13 @@
     font-size: 20px;
     padding: 4px 0px 0px 10px;
   }
+  .md-table-row {
+  background:#f7e1e1 !important;
+  padding:8px !important;
+  }
+  .md-layout-item{
+    padding:5px !important;
+  }
 </style>
 
 <template>
@@ -70,18 +77,18 @@
             <md-icon style="color: white">account_box</md-icon>
           </div>
           <md-card-header-text>
-            <div class="md-toolbar" style="margin-top: -20px; padding: 0px">
-              <div class="header-title md-toolbar-section-start">User</div>
+            <div class="md-toolbar" style="margin-top: -20px; padding: 4px">
+              <div class="header-title md-toolbar-section-start" style="padding-right:10px">User</div>
               <div class="header-title md-toolbar-section-end">
                 <div class="md-layout">
-			        		<div class="md-layout-item md-medium-size-50 md-small-size-50 md-xsmall-size-100">
+			        		<div class="md-layout-item md-medium-size-60 md-small-size-60 md-xsmall-size-60">
 						        <md-field md-inline>
-						        	<label class="media-screen-xsmall-hide">Cari dengan...</label>
-						        	<label class="media-screen-medium-hide">Cari User...</label>
+						        	<label class="media-screen-xsmall-hide">Cari Dengan ...</label>
+						        	<label class="media-screen-medium-hide">Cari Dengan ...</label>
 						          <md-input v-model="search" @input="searchOnTable" />
 						        </md-field>
 			        		</div>
-			        		<div class="md-layout-item md-medium-size-50 md-small-size-50 md-xsmall-hide">
+			        		<div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
 						        <md-field>
 						          <md-select v-model="searchBy" @md-selected="searchOnTable" name="searchBy" id="searchBy" md-dense>
 						            <md-option value="name">Nama</md-option>
