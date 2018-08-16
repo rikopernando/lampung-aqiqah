@@ -82,10 +82,10 @@ class LaporanOrderController extends Controller
             'Email' => $pesanan->ip_email,
             'Nomor Telepon' => $pesanan->ip_no_telp,
             'Alamat' => $pesanan->ip_alamat,
-            'Provinsi' => $pesanan->ip_provinsi,
-            'Kabupaten' => $pesanan->ip_kabupaten,
-            'Kecamatan' => $pesanan->ip_kecamatan,
-            'Kelurahan' => $pesanan->ip_kelurahan
+            'Provinsi' => $this->getNamaDaerah($pesanan->ip_provinsi, 1),
+            'Kabupaten' => $this->getNamaDaerah($pesanan->ip_kabupaten, 2),
+            'Kecamatan' => $this->getNamaDaerah($pesanan->ip_kecamatan, 3),
+            'Kelurahan' => $this->getNamaDaerah($pesanan->ip_kelurahan, 4)
         ];
 
         // detail peserta
@@ -104,10 +104,10 @@ class LaporanOrderController extends Controller
             'Nama Belakang' => $pesanan->ap_nama_belakang,
             'Perusahaan' => $pesanan->ap_company_name,
             'Alamat' => $pesanan->ap_alamat,
-            'Provinsi' => $pesanan->ap_provinsi,
-            'Kabupaten' => $pesanan->ap_kabupaten,
-            'Kecamatan' => $pesanan->ap_kecamatan,
-            'Kelurahan' => $pesanan->ap_kelurahan
+            'Provinsi' => $this->getNamaDaerah($pesanan->ap_provinsi, 1),
+            'Kabupaten' => $this->getNamaDaerah($pesanan->ap_kabupaten, 2),
+            'Kecamatan' => $this->getNamaDaerah($pesanan->ap_kecamatan, 3),
+            'Kelurahan' => $this->getNamaDaerah($pesanan->ap_kelurahan, 4)
         ];
 
         $result = [];
@@ -129,10 +129,10 @@ class LaporanOrderController extends Controller
             $result[2] = [
                 ['entri' => 'Nama', 'keterangan' => $pesanan->ip_nama_pemesan],
                 ['entri' => 'Alamat', 'keterangan' => $pesanan->ip_alamat],
-                ['entri' => 'Provinsi', 'keterangan' => $pesanan->ip_provinsi],
-                ['entri' => 'Kabupaten', 'keterangan' => $pesanan->ip_kabupaten],
-                ['entri' => 'Kecamatan', 'keterangan' => $pesanan->ip_kecamatan],
-                ['entri' => 'Kelurahan', 'keterangan' => $pesanan->ip_kelurahan]
+                ['entri' => 'Provinsi', 'keterangan' => $this->getNamaDaerah($pesanan->ip_provinsi, 1)],
+                ['entri' => 'Kabupaten', 'keterangan' => $this->getNamaDaerah($pesanan->ip_kabupaten, 2)],
+                ['entri' => 'Kecamatan', 'keterangan' => $this->getNamaDaerah($pesanan->ip_kecamatan, 3)],
+                ['entri' => 'Kelurahan', 'keterangan' => $this->getNamaDaerah($pesanan->ip_kelurahan, 4)]
             ];
         }
 
@@ -230,5 +230,31 @@ class LaporanOrderController extends Controller
         return Pesanan::whereId($request->id_pesanan)->update([
             'status_pesanan' => $request->angka
         ]);
+    }
+
+    public function getNamaDaerah($id, $n) {
+        // n:
+        // 1 = Provinsi
+        // 2 = Kabupaten
+        // 3 = Kecamatan
+        // 4 = Kelurahan
+
+        if ($id == null) {
+            return null;
+        } else {
+            switch ($n) {
+                case 1:
+                    return DB::table('provinces')->whereId($id)->first()->name;
+                break;
+                case 2:
+                    return DB::table('cities')->whereId($id)->first()->name;
+                break;
+                case 3:
+                    return DB::table('districts')->whereId($id)->first()->name;
+                break;
+                case 4:
+                    return DB::table('villages')->whereId($id)->first()->name;
+            }
+        }
     }
 }
