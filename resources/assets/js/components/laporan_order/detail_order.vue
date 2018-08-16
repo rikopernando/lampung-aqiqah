@@ -1,20 +1,4 @@
 <style scoped>
-  @media (max-width: 620px) {
-    .media-screen-medium-hide {
-      display: block;
-    }
-    .media-screen-xsmall-hide {
-      display: none
-    }
-  }
-  @media (min-width: 621px) {
-    .media-screen-xsmall-hide {
-      display: block;
-    }
-    .media-screen-medium-hide {
-      display: none;
-    }
-  }
   .breadcrumb {
     border-color: #ffffff;
     border-style: solid;
@@ -57,6 +41,24 @@
         md-cancel-text="Batal"
         @md-confirm="batalkanPesanan" />
 
+      <!-- Prompt konfirmasi pesanan -->
+      <md-dialog-confirm
+        :md-active.sync="promptKonfirmasiPesanan"
+        md-title="Konfirmasi Pesanan?"
+        md-content="Apakah Anda yakin ingin mengonfirmasi pesanan ini?"
+        md-confirm-text="Ya"
+        md-cancel-text="Batal"
+        @md-confirm="konfirmasiPesanan" />
+
+      <!-- Prompt batal konfirmasi pesanan -->
+      <md-dialog-confirm
+        :md-active.sync="promptBatalKonfirmasiPesanan"
+        md-title="Batalkan Konfirmasi Pesanan?"
+        md-content="Apakah Anda yakin ingin membatalkan konfirmasi pesanan ini?"
+        md-confirm-text="Ya"
+        md-cancel-text="Batal"
+        @md-confirm="batalKonfirmasiPesanan" />
+
       <!-- Prompt selesaikan pesanan -->
       <md-dialog-confirm
         :md-active.sync="promptSelesaikanPesanan"
@@ -65,6 +67,15 @@
         md-confirm-text="Ya"
         md-cancel-text="Batal"
         @md-confirm="selesaikanPesanan" />
+
+      <!-- Prompt selesaikan pesanan -->
+      <md-dialog-confirm
+        :md-active.sync="promptBatalSelesaikanPesanan"
+        md-title="Batal Selesaikan Pesanan?"
+        md-content="Apakah Anda yakin ingin membatalkan penyelesaian pesanan ini?"
+        md-confirm-text="Ya"
+        md-cancel-text="Batal"
+        @md-confirm="batalSelesaikanPesanan" />
 
 			<md-card>
       	<ul class="breadcrumb">
@@ -86,9 +97,8 @@
           </md-card-header-text>
         </md-card-header>
         <md-card-content>
-      		<md-tabs class="md-transparent" md-alignment="fixed">
-
-            <md-tab md-label="Info Pemesan">
+          <md-tabs class="md-transparent" md-alignment="fixed">
+            <md-tab :md-label="tabInfoPemesan.label" :md-icon="tabInfoPemesan.icon">
               <md-progress-bar v-if="loading" md-mode="indeterminate"></md-progress-bar>
               <md-table v-else v-model="infoPemesan">
                 <md-table-row slot="md-table-row" slot-scope="{ item }">
@@ -105,7 +115,7 @@
               </md-table>
             </md-tab>
 
-            <md-tab md-label="Detail Peserta">
+            <md-tab :md-label="tabDetailPeserta.label" :md-icon="tabDetailPeserta.icon">
               <md-table v-model="detailPeserta">
                 <md-table-row slot="md-table-row" slot-scope="{ item }">
                   <md-table-cell md-label="Entri">
@@ -121,7 +131,7 @@
               </md-table>
             </md-tab>
 
-            <md-tab md-label="Alamat Pengiriman">
+            <md-tab :md-label="tabAlamatPengiriman.label" :md-icon="tabAlamatPengiriman.icon">
               <md-table v-model="alamatPengiriman">
                 <md-table-row slot="md-table-row" slot-scope="{ item }">
                   <md-table-cell md-label="Entri">
@@ -137,7 +147,7 @@
               </md-table>
             </md-tab>
 
-            <md-tab md-label="Info Pesanan">
+            <md-tab :md-label="tabInfoPesanan.label" :md-icon="tabInfoPesanan.icon">
               <div v-if="statusPesanan == 0" class="md-toolbar" style="margin-top: -20px; padding: 0px">
                 <div class="header-title md-toolbar-section-start">
                   <md-button class="md-dense md-raised" disabled>Pesanan telah dibatalkan</md-button>
@@ -150,20 +160,20 @@
                   <md-button @click="promptBatalkanPesanan = true" class="md-dense md-raised md-accent">Batalkan</md-button>
                 </div>
                 <div class="header-title md-toolbar-section-end">
-                  <md-button @click="konfirmasiPesanan()" class="md-dense md-raised md-primary">Konfirmasi</md-button>
+                  <md-button @click="promptKonfirmasiPesanan = true" class="md-dense md-raised md-primary">Konfirmasi</md-button>
                 </div>
               </div>
               <div v-else-if="statusPesanan == 1" class="md-toolbar" style="margin-top: -20px; padding: 0px">
                 <div class="header-title md-toolbar-section-start">
-                  <md-button @click="batalKonfirmasiPesanan()" class="md-dense md-raised md-accent">Batal Konfirmasi</md-button>
+                  <md-button @click="promptBatalKonfirmasiPesanan = true" class="md-dense md-raised md-accent">Batal Konfirmasi</md-button>
                 </div>
                 <div class="header-title md-toolbar-section-end">
-                  <md-button @click="selesaikanPesanan()" class="md-dense md-raised md-primary">Selesaikan</md-button>
+                  <md-button @click="promptSelesaikanPesanan = true" class="md-dense md-raised md-primary">Selesaikan</md-button>
                 </div>
               </div>
               <div v-else-if="statusPesanan == 2" class="md-toolbar" style="margin-top: -20px; padding: 0px">
                 <div class="header-title md-toolbar-section-start">
-                  <md-button @click="batalSelesaikanPesanan()" class="md-dense md-raised md-accent">Batal Selesaikan Pesanan</md-button>
+                  <md-button @click="promptBatalSelesaikanPesanan = true" class="md-dense md-raised md-accent">Batal Selesaikan Pesanan</md-button>
                 </div>
                 <div class="header-title md-toolbar-section-end">
                 </div>
@@ -183,10 +193,9 @@
                 </md-table-row>
               </md-table>
             </md-tab>
-
           </md-tabs>
         </md-card-content>
-      </md-card>
+      </md-card> 
 
       <!-- Snackbar pesanan dibatalkan -->
       <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarBatalkanPesanan" md-persistent>
@@ -221,24 +230,100 @@
 
 export default {
   data: () => ({
-  	url: window.location.origin + (window.location.pathname + 'laporan-order'),
+    url: window.location.origin + (window.location.pathname + 'laporan-order'),
     loading: true,
     infoPemesan: {},
     detailPeserta: {},
     alamatPengiriman: {},
     infoPesanan: {},
     statusPesanan: null,
+
+    // prompt
     promptBatalkanPesanan: false,
+    promptKonfirmasiPesanan: false,
+    promptBatalKonfirmasiPesanan: false,
     promptSelesaikanPesanan: false,
+    promptBatalSelesaikanPesanan: false,
+
+    // snackbar
     snackbarBatalkanPesanan: false,
     snackbarKonfirmasiPesanan: false,
     snackbarBatalKonfirmasiPesanan: false,
     snackbarSelesaikanPesanan: false,
     snackbarBatalSelesaikanPesanan: false,
+    windowWidth: 0,
+
+    // tab
+    tabInfoPemesan: {
+      label: 'Info Pemesan',
+      icon: 'perm_identity'
+    },
+    tabDetailPeserta: {
+      label: 'Detail Peserta',
+      icon: 'face'
+    },
+    tabAlamatPengiriman: {
+      label: 'Alamat Pengiriman',
+      icon: 'room'
+    },
+    tabInfoPesanan: {
+      label: 'Info Pesanan',
+      icon: 'shopping_cart'
+    }
   }),
+  watch: {
+    windowWidth(width) {
+      console.log(this.tabInfoPemesan)
+      if (width > 660) {
+        // desktop
+        this.tabInfoPemesan = {
+          label: 'Info Pemesan',
+          icon: ''
+        }
+        this.tabDetailPeserta = {
+          label: 'Detail Peserta',
+          icon: ''
+        }
+        this.tabAlamatPengiriman = {
+          label: 'Alamat Pengiriman',
+          icon: ''
+        }
+        this.tabInfoPesanan = {
+          label: 'Info Pesanan',
+          icon: ''
+        }
+      } else {
+        // mobile 
+        this.tabInfoPemesan = {
+          label: '',
+          icon: 'perm_identity'
+        }
+        this.tabDetailPeserta = {
+          label: '',
+          icon: 'face'
+        }
+        this.tabAlamatPengiriman = {
+          label: '',
+          icon: 'room'
+        }
+        this.tabInfoPesanan = {
+          label: '',
+          icon: 'shopping_cart'
+        }
+      }
+    }
+  },
+  mounted() {
+    this.windowWidth = screen.width;
+    this.$nextTick(() => {
+      window.addEventListener('resize', () => {
+        this.windowWidth = window.innerWidth
+      });
+    });
+  },
   created() {
     this.getLaporanOrderData();
-  	this.getInfoPesanan();
+    this.getInfoPesanan();
     this.getStatusPesanan();
   },
   filters: {
@@ -258,7 +343,7 @@ export default {
       .catch(resp => {
         console.log('catch getLaporanOrderData:', resp);
       })
-  	},
+    },
     getInfoPesanan() {
       axios.get(this.url + '/info-pesanan/' + this.$route.params.id_pesanan)
       .then(resp => {
