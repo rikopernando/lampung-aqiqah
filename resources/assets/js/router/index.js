@@ -41,6 +41,7 @@ import TentangKami from '../components/header/tentang-kami'
 // TESTIMONI
 import TestimoniIndex from '../components/testimoni'
 import TestimoniCreate from '../components/testimoni/create'
+import TestimoniEdit from '../components/testimoni/edit'
 
 const routes = [
   {
@@ -190,6 +191,10 @@ const routes = [
     path : '/testimoni/create',
     name : 'createTestimoni',
     component : TestimoniCreate
+  },{
+    path : '/testimoni/edit/:id',
+    name : 'editTestimoni',
+    component : TestimoniEdit
   }
 ]
 
