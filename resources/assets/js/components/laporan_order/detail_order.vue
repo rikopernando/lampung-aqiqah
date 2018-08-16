@@ -256,26 +256,26 @@ export default {
     // tab
     tabInfoPemesan: {
       label: 'Info Pemesan',
-      icon: 'home'
+      icon: 'perm_identity'
     },
     tabDetailPeserta: {
       label: 'Detail Peserta',
-      icon: 'pages'
+      icon: 'face'
     },
     tabAlamatPengiriman: {
       label: 'Alamat Pengiriman',
-      icon: 'notes'
+      icon: 'room'
     },
     tabInfoPesanan: {
       label: 'Info Pesanan',
-      icon: 'fastfood'
+      icon: 'shopping_cart'
     }
   }),
   watch: {
     windowWidth(width) {
       console.log(this.tabInfoPemesan)
       if (width > 660) {
-        // desktop tampil
+        // desktop
         this.tabInfoPemesan = {
           label: 'Info Pemesan',
           icon: ''
@@ -293,22 +293,22 @@ export default {
           icon: ''
         }
       } else {
-        // mobile tampil        
+        // mobile 
         this.tabInfoPemesan = {
           label: '',
-          icon: 'home'
+          icon: 'perm_identity'
         }
         this.tabDetailPeserta = {
           label: '',
-          icon: 'pages'
+          icon: 'face'
         }
         this.tabAlamatPengiriman = {
           label: '',
-          icon: 'notes'
+          icon: 'room'
         }
         this.tabInfoPesanan = {
           label: '',
-          icon: 'fastfood'
+          icon: 'shopping_cart'
         }
       }
     }
@@ -319,7 +319,7 @@ export default {
       window.addEventListener('resize', () => {
         this.windowWidth = window.innerWidth
       });
-    })
+    });
   },
   created() {
     this.getLaporanOrderData();
