@@ -57,7 +57,7 @@ class TestimoniController extends Controller
             'foto'          => 'image|max:3072',
         ]);
 
-        $insert_produk = Testimoni::create([
+        $insert_testimoni = Testimoni::create([
             'nama_lengkap' => strtolower($request->nama_lengkap),
             'profesi'      => $request->profesi,
             'testimoni'    => $request->testimoni
@@ -76,9 +76,9 @@ class TestimoniController extends Controller
               $image_resize = Image::make($foto->getRealPath());
               $image_resize->fit(300);
               $image_resize->save(public_path('image_produks/' . $filename));
-              $insert_produk->foto = $filename;
+              $insert_testimoni->foto = $filename;
               // menyimpan field foto di table barangs  dengan filename yang baru dibuat
-              $insert_produk->save();
+              $insert_testimoni->save();
             }
         }
     }
@@ -91,7 +91,7 @@ class TestimoniController extends Controller
      */
     public function show($id)
     {
-        //
+        return response(Testimoni::whereId($id)->first());
     }
 
     /**
@@ -114,7 +114,39 @@ class TestimoniController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $this->validate($request, [
+          'nama_lengkap'  => 'required|max:300',
+          'profesi'       => 'required|max:300',
+          'testimoni'     => 'required',
+          'foto'          => 'image|max:3072',
+      ]);
+      $update_testimoni = Testimoni::find($request->id);
+      $update_testimoni->update([
+        'nama_lengkap' => strtolower($request->nama_lengkap),
+        'profesi'      => $request->profesi,
+        'testimoni'    => $request->testimoni
+      ]);
+
+      if ($request->hasFile('foto')) {
+        $foto = $request->file('foto');
+
+          if (is_array($foto) || is_object($foto)) {
+            // Mengambil file yang diupload
+            $uploaded_foto = $foto;
+            // mengambil extension file
+            $extension = $uploaded_foto->getClientOriginalExtension();
+            // membuat nama file random berikut extension
+            $filename     = str_random(40) . '.' . $extension;
+            $image_resize = Image::make($foto->getRealPath());
+            $image_resize->fit(300);
+            $image_resize->save(public_path('image_produks/' . $filename));
+            $update_testimoni->foto = $filename;
+            // menyimpan field foto di table barangs  dengan filename yang baru dibuat
+            $update_testimoni->save();
+          }
+      }
+
+      $update_testimoni->save();
     }
 
     /**
