@@ -350,10 +350,14 @@ export default {
       this.showDialog = true;
     },
     sendMail(n, cb) {
-      setTimeout(() => {
+      axios.get(this.url + '/kirim-email/' + this.$route.params.id_pesanan)
+      .then(resp => {
+        console.log('then sendMail:', resp);
         cb();
-      }, 1500);
-
+      })
+      .catch(resp => {
+        console.log('catch sendMail:', resp);
+      })
     }
   }
 }
