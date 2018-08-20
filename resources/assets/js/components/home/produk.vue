@@ -163,6 +163,8 @@
         }else{
             this.$store.dispatch('keranjangbelanja/LOAD_CREATE_LIST',{id :id,jumlah_produk:1})
             this.snackbarBerhasil = true;
+            this.$store.dispatch('keranjangbelanja/LOAD_KERANJANG_LIST')
+            this.$store.dispatch('keranjangbelanja/LOAD_SUBTOTAL_LIST')
         }
       },
       openModalProduk(id_produk) {

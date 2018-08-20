@@ -131,7 +131,7 @@
                 </md-menu-content>
             </md-menu>
 
-            <router-link :to="{name: 'keranjangBelanja'}" class="md-button md-theme-default md-active">
+            <router-link :to="{name: 'keranjangBelanja'}" v-popover:info.bottom class="md-button md-theme-default md-active">
               <div class="md-ripple">
                 <div class="label-nav-main">KERANJANG</div>
                 <md-badge v-bind:md-content="this.$store.state.keranjangbelanja.countKeranjang">
@@ -139,6 +139,21 @@
                 </md-badge>
               </div>
             </router-link>
+            <popover name="info" :pointer="true" :width="180" :event="'hover'"  style="border:2px solid;">
+              <div class="widget_shopping_cart_content">
+                <ul v-for="keranjangbelanja in keranjangbelanjas" class="table-scroll">
+                <li>
+                   <img width="30" height="30" src="//rumahaqiqah.org/wp-content/uploads/2016/05/menu1-1.png" />
+                  <a style="font-size:12px">{{ keranjangbelanja.produk.nama_produk | capitalize }}</a>
+                  <p style="font-size:12px"><span>{{ keranjangbelanja.jumlah_produk | pemisahTitik }}</span> X <span> Rp {{ keranjangbelanja.subtotal | pemisahTitik }}</span></p>
+                 </li>
+                 <hr>
+                </ul>
+                <p><b>Subtotal: <span>Rp {{ this.$store.state.keranjangbelanja.subtotal | pemisahTitik }}</span></b></p>
+            </div>
+            </popover>
+
+
           </div>
         </div>
       </md-toolbar>
@@ -263,6 +278,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
 
     export default {
 			data : () => ({
@@ -271,6 +287,7 @@
         showSidepanel: false,
         errors : [],
         url : window.location.origin + window.location.pathname,
+        url_picture : window.location.origin + (window.location.pathname) + "image_produks/",
         token : $('meta[name="csrf-token"]').attr('content'),
         snackbar: false,
 				active : null,
@@ -296,6 +313,30 @@
 			}),
       mounted () {
         this.modal = true
+       this.$store.dispatch('keranjangbelanja/LOAD_KERANJANG_LIST')
+       this.$store.dispatch('keranjangbelanja/LOAD_SUBTOTAL_LIST')
+      },
+      props: {
+        /* Tooltip name.                           */   
+        width:   { type: Number,  default: 180     },
+        pointer: { type: Boolean, default: true    },
+        event:   { type: String,  default: 'click' },
+      },
+      computed : mapState ({    
+        keranjangbelanjas(){
+          return this.$store.state.keranjangbelanja.datakeranjang.data_keranjang
+        }
+      }),
+      filters: {
+          pemisahTitik: function (value) {
+          var angka = [value];
+          var numberFormat = new Intl.NumberFormat('es-ES');
+          var formatted = angka.map(numberFormat.format);
+          return formatted.join('; ');
+        },
+          capitalize: function (value) {
+            return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
+         },
       },
 			methods : {
 				openModal(which) {
@@ -526,4 +567,15 @@
     color: #868686;
     text-decoration: none;
   }
+  .widget_shopping_cart_content {
+    padding:  10px 0 10px;
+    color: #777;
+    background-color: #fff;
+    display: table;  
+  }
+  .table-scroll{
+    max-height: 200px;
+    overflow: auto;
+  }
+
 </style>

@@ -10,20 +10,27 @@ import vSelect from 'vue-select'
 import Sidebar from './components/sidebar/index'
 import axios from 'axios'
 import { LOGIN } from './store/user/mutations'
+import Popover from 'vue-js-popover'
 
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css' // This line here
 
+
+
 window.Vue.use(VueRouter)
 window.$ = window.jQuery = require('jquery')
+
+
+
+
 
 
 // Global Vue Components
 Vue.component('sidebar', Sidebar)
 Vue.component('selectize-component', require('vue2-selectize'))
 Vue.component('v-select',vSelect)
+Vue.use(Popover)
 Vue.use(VueMaterial)
-
 
 const router = new VueRouter({ routes })
 const url = window.location.origin + window.location.pathname 
