@@ -33,29 +33,19 @@
 		<div class="col-md-12" style="padding: 0">
 
       <md-dialog :md-active.sync="showDialog">
-        <md-dialog-title>
-          {{ showDialogTitle }}
-        </md-dialog-title>
+        <md-dialog-title> {{ showDialogTitle }} </md-dialog-title>
         <md-dialog-content v-if="loadingInDialog">
           <span v-if="emailLoading">Mengirim email...</span>
           <span v-else>Loading...</span>
           <md-progress-bar md-mode="indeterminate"></md-progress-bar>
         </md-dialog-content>
         <md-dialog-content v-else>
-          <div v-if="emailSent">
-            Email berhasil dikirim!
-          </div>
-          <div v-else>
-            {{ showDialogText }}
-          </div>
+          <div v-if="emailSent"> Email berhasil dikirim! </div>
+          <div v-else> {{ showDialogText }} </div>
         </md-dialog-content>
-        <md-dialog-actions>
-          <md-button>
-            close
-          </md-button>
-          <md-button @click="showDialogExecute">
-            kirim
-          </md-button>
+        <md-dialog-actions v-if="!loadingInDialog">
+          <md-button @click="showDialog = false"> Tutup </md-button>
+          <md-button v-if="!emailSent" @click="showDialogExecute"> Ya </md-button>
         </md-dialog-actions>
       </md-dialog>
 
@@ -332,7 +322,6 @@ export default {
               this.loadingInDialog = false;
               this.emailSent = true;
               setTimeout(() => {
-                this.showDialog = false;
                 this.emailLoading = false;
               }, 1500);
             })
