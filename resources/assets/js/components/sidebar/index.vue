@@ -12,10 +12,12 @@
         <div class="logo">
           Aqiqah Lampung
           <div class="pull-right">
+            <router-link :to="{name: 'logout'}" tag="div">
             <md-icon style="color: white">power_settings_new</md-icon>
             <span class="btn" style="color: white; font-weight: bold">
-              <router-link :to="{name: 'logout'}" tag="div">Logout</router-link>
+              Logout
             </span>
+            </router-link>
           </div>
         </div>
       </div>
@@ -125,6 +127,13 @@
             <router-link :to="{name: 'user'}" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
               <md-icon>account_box</md-icon>
               <span>User</span>
+            </router-link>
+          </md-list-item>
+
+          <md-list-item>
+            <router-link :to="{name: 'laporanOrder'}" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+              <md-icon>notes</md-icon>
+              <span>Laporan Order</span>
             </router-link>
           </md-list-item>
         </md-list>

@@ -17,6 +17,12 @@
 .head {
 	margin-bottom: 10px;
 }
+.footer[data-v-41998488] {
+    background: #f5f5fc;
+    border-top: 1px solid #e0e0f7;
+    margin-top: 0px;
+    padding: 30px;
+}
 
 </style>
 
@@ -84,6 +90,7 @@
     mixins: [validationMixin],
     data: () => ({
       urlKatalog: 'https://gdurl.com/f4i3/download',
+      tahun:0,
       error: {
         nama: '',
         email: '',
@@ -111,6 +118,8 @@
     },
 		mounted() {
 			this.kritikSaran()
+      let date = new Date(); 
+      this.tahun = date.getFullYear(); 
 		},
     methods: {
       getValidationClass (fieldName) {
