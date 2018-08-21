@@ -272,14 +272,14 @@ class LaporanOrderController extends Controller
         $bank = Bank::where('default',1)->first();
 
         $arrayN = [
-            1 => 'pesanan_dikonfirmasi',
-            2 => 'pesanan_diselesaikan'
+            1 => ['pesanan_dikonfirmasi', 'Konfirmasi'],
+            2 => ['pesanan_diselesaikan', 'Selesaikan']
         ];
 
-        Mail::send('mails.'. $arrayN[$request->n], compact('pesanan','detail_pesanan','kirim_tempat_lain','bank'), function ($message) use ($pesanan) {
+        Mail::send('mails.'. $arrayN[$request->n][0], compact('pesanan','detail_pesanan','kirim_tempat_lain','bank'), function ($message) use ($pesanan, $request, $arrayN) {
               $message->from('verifikasi@andaglos.id','Aqiqah Lampung');
               $message->to($pesanan->email);
-              $message->subject('Pesanan Anda Telah Kami Konfirmasi');
+              $message->subject('Pesanan Anda Telah Kami '. $arrayN[$request->n][1]);
         });
 
     }
