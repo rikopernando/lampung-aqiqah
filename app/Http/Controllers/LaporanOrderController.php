@@ -261,18 +261,22 @@ class LaporanOrderController extends Controller
         }
     }
 
-    public function kirimEmail($id_pesanan) {
+    public function kirimEmail(Request $request) {
         $pesanan = DB::table('pesanans')
             ->join('users', 'pesanans.pelanggan_id', '=', 'users.id')
             ->select('users.name as nama_pelanggan', 'pesanans.updated_at as tanggal_dikonfirmasi', 'pesanans.metode_pembayaran', 'users.email', 'pesanans.id', 'pesanans.total', 'users.alamat', 'users.no_telp')
-            ->where('pesanans.id', $id_pesanan)
+            ->where('pesanans.id', $request->id_pesanan)
             ->first();
-
         $detail_pesanan = DetailPesanan::with('produk')->where('id_pesanan',$pesanan->id)->get();
         $kirim_tempat_lain = KirimTempatLain::where('id_pesanan',$pesanan->id);
         $bank = Bank::where('default',1)->first();
 
-        Mail::send('mails.pesanan_dikonfirmasi', compact('pesanan','detail_pesanan','kirim_tempat_lain','bank'), function ($message) use ($pesanan) {
+        $arrayN = [
+            1 => 'pesanan_dikonfirmasi',
+            2 => 'pesanan_diselesaikan'
+        ];
+
+        Mail::send('mails.'. $arrayN[$request->n], compact('pesanan','detail_pesanan','kirim_tempat_lain','bank'), function ($message) use ($pesanan) {
               $message->from('verifikasi@andaglos.id','Aqiqah Lampung');
               $message->to($pesanan->email);
               $message->subject('Pesanan Anda Telah Kami Konfirmasi');
