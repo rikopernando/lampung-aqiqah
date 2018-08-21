@@ -330,6 +330,7 @@ export default {
             this.loadingInDialog = false;
           }
 
+          // snackbar
           if (this.showDialogKey.n == 0 && !this.showDialogKey.email) this.snackbarBatalkanPesanan = true;
           if (this.showDialogKey.n == 1 && this.showDialogKey.email) this.snackbarKonfirmasiPesanan = true;
           if (this.showDialogKey.n == null && !this.showDialogKey.email) this.snackbarBatalKonfirmasiPesanan = true;
@@ -350,7 +351,7 @@ export default {
       this.showDialog = true;
     },
     sendMail(n, cb) {
-      axios.get(this.url + '/kirim-email/' + this.$route.params.id_pesanan)
+      axios.post(this.url + '/kirim-email', { id_pesanan: this.$route.params.id_pesanan, n: n })
       .then(resp => {
         console.log('then sendMail:', resp);
         cb();
