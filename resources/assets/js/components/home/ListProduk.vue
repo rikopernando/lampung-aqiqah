@@ -174,6 +174,8 @@
   	}),
   	mounted() {
       this.$store.dispatch('daftarproduk/LOAD_DAFTAR_PRODUK',{tampil_produk :0 });
+      this.$store.dispatch('keranjangbelanja/LOAD_KERANJANG_LIST')
+      this.$store.dispatch('keranjangbelanja/LOAD_SUBTOTAL_LIST')
   	},
     filters: {
         pemisahTitik: function (value) {

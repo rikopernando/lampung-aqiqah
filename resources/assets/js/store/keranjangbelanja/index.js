@@ -79,6 +79,8 @@ const mutations = {
       if (respdata == 1) {
            state.countKeranjang += parseInt(1);
         }
+        console.log(state.datakeranjang.data_keranjang);
+
     },
     CLEARKERANJANG : (state) => {
         state.datakeranjang = {};
