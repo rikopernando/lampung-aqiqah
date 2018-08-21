@@ -40,12 +40,27 @@
           <md-progress-bar md-mode="indeterminate"></md-progress-bar>
         </md-dialog-content>
         <md-dialog-content v-else>
-          <div v-if="emailSent"> Email berhasil dikirim! </div>
-          <div v-else> {{ showDialogText }} </div>
+          <div v-if="emailFailed"> Email gagal dikirim karena gangguan server.</div>
+          <div v-else>
+            <div v-if="emailSent"> Email berhasil dikirim! </div>
+            <div v-else> {{ showDialogText }} </div>
+          </div>
         </md-dialog-content>
         <md-dialog-actions v-if="!loadingInDialog">
           <md-button @click="showDialog = false"> Tutup </md-button>
-          <md-button v-if="!emailSent" @click="showDialogExecute"> Ya </md-button>
+          <span v-if="emailFailed">
+            <md-button @click="sendMail(showDialogKey.n, () => {
+              this.loadingInDialog = false;
+              this.emailSent = true;
+              this.emailFailed = false;
+              setTimeout(() => {
+                this.emailLoading = false;
+              }, 1500);              
+            })"> Kirim Ulang </md-button>
+          </span>
+          <span v-else>
+            <md-button v-if="!emailSent" @click="showDialogExecute"> Ya </md-button>
+          </span>
         </md-dialog-actions>
       </md-dialog>
 
@@ -238,6 +253,7 @@ export default {
     emailLoading: false,
     loadingInDialog: false,
     emailSent: false,
+    emailFailed: false,
     showDialog: false,
     showDialogTitle: '',
     showDialogText: '',
@@ -321,6 +337,7 @@ export default {
             this.sendMail(this.showDialogKey.n, () => {
               this.loadingInDialog = false;
               this.emailSent = true;
+              this.emailFailed = false;
               setTimeout(() => {
                 this.emailLoading = false;
               }, 1500);
@@ -344,20 +361,27 @@ export default {
       }, 500);
     },
     showDialogData(title, text, n) {
-      this.emailSent = false;
-      this.showDialogTitle = title;
-      this.showDialogText = text;
-      this.showDialogKey = {n: n.n, email: n.email};
+      if (!this.emailLoading) {
+        this.showDialogTitle = title;
+        this.showDialogText = text;
+        this.emailSent = false;
+        this.showDialogKey = {n: n.n, email: n.email};
+        this.emailFailed = false;
+        this.emailSent = false;
+      }
       this.showDialog = true;
     },
     sendMail(n, cb) {
-      axios.post(this.url + '/kirim-email', { id_pesanan: this.$route.params.id_pesanan, n: n })
+      axios.post(this.url + '/kirim-emai', { id_pesanan: this.$route.params.id_pesanan, n: n })
       .then(resp => {
         console.log('then sendMail:', resp);
         cb();
       })
       .catch(resp => {
         console.log('catch sendMail:', resp);
+        this.emailFailed = true;
+        this.loadingInDialog = false;
+        this.emailLoading = false;
       })
     }
   }
