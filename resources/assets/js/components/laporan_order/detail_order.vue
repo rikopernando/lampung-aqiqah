@@ -40,25 +40,30 @@
           <md-progress-bar md-mode="indeterminate"></md-progress-bar>
         </md-dialog-content>
         <md-dialog-content v-else>
-          <div v-if="emailFailed"> Email gagal dikirim karena gangguan server.</div>
+          <div v-if="emailFailed">
+            <div v-if="closeDialogWhenEmailFailed">
+              Menutup pop-up ini ketika email gagal dikirim menyebabkan Anda tidak dapat mengirim ulang email kembali. Kami menyarankan agar Anda mengirim ulang email mengingat opsi kirim ulang email tidak akan muncul lagi ketika anda menutupnya.
+            </div>
+            <div v-else> Email gagal dikirim karena gangguan server. </div>
+          </div>
           <div v-else>
             <div v-if="emailSent"> Email berhasil dikirim! </div>
             <div v-else> {{ showDialogText }} </div>
           </div>
         </md-dialog-content>
         <md-dialog-actions v-if="!loadingInDialog">
-          <md-button @click="showDialog = false"> Tutup </md-button>
           <span v-if="emailFailed">
+            <md-button v-if="!closeDialogWhenEmailFailed" @click="closeDialogWhenEmailFailed = true"> Tutup </md-button>
+            <md-button v-else @click="showDialog = false; emailLoading = false; emailFailed = false"> Tutup </md-button>
             <md-button @click="sendMail(showDialogKey.n, () => {
               this.loadingInDialog = false;
               this.emailSent = true;
               this.emailFailed = false;
-              setTimeout(() => {
-                this.emailLoading = false;
-              }, 1500);              
+              this.emailLoading = false;
             })"> Kirim Ulang </md-button>
           </span>
           <span v-else>
+            <md-button @click="showDialog = false"> Tutup </md-button>
             <md-button v-if="!emailSent" @click="showDialogExecute"> Ya </md-button>
           </span>
         </md-dialog-actions>
@@ -258,6 +263,7 @@ export default {
     showDialogTitle: '',
     showDialogText: '',
     showDialogKey: { n: null, email: false },
+    closeDialogWhenEmailFailed: false
   }),
   watch: {
     windowWidth(width) {
@@ -338,9 +344,7 @@ export default {
               this.loadingInDialog = false;
               this.emailSent = true;
               this.emailFailed = false;
-              setTimeout(() => {
-                this.emailLoading = false;
-              }, 1500);
+              this.emailLoading = false;
             })
           } else {
             this.showDialog = false;
@@ -361,7 +365,7 @@ export default {
       }, 500);
     },
     showDialogData(title, text, n) {
-      if (!this.emailLoading) {
+      if (!this.emailLoading && !this.emailFailed) {
         this.showDialogTitle = title;
         this.showDialogText = text;
         this.emailSent = false;
@@ -372,7 +376,9 @@ export default {
       this.showDialog = true;
     },
     sendMail(n, cb) {
-      axios.post(this.url + '/kirim-emai', { id_pesanan: this.$route.params.id_pesanan, n: n })
+      this.loadingInDialog = true;
+      this.emailLoading = true;
+      axios.post(this.url + '/kirim-email', { id_pesanan: this.$route.params.id_pesanan, n: n })
       .then(resp => {
         console.log('then sendMail:', resp);
         cb();
@@ -382,6 +388,7 @@ export default {
         this.emailFailed = true;
         this.loadingInDialog = false;
         this.emailLoading = false;
+        this.closeDialogWhenEmailFailed = false;
       })
     }
   }
