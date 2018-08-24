@@ -28,32 +28,38 @@
           <li>
             <router-link :to="{name: 'dashboard'}">
               <md-icon>dashboard</md-icon><span class="dekstop-menu">Dashboard</span>
+              <md-tooltip md-direction="right">Dashboard</md-tooltip>
             </router-link>
           </li>
           <li>
             <router-link :to="{name: 'produk'}">
               <md-icon>fastfood</md-icon><span class="dekstop-menu">Produk</span>
+              <md-tooltip md-direction="right">Produk</md-tooltip>
             </router-link>
           </li>
           <li>
             <router-link :to="{name: 'bank'}">
               <md-icon>attach_money</md-icon><span class="dekstop-menu">Bank</span>
+              <md-tooltip md-direction="right">Bank</md-tooltip>
             </router-link>
           </li>
           <li>
             <router-link :to="{name: 'user'}">
               <md-icon>account_box</md-icon><span class="dekstop-menu">User</span>
+              <md-tooltip md-direction="right">User</md-tooltip>
             </router-link>
           </li>
           <li>
             <router-link :to="{name: 'laporanOrder'}">
               <md-icon>notes</md-icon><span class="dekstop-menu">Laporan Order</span>
+              <md-tooltip md-direction="right">Laporan Order</md-tooltip>
             </router-link>
           </li>
           <li>
             <router-link to="" data-toggle="collapse" href="#settings" style="background: #ffffff">
               <md-icon>settings_applications</md-icon>
               <span class="dekstop-menu">Setting</span>
+              <md-tooltip md-direction="right">Setting</md-tooltip>
               <md-icon style="padding-left: 80px;">keyboard_arrow_down</md-icon>
             </router-link>
 
@@ -63,6 +69,7 @@
                   <router-link :to="{name: 'testimoni'}" class="drop-menu">
                     <span>TM</span>
                     <span class="dekstop-menu">Testimoni</span>
+                    <md-tooltip md-direction="right">Testimoni</md-tooltip>
                   </router-link>
                 </li>
               </ul>
