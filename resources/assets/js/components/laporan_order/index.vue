@@ -36,17 +36,17 @@
           </md-card-header-text>
         </md-card-header>
         <md-card-content>
-      		<md-table v-model="searched" md-sort="name" md-sort-order="asc" md-fixed-header>
+      		<md-table v-model="orderList" md-sort="name" md-sort-order="asc" md-fixed-header>
 			      <md-table-empty-state v-if="loading">
 					    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
 			      </md-table-empty-state>
 			      <md-table-empty-state
-			      	v-else-if="laporan_order.length == 0"
+			      	v-else-if="orderList.length == 0"
 			        md-label="Tidak ada data"
 			        md-description="Belum ada data Laporan yang tersimpan.">
 			      </md-table-empty-state>    	
 			      <md-table-empty-state
-			      	v-else-if="laporan_order.length > 0 && search != null"
+			      	v-else-if="orderList.length > 0 && search != null"
 			        md-label="Tidak ada Laporan ditemukan"
 			        :md-description="`Tidak ada Laporan ditemukan untuk kata kunci '${search}'. Cobalah menggunakan kata kunci yang lain.`">
 			      </md-table-empty-state>
@@ -94,6 +94,8 @@
 
 <script>
 
+import { mapState } from 'vuex'
+
 const toLower = text => {
   return text.toString().toLowerCase();
 };
@@ -119,6 +121,11 @@ export default {
   created() {
   	this.getLaporanOrderData();
   },
+  computed : mapState ({
+    orderList(){
+      return this.$store.state.laporanorder.orderList
+    }
+  }),
   filters: {
     currency(number) {
       return accounting.formatMoney(number, '', '2', '.', ',')
@@ -129,7 +136,7 @@ export default {
       axios.get(this.url + '/' + 'view')
       .then(resp => {
         console.log(resp.data)
-        this.laporan_order = resp.data;
+        this.$store.commit('laporanorder/updateOrderList', resp.data);
         this.searched = resp.data;
         this.loading = false;
       })
