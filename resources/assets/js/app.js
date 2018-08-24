@@ -17,13 +17,13 @@ import 'vue-material/dist/theme/default.css' // This line here
 window.Vue.use(VueRouter)
 window.$ = window.jQuery = require('jquery')
 
-import Paging from './components/paging/paging'
+// import Paging from './components/paging/paging'
 
 // Global Vue Components
 Vue.component('sidebar', Sidebar)
 Vue.component('selectize-component', require('vue2-selectize'))
 Vue.component('v-select', vSelect)
-Vue.component('paging', Paging)
+// Vue.component('paging', Paging)
 Vue.use(VueMaterial)
 
 
