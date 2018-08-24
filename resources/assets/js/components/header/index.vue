@@ -82,7 +82,7 @@
       <md-toolbar class="md-dense" md-elevation="2" style="background-color: white">
         <div class="md-toolbar-row">
             <a href="#/" class="icon-aqiqah md-button md-theme-default md-active">
-                <img src="https://rumahaqiqah.org/wp-content/uploads/2018/01/rumahaqiqah3.png" alt="Aqiqah Lampung">
+                <img :src="url+'images/rumahaqiqah3.jpg'" alt="Aqiqah Lampung">
             </a>
 
           <div class="md-toolbar-section-start">
@@ -156,7 +156,7 @@
           </div>
 
           <a href="#/" class="md-toolbar-section-end">
-              <img src="https://rumahaqiqah.org/wp-content/uploads/2018/01/rumahaqiqah3.png" alt="Aqiqah Lampung">
+              <img :src="url+'images/rumahaqiqah3.jpg'" alt="Aqiqah Lampung">
           </a>
 
           <div class="md-toolbar-section-end">
@@ -194,7 +194,7 @@
           <md-toolbar class="md-transparent" md-elevation="0">
             <span class="md-title">
               <a href="#/" class="md-toolbar-section-end">
-                  <img src="https://rumahaqiqah.org/wp-content/uploads/2018/01/rumahaqiqah3.png" alt="Aqiqah Lampung">
+                  <img :src="url+'images/rumahaqiqah3.jpg'" alt="Aqiqah Lampung">
               </a>
             </span>
           </md-toolbar>
