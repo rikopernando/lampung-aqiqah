@@ -40,12 +40,32 @@
           <md-progress-bar md-mode="indeterminate"></md-progress-bar>
         </md-dialog-content>
         <md-dialog-content v-else>
-          <div v-if="emailSent"> Email berhasil dikirim! </div>
-          <div v-else> {{ showDialogText }} </div>
+          <div v-if="emailFailed">
+            <div v-if="closeDialogWhenEmailFailed">
+              Menutup pop-up ini ketika email gagal dikirim menyebabkan Anda tidak dapat mengirim ulang email kembali. Kami menyarankan agar Anda mengirim ulang email mengingat opsi kirim ulang email tidak akan muncul lagi ketika anda menutupnya.
+            </div>
+            <div v-else> Email gagal dikirim karena gangguan server. </div>
+          </div>
+          <div v-else>
+            <div v-if="emailSent"> Email berhasil dikirim! </div>
+            <div v-else> {{ showDialogText }} </div>
+          </div>
         </md-dialog-content>
         <md-dialog-actions v-if="!loadingInDialog">
-          <md-button @click="showDialog = false"> Tutup </md-button>
-          <md-button v-if="!emailSent" @click="showDialogExecute"> Ya </md-button>
+          <span v-if="emailFailed">
+            <md-button v-if="!closeDialogWhenEmailFailed" @click="closeDialogWhenEmailFailed = true"> Tutup </md-button>
+            <md-button v-else @click="showDialog = false; emailLoading = false; emailFailed = false"> Tutup </md-button>
+            <md-button @click="sendMail(showDialogKey.n, () => {
+              this.loadingInDialog = false;
+              this.emailSent = true;
+              this.emailFailed = false;
+              this.emailLoading = false;
+            })"> Kirim Ulang </md-button>
+          </span>
+          <span v-else>
+            <md-button @click="showDialog = false"> Tutup </md-button>
+            <md-button v-if="!emailSent" @click="showDialogExecute"> Ya </md-button>
+          </span>
         </md-dialog-actions>
       </md-dialog>
 
@@ -238,10 +258,12 @@ export default {
     emailLoading: false,
     loadingInDialog: false,
     emailSent: false,
+    emailFailed: false,
     showDialog: false,
     showDialogTitle: '',
     showDialogText: '',
     showDialogKey: { n: null, email: false },
+    closeDialogWhenEmailFailed: false
   }),
   watch: {
     windowWidth(width) {
@@ -321,15 +343,15 @@ export default {
             this.sendMail(this.showDialogKey.n, () => {
               this.loadingInDialog = false;
               this.emailSent = true;
-              setTimeout(() => {
-                this.emailLoading = false;
-              }, 1500);
+              this.emailFailed = false;
+              this.emailLoading = false;
             })
           } else {
             this.showDialog = false;
             this.loadingInDialog = false;
           }
 
+          // snackbar
           if (this.showDialogKey.n == 0 && !this.showDialogKey.email) this.snackbarBatalkanPesanan = true;
           if (this.showDialogKey.n == 1 && this.showDialogKey.email) this.snackbarKonfirmasiPesanan = true;
           if (this.showDialogKey.n == null && !this.showDialogKey.email) this.snackbarBatalKonfirmasiPesanan = true;
@@ -343,17 +365,31 @@ export default {
       }, 500);
     },
     showDialogData(title, text, n) {
-      this.emailSent = false;
-      this.showDialogTitle = title;
-      this.showDialogText = text;
-      this.showDialogKey = {n: n.n, email: n.email};
+      if (!this.emailLoading && !this.emailFailed) {
+        this.showDialogTitle = title;
+        this.showDialogText = text;
+        this.emailSent = false;
+        this.showDialogKey = {n: n.n, email: n.email};
+        this.emailFailed = false;
+        this.emailSent = false;
+      }
       this.showDialog = true;
     },
     sendMail(n, cb) {
-      setTimeout(() => {
+      this.loadingInDialog = true;
+      this.emailLoading = true;
+      axios.post(this.url + '/kirim-email', { id_pesanan: this.$route.params.id_pesanan, n: n })
+      .then(resp => {
+        console.log('then sendMail:', resp);
         cb();
-      }, 1500);
-
+      })
+      .catch(resp => {
+        console.log('catch sendMail:', resp);
+        this.emailFailed = true;
+        this.loadingInDialog = false;
+        this.emailLoading = false;
+        this.closeDialogWhenEmailFailed = false;
+      })
     }
   }
 }

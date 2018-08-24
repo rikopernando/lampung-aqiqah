@@ -52,6 +52,7 @@ Route::get('laporan-order/detail-order/{id_pesanan}', 'LaporanOrderController@de
 Route::get('laporan-order/info-pesanan/{id_pesanan}', 'LaporanOrderController@infoPesanan');
 Route::post('laporan-order/ubah-status-pesanan', 'LaporanOrderController@ubahStatusPesanan');
 Route::get('laporan-order/status-pesanan/{id_pesanan}', 'LaporanOrderController@statusPesanan');
+Route::post('laporan-order/kirim-email', 'LaporanOrderController@kirimEmail');
 
 // Pesanan
 Route::get('pesanan/provinsi', 'PesananController@provinsi');
