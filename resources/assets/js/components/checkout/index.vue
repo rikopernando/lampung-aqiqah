@@ -88,12 +88,8 @@
 							
 							<h4>Metode Pembayaran</h4>
 							<md-steppers md-vertical>
-								<md-step id="first" md-label="Transfer Bank" v-on:click="pesanan.metode_pembayaran = 'Transfer Bank'">
+								<md-step id="first" md-label="Transfer Bank">
 										Lakukan pembayaran Anda langsung ke rekening bank kami. Harap gunakan ID Pesanan Anda sebagai referensi pembayaran. Pesanan Anda tidak akan dikirim sampai dana telah masuk ke rekening kami.
-								</md-step>
-
-								<md-step id="second" md-label="Cash On Delivery" v-on:click="pesanan.metode_pembayaran = 'Cash On Delivery'">
-										Pembayaran di tempat saat barang datang
 								</md-step>
 							</md-steppers>
 							
