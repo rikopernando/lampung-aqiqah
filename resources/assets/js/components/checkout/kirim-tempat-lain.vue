@@ -23,6 +23,10 @@
         <span v-if="errors['kirim_tempat_lain.alamat']" class="error-message"> {{ errors['kirim_tempat_lain.alamat'][0] | replace }} </span>
       </div>
       <div class="form-group">
+        <input type="text" v-on:input="kirim_tempat_lain.handphone = $event.target.value" class="form-control form-checkout" placeholder="Handphone" id="handphone">
+        <span v-if="errors['kirim_tempat_lain.handphone']" class="error-message"> {{ errors['kirim_tempat_lain.handphone'][0] | replace }} </span>
+      </div>
+      <div class="form-group">
         <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kabupaten_lain"></md-progress-bar>
         <p class="waiting" v-if="this.$store.state.lokasi.load_kabupaten_lain">Mohon tunggu ...</p>
         <selectize-component :settings="select_kabupaten" ref="kabupaten" v-on:input="pilihWilayah('kecamatan')" v-if="showKabupaten">
@@ -97,6 +101,7 @@
     },
     mounted() {
       const app = this
+      app.kirim_tempat_lain.provinsi = 18
       app.setWilayah('kabupaten',18)
     },
     methods : {

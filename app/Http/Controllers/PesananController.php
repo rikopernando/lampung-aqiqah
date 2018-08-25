@@ -104,6 +104,7 @@ class PesananController extends Controller
              'nama_belakang' => $request->kirim_tempat_lain['nama_belakang'],
              'company_name' => $request->kirim_tempat_lain['company_name'],
              'alamat' => $request->kirim_tempat_lain['alamat'],
+             'no_telp' => $request->kirim_tempat_lain['handphone'],
              'provinsi' => $request->kirim_tempat_lain['provinsi'],
              'kabupaten' => $request->kirim_tempat_lain['kabupaten'],
              'kecamatan' => $request->kirim_tempat_lain['kecamatan'],
@@ -164,6 +165,7 @@ class PesananController extends Controller
             $pemesan = [
                ['judul' => 'Nama', 'isi' => $pesanan->pelanggan->name], 
                ['judul' => 'Alamat', 'isi' => $pesanan->pelanggan->alamat], 
+               ['judul' => 'No. Telepon', 'isi' => $pesanan->pelanggan->no_telp], 
                ['judul' => 'Kelurahan', 'isi' => $pesanan->Kelurahan], 
                ['judul' => 'Kecamatan', 'isi' => $pesanan->Kecamatan], 
                ['judul' => 'Kabupaten', 'isi' => $pesanan->Kabupaten], 
@@ -183,6 +185,7 @@ class PesananController extends Controller
                    ['judul' => 'Nama', 'isi' => $kirim_tempat_lain->first()->nama_depan." ".$kirim_tempat_lain->first()->nama_belakang], 
                    ['judul' => 'Company Name', 'isi' => $kirim_tempat_lain->first()->company_name], 
                    ['judul' => 'Alamat', 'isi' => $kirim_tempat_lain->first()->alamat], 
+                   ['judul' => 'No. Telepon', 'isi' => $kirim_tempat_lain->first()->no_telp], 
                    ['judul' => 'Kelurahan', 'isi' => $kirim_tempat_lain->first()->KelurahanKirim], 
                    ['judul' => 'Kecamatan', 'isi' => $kirim_tempat_lain->first()->KecamatanKirim], 
                    ['judul' => 'Kabupaten', 'isi' => $kirim_tempat_lain->first()->KabupatenKirim], 
@@ -309,6 +312,7 @@ class PesananController extends Controller
           $rules['kirim_tempat_lain.nama_belakang'] =  'required';
           $rules['kirim_tempat_lain.company_name'] = 'required';
           $rules['kirim_tempat_lain.alamat'] = 'required';
+          $rules['kirim_tempat_lain.handphone'] = 'required';
           $rules['kirim_tempat_lain.provinsi'] = 'required';
           $rules['kirim_tempat_lain.kabupaten'] = 'required';
           $rules['kirim_tempat_lain.kecamatan'] = 'required';

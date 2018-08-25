@@ -172,6 +172,7 @@
           nama_belakang : '',
           company_name : '',
           alamat : '',
+          handphone : '',
           provinsi : '',
           kelurahan : '',
           kecamatan : '',
