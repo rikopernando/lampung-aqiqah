@@ -14,7 +14,6 @@
           </div>
         </div>
       </div>
-
       <div class="form-group">
         <input type="text" v-on:input="kirim_tempat_lain.company_name = $event.target.value" placeholder="Company Name" class="form-control form-checkout">
         <span v-if="errors['kirim_tempat_lain.company_name']" class="error-message"> {{ errors['kirim_tempat_lain.company_name'][0] | replace }} </span>
@@ -24,10 +23,8 @@
         <span v-if="errors['kirim_tempat_lain.alamat']" class="error-message"> {{ errors['kirim_tempat_lain.alamat'][0] | replace }} </span>
       </div>
       <div class="form-group">
-        <selectize-component :settings="select_provinsi" ref="provinsi" v-on:input="pilihWilayah('kabupaten')">
-          <option v-for="provinsi, index in provinsi" v-bind:value="provinsi.id">{{ provinsi.name }} </option> 
-        </selectize-component>
-        <span v-if="errors['kirim_tempat_lain.provinsi']" class="error-message"> {{ errors['kirim_tempat_lain.provinsi'][0] | replace }} </span>
+        <input type="text" v-on:input="kirim_tempat_lain.handphone = $event.target.value" class="form-control form-checkout" placeholder="Handphone" id="handphone">
+        <span v-if="errors['kirim_tempat_lain.handphone']" class="error-message"> {{ errors['kirim_tempat_lain.handphone'][0] | replace }} </span>
       </div>
       <div class="form-group">
         <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kabupaten_lain"></md-progress-bar>
@@ -62,7 +59,7 @@
   import { LOAD_DATA } from '../../store/lokasi/mutations'
 
   export default {
-    props : ['kirim_tempat_lain', 'select_provinsi', 'select_kabupaten' , 'select_kecamatan', 'select_kelurahan', 'provinsi', 'errors'],
+    props : ['kirim_tempat_lain', 'select_kabupaten' , 'select_kecamatan', 'select_kelurahan', 'provinsi', 'errors'],
     data : () => ({
         showKabupaten : false,
         showKecamatan : false,
@@ -102,27 +99,19 @@
           }
         }
     },
+    mounted() {
+      const app = this
+      app.kirim_tempat_lain.provinsi = 18
+      app.setWilayah('kabupaten',18)
+    },
     methods : {
       changeKelurahan(){
         this.kirim_tempat_lain.kelurahan = this.$refs.kelurahan.$el.selectize.getValue()
       },
       pilihWilayah(type) {
         const app = this
-        var selectize
         var id_wilayah 
           switch (type) {
-             case "kabupaten":
-               id_wilayah = app.$refs.provinsi.$el.selectize.getValue()
-                if(id_wilayah){
-                    app.kirim_tempat_lain.provinsi = id_wilayah
-                    app.kirim_tempat_lain.kabupaten = null 
-                    app.kirim_tempat_lain.kecamatan = null
-                    app.kirim_tempat_lain.kelurahan = null
-                    app.showKabupaten = false
-                    app.showKecamatan = false
-                    app.showKelurahan = false
-                }
-                  break;
               case "kecamatan":
                 id_wilayah = app.$refs.kabupaten.$el.selectize.getValue()
                 if(id_wilayah){
@@ -144,13 +133,17 @@
             }
 
             if(id_wilayah){
-              app.$store.commit(`lokasi/${LOAD_DATA}`,{data : type, status : 2})
-              app.$store.dispatch('lokasi/LOAD_WILAYAH',{
-                type : type,
-                id : id_wilayah,
-                status : 2
-              })
+              app.setWilayah(type,id_wilayah)
           }
+       },
+       setWilayah(type,id_wilayah){
+          const app = this
+          app.$store.commit(`lokasi/${LOAD_DATA}`,{data : type, status : 2})
+          app.$store.dispatch('lokasi/LOAD_WILAYAH',{
+            type : type,
+            id : id_wilayah,
+            status : 2
+          })
        }
     }
   }

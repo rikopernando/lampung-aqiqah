@@ -8,7 +8,7 @@ use Indonesia;
 class KirimTempatLain extends Model
 {
     protected $fillable = [
-        'id_pesanan', 'nama_depan', 'nama_belakang', 'company_name', 'alamat', 'alamat', 'provinsi', 'kabupaten', 'kecamatan', 'kelurahan'
+        'id_pesanan', 'nama_depan', 'nama_belakang', 'company_name', 'alamat', 'alamat', 'provinsi', 'kabupaten', 'kecamatan', 'kelurahan', 'no_telp'
     ];
 
     public function getProvinsiKirimAttribute() {
