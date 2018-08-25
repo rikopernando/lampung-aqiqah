@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\BeritaKami;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class BeritaKamiController extends Controller
 {
@@ -14,6 +16,10 @@ class BeritaKamiController extends Controller
     public function index()
     {
         //
+    }
+
+        public function view() {
+        return response(BeritaKami::select()->get());
     }
 
     /**

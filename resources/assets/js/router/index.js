@@ -44,6 +44,12 @@ import TestimoniIndex from '../components/testimoni'
 import TestimoniCreate from '../components/testimoni/create'
 import TestimoniEdit from '../components/testimoni/edit'
 
+
+// BERITA KAMI
+import BeritaKamiIndex from '../components/beritakami/BeritaIndex'
+import BeritaKamiCreate from '../components/beritakami/BeritaCreate'
+import BeritaKamiEdit from '../components/beritakami/BeritaEdit'
+
 const routes = [
   {
     path : '/',
@@ -196,6 +202,18 @@ const routes = [
     path : '/testimoni/edit/:id',
     name : 'editTestimoni',
     component : TestimoniEdit
+  },{
+    path : '/berita-kami',
+    name : 'beritaKami',
+    component : BeritaKamiIndex
+  },{
+    path : '/berita-kami/create',
+    name : 'createBeritaKami',
+    component : BeritaKamiCreate
+  },{
+    path : '/berita-kami/edit/:id',
+    name : 'editBeritaKami',
+    component : BeritaKamiEdit
   }
 ]
 
