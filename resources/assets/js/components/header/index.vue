@@ -53,12 +53,9 @@
         <md-snackbar :md-active.sync="snackbar">{{ alertSnackbar }}</md-snackbar>
 
         <h3 class="md-title" style="flex: 1"></h3>
-        <md-button href="#/list-produk" style="color: white; font-size: 12px">Pemesanan</md-button>
-        <md-button href="#/keranjang-belanja" style="color: white; font-size: 12px">Pembayaran</md-button>
-        <md-button href="#/keagenan" style="color: white; font-size: 12px">Keagenan</md-button>
-        <md-button :to="{name: 'tentangKami'}" style="color: white; font-size: 12px">
-          Tentang Kami
-        </md-button>
+        <md-button  :to="{name: 'tentangKami'}" style="color: white; font-size: 12px">Tentang Kami</md-button>
+        <md-button href="#"  style="color: white; font-size: 12px">Berita Kami</md-button>
+        <md-button href="#"  style="color: white; font-size: 12px">Kemitraan</md-button>
         <md-button class="md-icon-button">
           <a href="#/facebook">
             <i class="fa fa-facebook-f icon-link"></i>
@@ -105,6 +102,19 @@
                 <div class="label-nav-main">PRODUK</div>
               </div>
             </router-link>
+
+            <router-link class="md-button md-theme-default md-active" :to="{name: 'indexAkun'}">
+              <div class="md-ripple">
+                <div class="label-nav-main">PEMESANAN</div>
+              </div>
+            </router-link>
+
+            <router-link class="md-button md-theme-default md-active" :to="{name: 'checkout'}">
+              <div class="md-ripple">
+                <div class="label-nav-main">PEMBAYARAN</div>
+              </div>
+            </router-link>
+
           </div>
 
           <div class="md-toolbar-section-end">
@@ -222,14 +232,14 @@
             </md-list-item>
 
             <md-list-item>
-              <a href="#/list-produk" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+              <a href="#/akun" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
                 <md-icon>add_shopping_cart</md-icon>
                 <span>Pemesanan</span>
               </a>
             </md-list-item>
 
             <md-list-item>
-              <a href="#/keranjang-belanja" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+              <a href="#/checkout" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
                 <md-icon>local_atm</md-icon>
                 <span>Pembayaran</span>
               </a>
