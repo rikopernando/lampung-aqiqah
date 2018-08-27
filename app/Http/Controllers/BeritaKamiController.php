@@ -46,7 +46,7 @@ class BeritaKamiController extends Controller
             'foto'          => 'image|max:3072',
         ]);
 
-        $insert_testimoni = BeritaKami::create([
+        $insert_berita = BeritaKami::create([
             'judul_berita' => strtolower($request->judul_berita),
             'isi_berita'      => $request->isi_berita,
         ]);
@@ -62,11 +62,11 @@ class BeritaKamiController extends Controller
               // membuat nama file random berikut extension
               $filename     = str_random(40) . '.' . $extension;
               $image_resize = Image::make($foto->getRealPath());
-              $image_resize->fit(2100, 370);
+              $image_resize->fit(900, 300);
               $image_resize->save(public_path('image_berita/' . $filename));
-              $insert_testimoni->foto = $filename;
+              $insert_berita->foto = $filename;
               // menyimpan field foto di table barangs  dengan filename yang baru dibuat
-              $insert_testimoni->save();
+              $insert_berita->save();
             }
         }
     }
@@ -79,7 +79,7 @@ class BeritaKamiController extends Controller
      */
     public function show($id)
     {
-        //
+        return response(BeritaKami::whereId($id)->first());
     }
 
     /**
@@ -102,7 +102,38 @@ class BeritaKamiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'judul_berita'  => 'required|max:300',
+            'isi_berita'     => 'required',
+            'foto'          => 'image|max:3072',
+        ]);
+
+      $update_berita = BeritaKami::find($request->id);
+      $update_berita->update([
+            'judul_berita' => strtolower($request->judul_berita),
+            'isi_berita'      => $request->isi_berita,
+      ]);
+
+      if ($request->hasFile('foto')) {
+        $foto = $request->file('foto');
+
+          if (is_array($foto) || is_object($foto)) {
+            // Mengambil file yang diupload
+            $uploaded_foto = $foto;
+            // mengambil extension file
+            $extension = $uploaded_foto->getClientOriginalExtension();
+            // membuat nama file random berikut extension
+            $filename     = str_random(40) . '.' . $extension;
+            $image_resize = Image::make($foto->getRealPath());
+            $image_resize->fit(900, 300);
+            $image_resize->save(public_path('image_berita/' . $filename));
+            $update_berita->foto = $filename;
+            // menyimpan field foto di table barangs  dengan filename yang baru dibuat
+            $update_berita->save();
+          }
+      }
+
+      $update_berita->save();
     }
 
     /**
