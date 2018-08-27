@@ -159,12 +159,12 @@
         let app = this;
     		axios.delete(app.url + app.beritaId)
     		.then(resp => {
-          		app.notifMessage = `Berhasil Menghapus Berita ${app.beritaDelete}.`
-    			app.beritaId = '';
-    			app.beritaDelete = '';
-    			app.snackbarDelete = true;
-          		app.notifSuccess = true;
-      			app.$store.dispatch('berita/LOAD_BERITA');
+          		 app.notifMessage = `Berhasil Menghapus Berita ${app.beritaDelete}.`
+    			     app.beritaId = '';
+    			     app.beritaDelete = '';
+    			     app.snackbarDelete = true;
+          		 app.notifSuccess = true;
+      			   app.$store.dispatch('berita/LOAD_BERITA');
 
     		})
     		.catch(resp => {

@@ -113,6 +113,7 @@ class BeritaKamiController extends Controller
      */
     public function destroy($id)
     {
-        //
+          $berita = BeritaKami::destroy($id);
+          return response(200);
     }
 }
