@@ -50,6 +50,12 @@
             </router-link>
           </li>
           <li>
+            <router-link :to="{name: 'mitra'}">
+              <md-icon>group</md-icon><span class="dekstop-menu">Mitra</span>
+              <md-tooltip md-direction="right">Mitra</md-tooltip>
+            </router-link>
+          </li>
+          <li>
             <router-link :to="{name: 'laporanOrder'}">
               <md-icon>notes</md-icon><span class="dekstop-menu">Laporan Order</span>
               <md-tooltip md-direction="right">Laporan Order</md-tooltip>
@@ -134,6 +140,13 @@
             <router-link :to="{name: 'user'}" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
               <md-icon>account_box</md-icon>
               <span>User</span>
+            </router-link>
+          </md-list-item>
+
+          <md-list-item>
+            <router-link :to="{name: 'mitra'}" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+              <md-icon>group</md-icon>
+              <span>Mitra</span>
             </router-link>
           </md-list-item>
 
