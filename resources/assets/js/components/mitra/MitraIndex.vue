@@ -49,7 +49,7 @@
         </md-card-header>
 
         <md-card-content>
-          <md-button :to="`/user/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah Mitra</md-button>
+          <md-button :to="`/mitra/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah Mitra</md-button>
       		<md-table v-model="searched" md-sort="name" md-sort-order="asc" md-fixed-header>
 
 			      <md-table-empty-state v-if="loading">
@@ -202,5 +202,9 @@
     color: #867f7f;
     font-size: 20px;
     padding: 4px 0px 0px 10px;
+  }
+  .md-table-row {
+    background:#f7e1e1 !important;
+    padding:8px !important;
   }
 </style>
