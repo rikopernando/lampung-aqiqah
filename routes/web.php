@@ -73,3 +73,6 @@ Route::resource('keranjang-belanja', 'KeranjangBelanjaController');
 Route::get('/testimoni/view', 'TestimoniController@view');
 Route::post('/testimoni/{id}', 'TestimoniController@update');
 Route::resource('testimoni', 'TestimoniController');
+
+// Mitra
+Route::resource('mitra', 'MitraController');

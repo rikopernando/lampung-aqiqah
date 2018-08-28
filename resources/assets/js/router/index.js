@@ -46,6 +46,8 @@ import TestimoniEdit from '../components/testimoni/edit'
 
 import Kemitraan from '../components/header/kemitraan'
 
+import MitraIndex from '../components/mitra/MitraIndex'
+
 const routes = [
   {
     path : '/',
@@ -214,6 +216,14 @@ const routes = [
     path : '/testimoni/edit/:id',
     name : 'editTestimoni',
     component : TestimoniEdit,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
+  },{
+    path : '/mitra',
+    name : 'mitra',
+    component : MitraIndex,
     meta : {
       requiresAuth : true,
       is_admin : true

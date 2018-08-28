@@ -12,8 +12,8 @@
 					<md-list class="md-triple-line">
 							<md-list-item>
 								<div class="md-list-item-text white-space">
-									<span>Aqiqah Lampung</span>
 									<span>Rajabasa</span>
+									<span>Telp/Whatsapp : 0856 5878 0793</span>
                   <p>Jl. Komarudin Blok B No.1 Rajabasa Raya, Bandar Lampung, Lampung</p>
 								</div>
 							</md-list-item>
