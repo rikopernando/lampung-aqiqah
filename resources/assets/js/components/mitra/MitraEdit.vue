@@ -43,7 +43,7 @@
         <ul class="breadcrumb">
           <li><router-link :to="{name: 'home'}">Home</router-link></li>
           <li><router-link :to="{name: 'mitra'}">Mitra</router-link></li>
-          <li class="active">Tambah</li>
+          <li class="active">Edit</li>
         </ul>
       </md-card>
 
@@ -54,7 +54,7 @@
           </div>
           <md-card-header-text>
             <div class="md-toolbar" style="margin-top: -20px; padding: 0px">
-              <div class="header-title md-toolbar-section-start">Tambah Mitra</div>
+              <div class="header-title md-toolbar-section-start">Edit Mitra</div>
               
             </div>
           </md-card-header-text>
@@ -62,36 +62,52 @@
         <md-card-content>
           <form novalidate v-on:submit.prevent="validateMitra">
 
+            <!-- Loading -->
+            <div v-if="loading" class="_spinner-container">
+              <div class="_spinner">
+                <md-progress-spinner 
+                  :md-diameter="80" 
+                  :md-stroke="5" 
+                  md-mode="indeterminate">
+                </md-progress-spinner>
+              </div>
+            </div>
+
             <md-field :class="getValidationClass('nama_mitra')">
-              <label for="name">Mitra</label>
+              <label v-if="!loading" for="name">Mitra</label>
               <md-input name="nama_mitra" id="nama_mitra" v-model="mitra.nama_mitra" />
               <span class="md-error" v-if="!$v.mitra.nama_mitra.required">Mitra tidak boleh kosong</span>
             </md-field>
 
             <md-field :class="getValidationClass('no_telp')">
-              <label for="name">No. Telepon</label>
+              <label v-if="!loading" for="name">No. Telepon</label>
               <md-input name="no_telp" id="no_telp" v-model="mitra.no_telp" />
               <span class="md-error" v-if="!$v.mitra.no_telp.required">No. Telepon tidak boleh kosong</span>
             </md-field>
 
             <md-field :class="getValidationClass('alamat')">
-              <label for="name">Alamat</label>
+              <label v-if="!loading" for="name">Alamat</label>
               <md-input name="alamat" id="alamat" v-model="mitra.alamat" />
               <span class="md-error" v-if="!$v.mitra.alamat.required">Alamat tidak boleh kosong</span>
             </md-field>
 
             <md-card-actions>
-              <md-progress-spinner v-if="submitted" :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
-              <md-button v-else type="submit" class="md-primary">Tambah Mitra</md-button>
+              <md-progress-spinner 
+                v-if="submitted" 
+                :md-diameter="30" 
+                :md-stroke="3" 
+                md-mode="indeterminate">
+              </md-progress-spinner>
+              <md-button v-else type="submit" class="md-primary">Edit Mitra</md-button>
             </md-card-actions>
 
           </form>
         </md-card-content>
       </md-card>
 
-      <!-- Snackbar for user edit alert -->
-      <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="snackbarCreateMitra" @md-closed="redirectToMitraList">
-        <span>Berhasil menambahkan Mitra!</span>
+      <!-- Snackbar for mitra edit alert -->
+      <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="snackbarEditMitra" @md-closed="redirectToMitraList">
+        <span>Mitra berhasil diedit!</span>
       </md-snackbar>
     </div>
   </sidebar>
@@ -104,8 +120,7 @@ import {
   required,
   email,
   minLength,
-  maxLength,
-  sameAs
+  maxLength
 } from 'vuelidate/lib/validators'
 
 export default {
@@ -115,27 +130,30 @@ export default {
     mitra: {
       nama_mitra: '',
       no_telp: '',
-      alamat: '',
+      alamat: ''
     },
-    snackbarCreateMitra: false,
+    snackbarEditMitra: false,
     submitted: false,
+    loading: true,
   }),
   validations: {
     mitra: {
       nama_mitra: {
         required,
-        minLength: minLength(3)
       },
       no_telp: {
         required,
       },
       alamat: {
         required,
-      },
+      }
     }
   },
+  mounted() {
+    this.getDataMitra(this.$route.params.id);
+  },
   methods: {
-    getValidationClass (fieldName) {
+    getValidationClass(fieldName) {
       const field = this.$v.mitra[fieldName]
 
       if (field) {
@@ -151,12 +169,21 @@ export default {
         this.saveForm()
       }
     },
+    getDataMitra(mitraId) {
+      axios.get(this.url + '/' + mitraId)
+      .then(resp => {
+        this.mitra = resp.data;
+        this.loading = false;
+      })
+      .catch(resp => {
+        console.log('catch getDataMitra:', resp);
+      });
+    },
     saveForm() {
       this.submitted = true;
-
-      axios.post(this.url, this.mitra)
+      axios.patch(this.url + '/' + this.$route.params.id, this.mitra)
       .then(resp => {
-        this.snackbarCreateMitra = true;
+        this.snackbarEditMitra = true;
         this.submitted = false;
       })
       .catch(resp => {
@@ -170,5 +197,4 @@ export default {
     }
   }
 }  
-
 </script>

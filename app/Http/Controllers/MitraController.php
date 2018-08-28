@@ -83,8 +83,9 @@ class MitraController extends Controller
               'alamat'     => 'required',
           ]);
 
-          return $mitra = Mitra::find($id)->update($request->all());
+         $mitra = Mitra::find($id)->update($request->all());
 
+         return response(200);
     }
 
     /**

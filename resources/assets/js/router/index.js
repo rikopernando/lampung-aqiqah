@@ -48,6 +48,7 @@ import Kemitraan from '../components/header/kemitraan'
 
 import MitraIndex from '../components/mitra/MitraIndex'
 import MitraCreate from '../components/mitra/MitraCreate'
+import MitraEdit from '../components/mitra/MitraEdit'
 
 const routes = [
   {
@@ -233,6 +234,14 @@ const routes = [
     path : '/mitra/create',
     name : 'createMitra',
     component : MitraCreate,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
+  },{
+    path : '/mitra/edit/:id',
+    name : 'editMitra',
+    component : MitraEdit,
     meta : {
       requiresAuth : true,
       is_admin : true

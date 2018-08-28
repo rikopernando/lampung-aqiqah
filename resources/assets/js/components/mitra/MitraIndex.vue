@@ -72,7 +72,7 @@
 			        <md-table-cell md-label="No. Telepon" md-sort-by="no_telp">{{ item.no_telp }}</md-table-cell>
 			        <md-table-cell md-label="Alamat" md-sort-by="alamat">{{ item.alamat }}</md-table-cell>
                <md-table-cell md-label="Aksi">
-                <md-button :to="`/user/edit/${item.id}`" class="md-fab md-dense md-primary">
+                <md-button :to="`/mitra/edit/${item.id}`" class="md-fab md-dense md-primary">
                   <md-icon>edit</md-icon>
                   <md-tooltip md-direction="top">Edit</md-tooltip>
                 </md-button>
