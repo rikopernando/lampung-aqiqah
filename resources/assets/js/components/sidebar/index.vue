@@ -78,6 +78,13 @@
                     <md-tooltip md-direction="right">Testimoni</md-tooltip>
                   </router-link>
                 </li>
+                <li>
+                  <router-link :to="{name: 'setting_perusahaan'}" class="drop-menu">
+                    <span>SP</span>
+                    <span class="dekstop-menu">Setting Perusahaan</span>
+                    <md-tooltip md-direction="right">Setting Perusahaan</md-tooltip>
+                  </router-link>
+                </li>
               </ul>
             </div>
           </li>
