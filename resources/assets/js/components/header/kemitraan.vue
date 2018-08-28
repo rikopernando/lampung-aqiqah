@@ -8,29 +8,15 @@
               <li class="active">Kemitraan</li>
             </ul>
           </md-card>
+          
+          <md-progress-spinner md-mode="indeterminate" v-if="loading"></md-progress-spinner>
 
-					<md-list class="md-triple-line">
-							<md-list-item>
+					<md-list class="md-triple-line" v-else>
+							<md-list-item v-for="mitra, index in mitra" :key="index">
 								<div class="md-list-item-text white-space">
-									<span>Rajabasa</span>
-									<span>Telp/Whatsapp : 0856 5878 0793</span>
-                  <p>Jl. Komarudin Blok B No.1 Rajabasa Raya, Bandar Lampung, Lampung</p>
-								</div>
-							</md-list-item>
-              <hr>
-							<md-list-item>
-								<div class="md-list-item-text white-space">
-									<span>Aqiqah Lampung</span>
-									<span>Kemiling</span>
-                  <p>Jl. Pramuka, Sentra Bisnis Terminal Kemiling Blok R3 No.7, Sumber Rejo, Kemiling, Kota Bandar Lampung, Lampung 35153</p>
-								</div>
-							</md-list-item>
-              <hr>
-							<md-list-item>
-								<div class="md-list-item-text white-space">
-									<span>Aqiqah Lampung</span>
-									<span>Kedaton</span>
-                  <p>Jl. Pahlawan, No. 103, Surabaya, Kedaton, Kota Bandar Lampung, Lampung 35153</p>
+									<span>{{ mitra.nama_mitra }}</span>
+									<span>Telp/Whatsapp : {{ mitra.no_telp }}</span>
+                  <p>{{ mitra.alamat }}</p>
 								</div>
 							</md-list-item>
 						</md-list>
@@ -45,12 +31,29 @@
   import Footer from '../footer/footer'
 
   export default {
+    data : () => ({
+      url: window.location.origin + (window.location.pathname + 'mitra'),
+      mitra : [],
+      loading : true
+    }),
     mounted() {
-      console.log(14)
+      this.getMitraData()
     },
     components : {
       Header,Footer
     },
+    methods : {
+      getMitraData(){
+        axios.get(this.url).then((resp) => {
+          this.mitra = resp.data
+          this.loading = false
+        })
+        .catch((err) => {
+          console.log(err)
+          alert('Terjadi Kesalahan')
+        })
+      }
+    }
   }
 </script>
 
