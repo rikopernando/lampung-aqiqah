@@ -3,28 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Mitra;
+use App\SettingPerusahaan;
 
-class MitraController extends Controller
+class SettingPerusahaanController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-         return response(Mitra::select()->get());
+         return response(SettingPerusahaan::select()->first());
     }
 
     /**
@@ -45,15 +30,7 @@ class MitraController extends Controller
      */
     public function store(Request $request)
     {
-          $this->validate($request, [
-              'nama_mitra'      => 'required',
-              'no_telp'     => 'required',
-              'alamat'     => 'required',
-          ]);
-
-          $mitra = Mitra::create(['nama_mitra' => $request->nama_mitra, 'no_telp' => $request->no_telp, 'alamat' => $request->alamat ]);
-
-          return $mitra;
+        //
     }
 
     /**
@@ -64,7 +41,7 @@ class MitraController extends Controller
      */
     public function show($id)
     {
-       return Mitra::find($id); 
+         return response(SettingPerusahaan::select()->first());
     }
 
     /**
@@ -88,14 +65,25 @@ class MitraController extends Controller
     public function update(Request $request, $id)
     {
           $this->validate($request, [
-              'nama_mitra'      => 'required',
-              'no_telp'     => 'required',
-              'alamat'     => 'required',
+              'name'      => 'required',
+              'email'     => 'required|string|email',
+              'no_telp'   => 'required',
+              'alamat'    => 'required',
           ]);
 
-         $mitra = Mitra::find($id)->update($request->all());
+          $setting_perusahaan = SettingPerusahaan::find($id);
+          $setting_perusahaan->update([
+            'name' => $request->name,
+            'no_telp' => $request->no_telp,
+            'alamat' => $request->alamat,
+            'email' => $request->email
+          ]);
 
-         return response(200);
+          return response()->json([
+                    'message' => 'Success',
+                    'data' => $setting_perusahaan
+                 ]);
+
     }
 
     /**
@@ -106,7 +94,6 @@ class MitraController extends Controller
      */
     public function destroy($id)
     {
-        Mitra::destroy($id);
-        return response(200);
+        //
     }
 }

@@ -133,7 +133,8 @@
           this.loading = false;
         })
         .catch(resp => {
-          console.log('catch getUserData:', resp);
+          alert('Terjadi Kesalahan')
+          console.log(resp);
         });
       },
       searchOnTable() {
@@ -151,6 +152,7 @@
           this.getMitraData();
         })
         .catch(resp => {
+          alert('Terjadi Kesalahan')
           console.log('catch onConfirmDelete:', resp);
         })
       },

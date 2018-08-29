@@ -9,7 +9,7 @@
             </ul>
           </md-card>
           
-          <md-progress-spinner md-mode="indeterminate" v-if="loading"></md-progress-spinner>
+          <center v-if="loading"><md-progress-spinner md-mode="indeterminate"></md-progress-spinner></center>
 
 					<md-list class="md-triple-line" v-else>
 							<md-list-item v-for="mitra, index in mitra" :key="index">
@@ -44,7 +44,7 @@
     },
     methods : {
       getMitraData(){
-        axios.get(this.url).then((resp) => {
+        axios.get(this.url+'/data').then((resp) => {
           this.mitra = resp.data
           this.loading = false
         })
