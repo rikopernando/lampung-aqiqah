@@ -82,7 +82,7 @@
 			        md-description="Belum ada data Laporan yang tersimpan.">
 			      </md-table-empty-state>    	
 			      <md-table-empty-state
-			      	v-else-if="searchable_laporan_order.length > 0 && search != null"
+			      	v-if="searchable_laporan_order.length == 0 && search != null"
 			        md-label="Tidak ada Laporan ditemukan"
 			        :md-description="`Tidak ada Laporan ditemukan untuk kata kunci '${search}'. Cobalah menggunakan kata kunci yang lain.`">
 			      </md-table-empty-state>
