@@ -46,12 +46,6 @@
 
 <template>
 	<sidebar>
-    <md-dialog :md-active.sync="showDialog">
-      <md-dialog-title>
-        Produk
-      </md-dialog-title>
-    </md-dialog>
-
 		<div class="col-md-12" style="padding: 0">
 			<md-card>
       	<ul class="breadcrumb">
@@ -69,10 +63,6 @@
             <div class="md-toolbar" style="margin-top: -20px; padding: 0px">
               <div class="header-title md-toolbar-section-start">Laporan Order</div>
               <div class="header-title md-toolbar-section-end">
-                <!-- <md-field md-inline>
-                  <label>Cari Laporan...</label>
-                  <md-input v-model="search" @input="searchOnTable" />
-                </md-field> -->
 				        <md-field md-inline>
                   <label>Cari Laporan...</label>
                   <md-input v-model="search" />
@@ -134,10 +124,19 @@
           </md-table>
         </md-card-content>
 
+        <!-- 
+          PAGING:
+          v-if (wajib) = agar jalan hanya saat loading selesai
+          :dataPaging (wajib) = data Array of Object yang akan dipaging
+          :itemPerPage (opsional) = jumlah item yang ditampilkan per halaman
+          :range (opsional) = range paging
+          :search (opsional) = v-model kata pencarian
+          @paginatedItems (wajib) = event untuk mengambil hasil data yang dikembalikan dari component paging
+         -->
         <paging
           v-if="!loading"
           :dataPaging="laporan_order"
-          :itemPerPage="1"
+          :itemPerPage="3"
           :range="5"
           :search="search"
           @paginatedItems="getPaginatedItems($event)"></paging>
@@ -153,20 +152,9 @@ export default {
   data: () => ({
   	url: window.location.origin + (window.location.pathname + 'laporan-order'),
     search: null,
-    searched: {},
     laporan_order: {},
     searchable_laporan_order: {},
     loading: true,
-    showDialog: false,
-    filteredItems: [],
-    paginatedItems: [],
-    pagination: {
-      range: 5,
-      currentPage: 1,
-      itemPerPage: 2,
-      items: [],
-      filteredItems: [],
-    }
   }),
   created() {
   	this.getLaporanOrderData();
@@ -187,73 +175,12 @@ export default {
       .then(resp => {
         this.laporan_order = resp.data;
         this.searchable_laporan_order = resp.data;
-        this.searched = resp.data;
         this.loading = false;
-        this.buildPagination();
-        this.selectPage(1);
       })
       .catch(resp => {
         console.log('catch getLaporanOrderData:', resp);
       })
-  	},
-    searchOnTable() {
-      this.searchable_laporan_order = this.searchLaporanOrder(this.laporan_order, this.search);
-      this.buildPagination();
-      this.selectPage(1);
-      this.loading = false;
-    },
-    searchLaporanOrder(items, term) {
-      if (term) {
-        return items.filter(item => toLower(item.nama_pelanggan).includes(toLower(term)));
-      } else {
-        return this.laporan_order;
-      }
-
-      return items;
-    },
-    buildPagination(){
-      let numberOfPage = Math.ceil(this.searchable_laporan_order.length / this.pagination.itemPerPage)
-      this.pagination.items = [];
-      for (var i = 0; i < numberOfPage; i++) {
-        this.pagination.items.push(i+1);
-      }
-    },
-    selectPage(item) {
-      console.log(this.paginatedItems)
-
-      this.pagination.currentPage = item
-      
-      let start = 0
-      let end = 0
-      if(this.pagination.currentPage < this.pagination.range-2){
-        start = 1
-        end = start+this.pagination.range-1
-      }
-      else if(this.pagination.currentPage <= this.pagination.items.length && this.pagination.currentPage > this.pagination.items.length - this.pagination.range + 2){
-        start = this.pagination.items.length-this.pagination.range+1
-        end = this.pagination.items.length
-      }
-      else{
-        start = this.pagination.currentPage-2
-        end = this.pagination.currentPage+2
-      }
-      if(start<1){
-        start = 1
-      }
-      if(end>this.pagination.items.length){
-        end = this.pagination.items.length
-      }
-      
-      this.pagination.filteredItems = []
-      for(var i=start; i<=end; i++){
-        this.pagination.filteredItems.push(i);
-      }
-
-      console.log('sdhshdjsjdhs', this.searchable_laporan_order)
-      this.searchable_laporan_order = this.laporan_order.filter((v, k) => {
-        return Math.ceil((k+1) / this.pagination.itemPerPage) == this.pagination.currentPage
-      })
-    }
+  	}
   }
 }
 	
