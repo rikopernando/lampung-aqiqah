@@ -17,7 +17,9 @@
 
 <template>
   <div class="container">
-    <div v-if="search" class="text-center"> Terdapat {{ items.length }} hasil pencarian ditemukan </div>
+    <div v-if="search" class="text-center">
+      <small> Terdapat {{ items.length }} hasil pencarian ditemukan </small>
+    </div>
     <ul class="pagination justify-content-center">
       <li class="pull-left" v-bind:class="{'disabled': pagination.currentPage == pagination.items[0] || pagination.items.length == 0}">
         <md-tooltip md-direction="top"> Halaman Pertama </md-tooltip>
