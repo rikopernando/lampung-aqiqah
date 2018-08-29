@@ -66,9 +66,9 @@ class SettingPerusahaanController extends Controller
     {
           $this->validate($request, [
               'name'      => 'required',
+              'email'     => 'required|string|email',
               'no_telp'   => 'required',
               'alamat'    => 'required',
-              'email'     => 'required|string|email',
           ]);
 
           $setting_perusahaan = SettingPerusahaan::find($id);

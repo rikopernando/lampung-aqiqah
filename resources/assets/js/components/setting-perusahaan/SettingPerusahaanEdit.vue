@@ -34,6 +34,15 @@
     font-size: 20px;
     padding: 4px 0px 0px 10px;
   }
+  .error-message {
+    background-color:  #ff4d4d;
+    border-radius: 6px;
+  }
+  .text-error {
+    font-weight: bold;
+    color: white;
+    padding: 4px;
+  }
 </style>
 
 <template>
@@ -60,7 +69,10 @@
           </md-card-header-text>
         </md-card-header>
         <md-card-content>
-          <form novalidate v-on:submit.prevent="validateSettingPerusahaan">
+           <ul class="error-message">
+             <li class="text-error" v-for="err in errors"> {{ err.toString() }} </li>
+           </ul>
+          <form v-on:submit.prevent="saveForm()">
 
             <!-- Loading -->
             <div v-if="loading" class="_spinner-container">
@@ -73,28 +85,24 @@
               </div>
             </div>
 
-            <md-field :class="getValidationClass('name')">
+            <md-field>
               <label v-if="!loading" for="name">Nama</label>
               <md-input name="name" id="name" v-model="setting_perusahaan.name" />
-              <span class="md-error" v-if="!$v.setting_perusahaan.name.required">Nama tidak boleh kosong</span>
             </md-field>
 
-            <md-field :class="getValidationClass('email')">
+            <md-field>
               <label v-if="!loading" for="email">Email</label>
               <md-input name="email" type="email" id="email" v-model="setting_perusahaan.email" />
-              <span class="md-error" v-if="!$v.setting_perusahaan.email.required">Email tidak boleh kosong</span>
             </md-field>
 
-            <md-field :class="getValidationClass('no_telp')">
+            <md-field>
               <label v-if="!loading" for="no_telp">No. Telepon</label>
               <md-input name="no_telp" id="no_telp" v-model="setting_perusahaan.no_telp" />
-              <span class="md-error" v-if="!$v.setting_perusahaan.no_telp.required">No. Telepon tidak boleh kosong</span>
             </md-field>
 
-            <md-field :class="getValidationClass('alamat')">
+            <md-field>
               <label v-if="!loading" for="name">Alamat</label>
               <md-input name="alamat" id="alamat" v-model="setting_perusahaan.alamat" />
-              <span class="md-error" v-if="!$v.setting_perusahaan.alamat.required">Alamat tidak boleh kosong</span>
             </md-field>
 
             <md-card-actions>
@@ -121,17 +129,9 @@
 
 <script>
 
-import { validationMixin } from 'vuelidate'
-import {
-  required,
-  email,
-  minLength,
-  maxLength
-} from 'vuelidate/lib/validators'
-
 export default {
-  mixins: [validationMixin],
   data: () => ({
+    errors : [],
     url: window.location.origin + (window.location.pathname + 'setting-perusahaan'),
     setting_perusahaan: {
       name: '',
@@ -143,42 +143,10 @@ export default {
     submitted: false,
     loading: true,
   }),
-  validations: {
-    setting_perusahaan: {
-      name: {
-        required,
-      },
-      no_telp: {
-        required,
-      },
-      email: {
-        required,
-      },
-      alamat: {
-        required,
-      }
-    }
-  },
   mounted() {
     this.getDataSettingPerusahaan(this.$route.params.id);
   },
   methods: {
-    getValidationClass(fieldName) {
-      const field = this.$v.setting_perusahaan[fieldName]
-
-      if (field) {
-        return {
-          'md-invalid': field.$invalid && field.$dirty
-        }
-      }
-    },
-    validateSettingPerusahaan() {
-      this.$v.$touch()
-
-      if (!this.$v.$invalid) {
-        this.saveForm()
-      }
-    },
     getDataSettingPerusahaan(setting_perusahaanId) {
       axios.get(this.url + '/' + setting_perusahaanId)
       .then(resp => {
@@ -196,10 +164,12 @@ export default {
         this.snackbarEditSettingPerusahaan = true;
         this.submitted = false;
       })
-      .catch(resp => {
+      .catch(err => {
+        this.errors = err.response.data
+        console.log(this.errors)
         this.submitted = false;
         alert('Terjadi Kesalahan')
-        console.log('catch saveForm:', resp);
+        console.log('catch saveForm:', err);
       });
     },
     redirectToSettingPerusahaanList() {
