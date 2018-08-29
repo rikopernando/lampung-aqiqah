@@ -16,7 +16,7 @@ class CreateBeritaKamisTable extends Migration
         Schema::create('berita_kamis', function (Blueprint $table) {
             $table->increments('id');
             $table->string('judul_berita');
-            $table->string('isi_berita');
+            $table->longtext('isi_berita');
             $table->string('foto')->nullable();
             $table->unsignedInteger('created_by')->nullable()->index();
             $table->unsignedInteger('updated_by')->nullable()->index();

@@ -19,7 +19,7 @@ class BeritaKamiController extends Controller
     }
 
         public function view() {
-        return response(BeritaKami::select()->get());
+        return response(BeritaKami::select()->orderBy('created_at','desc')->get());
     }
 
     /**
@@ -62,7 +62,7 @@ class BeritaKamiController extends Controller
               // membuat nama file random berikut extension
               $filename     = str_random(40) . '.' . $extension;
               $image_resize = Image::make($foto->getRealPath());
-              $image_resize->fit(900, 300);
+              $image_resize->fit(600,300);
               $image_resize->save(public_path('image_berita/' . $filename));
               $insert_berita->foto = $filename;
               // menyimpan field foto di table barangs  dengan filename yang baru dibuat
@@ -125,7 +125,7 @@ class BeritaKamiController extends Controller
             // membuat nama file random berikut extension
             $filename     = str_random(40) . '.' . $extension;
             $image_resize = Image::make($foto->getRealPath());
-            $image_resize->fit(900, 300);
+            $image_resize->fit(600,300);
             $image_resize->save(public_path('image_berita/' . $filename));
             $update_berita->foto = $filename;
             // menyimpan field foto di table barangs  dengan filename yang baru dibuat

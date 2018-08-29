@@ -49,6 +49,8 @@ import TestimoniEdit from '../components/testimoni/edit'
 import BeritaKamiIndex from '../components/beritakami/BeritaIndex'
 import BeritaKamiCreate from '../components/beritakami/BeritaCreate'
 import BeritaKamiEdit from '../components/beritakami/BeritaEdit'
+import BeritaKamiList from '../components/header/berita-kami'
+
 
 const routes = [
   {
@@ -214,6 +216,10 @@ const routes = [
     path : '/berita-kami/edit/:id',
     name : 'editBeritaKami',
     component : BeritaKamiEdit
+  },{
+    path : '/berita-kami-list',
+    name : 'beritaKamiList',
+    component : BeritaKamiList
   }
 ]
 
