@@ -19,6 +19,13 @@
         <!-- Our Custom CSS -->
         <link rel="stylesheet" href="{{ asset('css/dashboard-admin.css') }}">
 
+        <style>
+            div.md-content.md-table-content.md-scrollbar.md-theme-default {
+                height: auto !important;
+                max-height: 400 !important;
+            }
+        </style>
+
     </head>
     <body style="background-color:white;">
         <div id="app">
