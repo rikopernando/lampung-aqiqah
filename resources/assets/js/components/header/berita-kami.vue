@@ -29,7 +29,7 @@
 			          </div>
 
 			          <md-card-expand-trigger>
-			            <md-button>Learn more</md-button>
+			            <md-button :to="`/berita-kami/detail/${berita.id}`" >Learn more</md-button>
 			          </md-card-expand-trigger>
 			        </md-card-actions>
 			    </md-card>

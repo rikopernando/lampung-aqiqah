@@ -61,9 +61,7 @@
                 <md-table-cell md-label="Judul Berita`" md-sort-by="judul_berita">
                   {{ item.judul_berita | capitalize }}
                 </md-table-cell>
-                <md-table-cell md-label="Isi Berita`" md-sort-by="isi_berita">
-                  {{ item.isi_berita | selengkapnya }}...
-                </md-table-cell>
+
                 <md-table-cell md-label="Aksi">
                   <md-button :to="`/berita-kami/edit/${item.id}`" class="md-fab md-dense md-primary">
                     <md-icon>edit</md-icon>
@@ -141,6 +139,9 @@
     filters: {
       selengkapnya: (value) => {
         return value.substr(0, 50);
+      },
+     capitalize: function (value) {
+          return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
       }
     },
     methods: {
