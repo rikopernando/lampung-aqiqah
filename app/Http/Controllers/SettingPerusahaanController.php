@@ -9,7 +9,7 @@ class SettingPerusahaanController extends Controller
 {
     public function index()
     {
-         return response(SettingPerusahaan::whereId(1)->first());
+         return response(SettingPerusahaan::select()->first());
     }
 
     /**
@@ -41,7 +41,7 @@ class SettingPerusahaanController extends Controller
      */
     public function show($id)
     {
-         return response(SettingPerusahaan::whereId($id)->first());
+         return response(SettingPerusahaan::select()->first());
     }
 
     /**
