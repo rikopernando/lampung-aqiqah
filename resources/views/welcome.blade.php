@@ -22,7 +22,7 @@
         <style>
             div.md-content.md-table-content.md-scrollbar.md-theme-default {
                 height: auto !important;
-                max-height: 400 !important;
+                max-height: none !important;
             }
         </style>
 
