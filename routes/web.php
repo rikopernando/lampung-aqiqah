@@ -16,7 +16,11 @@ Route::get('/', function () {
 });
 
 Route::get('/mitra/data', function () {
-         return response(App\Mitra::select()->get());
+    return response(App\Mitra::select()->get());
+});
+
+Route::get('/testimoni/data', function () {
+    return response(App\Testimoni::select()->get());
 });
 
 //Daftar Produk
