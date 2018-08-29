@@ -17,7 +17,7 @@ import 'vue-material/dist/theme/default.css' // This line here
 window.Vue.use(VueRouter)
 window.$ = window.jQuery = require('jquery')
 
-import Paging from './components/laporan_order/paging'
+import Paging from './components/paging/paging'
 
 // Global Vue Components
 Vue.component('sidebar', Sidebar)
