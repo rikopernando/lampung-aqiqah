@@ -29,6 +29,7 @@
 							<md-table-head>Email</md-table-head>
 							<md-table-head>No. Telepon</md-table-head>
 							<md-table-head>Alamat</md-table-head>
+							<md-table-head>Edit</md-table-head>
 						</md-table-row>
 
 						<md-table-row>
@@ -36,6 +37,12 @@
 							<md-table-cell>{{ setting_perusahaan.email }}</md-table-cell>
 							<md-table-cell>{{ setting_perusahaan.no_telp }}</md-table-cell>
 							<md-table-cell>{{ setting_perusahaan.alamat }}</md-table-cell>
+              <md-table-cell>
+                <md-button :to="`/setting-perusahaan/edit/${setting_perusahaan.id}`" class="md-fab md-dense md-primary">
+                  <md-icon>edit</md-icon>
+                  <md-tooltip md-direction="top">Edit</md-tooltip>
+                </md-button>
+              </md-table-cell>
 						</md-table-row>
 					</md-table>
 

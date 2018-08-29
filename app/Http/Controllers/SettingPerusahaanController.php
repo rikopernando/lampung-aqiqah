@@ -41,7 +41,7 @@ class SettingPerusahaanController extends Controller
      */
     public function show($id)
     {
-        //
+         return response(SettingPerusahaan::whereId($id)->first());
     }
 
     /**
@@ -64,7 +64,26 @@ class SettingPerusahaanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+          $this->validate($request, [
+              'name'      => 'required',
+              'no_telp'   => 'required',
+              'alamat'    => 'required',
+              'email'     => 'required|string|email',
+          ]);
+
+          $setting_perusahaan = SettingPerusahaan::find($id);
+          $setting_perusahaan->update([
+            'name' => $request->name,
+            'no_telp' => $request->no_telp,
+            'alamat' => $request->alamat,
+            'email' => $request->email
+          ]);
+
+          return response()->json([
+                    'message' => 'Success',
+                    'data' => $setting_perusahaan
+                 ]);
+
     }
 
     /**
