@@ -13,7 +13,8 @@
       	<div class="card-expansion">
 			    <md-card class="content" v-for="berita, index in beritas" :key="index">
 			      <md-card-media>
-			        <img :src="url_picture+'/'+berita.foto" alt="People">
+			      	<img :src="url+'images/default_berita.jpg'" alt="People" v-if="berita.foto == null">
+			        <img :src="url_picture+'/'+berita.foto" alt="People" v-else>
 			      </md-card-media>
 
 			      <md-card-header>
@@ -45,7 +46,7 @@
 
   export default {
   	data: () => ({
-    	url: window.location.origin + (window.location.pathname + 'berita'),
+    	url: window.location.origin + (window.location.pathname),
         url_picture : window.location.origin + (window.location.pathname) + "image_berita/", 
     }),
      mounted() {
@@ -79,7 +80,6 @@
     border-style: solid;
     border-width: 0 1px 4px 1px;
     padding: 8px 15px;
-    margin-bottom: 35px;
     margin-top: 22px;
     list-style: none;
     background-color: #ffffff;
