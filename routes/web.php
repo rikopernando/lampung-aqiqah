@@ -79,5 +79,11 @@ Route::post('/testimoni/{id}', 'TestimoniController@update');
 Route::resource('testimoni', 'TestimoniController');
 Route::resource('setting-perusahaan', 'SettingPerusahaanController');
 
+
+//Testimoni
+Route::get('/berita/view', 'BeritaKamiController@view');
+Route::post('/berita/{id}', 'BeritaKamiController@update');
+Route::resource('berita', 'BeritaKamiController');
+
 // Mitra
 Route::resource('mitra', 'MitraController');
