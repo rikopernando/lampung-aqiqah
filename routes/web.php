@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/mitra/data', function () {
+         return response(App\Mitra::select()->get());
+});
+
 //Daftar Produk
 Route::get('/produk/view-produk/{tampil_produk}', 'DaftarProdukController@viewProduk');
 Route::get('/produk/sort-produk/{filter}', 'DaftarProdukController@sortProduk');
@@ -73,9 +77,13 @@ Route::resource('keranjang-belanja', 'KeranjangBelanjaController');
 Route::get('/testimoni/view', 'TestimoniController@view');
 Route::post('/testimoni/{id}', 'TestimoniController@update');
 Route::resource('testimoni', 'TestimoniController');
+Route::resource('setting-perusahaan', 'SettingPerusahaanController');
 
 
 //Testimoni
 Route::get('/berita/view', 'BeritaKamiController@view');
 Route::post('/berita/{id}', 'BeritaKamiController@update');
 Route::resource('berita', 'BeritaKamiController');
+
+// Mitra
+Route::resource('mitra', 'MitraController');

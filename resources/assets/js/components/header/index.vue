@@ -55,7 +55,7 @@
         <h3 class="md-title" style="flex: 1"></h3>
         <md-button  :to="{name: 'tentangKami'}" style="color: white; font-size: 12px">Tentang Kami</md-button>
         <md-button  :to="{name: 'beritaKamiList'}" style="color: white; font-size: 12px">Berita Kami</md-button>
-        <md-button href="#"  style="color: white; font-size: 12px">Kemitraan</md-button>
+        <md-button :to="{name: 'kemitraan'}"  style="color: white; font-size: 12px">Kemitraan</md-button>
         <md-button class="md-icon-button">
           <a href="#/facebook">
             <i class="fa fa-facebook-f icon-link"></i>
@@ -92,11 +92,11 @@
                 <div class="label-nav-main">HOME</div>
               </div>
             </a>
-            <a href="#/dashboard" class="md-button md-theme-default md-active" v-if="this.$store.state.user.is_admin">
+            <router-link class="md-button md-theme-default md-active" :to="{name: 'dashboard'}" v-if="this.$store.state.user.is_admin">
               <div class="md-ripple">
                 <div class="label-nav-main">Dashboard</div>
               </div>
-            </a>
+            </router-link>
             <router-link class="md-button md-theme-default md-active" :to="{name: 'listProduk'}">
               <div class="md-ripple">
                 <div class="label-nav-main">PRODUK</div>
@@ -217,8 +217,8 @@
               </router-link>
             </md-list-item>
 
-            <md-list-item>
-              <router-link :to="{name: 'dashboard'}" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important" v-if="this.$store.state.user.is_admin">
+            <md-list-item v-if="this.$store.state.user.is_admin">
+              <router-link :to="{name: 'dashboard'}" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
                 <md-icon>dashboard</md-icon>
                 <span>Dashboard</span>
               </router-link>
@@ -242,6 +242,27 @@
               <a href="#/checkout" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
                 <md-icon>local_atm</md-icon>
                 <span>Pembayaran</span>
+              </a>
+            </md-list-item>
+
+            <md-list-item>
+              <a href="#/kemitraan" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+                <md-icon>group</md-icon>
+                <span>Kemitraan</span>
+              </a>
+            </md-list-item>
+
+            <md-list-item>
+              <a href="#/tentang-kami" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+                <md-icon>group</md-icon>
+                <span>Tentang Kami</span>
+              </a>
+            </md-list-item>
+
+            <md-list-item>
+              <a href="#/berita-kami" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+                <md-icon>timeline</md-icon>
+                <span>Berita Kami</span>
               </a>
             </md-list-item>
           </md-list>
