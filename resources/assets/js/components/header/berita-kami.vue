@@ -9,6 +9,8 @@
             <li class="active">Berita Kami</li>
           </ul>
         </md-card>
+          
+          <center v-if="this.$store.state.berita.loading"><md-progress-spinner md-mode="indeterminate"></md-progress-spinner></center>
 
       	<div class="card-expansion">
 			    <md-card class="content" v-for="berita, index in beritas" :key="index">
