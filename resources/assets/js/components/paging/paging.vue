@@ -2,5 +2,10 @@
 	<div></div>
 </template>
 <script>
-	export default {}
+export default {
+	data: () => ({
+		data: ''
+	}),
+	
+}
 </script>
