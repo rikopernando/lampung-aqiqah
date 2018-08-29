@@ -17,7 +17,7 @@
 			      </md-card-media>
 
 			      <md-card-header>
-			        <div class="md-title">{{ berita.judul_berita | capitalize }}</div>
+			        <div class="md-title">{{ berita.judul_berita | capitalize | selengkapnya }} ...</div>
 			      </md-card-header>
 
 			      	<md-card-actions md-alignment="space-between">
@@ -79,7 +79,7 @@
     border-style: solid;
     border-width: 0 1px 4px 1px;
     padding: 8px 15px;
-    margin-bottom: 20px;
+    margin-bottom: 35px;
     margin-top: 22px;
     list-style: none;
     background-color: #ffffff;
