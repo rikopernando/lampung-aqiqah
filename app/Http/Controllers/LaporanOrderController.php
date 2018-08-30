@@ -7,10 +7,23 @@ use App\LaporanOrder;
 use App\DetailPesanan;
 use App\Produk;
 use App\Pesanan;
+use App\KirimTempatLain;
+use App\Bank;
 use Illuminate\Support\Facades\DB;
+use Mail;
 
 class LaporanOrderController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function view()
     {
         $dataLaporan = [];
@@ -256,5 +269,28 @@ class LaporanOrderController extends Controller
                     return DB::table('villages')->whereId($id)->first()->name;
             }
         }
+    }
+
+    public function kirimEmail(Request $request) {
+        $pesanan = DB::table('pesanans')
+            ->join('users', 'pesanans.pelanggan_id', '=', 'users.id')
+            ->select('users.name as nama_pelanggan', 'pesanans.updated_at as tanggal_dikonfirmasi', 'pesanans.metode_pembayaran', 'users.email', 'pesanans.id', 'pesanans.total', 'users.alamat', 'users.no_telp')
+            ->where('pesanans.id', $request->id_pesanan)
+            ->first();
+        $detail_pesanan = DetailPesanan::with('produk')->where('id_pesanan',$pesanan->id)->get();
+        $kirim_tempat_lain = KirimTempatLain::where('id_pesanan',$pesanan->id);
+        $bank = Bank::where('default',1)->first();
+
+        $arrayN = [
+            1 => ['pesanan_dikonfirmasi', 'Konfirmasi'],
+            2 => ['pesanan_diselesaikan', 'Selesaikan']
+        ];
+
+        Mail::send('mails.'. $arrayN[$request->n][0], compact('pesanan','detail_pesanan','kirim_tempat_lain','bank'), function ($message) use ($pesanan, $request, $arrayN) {
+              $message->from('verifikasi@andaglos.id','Aqiqah Lampung');
+              $message->to($pesanan->email);
+              $message->subject('Pesanan Anda Telah Kami '. $arrayN[$request->n][1]);
+        });
+
     }
 }

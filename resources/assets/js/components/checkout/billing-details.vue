@@ -9,12 +9,6 @@
         <span v-if="errors.alamat" class="error-message"> {{ errors.alamat[0] }} </span>
       </div>
       <div class="form-group">
-        <selectize-component :settings="select_provinsi" ref="provinsi" v-on:input="pilihWilayah('kabupaten')" v-model="selected_provinsi">
-          <option v-for="provinsi, index in provinsi" v-bind:value="provinsi.id">{{ provinsi.name }} </option> 
-        </selectize-component>
-        <span v-if="errors.provinsi" class="error-message"> {{ errors.provinsi[0] }} </span>
-      </div>
-      <div class="form-group">
         <md-progress-bar md-mode="indeterminate" v-if="this.$store.state.lokasi.load_kabupaten"></md-progress-bar>
         <p class="waiting" v-if="this.$store.state.lokasi.load_kabupaten">Mohon tunggu ...</p>
         <selectize-component :settings="select_kabupaten" ref="kabupaten" v-on:input="pilihWilayah('kecamatan')" v-model="selected_kabupaten" v-if="showKabupaten">
@@ -65,7 +59,7 @@
   import { mapState } from 'vuex'
 
   export default {
-      props : ["pesanan" ,"select_provinsi" ,"select_kabupaten", "select_kecamatan" ,"select_kelurahan" ,"selectsumberInformasi", "sumber_informasi" ,"provinsi" ,"kabupaten" ,"kecamatan" ,"kelurahan","errors"],
+      props : ["pesanan" ,"select_kabupaten", "select_kecamatan" ,"select_kelurahan" ,"selectsumberInformasi", "sumber_informasi" ,"provinsi" ,"kabupaten" ,"kecamatan" ,"kelurahan","errors"],
       mounted () {
         this.setProfile()
       },
@@ -73,7 +67,6 @@
         showKabupaten : false,
         showKecamatan : false,
         showKelurahan : false,
-        selected_provinsi : '',
         selected_kabupaten : '',
         selected_kecamatan : '',
         selected_kelurahan : '',
@@ -108,16 +101,15 @@
       methods: {
         setProfile() {
           const app = this
+          app.pesanan.provinsi = 18 
           if(Object.keys(app.profile).length){
               app.pesanan.nama_pemesan = app.profile.name
               app.pesanan.alamat = app.profile.alamat
-              app.pesanan.provinsi = app.profile.provinsi
               app.pesanan.kabupaten = app.profile.kabupaten
               app.pesanan.kecamatan = app.profile.kecamatan
               app.pesanan.kelurahan = app.profile.kelurahan
               app.pesanan.handphone = app.profile.no_telp
               app.pesanan.email = app.profile.email
-              app.selected_provinsi = app.profile.provinsi
               app.selected_kabupaten = app.profile.kabupaten
               app.selected_kecamatan = app.profile.kecamatan
               app.selected_kelurahan = app.profile.kelurahan
@@ -126,8 +118,9 @@
               $("#handphone").val(app.profile.no_telp)
               $("#email").val(app.profile.email)
               $("#provinsi").val(app.profile.provinsi)
-              app.setWilayah('kabupaten',app.selected_provinsi)
           }
+          app.setWilayah('kabupaten',18)
+          // provinsi default lampung
         },
         changeKelurahan () {
             this.pesanan.kelurahan = this.$refs.kelurahan.$el.selectize.getValue()
@@ -139,21 +132,6 @@
           const app = this
           var id_wilayah 
             switch (type) {
-                case "kabupaten":
-                  id_wilayah = app.selected_provinsi
-                  app.pesanan.provinsi = id_wilayah
-                  if(id_wilayah){
-                      app.pesanan.kabupaten = null 
-                      app.pesanan.kecamatan = null
-                      app.pesanan.kelurahan = null
-                      app.selected_kabupaten = null 
-                      app.selected_kecamatan = null
-                      app.selected_kelurahan = null
-                      app.showKabupaten = false
-                      app.showKecamatan = false
-                      app.showKelurahan = false
-                  }
-                    break;
                 case "kecamatan":
                   id_wilayah = app.selected_kabupaten
                   app.pesanan.kabupaten = id_wilayah

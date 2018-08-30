@@ -32,50 +32,42 @@
 	<sidebar>
 		<div class="col-md-12" style="padding: 0">
 
-      <!-- Prompt batalkan pesanan -->
-      <md-dialog-confirm
-        :md-active.sync="promptBatalkanPesanan"
-        md-title="Batalkan Pesanan?"
-        md-content="Apakah Anda yakin ingin membatalkan pesanan ini?"
-        md-confirm-text="Ya"
-        md-cancel-text="Batal"
-        @md-confirm="batalkanPesanan" />
-
-      <!-- Prompt konfirmasi pesanan -->
-      <md-dialog-confirm
-        :md-active.sync="promptKonfirmasiPesanan"
-        md-title="Konfirmasi Pesanan?"
-        md-content="Apakah Anda yakin ingin mengonfirmasi pesanan ini?"
-        md-confirm-text="Ya"
-        md-cancel-text="Batal"
-        @md-confirm="konfirmasiPesanan" />
-
-      <!-- Prompt batal konfirmasi pesanan -->
-      <md-dialog-confirm
-        :md-active.sync="promptBatalKonfirmasiPesanan"
-        md-title="Batalkan Konfirmasi Pesanan?"
-        md-content="Apakah Anda yakin ingin membatalkan konfirmasi pesanan ini?"
-        md-confirm-text="Ya"
-        md-cancel-text="Batal"
-        @md-confirm="batalKonfirmasiPesanan" />
-
-      <!-- Prompt selesaikan pesanan -->
-      <md-dialog-confirm
-        :md-active.sync="promptSelesaikanPesanan"
-        md-title="Selesaikan Pesanan?"
-        md-content="Apakah Anda yakin ingin selesaikan pesanan ini?"
-        md-confirm-text="Ya"
-        md-cancel-text="Batal"
-        @md-confirm="selesaikanPesanan" />
-
-      <!-- Prompt selesaikan pesanan -->
-      <md-dialog-confirm
-        :md-active.sync="promptBatalSelesaikanPesanan"
-        md-title="Batal Selesaikan Pesanan?"
-        md-content="Apakah Anda yakin ingin membatalkan penyelesaian pesanan ini?"
-        md-confirm-text="Ya"
-        md-cancel-text="Batal"
-        @md-confirm="batalSelesaikanPesanan" />
+      <md-dialog :md-active.sync="showDialog">
+        <md-dialog-title> {{ showDialogTitle }} </md-dialog-title>
+        <md-dialog-content v-if="loadingInDialog">
+          <span v-if="emailLoading">Mengirim email...</span>
+          <span v-else>Loading...</span>
+          <md-progress-bar md-mode="indeterminate"></md-progress-bar>
+        </md-dialog-content>
+        <md-dialog-content v-else>
+          <div v-if="emailFailed">
+            <div v-if="closeDialogWhenEmailFailed">
+              Menutup pop-up ini ketika email gagal dikirim menyebabkan Anda tidak dapat mengirim ulang email kembali. Kami menyarankan agar Anda mengirim ulang email mengingat opsi kirim ulang email tidak akan muncul lagi ketika anda menutupnya.
+            </div>
+            <div v-else> Email gagal dikirim karena gangguan server. </div>
+          </div>
+          <div v-else>
+            <div v-if="emailSent"> Email berhasil dikirim! </div>
+            <div v-else> {{ showDialogText }} </div>
+          </div>
+        </md-dialog-content>
+        <md-dialog-actions v-if="!loadingInDialog">
+          <span v-if="emailFailed">
+            <md-button v-if="!closeDialogWhenEmailFailed" @click="closeDialogWhenEmailFailed = true"> Tutup </md-button>
+            <md-button v-else @click="showDialog = false; emailLoading = false; emailFailed = false"> Tutup </md-button>
+            <md-button @click="sendMail(showDialogKey.n, () => {
+              this.loadingInDialog = false;
+              this.emailSent = true;
+              this.emailFailed = false;
+              this.emailLoading = false;
+            })"> Kirim Ulang </md-button>
+          </span>
+          <span v-else>
+            <md-button @click="showDialog = false"> Tutup </md-button>
+            <md-button v-if="!emailSent" @click="showDialogExecute"> Ya </md-button>
+          </span>
+        </md-dialog-actions>
+      </md-dialog>
 
 			<md-card>
       	<ul class="breadcrumb">
@@ -157,23 +149,23 @@
               </div>
               <div v-else-if="statusPesanan == null" class="md-toolbar" style="margin-top: -20px; padding: 0px">
                 <div class="header-title md-toolbar-section-start">
-                  <md-button @click="promptBatalkanPesanan = true" class="md-dense md-raised md-accent">Batalkan</md-button>
+                  <md-button @click="showDialogData('Batalkan Pesanan?', 'Apakah Anda yakin ingin membatalkan pesanan ini?', {n: 0, email: false})" class="md-dense md-raised md-accent">Batalkan</md-button>
                 </div>
                 <div class="header-title md-toolbar-section-end">
-                  <md-button @click="promptKonfirmasiPesanan = true" class="md-dense md-raised md-primary">Konfirmasi</md-button>
+                  <md-button @click="showDialogData('Konfirmasi', 'Apakah Anda yakin ingin mengonfirmasi pesanan ini?', {n: 1, email: true})" class="md-dense md-raised md-primary">Konfirmasi</md-button>
                 </div>
               </div>
               <div v-else-if="statusPesanan == 1" class="md-toolbar" style="margin-top: -20px; padding: 0px">
                 <div class="header-title md-toolbar-section-start">
-                  <md-button @click="promptBatalKonfirmasiPesanan = true" class="md-dense md-raised md-accent">Batal Konfirmasi</md-button>
+                  <md-button @click="showDialogData('Batal Konfirmasi Pesanan', 'Apakah Anda yakin ingin membatalkan konfirmasi pesanan ini?', {n: null, email: false})" class="md-dense md-raised md-accent">Batal Konfirmasi</md-button>
                 </div>
                 <div class="header-title md-toolbar-section-end">
-                  <md-button @click="promptSelesaikanPesanan = true" class="md-dense md-raised md-primary">Selesaikan</md-button>
+                  <md-button @click="showDialogData('Selesaikan Pesanan', 'Apakah Anda yakin ingin selesaikan pesanan ini?', {n: 2, email: true})" class="md-dense md-raised md-primary">Selesaikan</md-button>
                 </div>
               </div>
               <div v-else-if="statusPesanan == 2" class="md-toolbar" style="margin-top: -20px; padding: 0px">
                 <div class="header-title md-toolbar-section-start">
-                  <md-button @click="promptBatalSelesaikanPesanan = true" class="md-dense md-raised md-accent">Batal Selesaikan Pesanan</md-button>
+                  <md-button @click="showDialogData('Batal Selesaikan Pesanan', 'Apakah Anda yakin ingin membatalkan penyelesaian pesanan ini?', {n: 1, email: false})" class="md-dense md-raised md-accent">Batal Selesaikan Pesanan</md-button>
                 </div>
                 <div class="header-title md-toolbar-section-end">
                 </div>
@@ -238,13 +230,6 @@ export default {
     infoPesanan: {},
     statusPesanan: null,
 
-    // prompt
-    promptBatalkanPesanan: false,
-    promptKonfirmasiPesanan: false,
-    promptBatalKonfirmasiPesanan: false,
-    promptSelesaikanPesanan: false,
-    promptBatalSelesaikanPesanan: false,
-
     // snackbar
     snackbarBatalkanPesanan: false,
     snackbarKonfirmasiPesanan: false,
@@ -269,47 +254,31 @@ export default {
     tabInfoPesanan: {
       label: 'Info Pesanan',
       icon: 'shopping_cart'
-    }
+    },
+    emailLoading: false,
+    loadingInDialog: false,
+    emailSent: false,
+    emailFailed: false,
+    showDialog: false,
+    showDialogTitle: '',
+    showDialogText: '',
+    showDialogKey: { n: null, email: false },
+    closeDialogWhenEmailFailed: false
   }),
   watch: {
     windowWidth(width) {
-      console.log(this.tabInfoPemesan)
       if (width > 660) {
         // desktop
-        this.tabInfoPemesan = {
-          label: 'Info Pemesan',
-          icon: ''
-        }
-        this.tabDetailPeserta = {
-          label: 'Detail Peserta',
-          icon: ''
-        }
-        this.tabAlamatPengiriman = {
-          label: 'Alamat Pengiriman',
-          icon: ''
-        }
-        this.tabInfoPesanan = {
-          label: 'Info Pesanan',
-          icon: ''
-        }
+        this.tabInfoPemesan = { label: 'Info Pemesan', icon: '' }
+        this.tabDetailPeserta = { label: 'Detail Peserta', icon: '' }
+        this.tabAlamatPengiriman = { label: 'Alamat Pengiriman', icon: '' }
+        this.tabInfoPesanan = { label: 'Info Pesanan', icon: '' }
       } else {
         // mobile 
-        this.tabInfoPemesan = {
-          label: '',
-          icon: 'perm_identity'
-        }
-        this.tabDetailPeserta = {
-          label: '',
-          icon: 'face'
-        }
-        this.tabAlamatPengiriman = {
-          label: '',
-          icon: 'room'
-        }
-        this.tabInfoPesanan = {
-          label: '',
-          icon: 'shopping_cart'
-        }
+        this.tabInfoPemesan = { label: '', icon: 'perm_identity' }
+        this.tabDetailPeserta = { label: '', icon: 'face' }
+        this.tabAlamatPengiriman = { label: '', icon: 'room' }
+        this.tabInfoPesanan = { label: '', icon: 'shopping_cart' }
       }
     }
   },
@@ -362,59 +331,66 @@ export default {
         console.log('catch getStatusPesanan:', resp);
       })
     },
-    batalkanPesanan() {
-      axios.post(this.url + '/ubah-status-pesanan', { id_pesanan: this.$route.params.id_pesanan, angka: 0 })
+    showDialogExecute() {
+      this.loadingInDialog = true;
+      setTimeout(() => {
+        axios.post(this.url + '/ubah-status-pesanan', { id_pesanan: this.$route.params.id_pesanan, angka: this.showDialogKey.n })
+        .then(resp => {
+          this.getStatusPesanan();
+
+          if (this.showDialogKey.email) {
+            this.emailLoading = true;
+            this.sendMail(this.showDialogKey.n, () => {
+              this.loadingInDialog = false;
+              this.emailSent = true;
+              this.emailFailed = false;
+              this.emailLoading = false;
+            })
+          } else {
+            this.showDialog = false;
+            this.loadingInDialog = false;
+          }
+
+          // snackbar
+          if (this.showDialogKey.n == 0 && !this.showDialogKey.email) this.snackbarBatalkanPesanan = true;
+          if (this.showDialogKey.n == 1 && this.showDialogKey.email) this.snackbarKonfirmasiPesanan = true;
+          if (this.showDialogKey.n == null && !this.showDialogKey.email) this.snackbarBatalKonfirmasiPesanan = true;
+          if (this.showDialogKey.n == 2 && this.showDialogKey.email) this.snackbarSelesaikanPesanan = true;
+          if (this.showDialogKey.n == 1 && !this.showDialogKey.email) this.snackbarBatalSelesaikanPesanan = true;
+
+        })
+        .catch(resp => {
+          console.log('catch batalkanPesanan:', resp);
+        })
+      }, 500);
+    },
+    showDialogData(title, text, n) {
+      if (!this.emailLoading && !this.emailFailed) {
+        this.showDialogTitle = title;
+        this.showDialogText = text;
+        this.emailSent = false;
+        this.showDialogKey = {n: n.n, email: n.email};
+        this.emailFailed = false;
+        this.emailSent = false;
+      }
+      this.showDialog = true;
+    },
+    sendMail(n, cb) {
+      this.loadingInDialog = true;
+      this.emailLoading = true;
+      axios.post(this.url + '/kirim-email', { id_pesanan: this.$route.params.id_pesanan, n: n })
       .then(resp => {
-        this.getStatusPesanan();
-        this.snackbarBatalkanPesanan = true;
+        console.log('then sendMail:', resp);
+        cb();
       })
       .catch(resp => {
-        console.log('catch batalkanPesanan:', resp);
+        console.log('catch sendMail:', resp);
+        this.emailFailed = true;
+        this.loadingInDialog = false;
+        this.emailLoading = false;
+        this.closeDialogWhenEmailFailed = false;
       })
-    },
-    konfirmasiPesanan() {
-      axios.post(this.url + '/ubah-status-pesanan', { id_pesanan: this.$route.params.id_pesanan, angka: 1 })
-      .then(resp => {
-        this.getStatusPesanan();
-        this.snackbarKonfirmasiPesanan = true;
-      })
-      .catch(resp => {
-        console.log('catch konfirmasiPesanan:', resp);
-      })
-    },
-    batalKonfirmasiPesanan() {
-      axios.post(this.url + '/ubah-status-pesanan', { id_pesanan: this.$route.params.id_pesanan, angka: null })
-      .then(resp => {
-        console.log('then batalKonfirmasiPesanan:', resp.data);
-        this.getStatusPesanan();
-        this.snackbarBatalKonfirmasiPesanan = true;
-      })
-      .catch(resp => {
-        console.log('catch batalKonfirmasiPesanan:', resp);
-      });
-    },
-    selesaikanPesanan() {
-      axios.post(this.url + '/ubah-status-pesanan', { id_pesanan: this.$route.params.id_pesanan, angka: 2 })
-      .then(resp => {
-        console.log('then selesaikanPesanan:', resp.data);
-        this.getStatusPesanan();
-        this.snackbarSelesaikanPesanan = true;
-      })
-      .catch(resp => {
-        console.log('catch selesaikanPesanan:', resp);
-      });
-    },
-    batalSelesaikanPesanan() {
-      axios.post(this.url + '/ubah-status-pesanan', { id_pesanan: this.$route.params.id_pesanan, angka: 1 })
-      .then(resp => {
-        console.log('then batalSelesaikanPesanan:', resp.data);
-        this.getStatusPesanan();
-        this.snackbarBatalSelesaikanPesanan = true;
-      })
-      .catch(resp => {
-        console.log('catch batalSelesaikanPesanan:', resp);
-      });
-    },
+    }
   }
 }
 	

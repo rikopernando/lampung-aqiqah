@@ -8,6 +8,13 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class TestimoniController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+
+
     public function view() {
         return response(Testimoni::select()->get());
     }

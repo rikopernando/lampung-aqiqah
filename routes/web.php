@@ -15,6 +15,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/mitra/data', function () {
+    return response(App\Mitra::select()->get());
+});
+
+Route::get('/testimoni/data', function () {
+    return response(App\Testimoni::select()->get());
+});
+
 //Daftar Produk
 Route::get('/produk/view-produk/{tampil_produk}', 'DaftarProdukController@viewProduk');
 Route::get('/produk/sort-produk/{filter}', 'DaftarProdukController@sortProduk');
@@ -52,6 +60,7 @@ Route::get('laporan-order/detail-order/{id_pesanan}', 'LaporanOrderController@de
 Route::get('laporan-order/info-pesanan/{id_pesanan}', 'LaporanOrderController@infoPesanan');
 Route::post('laporan-order/ubah-status-pesanan', 'LaporanOrderController@ubahStatusPesanan');
 Route::get('laporan-order/status-pesanan/{id_pesanan}', 'LaporanOrderController@statusPesanan');
+Route::post('laporan-order/kirim-email', 'LaporanOrderController@kirimEmail');
 
 // Pesanan
 Route::get('pesanan/provinsi', 'PesananController@provinsi');
@@ -72,3 +81,13 @@ Route::resource('keranjang-belanja', 'KeranjangBelanjaController');
 Route::get('/testimoni/view', 'TestimoniController@view');
 Route::post('/testimoni/{id}', 'TestimoniController@update');
 Route::resource('testimoni', 'TestimoniController');
+Route::resource('setting-perusahaan', 'SettingPerusahaanController');
+
+
+//Testimoni
+Route::get('/berita/view', 'BeritaKamiController@view');
+Route::post('/berita/{id}', 'BeritaKamiController@update');
+Route::resource('berita', 'BeritaKamiController');
+
+// Mitra
+Route::resource('mitra', 'MitraController');
