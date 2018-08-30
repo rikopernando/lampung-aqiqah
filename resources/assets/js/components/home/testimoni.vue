@@ -74,7 +74,7 @@
     mounted() {
       const app = this;
 
-      app.$store.dispatch('testimoni/LOAD_TESTIMONI');
+      app.$store.dispatch('testimoni/LOAD_TESTIMONI_INDEX');
     },
     filters: {
       capitalize: (value) => {
