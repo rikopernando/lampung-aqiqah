@@ -116,7 +116,7 @@ export default {
       this.$emit('paginatedItems', items);
     },
     buildPagination() {
-      let numberOfPage = Math.ceil(this.items.length / this.pagination.itemPerPage)
+      let numberOfPage = Math.ceil(this.items.length / this.pagination.itemPerPage);
       this.pagination.items = [];
       for (var i = 0; i < numberOfPage; i++) {
         this.pagination.items.push(i + 1);

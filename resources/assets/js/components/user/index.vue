@@ -227,10 +227,7 @@ export default {
   	deleteUser(userId) {
   		this.promptDeleteUser = true;
   		this.userIdForDelete = userId;
-  	},
-    searchOnTable() {
-      this.searchable_user = searchUser(this.users, this.search, this.searchBy);
-    }
+  	}
   }
 }
 
