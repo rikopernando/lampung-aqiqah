@@ -13,10 +13,7 @@ class TestimoniController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+
 
     public function view() {
         return response(Testimoni::select()->get());

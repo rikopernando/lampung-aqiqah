@@ -276,19 +276,35 @@ const routes = [
   },{
     path : '/kemitraan',
     name : 'kemitraan',
-    component : Kemitraan
+    component : Kemitraan,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
   },{
     path : '/berita-kami',
     name : 'beritaKami',
-    component : BeritaKamiIndex
+    component : BeritaKamiIndex,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
   },{
     path : '/berita-kami/create',
     name : 'createBeritaKami',
-    component : BeritaKamiCreate
+    component : BeritaKamiCreate,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
   },{
     path : '/berita-kami/edit/:id',
     name : 'editBeritaKami',
-    component : BeritaKamiEdit
+    component : BeritaKamiEdit,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
   },{
     path : '/berita-kami-list',
     name : 'beritaKamiList',

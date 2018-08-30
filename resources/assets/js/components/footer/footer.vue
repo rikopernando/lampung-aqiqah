@@ -20,7 +20,7 @@
 .footer[data-v-41998488] {
     background: #f5f5fc;
     border-top: 1px solid #e0e0f7;
-    margin-top: 10px;
+    margin-top: 0px;
     padding: 30px;
 }
 
