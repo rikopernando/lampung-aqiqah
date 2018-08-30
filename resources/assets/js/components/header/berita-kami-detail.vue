@@ -6,34 +6,32 @@
       	 <md-card md-with-hover>
           <ul class="breadcrumb">
             <li><router-link :to="{name: 'home'}">Home</router-link></li>
-            <li class="active">Berita Kami</li>
+            <li><router-link :to="{name: 'beritaKamiList'}">Berita Kami</router-link></li>
+            <li class="active">Detail Berita</li>
           </ul>
         </md-card>
           
           <center v-if="this.$store.state.berita.loading"><md-progress-spinner md-mode="indeterminate"></md-progress-spinner></center>
+           
+            <md-card md-with-hover>
+           <div class="md-toolbar-section-start" style="padding:10px">
+           	{{berita.created_at}}
+           </div>
+           <h1 style="padding:10px">"{{berita.judul_berita | capitalize }}"</h1>
+            
+			<center style="padding:10px">
+			<img :src="url+'images/default_berita.jpg'" alt="People" v-if="berita.foto == null">
+			<img :src="url_picture+'/'+berita.foto" alt="People" v-else>
+			</center>
 
-      	<div class="card-expansion">
-			    <md-card class="content" v-for="berita, index in beritas" :key="index">
-			      <md-card-media>
-			      	<img :src="url+'images/default_berita.jpg'" alt="People" v-if="berita.foto == null">
-			        <img :src="url_picture+'/'+berita.foto" alt="People" v-else>
-			      </md-card-media>
+           <div class="md-toolbar-section-end">
+      		</div>
+          	
+          	<div v-html="berita.isi_berita" style="padding:15px"></div>
 
-			      <md-card-header>
-			        <div class="md-title">{{ berita.judul_berita | capitalize | selengkapnya }} ...</div>
-			      </md-card-header>
-
-			      	<md-card-actions md-alignment="space-between">
-			          <div>
-			          	 <p style="color:grey;">{{ berita.created_at }}</p>
-			          </div>
-
-			          <md-card-expand-trigger>
-			            <md-button :to="`/berita-kami/detail/${berita.id}`" >Learn more</md-button>
-			          </md-card-expand-trigger>
-			        </md-card-actions>
-			    </md-card>
-			  </div>
+          </md-card>
+      		
+			  
 
    	  </div>
 
@@ -50,13 +48,17 @@
   	data: () => ({
     	url: window.location.origin + (window.location.pathname),
         url_picture : window.location.origin + (window.location.pathname) + "image_berita/", 
+        beritaId: null,
     }),
      mounted() {
       const app = this;
-      app.$store.dispatch('berita/LOAD_BERITA');
+      let id = app.$route.params.id;
+
+      app.beritaId = id;
+      app.$store.dispatch('berita/LOAD_BERITA_DETAIL',{id:id});
     },
     computed: mapState ({
-      beritas(){
+      berita(){
         return this.$store.state.berita.daftarBerita;
       }
     }),

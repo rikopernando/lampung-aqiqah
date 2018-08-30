@@ -28,11 +28,11 @@
             <span-error v-if="errors.judul_berita" class="label-danger">{{errors.judul_berita[0]}}</span-error>
           </md-field>
 
-          <md-field>
-            <label for="isi_berita">Isi Berita</label>
-            <md-textarea v-model="berita.isi_berita"></md-textarea>
+          
+          <quill-editor v-model="berita.isi_berita" ref="myQuillEditor" :options="editorOption" style="height:10%">
+          </quill-editor>
             <span-error v-if="errors.isi_berita" class="label-danger">{{errors.isi_berita[0]}}</span-error>
-          </md-field>
+          
 
           <md-field>
             <label>Foto</label>
@@ -86,6 +86,8 @@
         isi_berita: '',
         foto: ''
       },
+      editorOption: {
+      },
       previewFoto: '',
       notifMessage: '',
       notifSuccess: false,
@@ -97,6 +99,11 @@
 
       app.beritaId = id;
       app.getBerita(app, id);
+    },
+    computed: {
+    editor() {
+      return this.$refs.myQuillEditor.quill
+    }
     },
     methods: {
       getBerita(app, id){
