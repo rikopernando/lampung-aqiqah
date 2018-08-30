@@ -138,7 +138,7 @@
           :dataPaging="laporan_order"
           :itemPerPage="3"
           :range="5"
-          :search="search"
+          :search="searchResult"
           @paginatedItems="getPaginatedItems($event)"></paging>
 
       </md-card>
@@ -148,6 +148,10 @@
 
 <script>
 
+const toLower = text => {
+  return text.toString().toLowerCase();
+};
+
 export default {
   data: () => ({
   	url: window.location.origin + (window.location.pathname + 'laporan-order'),
@@ -155,11 +159,19 @@ export default {
     laporan_order: {},
     searchable_laporan_order: {},
     loading: true,
+    searchResult: {}
   }),
   created() {
   	this.getLaporanOrderData();
   },
-  mounted() {
+  watch: {
+    search() {
+      if (this.search != null) {
+        this.searchResult = this.laporan_order.filter(item => toLower(item.nama_pelanggan).includes(toLower(this.search)));
+      } else {
+        this.searchResult = this.laporan_order;
+      }
+    }
   },
   filters: {
     currency(number) {

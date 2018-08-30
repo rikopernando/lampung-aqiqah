@@ -17,8 +17,14 @@
 
 <template>
   <div class="container">
-    <div v-if="search" class="text-center">
+    <div v-if="doSearch" class="text-center">
       <small> Terdapat {{ items.length }} hasil pencarian ditemukan </small>
+    </div>
+    <div v-else-if="!doSearch && items.length == 0">
+    	<!-- kosongkan -->
+    </div>
+    <div v-else class="text-center">
+    	<small> Terdapat {{ items.length }} data tersedia </small>
     </div>
     <ul class="pagination justify-content-center">
       <li class="pull-left" v-bind:class="{'disabled': pagination.currentPage == pagination.items[0] || pagination.items.length == 0}">
@@ -66,9 +72,11 @@ export default {
       items: [],
       filteredItems: [],
     },
+    doSearch: false
   }),
   watch: {
     dataPaging(data) {
+    	this.doSearch = false;
       this.items = data;
       this.buildPagination();
       this.selectPage(1);
@@ -76,8 +84,15 @@ export default {
     paginatedItems(data) {
       this.sendPaginatedItems(data);
     },
-    search(term) {
-      this.items = this.dataPaging.filter(item => toLower(item.nama_pelanggan).includes(toLower(term)));
+    search(searchResult) {
+    	if (searchResult.length == 0)
+    		this.doSearch = false;
+    	else if (searchResult.length > 0 && searchResult.length == this.dataPaging.length)
+	    	this.doSearch = false;
+	    else 
+	    	this.doSearch = true;
+
+      this.items = searchResult;
       this.buildPagination();
       this.selectPage(1);
     }
