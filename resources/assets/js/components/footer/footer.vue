@@ -1,30 +1,4 @@
-<style scoped>
 
-.row {
-	padding: 10px;
-}
-.footer {
-	background: #f5f5fc;
-	border-top: 1px solid #e0e0f7;
-	margin-top: 10px;
-	padding: 30px;
-}
-.copyright {
-	margin-top: 20px;
-	font-weight: bold;
-	text-align: center;
-}
-.head {
-	margin-bottom: 10px;
-}
-.footer[data-v-41998488] {
-    background: #f5f5fc;
-    border-top: 1px solid #e0e0f7;
-    margin-top: 0px;
-    padding: 30px;
-}
-
-</style>
 
 <template>
   <div class="row footer">
@@ -171,7 +145,7 @@
   .footer {
   	background: #f5f5fc;
   	border-top: 1px solid #e0e0f7;
-  	margin-top: 10px;
+  	margin-top: 0px;
   	padding: 30px;
   }
   .copyright {
