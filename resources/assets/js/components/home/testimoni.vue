@@ -1,5 +1,5 @@
 <template>
-  <div v-bind:style="{ 'background-image': 'url(' + url+'/images/background-batik.jpg' + ')' }">
+  <div v-bind:style="{ 'background-image': 'url(' + url+'/images/background-produk.jpg' + ')' }">
       <div class="row">
           <div class="col-md-12">
             <md-toolbar class="md-dense">

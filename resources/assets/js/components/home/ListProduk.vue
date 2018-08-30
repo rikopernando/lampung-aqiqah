@@ -32,7 +32,7 @@
             </div>
         </div>
 
-      <div class="background" v-bind:style="{ 'background-image': 'url(' + url+'/images/background-batik.jpg' + ')' }">
+      <div class="background" v-bind:style="{ 'background-image': 'url(' + url+'/images/background-produk.jpg' + ')' }">
         <div class="container">
 
           <div class="md-medium-size-50 md-small-size-50 md-xsmall-hide">
