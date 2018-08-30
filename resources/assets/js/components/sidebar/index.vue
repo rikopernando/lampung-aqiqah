@@ -10,7 +10,7 @@
           <span>Menu</span>
         </a>
         <div class="logo">
-          Aqiqah Lampung
+          <router-link style="color: white;" :to="{name: 'home'}">Aqiqah Lampung</router-link>
           <div class="pull-right">
             <router-link :to="{name: 'logout'}" tag="div">
             <md-icon style="color: white">power_settings_new</md-icon>
