@@ -130,13 +130,13 @@
           :dataPaging (wajib) = data Array of Object yang akan dipaging
           :itemPerPage (opsional) = jumlah item yang ditampilkan per halaman
           :range (opsional) = range paging
-          :search (opsional) = v-model kata pencarian
+          :search (opsional) = data Array of Object hasil dari pencarian
           @paginatedItems (wajib) = event untuk mengambil hasil data yang dikembalikan dari component paging
          -->
         <paging
           v-if="!loading"
           :dataPaging="laporan_order"
-          :itemPerPage="3"
+          :itemPerPage="10"
           :range="5"
           :search="searchResult"
           @paginatedItems="getPaginatedItems($event)"></paging>

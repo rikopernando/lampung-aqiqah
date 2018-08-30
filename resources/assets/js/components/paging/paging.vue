@@ -13,10 +13,13 @@
   li a {
     cursor: pointer;
   }
+  ul.pagination {
+  	margin: 2.5px 0px 10px 0px;
+  }
 </style>
 
 <template>
-  <div class="container">
+  <div class="container" style="margin-top: 10px;">
     <div v-if="doSearch" class="text-center">
       <small> Terdapat {{ items.length }} hasil pencarian ditemukan </small>
     </div>
@@ -26,7 +29,7 @@
     <div v-else class="text-center">
     	<small> Terdapat {{ items.length }} data tersedia </small>
     </div>
-    <ul class="pagination justify-content-center">
+    <ul v-if="items.length > itemPerPage" class="pagination justify-content-center">
       <li class="pull-left" v-bind:class="{'disabled': pagination.currentPage == pagination.items[0] || pagination.items.length == 0}">
         <md-tooltip md-direction="top"> Halaman Pertama </md-tooltip>
         <a v-on:click="selectPage(pagination.items[0])">

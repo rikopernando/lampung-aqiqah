@@ -85,12 +85,12 @@
 						        <md-field md-inline>
 						        	<label class="media-screen-xsmall-hide">Cari Dengan ...</label>
 						        	<label class="media-screen-medium-hide">Cari Dengan ...</label>
-						          <md-input v-model="search" @input="searchOnTable" />
+						          <md-input v-model="search" />
 						        </md-field>
 			        		</div>
 			        		<div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
 						        <md-field>
-						          <md-select v-model="searchBy" @md-selected="searchOnTable" name="searchBy" id="searchBy" md-dense>
+						          <md-select v-model="searchBy" name="searchBy" id="searchBy" md-dense>
 						            <md-option value="name">Nama</md-option>
 						            <md-option value="email">Email</md-option>
 						          </md-select>
@@ -103,7 +103,7 @@
         </md-card-header>
         <md-card-content>
           <md-button :to="`/user/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah User</md-button>
-      		<md-table v-model="searched" md-sort="name" md-sort-order="asc" md-fixed-header>
+      		<md-table v-model="searchable_user" md-sort="name" md-sort-order="asc" md-fixed-header>
 
 			      <md-table-empty-state v-if="loading">
 					    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
@@ -134,7 +134,14 @@
                 </md-button>
               </md-table-cell>
 			      </md-table-row>
-			    </md-table>  	
+			    </md-table>
+          <paging
+            v-if="!loading"
+            :dataPaging="users"
+            :itemPerPage="10"
+            :range="5"
+            :search="searchResult"
+            @paginatedItems="getPaginatedItems($event)"></paging>
         </md-card-content>
       </md-card>
 
@@ -167,20 +174,39 @@ export default {
     promptDeleteUser: false,
 		snackbarDeleteUser: false,
     userIdForDelete: '',
-    searched: [],
+    searchable_user: [],
     users: [],
     searchBy: 'name',
-    loading: true
+    loading: true,
+    searchResult: false,
   }),
   created() {
   	this.getUserData();
   },
+  watch: {
+    search() {
+      this.searchUsers();
+    },
+    searchBy() {
+      this.searchUsers();
+    }
+  },
   methods: {
+    searchUsers() {
+      if (this.search != null) {
+        this.searchResult = this.users.filter(item => toLower(item[this.searchBy]).includes(toLower(this.search)));
+      } else {
+        this.searchResult = this.users;
+      }
+    },
+    getPaginatedItems(value) {
+      this.searchable_user = value;
+    },
   	getUserData() {
   		axios.get(this.url + '/' + 'view')
   		.then(resp => {
   			this.users = resp.data;
-  			this.searched = resp.data;
+  			this.searchable_user = resp.data;
   			this.loading = false;
   		})
   		.catch(resp => {
@@ -203,7 +229,7 @@ export default {
   		this.userIdForDelete = userId;
   	},
     searchOnTable() {
-      this.searched = searchUser(this.users, this.search, this.searchBy);
+      this.searchable_user = searchUser(this.users, this.search, this.searchBy);
     }
   }
 }
