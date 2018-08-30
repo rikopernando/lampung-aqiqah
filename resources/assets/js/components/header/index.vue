@@ -53,12 +53,9 @@
         <md-snackbar :md-active.sync="snackbar">{{ alertSnackbar }}</md-snackbar>
 
         <h3 class="md-title" style="flex: 1"></h3>
-        <md-button href="#/list-produk" style="color: white; font-size: 12px">Pemesanan</md-button>
-        <md-button href="#/keranjang-belanja" style="color: white; font-size: 12px">Pembayaran</md-button>
-        <md-button href="#/keagenan" style="color: white; font-size: 12px">Keagenan</md-button>
-        <md-button :to="{name: 'tentangKami'}" style="color: white; font-size: 12px">
-          Tentang Kami
-        </md-button>
+        <md-button  :to="{name: 'tentangKami'}" style="color: white; font-size: 12px">Tentang Kami</md-button>
+        <md-button  :to="{name: 'beritaKamiList'}" style="color: white; font-size: 12px">Berita Kami</md-button>
+        <md-button :to="{name: 'kemitraan'}"  style="color: white; font-size: 12px">Kemitraan</md-button>
         <md-button class="md-icon-button">
           <a href="#/facebook">
             <i class="fa fa-facebook-f icon-link"></i>
@@ -82,7 +79,7 @@
       <md-toolbar class="md-dense" md-elevation="2" style="background-color: white">
         <div class="md-toolbar-row">
             <a href="#/" class="icon-aqiqah md-button md-theme-default md-active">
-                <img src="https://rumahaqiqah.org/wp-content/uploads/2018/01/rumahaqiqah3.png" alt="Aqiqah Lampung">
+                <img :src="url+'images/rumahaqiqah3.jpg'" alt="Aqiqah Lampung">
             </a>
 
           <div class="md-toolbar-section-start">
@@ -95,16 +92,29 @@
                 <div class="label-nav-main">HOME</div>
               </div>
             </a>
-            <a href="#/dashboard" class="md-button md-theme-default md-active" v-if="this.$store.state.user.is_admin">
+            <router-link class="md-button md-theme-default md-active" :to="{name: 'dashboard'}" v-if="this.$store.state.user.is_admin">
               <div class="md-ripple">
                 <div class="label-nav-main">Dashboard</div>
               </div>
-            </a>
+            </router-link>
             <router-link class="md-button md-theme-default md-active" :to="{name: 'listProduk'}">
               <div class="md-ripple">
                 <div class="label-nav-main">PRODUK</div>
               </div>
             </router-link>
+
+            <router-link class="md-button md-theme-default md-active" :to="{name: 'indexAkun'}">
+              <div class="md-ripple">
+                <div class="label-nav-main">PEMESANAN</div>
+              </div>
+            </router-link>
+
+            <router-link class="md-button md-theme-default md-active" :to="{name: 'checkout'}">
+              <div class="md-ripple">
+                <div class="label-nav-main">PEMBAYARAN</div>
+              </div>
+            </router-link>
+
           </div>
 
           <div class="md-toolbar-section-end">
@@ -156,7 +166,7 @@
           </div>
 
           <a href="#/" class="md-toolbar-section-end">
-              <img src="https://rumahaqiqah.org/wp-content/uploads/2018/01/rumahaqiqah3.png" alt="Aqiqah Lampung">
+              <img :src="url+'images/rumahaqiqah3.jpg'" alt="Aqiqah Lampung">
           </a>
 
           <div class="md-toolbar-section-end">
@@ -194,7 +204,7 @@
           <md-toolbar class="md-transparent" md-elevation="0">
             <span class="md-title">
               <a href="#/" class="md-toolbar-section-end">
-                  <img src="https://rumahaqiqah.org/wp-content/uploads/2018/01/rumahaqiqah3.png" alt="Aqiqah Lampung">
+                  <img :src="url+'images/rumahaqiqah3.jpg'" alt="Aqiqah Lampung">
               </a>
             </span>
           </md-toolbar>
@@ -207,8 +217,8 @@
               </router-link>
             </md-list-item>
 
-            <md-list-item>
-              <router-link :to="{name: 'dashboard'}" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important" v-if="this.$store.state.user.is_admin">
+            <md-list-item v-if="this.$store.state.user.is_admin">
+              <router-link :to="{name: 'dashboard'}" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
                 <md-icon>dashboard</md-icon>
                 <span>Dashboard</span>
               </router-link>
@@ -222,16 +232,37 @@
             </md-list-item>
 
             <md-list-item>
-              <a href="#/list-produk" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+              <a href="#/akun" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
                 <md-icon>add_shopping_cart</md-icon>
                 <span>Pemesanan</span>
               </a>
             </md-list-item>
 
             <md-list-item>
-              <a href="#/keranjang-belanja" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+              <a href="#/checkout" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
                 <md-icon>local_atm</md-icon>
                 <span>Pembayaran</span>
+              </a>
+            </md-list-item>
+
+            <md-list-item>
+              <a href="#/kemitraan" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+                <md-icon>group</md-icon>
+                <span>Kemitraan</span>
+              </a>
+            </md-list-item>
+
+            <md-list-item>
+              <a href="#/tentang-kami" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+                <md-icon>group</md-icon>
+                <span>Tentang Kami</span>
+              </a>
+            </md-list-item>
+
+            <md-list-item>
+              <a href="#/berita-kami" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+                <md-icon>timeline</md-icon>
+                <span>Berita Kami</span>
               </a>
             </md-list-item>
           </md-list>

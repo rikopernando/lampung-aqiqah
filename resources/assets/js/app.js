@@ -14,6 +14,11 @@ import { LOGIN } from './store/user/mutations'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css' // This line here
 
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+import quillEditor from 'vue-quill-editor'
+
 window.Vue.use(VueRouter)
 window.$ = window.jQuery = require('jquery')
 
@@ -24,6 +29,7 @@ Vue.component('sidebar', Sidebar)
 Vue.component('selectize-component', require('vue2-selectize'))
 Vue.component('v-select', vSelect)
 Vue.component('paging', Paging)
+Vue.use(quillEditor)
 Vue.use(VueMaterial)
 
 

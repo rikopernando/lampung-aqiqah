@@ -44,6 +44,23 @@ import TestimoniIndex from '../components/testimoni'
 import TestimoniCreate from '../components/testimoni/create'
 import TestimoniEdit from '../components/testimoni/edit'
 
+
+// BERITA KAMI
+import BeritaKamiIndex from '../components/beritakami/BeritaIndex'
+import BeritaKamiCreate from '../components/beritakami/BeritaCreate'
+import BeritaKamiEdit from '../components/beritakami/BeritaEdit'
+import BeritaKamiList from '../components/header/berita-kami'
+import BeritaKamiDetail from '../components/header/berita-kami-detail'
+
+import Kemitraan from '../components/header/kemitraan'
+
+import MitraIndex from '../components/mitra/MitraIndex'
+import MitraCreate from '../components/mitra/MitraCreate'
+import MitraEdit from '../components/mitra/MitraEdit'
+
+import SettingPerusahaanIndex from '../components/setting-perusahaan/SettingPerusahaanIndex'
+import SettingPerusahaanEdit from '../components/setting-perusahaan/SettingPerusahaanEdit'
+
 const routes = [
   {
     path : '/',
@@ -170,11 +187,19 @@ const routes = [
   },{
     path : '/laporan-order',
     name : 'laporanOrder',
-    component : LaporanOrder
+    component : LaporanOrder,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
   },{
     path : '/laporan-order/detail-order/:id_pesanan',
     name : 'detailOrder',
-    component : DetailOrder
+    component : DetailOrder,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
   },
   {
     path : '/password-reset/:token',
@@ -187,15 +212,103 @@ const routes = [
   },{
     path : '/testimoni',
     name : 'testimoni',
-    component : TestimoniIndex
+    component : TestimoniIndex,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
   },{
     path : '/testimoni/create',
     name : 'createTestimoni',
-    component : TestimoniCreate
+    component : TestimoniCreate,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
   },{
     path : '/testimoni/edit/:id',
     name : 'editTestimoni',
-    component : TestimoniEdit
+    component : TestimoniEdit,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
+  },{
+    path : '/mitra',
+    name : 'mitra',
+    component : MitraIndex,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
+  },{
+    path : '/mitra/create',
+    name : 'createMitra',
+    component : MitraCreate,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
+  },{
+    path : '/mitra/edit/:id',
+    name : 'editMitra',
+    component : MitraEdit,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
+  },{
+    path : '/setting-perusahaan',
+    name : 'setting_perusahaan',
+    component : SettingPerusahaanIndex,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
+  },{
+    path : '/setting-perusahaan/edit/:id',
+    name : 'editSettingPerusahaan',
+    component : SettingPerusahaanEdit,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
+  },{
+    path : '/kemitraan',
+    name : 'kemitraan',
+    component : Kemitraan
+  },{
+    path : '/berita-kami',
+    name : 'beritaKami',
+    component : BeritaKamiIndex,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
+  },{
+    path : '/berita-kami/create',
+    name : 'createBeritaKami',
+    component : BeritaKamiCreate,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
+  },{
+    path : '/berita-kami/edit/:id',
+    name : 'editBeritaKami',
+    component : BeritaKamiEdit,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
+  },{
+    path : '/berita-kami-list',
+    name : 'beritaKamiList',
+    component : BeritaKamiList
+  },{
+    path : '/berita-kami/detail/:id',
+    name : 'beritaKamiDetail',
+    component : BeritaKamiDetail
   }
 ]
 

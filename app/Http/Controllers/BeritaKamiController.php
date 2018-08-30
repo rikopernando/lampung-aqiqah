@@ -3,22 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Testimoni;
+use App\BeritaKami;
 use Intervention\Image\ImageManagerStatic as Image;
 
-class TestimoniController extends Controller
+class BeritaKamiController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-
-
-    public function view() {
-        return response(Testimoni::select()->get());
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -27,6 +16,10 @@ class TestimoniController extends Controller
     public function index()
     {
         //
+    }
+
+        public function view() {
+        return response(BeritaKami::select()->orderBy('created_at','desc')->get());
     }
 
     /**
@@ -48,16 +41,14 @@ class TestimoniController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'nama_lengkap'  => 'required|max:300',
-            'profesi'       => 'required|max:300',
-            'testimoni'     => 'required',
+            'judul_berita'  => 'required|max:300',
+            'isi_berita'     => 'required',
             'foto'          => 'image|max:3072',
         ]);
 
-        $insert_testimoni = Testimoni::create([
-            'nama_lengkap' => strtolower($request->nama_lengkap),
-            'profesi'      => $request->profesi,
-            'testimoni'    => $request->testimoni
+        $insert_berita = BeritaKami::create([
+            'judul_berita' => strtolower($request->judul_berita),
+            'isi_berita'      => $request->isi_berita,
         ]);
 
         if ($request->hasFile('foto')) {
@@ -71,11 +62,11 @@ class TestimoniController extends Controller
               // membuat nama file random berikut extension
               $filename     = str_random(40) . '.' . $extension;
               $image_resize = Image::make($foto->getRealPath());
-              $image_resize->fit(300);
-              $image_resize->save(public_path('image_produks/' . $filename));
-              $insert_testimoni->foto = $filename;
+              $image_resize->fit(600,300);
+              $image_resize->save(public_path('image_berita/' . $filename));
+              $insert_berita->foto = $filename;
               // menyimpan field foto di table barangs  dengan filename yang baru dibuat
-              $insert_testimoni->save();
+              $insert_berita->save();
             }
         }
     }
@@ -88,7 +79,7 @@ class TestimoniController extends Controller
      */
     public function show($id)
     {
-        return response(Testimoni::whereId($id)->first());
+        return response(BeritaKami::whereId($id)->first());
     }
 
     /**
@@ -111,17 +102,16 @@ class TestimoniController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $this->validate($request, [
-          'nama_lengkap'  => 'required|max:300',
-          'profesi'       => 'required|max:300',
-          'testimoni'     => 'required',
-          'foto'          => 'image|max:3072',
-      ]);
-      $update_testimoni = Testimoni::find($request->id);
-      $update_testimoni->update([
-        'nama_lengkap' => strtolower($request->nama_lengkap),
-        'profesi'      => $request->profesi,
-        'testimoni'    => $request->testimoni
+        $this->validate($request, [
+            'judul_berita'  => 'required|max:300',
+            'isi_berita'     => 'required',
+            'foto'          => 'image|max:3072',
+        ]);
+
+      $update_berita = BeritaKami::find($request->id);
+      $update_berita->update([
+            'judul_berita' => strtolower($request->judul_berita),
+            'isi_berita'      => $request->isi_berita,
       ]);
 
       if ($request->hasFile('foto')) {
@@ -135,15 +125,15 @@ class TestimoniController extends Controller
             // membuat nama file random berikut extension
             $filename     = str_random(40) . '.' . $extension;
             $image_resize = Image::make($foto->getRealPath());
-            $image_resize->fit(300);
-            $image_resize->save(public_path('image_produks/' . $filename));
-            $update_testimoni->foto = $filename;
+            $image_resize->fit(600,300);
+            $image_resize->save(public_path('image_berita/' . $filename));
+            $update_berita->foto = $filename;
             // menyimpan field foto di table barangs  dengan filename yang baru dibuat
-            $update_testimoni->save();
+            $update_berita->save();
           }
       }
 
-      $update_testimoni->save();
+      $update_berita->save();
     }
 
     /**
@@ -154,7 +144,7 @@ class TestimoniController extends Controller
      */
     public function destroy($id)
     {
-      $testimoni = Testimoni::destroy($id);
-      return response(200);
+          $berita = BeritaKami::destroy($id);
+          return response(200);
     }
 }
