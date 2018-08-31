@@ -110,7 +110,9 @@
         <md-button class="md-icon-button" @click="showNavigation = true">
           <md-icon>menu</md-icon>
         </md-button>
-        <span class="md-title">Aqiqah Lampung</span>
+        <router-link style="color: white;" :to="{name: 'home'}">
+          <span class="md-title">Aqiqah Lampung</span>
+        </router-link>
 
         <div class="md-toolbar-section-end">
           <md-button class="md-icon-button">
