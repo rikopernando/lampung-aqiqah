@@ -24,6 +24,9 @@
                 height: auto !important;
                 max-height: none !important;
             }
+            p.md-empty-state-description {
+                font-size: small;
+            }
         </style>
 
     </head>
