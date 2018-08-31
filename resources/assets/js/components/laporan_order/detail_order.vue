@@ -345,6 +345,7 @@ export default {
               this.emailSent = true;
               this.emailFailed = false;
               this.emailLoading = false;
+              this.showDialog = true;
             })
           } else {
             this.showDialog = false;
