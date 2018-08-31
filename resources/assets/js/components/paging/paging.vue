@@ -14,7 +14,7 @@
     cursor: pointer;
   }
   ul.pagination {
-  	margin: 2.5px 0px 10px 0px;
+  	margin: 2.5px 0px 20px 0px;
   }
 </style>
 
@@ -54,6 +54,7 @@
         </a>
       </li>
     </ul>
+    <div v-else style="margin-bottom: 20px;"></div>
   </div>
 </template>
 

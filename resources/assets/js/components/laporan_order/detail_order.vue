@@ -71,7 +71,7 @@
 
 			<md-card>
       	<ul class="breadcrumb">
-          <li><router-link :to="{name: 'home'}">Home</router-link></li>
+          <li><router-link :to="{name: 'dashboard'}">Dashboard</router-link></li>
         	<li><router-link :to="{name: 'laporanOrder'}">Laporan Order</router-link></li>
         	<li class="active">Detail Order</li>
       	</ul>
@@ -345,6 +345,7 @@ export default {
               this.emailSent = true;
               this.emailFailed = false;
               this.emailLoading = false;
+              this.showDialog = true;
             })
           } else {
             this.showDialog = false;
@@ -389,6 +390,7 @@ export default {
         this.loadingInDialog = false;
         this.emailLoading = false;
         this.closeDialogWhenEmailFailed = false;
+        this.showDialog = true
       })
     }
   }
