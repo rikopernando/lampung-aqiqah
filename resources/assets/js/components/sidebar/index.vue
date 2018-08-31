@@ -173,6 +173,30 @@
               <span>Laporan Order</span>
             </router-link>
           </md-list-item>
+          <md-list-item md-expand :md-expanded.sync="expandSetting">
+            <span class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+              <md-icon>settings_applications</md-icon>
+              <span>Setting</span>
+            </span>
+            <md-list slot="md-expand">
+              <md-list-item class="md-inset">
+                <router-link :to="{name: 'testimoni'}">
+                  <span class="md-list-item-text">Testimoni</span>
+                </router-link>
+              </md-list-item>
+              <md-list-item class="md-inset">
+                <router-link :to="{name: 'beritaKami'}">
+                  <span class="md-list-item-text">Berita Kami</span>
+                </router-link>
+              </md-list-item>
+              <md-list-item class="md-inset">
+                <router-link :to="{name: 'setting_perusahaan'}">
+                  <span class="md-list-item-text">Setting Perusahaan</span>
+                </router-link>
+              </md-list-item>
+            </md-list>
+          </md-list-item>
+
         </md-list>
       </md-drawer>
     </div>
@@ -191,7 +215,8 @@ export default {
     url : window.location.origin + window.location.pathname,
     tahun: new Date().getFullYear(),
     showNavigation: false,
-    showSidepanel: false
+    showSidepanel: false,
+    expandSetting: false
   }),
   mounted() {
     var main = document.querySelector(".main");
