@@ -390,6 +390,7 @@ export default {
         this.loadingInDialog = false;
         this.emailLoading = false;
         this.closeDialogWhenEmailFailed = false;
+        this.showDialog = true
       })
     }
   }
