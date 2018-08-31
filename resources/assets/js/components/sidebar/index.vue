@@ -107,7 +107,7 @@
 
     <div id="mobileVersion">
       <div class="toolbar-mobile-wrapper">
-        <md-toolbar class="md-primary toolbar-mobile" style="background-color: #d44723 !important;">
+        <md-toolbar class="md-primary toolbar-mobile" style="background-color: #da2921 !important;">
           <md-button class="md-icon-button" @click="showNavigation = true">
             <md-icon>menu</md-icon>
           </md-button>
