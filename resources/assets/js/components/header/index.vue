@@ -445,7 +445,7 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
   .link-item {
     display: inline-block;
   }

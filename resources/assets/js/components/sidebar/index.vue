@@ -106,23 +106,25 @@
     </div>
 
     <div id="mobileVersion">
-      <md-toolbar class="md-primary toolbar-mobile" style="background-color: #d44723 !important;">
-        <md-button class="md-icon-button" @click="showNavigation = true">
-          <md-icon>menu</md-icon>
-        </md-button>
-        <router-link style="color: white;" :to="{name: 'home'}">
-          <span class="md-title">Aqiqah Lampung</span>
-        </router-link>
-
-        <div class="md-toolbar-section-end">
-          <md-button class="md-icon-button">
-            <router-link :to="{name: 'logout'}" tag="div">
-              <md-icon style="color: white">power_settings_new</md-icon>
-            </router-link>
-            <md-tooltip md-direction="left">Logout</md-tooltip>
+      <div class="toolbar-mobile-wrapper">
+        <md-toolbar class="md-primary toolbar-mobile" style="background-color: #d44723 !important;">
+          <md-button class="md-icon-button" @click="showNavigation = true">
+            <md-icon>menu</md-icon>
           </md-button>
-        </div>
-      </md-toolbar>
+          <router-link style="color: white;" :to="{name: 'home'}">
+            <span class="md-title">Aqiqah Lampung</span>
+          </router-link>
+
+          <div class="md-toolbar-section-end">
+            <md-button class="md-icon-button">
+              <router-link :to="{name: 'logout'}" tag="div">
+                <md-icon style="color: white">power_settings_new</md-icon>
+              </router-link>
+              <md-tooltip md-direction="left">Logout</md-tooltip>
+            </md-button>
+          </div>
+        </md-toolbar>
+      </div>
 
       <md-drawer :md-active.sync="showNavigation" style="width: 213px !important">
         <md-toolbar class="md-transparent" md-elevation="0">
