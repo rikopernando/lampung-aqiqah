@@ -27,6 +27,16 @@ const actions = {
     });
   },
 
+  LOAD_TESTIMONI_INDEX : ({commit},get) => {
+    axios.get('testimoni/data')
+    .then(resp => {
+      commit('TESTIMONI',resp.data)
+    })
+    .catch(err =>{
+      console.log('Terjadi Kesalahan :', err);
+    });
+  },
+
 }
 
 export default {

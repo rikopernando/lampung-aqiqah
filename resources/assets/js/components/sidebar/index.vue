@@ -73,9 +73,15 @@
               <ul>
                 <li>
                   <router-link :to="{name: 'testimoni'}" class="drop-menu">
-                    <span>TM</span>
+                    <md-icon>rate_review</md-icon>
                     <span class="dekstop-menu">Testimoni</span>
                     <md-tooltip md-direction="right">Testimoni</md-tooltip>
+                  </router-link>
+
+                  <router-link :to="{name: 'beritaKami'}" class="drop-menu">
+                    <md-icon>rate_review</md-icon>
+                    <span class="dekstop-menu">Berita Kami</span>
+                    <md-tooltip md-direction="right">Berita Kami</md-tooltip>
                   </router-link>
                 </li>
                 <li>

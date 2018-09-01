@@ -16,7 +16,11 @@ Route::get('/', function () {
 });
 
 Route::get('/mitra/data', function () {
-         return response(App\Mitra::select()->get());
+    return response(App\Mitra::select()->get());
+});
+
+Route::get('/testimoni/data', function () {
+    return response(App\Testimoni::select()->get());
 });
 
 //Daftar Produk
@@ -79,6 +83,12 @@ Route::post('/testimoni/{id}', 'TestimoniController@update');
 Route::resource('testimoni', 'TestimoniController');
 Route::resource('setting-perusahaan', 'SettingPerusahaanController');
 Route::post('setting-perusahaan/{id}', 'SettingPerusahaanController@update');
+
+
+//Testimoni
+Route::get('/berita/view', 'BeritaKamiController@view');
+Route::post('/berita/{id}', 'BeritaKamiController@update');
+Route::resource('berita', 'BeritaKamiController');
 
 // Mitra
 Route::resource('mitra', 'MitraController');

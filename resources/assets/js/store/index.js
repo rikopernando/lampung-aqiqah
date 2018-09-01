@@ -8,6 +8,7 @@ import detailproduk from './detailproduk'
 import daftarproduk from './daftarproduk'
 import testimoni from './testimoni'
 import laporanorder from './laporanorder'
+import berita from './berita'
 
 Vue.use(Vuex)
 
@@ -18,7 +19,7 @@ const store = new Vuex.Store({
     awesome: true
   },
   modules : {
-    user, lokasi, keranjangbelanja, detailproduk, daftarproduk, testimoni, laporanorder
+    user, lokasi, keranjangbelanja, detailproduk, daftarproduk, testimoni, laporanorder,berita
   }
 })
 

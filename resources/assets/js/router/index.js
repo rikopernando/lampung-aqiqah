@@ -44,6 +44,14 @@ import TestimoniIndex from '../components/testimoni'
 import TestimoniCreate from '../components/testimoni/create'
 import TestimoniEdit from '../components/testimoni/edit'
 
+
+// BERITA KAMI
+import BeritaKamiIndex from '../components/beritakami/BeritaIndex'
+import BeritaKamiCreate from '../components/beritakami/BeritaCreate'
+import BeritaKamiEdit from '../components/beritakami/BeritaEdit'
+import BeritaKamiList from '../components/header/berita-kami'
+
+
 import Kemitraan from '../components/header/kemitraan'
 
 import MitraIndex from '../components/mitra/MitraIndex'
@@ -269,6 +277,22 @@ const routes = [
     path : '/kemitraan',
     name : 'kemitraan',
     component : Kemitraan
+  },{
+    path : '/berita-kami',
+    name : 'beritaKami',
+    component : BeritaKamiIndex
+  },{
+    path : '/berita-kami/create',
+    name : 'createBeritaKami',
+    component : BeritaKamiCreate
+  },{
+    path : '/berita-kami/edit/:id',
+    name : 'editBeritaKami',
+    component : BeritaKamiEdit
+  },{
+    path : '/berita-kami-list',
+    name : 'beritaKamiList',
+    component : BeritaKamiList
   }
 ]
 

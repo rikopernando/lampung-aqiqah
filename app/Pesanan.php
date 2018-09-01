@@ -7,6 +7,7 @@ use App\DetailPesanan;
 use App\KirimTempatLain;
 use App\Bank;
 use Indonesia;
+use App\SettingPerusahaan;
 use Mail;
 
 class Pesanan extends Model
@@ -72,6 +73,15 @@ class Pesanan extends Model
               $message->from('verifikasi@andaglos.id','Aqiqah Lampung');
               $message->to($pesanan->pelanggan->email);
               $message->subject('Pesanan Anda Telah Kami Terima');
+        });
+
+        $id_pesanan = $pesanan->id;
+        $email = SettingPerusahaan::select()->first()->email;
+
+        Mail::send('mails.notifikasi_admin', compact('id_pesanan'), function ($message) use ($email) {
+              $message->from('verifikasi@andaglos.id','Aqiqah Lampung');
+              $message->to($email);
+              $message->subject('Ada Pesanan baru di Aqiqah Lampung');
         });
 
     }

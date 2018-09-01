@@ -53,9 +53,9 @@
         <md-snackbar :md-active.sync="snackbar">{{ alertSnackbar }}</md-snackbar>
 
         <h3 class="md-title" style="flex: 1"></h3>
-        <md-button :to="{name: 'tentangKami'}" style="color: white; font-size: 12px">Tentang Kami</md-button>
-        <md-button href="#"  style="color: white; font-size: 12px">Berita Kami</md-button>
-        <md-button :to="{name: 'kemitraan'}" style="color: white; font-size: 12px">Kemitraan</md-button>
+        <md-button  :to="{name: 'tentangKami'}" style="color: white; font-size: 12px">Tentang Kami</md-button>
+        <md-button  :to="{name: 'beritaKamiList'}" style="color: white; font-size: 12px">Berita Kami</md-button>
+        <md-button :to="{name: 'kemitraan'}"  style="color: white; font-size: 12px">Kemitraan</md-button>
         <md-button class="md-icon-button">
           <a href="#/facebook">
             <i class="fa fa-facebook-f icon-link"></i>
