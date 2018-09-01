@@ -44,7 +44,7 @@ const actions = {
     });
   },
   LOAD_BERITA_DETAIL : ({commit},get) => {
-    axios.get('berita/'+get.id)
+    axios.get('berita/detail/'+get.id)
     .then(resp => {
       commit('BERITADETAIL',resp.data)
     })
