@@ -276,11 +276,7 @@ const routes = [
   },{
     path : '/kemitraan',
     name : 'kemitraan',
-    component : Kemitraan,
-    meta : {
-      requiresAuth : true,
-      is_admin : true
-    }
+    component : Kemitraan
   },{
     path : '/berita-kami',
     name : 'beritaKami',

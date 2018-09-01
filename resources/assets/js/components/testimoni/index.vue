@@ -3,7 +3,7 @@
       <div class="col-md-12" style="padding: 0">
         <md-card>
           <ul class="breadcrumb">
-            <li><router-link :to="{name: 'home'}">Home</router-link></li>
+            <li><router-link :to="{name: 'dashboard'}">Dashboard</router-link></li>
             <li class="active">Testimoni</li>
           </ul>
         </md-card>

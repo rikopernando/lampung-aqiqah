@@ -19,12 +19,22 @@
         <!-- Our Custom CSS -->
         <link rel="stylesheet" href="{{ asset('css/dashboard-admin.css') }}">
 
+        <style>
+            div.md-content.md-table-content.md-scrollbar.md-theme-default {
+                height: auto !important;
+                max-height: none !important;
+            }
+            p.md-empty-state-description {
+                font-size: small;
+            }
+        </style>
+
     </head>
     <body style="background-color:white;">
         <div id="app">
             <router-view></router-view>
         </div>
-        <script src="{{ asset('js/app.js?v=1.77')}}" type="text/javascript"></script>
+        <script src="{{ asset('js/app.js?v=1.82')}}" type="text/javascript"></script>
         <!-- jQuery CDN - Slim version (=without AJAX) -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <!-- Popper.JS -->

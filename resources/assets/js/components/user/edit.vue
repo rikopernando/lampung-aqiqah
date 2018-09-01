@@ -41,7 +41,7 @@
     <div class="col-md-12">
       <md-card>
         <ul class="breadcrumb">
-          <li><router-link :to="{name: 'home'}">Home</router-link></li>
+          <li><router-link :to="{name: 'dashboard'}">Dashboard</router-link></li>
           <li><router-link :to="{name: 'user'}">User</router-link></li>
           <li class="active">Edit</li>
         </ul>

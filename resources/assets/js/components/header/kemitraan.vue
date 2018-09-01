@@ -9,8 +9,10 @@
             </ul>
           </md-card>
           
-          <center v-if="loading"><md-progress-spinner md-mode="indeterminate"></md-progress-spinner></center>
+          
 
+          <div v-if="countmitra > 0">
+          <center v-if="loading"><md-progress-spinner md-mode="indeterminate"></md-progress-spinner></center>
 					<md-list class="md-triple-line" v-else>
 							<md-list-item v-for="mitra, index in mitra" :key="index">
 								<div class="md-list-item-text white-space">
@@ -20,6 +22,13 @@
 								</div>
 							</md-list-item>
 						</md-list>
+            </div>
+            <div v-else>
+               <md-empty-state md-label="Mitra Tidak Ditemukan"
+                  :md-description="`Data Mitra Masih Kosong`">
+              </md-empty-state>
+            </div>
+
       </div>
     <Footer></Footer>
   </div>
@@ -34,6 +43,7 @@
     data : () => ({
       url: window.location.origin + (window.location.pathname + 'mitra'),
       mitra : [],
+      countmitra:0,
       loading : true
     }),
     mounted() {
@@ -45,7 +55,8 @@
     methods : {
       getMitraData(){
         axios.get(this.url+'/data').then((resp) => {
-          this.mitra = resp.data
+          this.mitra = resp.data.data_mitra
+          this.countmitra = resp.data.count_mitra
           this.loading = false
         })
         .catch((err) => {
@@ -82,6 +93,14 @@
   .white-space {
     white-space : normal;
   }
+
+    .container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+}
 
 	
 </style>

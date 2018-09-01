@@ -3,7 +3,7 @@
     <div class="col-md-12" style="padding: 0">
       <md-card>
         <ul class="breadcrumb">
-          <li><router-link :to="{name: 'home'}">Home</router-link></li>
+          <li><router-link :to="{name: 'dashboard'}">Dashboard</router-link></li>
           <li><router-link :to="{name: 'produk'}">Produk</router-link></li>
           <li class="active">Edit Produk</li>
         </ul>
@@ -117,6 +117,7 @@
           app.produk = resp.data;
           app.produk.id = id;
           resp.data.stok === 1 ? app.produk.stok = true : app.produk.stok = false;
+          console.log(document.getElementById('foto').files[0])
         })
         .catch(function (resp) {
           console.log('catch getProduk:', resp);

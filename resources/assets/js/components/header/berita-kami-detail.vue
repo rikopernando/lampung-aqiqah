@@ -17,7 +17,7 @@
            <div class="md-toolbar-section-start" style="padding:10px">
            	{{berita.created_at}}
            </div>
-           <h1 style="padding:10px">"{{berita.judul_berita | capitalize }}"</h1>
+           <h1 style="padding:10px">"{{ berita.judul_berita | capitalize }}"</h1>
             
 			<center style="padding:10px">
 			<img :src="url+'images/default_berita.jpg'" alt="People" v-if="berita.foto == null">
@@ -118,6 +118,14 @@
     line-height: 32px;
 	}
   }
+
+  .container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px
+}
 
 
 </style>

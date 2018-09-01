@@ -1,7 +1,7 @@
 <template>
 
 
-  <div v-bind:style="{ 'background-image': 'url(' + url+'/images/background-batik.jpg' + ')' }">
+  <div v-bind:style="{ 'background-image': 'url(' + url+'/images/background-produk.jpg' + ')' }">
         <div class="produk-modal-container" id="produk-modal" >
             <div class="produk-modal">
                 <div class="title-produk">

@@ -83,10 +83,6 @@
             </a>
 
           <div class="md-toolbar-section-start">
-            <div style="padding-left: 50px">
-              <i class="fa fa-search icon-box"></i>
-              <input type="text" placeholder="Search..." class="input-box">
-            </div>
             <a href="#/" class="md-button md-theme-default md-active">
               <div class="md-ripple">
                 <div class="label-nav-main">HOME</div>
@@ -445,7 +441,7 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
   .link-item {
     display: inline-block;
   }
