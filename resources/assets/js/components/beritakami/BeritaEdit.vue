@@ -29,6 +29,7 @@
           </md-field>
 
           
+          <label for="isi_berita">Isi Berita</label>
           <quill-editor v-model="berita.isi_berita" ref="myQuillEditor" :options="editorOption" style="height:10%">
           </quill-editor>
             <span-error v-if="errors.isi_berita" class="label-danger">{{errors.isi_berita[0]}}</span-error>
