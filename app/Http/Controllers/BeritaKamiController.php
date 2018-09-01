@@ -19,7 +19,17 @@ class BeritaKamiController extends Controller
     }
 
         public function view() {
-        return response(BeritaKami::select()->orderBy('created_at','desc')->get());
+          $berita = BeritaKami::select()->orderBy('created_at','desc');
+
+          $data_berita = $berita->get();
+          $count_berita = $berita->count();
+
+        $respons['data_berita'] = $data_berita;
+        $respons['count_berita'] = $count_berita;
+
+
+        return response()->json($respons);
+
     }
 
     /**

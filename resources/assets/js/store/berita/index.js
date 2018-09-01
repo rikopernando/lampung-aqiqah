@@ -2,6 +2,7 @@ import { BERITA,BERITADETAIL } from './mutations'
 
 const state = {
     daftarBerita : [],
+    countBerita:0,
     loading: true,
 }
 
@@ -11,8 +12,11 @@ const getters = {
 
 const mutations = {
     BERITA : (state, data)=> {
-      state.daftarBerita = data;
+      state.daftarBerita = data.data_berita;
+      state.countBerita = data.count_berita;
       state.loading = false;
+      console.log(data.data_berita)
+      console.log(data.count_berita)
     },
     BERITADETAIL : (state, data)=> {
       state.daftarBerita = data;
