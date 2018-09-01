@@ -3,7 +3,7 @@
     <div class="col-md-12" style="padding: 0">
       <md-card>
         <ul class="breadcrumb">
-          <li><router-link :to="{name: 'home'}">Home</router-link></li>
+          <li><router-link :to="{name: 'dashboard'}">Dashboard</router-link></li>
           <li><router-link :to="{name: 'beritaKami'}">Berita Kami</router-link></li>
           <li class="active">Edit Berita Kami</li>
         </ul>
@@ -28,11 +28,12 @@
             <span-error v-if="errors.judul_berita" class="label-danger">{{errors.judul_berita[0]}}</span-error>
           </md-field>
 
-          <md-field>
-            <label for="isi_berita">Isi Berita</label>
-            <md-textarea v-model="berita.isi_berita"></md-textarea>
+          
+          <label for="isi_berita">Isi Berita</label>
+          <quill-editor v-model="berita.isi_berita" ref="myQuillEditor" :options="editorOption" style="height:10%">
+          </quill-editor>
             <span-error v-if="errors.isi_berita" class="label-danger">{{errors.isi_berita[0]}}</span-error>
-          </md-field>
+          
 
           <md-field>
             <label>Foto</label>
@@ -86,6 +87,8 @@
         isi_berita: '',
         foto: ''
       },
+      editorOption: {
+      },
       previewFoto: '',
       notifMessage: '',
       notifSuccess: false,
@@ -97,6 +100,11 @@
 
       app.beritaId = id;
       app.getBerita(app, id);
+    },
+    computed: {
+    editor() {
+      return this.$refs.myQuillEditor.quill
+    }
     },
     methods: {
       getBerita(app, id){

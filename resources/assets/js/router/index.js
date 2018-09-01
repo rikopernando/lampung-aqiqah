@@ -50,7 +50,7 @@ import BeritaKamiIndex from '../components/beritakami/BeritaIndex'
 import BeritaKamiCreate from '../components/beritakami/BeritaCreate'
 import BeritaKamiEdit from '../components/beritakami/BeritaEdit'
 import BeritaKamiList from '../components/header/berita-kami'
-
+import BeritaKamiDetail from '../components/header/berita-kami-detail'
 
 import Kemitraan from '../components/header/kemitraan'
 
@@ -280,19 +280,35 @@ const routes = [
   },{
     path : '/berita-kami',
     name : 'beritaKami',
-    component : BeritaKamiIndex
+    component : BeritaKamiIndex,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
   },{
     path : '/berita-kami/create',
     name : 'createBeritaKami',
-    component : BeritaKamiCreate
+    component : BeritaKamiCreate,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
   },{
     path : '/berita-kami/edit/:id',
     name : 'editBeritaKami',
-    component : BeritaKamiEdit
+    component : BeritaKamiEdit,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
   },{
     path : '/berita-kami-list',
     name : 'beritaKamiList',
     component : BeritaKamiList
+  },{
+    path : '/berita-kami/detail/:id',
+    name : 'beritaKamiDetail',
+    component : BeritaKamiDetail
   }
 ]
 

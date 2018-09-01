@@ -23,6 +23,19 @@ Route::get('/testimoni/data', function () {
     return response(App\Testimoni::select()->get());
 });
 
+Route::get('/berita/data', function () {
+        $berita = App\BeritaKami::select()->orderBy('created_at','desc');
+
+        $data_berita = $berita->get();
+        $count_berita = $berita->count();
+
+        $respons['data_berita'] = $data_berita;
+        $respons['count_berita'] = $count_berita;
+
+
+        return response()->json($respons);
+});
+
 //Daftar Produk
 Route::get('/produk/view-produk/{tampil_produk}', 'DaftarProdukController@viewProduk');
 Route::get('/produk/sort-produk/{filter}', 'DaftarProdukController@sortProduk');
