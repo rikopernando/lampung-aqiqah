@@ -2,8 +2,6 @@
 /public/hot
 /public/storage
 /public/image_produks
-/public/images_logo
-/public/images_slide
 /storage/*.key
 /vendor
 /.idea

@@ -116,14 +116,9 @@
             <md-card class="thumbnail-foto" v-if="setting_perusahaan.logo != null">
               <md-card-media-cover md-text-scrim>
                  <md-card-media md-ratio="16:9">
-                    <img :src="previewLogo" alt="Logo">
+                    <img :src="previewLogo" alt="Logo" v-if="previewLogo != ''">
+                    <img :src="url_logo+'/'+setting_perusahaan.logo" alt="Logo" v-else>
                  </md-card-media>
-
-                 <md-card-area>
-                   <md-card-actions>
-                      <md-button @click="removeImage('logo')">Hapus Logo</md-button>
-                   </md-card-actions>
-                 </md-card-area>
               </md-card-media-cover>
             </md-card>
 
@@ -135,14 +130,9 @@
             <md-card class="thumbnail-foto" v-if="setting_perusahaan.foto_slide_1 != null">
               <md-card-media-cover md-text-scrim>
                  <md-card-media md-ratio="16:9">
-                    <img :src="previewSlide1" alt="Slide 1">
+                    <img :src="previewSlide1" alt="Foto Slide 1" v-if="previewSlide1 != ''">
+                    <img :src="url_slide+'/'+setting_perusahaan.foto_slide_1" alt="Foto Slide 1" v-else>
                  </md-card-media>
-
-                 <md-card-area>
-                   <md-card-actions>
-                      <md-button @click="removeImage('slide_1')">Hapus Slide 1</md-button>
-                   </md-card-actions>
-                  </md-card-area>
                </md-card-media-cover>
             </md-card>
 
@@ -154,14 +144,9 @@
             <md-card class="thumbnail-foto" v-if="setting_perusahaan.foto_slide_2 != null">
               <md-card-media-cover md-text-scrim>
                  <md-card-media md-ratio="16:9">
-                    <img :src="previewSlide2" alt="Slide 2">
+                    <img :src="previewSlide2" alt="Foto Slide 2" v-if="previewSlide2 != ''">
+                    <img :src="url_slide+'/'+setting_perusahaan.foto_slide_2" alt="Foto Slide 2" v-else>
                  </md-card-media>
-
-                 <md-card-area>
-                   <md-card-actions>
-                      <md-button @click="removeImage('slide_2')">Hapus Slide 2</md-button>
-                   </md-card-actions>
-                  </md-card-area>
                </md-card-media-cover>
             </md-card>
 
@@ -173,14 +158,9 @@
             <md-card class="thumbnail-foto" v-if="setting_perusahaan.foto_slide_3 != null">
               <md-card-media-cover md-text-scrim>
                  <md-card-media md-ratio="16:9">
-                    <img :src="previewSlide3" alt="Slide 3">
+                    <img :src="previewSlide2" alt="Foto Slide 3" v-if="previewSlide3 != ''">
+                    <img :src="url_slide+'/'+setting_perusahaan.foto_slide_3" alt="Foto Slide 3" v-else>
                  </md-card-media>
-
-                 <md-card-area>
-                   <md-card-actions>
-                      <md-button @click="removeImage('slide_3')">Hapus Slide 3</md-button>
-                   </md-card-actions>
-                  </md-card-area>
                </md-card-media-cover>
             </md-card>
 
@@ -212,6 +192,8 @@ export default {
   data: () => ({
     errors : [],
     url: window.location.origin + (window.location.pathname + 'setting-perusahaan'),
+    url_logo: window.location.origin + (window.location.pathname + 'images_logo'),
+    url_slide: window.location.origin + (window.location.pathname + 'images_slide'),
     setting_perusahaan: {
       id: '',
       name: '',
@@ -261,22 +243,8 @@ export default {
              app.previewSlide3 = e.target.result;
           }
       };
+
       reader.readAsDataURL(file);
-    },
-    removeImage(name) {
-          switch(name){
-           case "logo":
-             this.setting_perusahaan.logo = null
-             break;
-           case "slide_1":
-             this.setting_perusahaan.foto_slide_1 = null
-             break;
-           case "slide_2":
-             this.setting_perusahaan.foto_slide_2 = null
-             break;
-           case "slide_3":
-             this.setting_perusahaan.foto_slide_3 = null
-          }
     },
     getDataSettingPerusahaan(setting_perusahaanId) {
       axios.get(this.url + '/' + setting_perusahaanId)
