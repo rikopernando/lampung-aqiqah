@@ -108,6 +108,7 @@ Route::get('/testimoni/view', 'TestimoniController@view');
 Route::post('/testimoni/{id}', 'TestimoniController@update');
 Route::resource('testimoni', 'TestimoniController');
 Route::resource('setting-perusahaan', 'SettingPerusahaanController');
+Route::post('setting-perusahaan/{id}', 'SettingPerusahaanController@update');
 
 
 //Testimoni

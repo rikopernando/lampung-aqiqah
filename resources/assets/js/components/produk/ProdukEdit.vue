@@ -117,6 +117,7 @@
           app.produk = resp.data;
           app.produk.id = id;
           resp.data.stok === 1 ? app.produk.stok = true : app.produk.stok = false;
+          console.log(document.getElementById('foto').files[0])
         })
         .catch(function (resp) {
           console.log('catch getProduk:', resp);
