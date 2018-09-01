@@ -16,7 +16,16 @@ Route::get('/', function () {
 });
 
 Route::get('/mitra/data', function () {
-    return response(App\Mitra::select()->get());
+       $mitra = App\Mitra::select()->orderBy('created_at','desc');
+
+        $data_mitra = $mitra->get();
+        $count_mitra = $mitra->count();
+
+        $respons['data_mitra'] = $data_mitra;
+        $respons['count_mitra'] = $count_mitra;
+
+
+        return response()->json($respons);
 });
 
 Route::get('/testimoni/data', function () {
@@ -34,6 +43,10 @@ Route::get('/berita/data', function () {
 
 
         return response()->json($respons);
+});
+
+Route::get('/berita/detail/{id}', function ($id) {
+      return response(App\BeritaKami::whereId($id)->first());
 });
 
 //Daftar Produk

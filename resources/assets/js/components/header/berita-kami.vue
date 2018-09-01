@@ -10,10 +10,11 @@
           </ul>
         </md-card>
           
+          
+      	<div class="card-expansion" v-if="this.$store.state.berita.countBerita > 0">
           <center v-if="this.$store.state.berita.loading"><md-progress-spinner md-mode="indeterminate"></md-progress-spinner></center>
 
-      	<div class="card-expansion" v-if="this.$store.state.berita.countBerita > 0">
-			    <md-card class="content" v-for="berita, index in beritas" :key="index">
+			    <md-card class="content" v-for="berita, index in beritas" :key="index" v-else>
 			      <md-card-media>
 			      	<img :src="url+'images/default_berita.jpg'" alt="People" v-if="berita.foto == null">
 			        <img :src="url_picture+'/'+berita.foto" alt="People" v-else>
