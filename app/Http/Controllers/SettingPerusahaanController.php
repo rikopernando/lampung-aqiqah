@@ -113,6 +113,7 @@ class SettingPerusahaanController extends Controller
                 // membuat nama file random berikut extension
                 $filename     = str_random(40) . '.' . $extension;
                 $image_resize = Image::make($foto_slide_1->getRealPath());
+                $image_resize->fit(1366,293);
                 $image_resize->save(public_path('images_slide/' . $filename));
                 $setting_perusahaan->foto_slide_1 = $filename;
                 // menyimpan field foto di table barangs  dengan filename yang baru dibuat
@@ -131,6 +132,7 @@ class SettingPerusahaanController extends Controller
                 // membuat nama file random berikut extension
                 $filename     = str_random(40) . '.' . $extension;
                 $image_resize = Image::make($foto_slide_2->getRealPath());
+                $image_resize->fit(1366,293);
                 $image_resize->save(public_path('images_slide/' . $filename));
                 $setting_perusahaan->foto_slide_2 = $filename;
                 // menyimpan field foto di table barangs  dengan filename yang baru dibuat
@@ -149,6 +151,7 @@ class SettingPerusahaanController extends Controller
                 // membuat nama file random berikut extension
                 $filename     = str_random(40) . '.' . $extension;
                 $image_resize = Image::make($foto_slide_3->getRealPath());
+                $image_resize->fit(1366,293);
                 $image_resize->save(public_path('images_slide/' . $filename));
                 $setting_perusahaan->foto_slide_3 = $filename;
                 // menyimpan field foto di table barangs  dengan filename yang baru dibuat

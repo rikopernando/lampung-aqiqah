@@ -127,6 +127,7 @@
                <md-file name="foto_slide_1" v-model="setting_perusahaan.foto_slide_1" id="foto_slide_1" accept="image/*" @change="onFileChange" />
             </md-field>
 
+            <p style="color :red; font-style:italic;">* Ukuran foto yang disarankan 1366 x 293</p>
             <md-card class="thumbnail-foto" v-if="setting_perusahaan.foto_slide_1 != null">
               <md-card-media-cover md-text-scrim>
                  <md-card-media md-ratio="16:9">
@@ -141,6 +142,7 @@
                <md-file name="foto_slide_2" v-model="setting_perusahaan.foto_slide_2" id="foto_slide_2" accept="image/*" @change="onFileChange" />
             </md-field>
 
+            <p style="color :red; font-style:italic;">* Ukuran foto yang disarankan 1366 x 293</p>
             <md-card class="thumbnail-foto" v-if="setting_perusahaan.foto_slide_2 != null">
               <md-card-media-cover md-text-scrim>
                  <md-card-media md-ratio="16:9">
@@ -155,6 +157,7 @@
                <md-file name="foto_slide_3" v-model="setting_perusahaan.foto_slide_3" id="foto_slide_3" accept="image/*" @change="onFileChange" />
             </md-field>
 
+            <p style="color :red; font-style:italic;">* Ukuran foto yang disarankan 1366 x 293</p>
             <md-card class="thumbnail-foto" v-if="setting_perusahaan.foto_slide_3 != null">
               <md-card-media-cover md-text-scrim>
                  <md-card-media md-ratio="16:9">
@@ -171,7 +174,7 @@
                 :md-stroke="3" 
                 md-mode="indeterminate">
               </md-progress-spinner>
-              <md-button v-else type="submit" class="md-primary">Edit</md-button>
+              <md-button v-else type="submit" class="md-raised md-accent">Edit</md-button>
             </md-card-actions>
 
           </form>
