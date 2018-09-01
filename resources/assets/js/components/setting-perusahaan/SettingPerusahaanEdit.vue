@@ -1,4 +1,7 @@
 <style>
+  .thumbnail-foto {
+    width: 25%;
+  }
   ._spinner-container {
     position: absolute; 
     left: 50%;
@@ -105,6 +108,82 @@
               <md-input name="alamat" id="alamat" v-model="setting_perusahaan.alamat" />
             </md-field>
 
+            <md-field>
+              <label>Logo</label>
+               <md-file name="logo" v-model="setting_perusahaan.logo" id="logo" accept="image/*" @change="onFileChange" />
+            </md-field>
+
+            <md-card class="thumbnail-foto" v-if="setting_perusahaan.logo != null">
+              <md-card-media-cover md-text-scrim>
+                 <md-card-media md-ratio="16:9">
+                    <img :src="previewLogo" alt="Logo">
+                 </md-card-media>
+
+                 <md-card-area>
+                   <md-card-actions>
+                      <md-button @click="removeImage('logo')">Hapus Logo</md-button>
+                   </md-card-actions>
+                 </md-card-area>
+              </md-card-media-cover>
+            </md-card>
+
+            <md-field>
+              <label>Foto Slide 1</label>
+               <md-file name="foto_slide_1" v-model="setting_perusahaan.foto_slide_1" id="foto_slide_1" accept="image/*" @change="onFileChange" />
+            </md-field>
+
+            <md-card class="thumbnail-foto" v-if="setting_perusahaan.foto_slide_1 != null">
+              <md-card-media-cover md-text-scrim>
+                 <md-card-media md-ratio="16:9">
+                    <img :src="previewSlide1" alt="Slide 1">
+                 </md-card-media>
+
+                 <md-card-area>
+                   <md-card-actions>
+                      <md-button @click="removeImage('slide_1')">Hapus Slide 1</md-button>
+                   </md-card-actions>
+                  </md-card-area>
+               </md-card-media-cover>
+            </md-card>
+
+            <md-field>
+              <label>Foto Slide 2</label>
+               <md-file name="foto_slide_2" v-model="setting_perusahaan.foto_slide_2" id="foto_slide_2" accept="image/*" @change="onFileChange" />
+            </md-field>
+
+            <md-card class="thumbnail-foto" v-if="setting_perusahaan.foto_slide_2 != null">
+              <md-card-media-cover md-text-scrim>
+                 <md-card-media md-ratio="16:9">
+                    <img :src="previewSlide2" alt="Slide 2">
+                 </md-card-media>
+
+                 <md-card-area>
+                   <md-card-actions>
+                      <md-button @click="removeImage('slide_2')">Hapus Slide 2</md-button>
+                   </md-card-actions>
+                  </md-card-area>
+               </md-card-media-cover>
+            </md-card>
+
+            <md-field>
+              <label>Foto Slide 3</label>
+               <md-file name="foto_slide_3" v-model="setting_perusahaan.foto_slide_3" id="foto_slide_3" accept="image/*" @change="onFileChange" />
+            </md-field>
+
+            <md-card class="thumbnail-foto" v-if="setting_perusahaan.foto_slide_3 != null">
+              <md-card-media-cover md-text-scrim>
+                 <md-card-media md-ratio="16:9">
+                    <img :src="previewSlide3" alt="Slide 3">
+                 </md-card-media>
+
+                 <md-card-area>
+                   <md-card-actions>
+                      <md-button @click="removeImage('slide_3')">Hapus Slide 3</md-button>
+                   </md-card-actions>
+                  </md-card-area>
+               </md-card-media-cover>
+            </md-card>
+
             <md-card-actions>
               <md-progress-spinner 
                 v-if="submitted" 
@@ -134,11 +213,20 @@ export default {
     errors : [],
     url: window.location.origin + (window.location.pathname + 'setting-perusahaan'),
     setting_perusahaan: {
+      id: '',
       name: '',
       email: '',
       no_telp: '',
-      alamat: ''
+      alamat: '',
+      logo: '',
+      foto_slide_1: null,
+      foto_slide_2: null,
+      foto_slide_3: null,
     },
+    previewLogo: '',
+    previewSlide1: '',
+    previewSlide2: '',
+    previewSlide3: '',
     snackbarEditSettingPerusahaan: false,
     submitted: false,
     loading: true,
@@ -147,6 +235,49 @@ export default {
     this.getDataSettingPerusahaan(this.$route.params.id);
   },
   methods: {
+    onFileChange(e) {
+      let files = e.target.files || e.dataTransfer.files;
+      if (!files.length)
+        return;
+        this.createImage(files[0],e.target.name);
+    },
+    createImage(file,name) {
+      let image = new Image();
+      let reader = new FileReader();
+      let app = this;
+
+      reader.onload = (e) => {
+          switch(name){
+            case "logo":
+             app.previewLogo = e.target.result;
+             break;
+           case "foto_slide_1":
+             app.previewSlide1 = e.target.result;
+             break;
+           case "foto_slide_2":
+             app.previewSlide2 = e.target.result;
+             break;
+           case "foto_slide_3":
+             app.previewSlide3 = e.target.result;
+          }
+      };
+      reader.readAsDataURL(file);
+    },
+    removeImage(name) {
+          switch(name){
+           case "logo":
+             this.setting_perusahaan.logo = null
+             break;
+           case "slide_1":
+             this.setting_perusahaan.foto_slide_1 = null
+             break;
+           case "slide_2":
+             this.setting_perusahaan.foto_slide_2 = null
+             break;
+           case "slide_3":
+             this.setting_perusahaan.foto_slide_3 = null
+          }
+    },
     getDataSettingPerusahaan(setting_perusahaanId) {
       axios.get(this.url + '/' + setting_perusahaanId)
       .then(resp => {
@@ -158,8 +289,10 @@ export default {
       });
     },
     saveForm() {
+      const app = this
+      let data = this.inputData(app)
       this.submitted = true;
-      axios.patch(this.url + '/' + this.$route.params.id, this.setting_perusahaan)
+      axios.post(this.url+'/'+this.$route.params.id , data)
       .then(resp => {
         this.snackbarEditSettingPerusahaan = true;
         this.submitted = false;
@@ -172,6 +305,27 @@ export default {
         console.log('catch saveForm:', err);
       });
     },
+    inputData(app) {
+  		let data = new FormData();
+      if (document.getElementById('logo').files[0] != undefined) {
+         data.append('logo', document.getElementById('logo').files[0]);
+      }
+      if (document.getElementById('foto_slide_1').files[0] != undefined) {
+         data.append('foto_slide_1', document.getElementById('foto_slide_1').files[0]);
+      }
+      if (document.getElementById('foto_slide_2').files[0] != undefined) {
+         data.append('foto_slide_2', document.getElementById('foto_slide_2').files[0]);
+      }
+      if (document.getElementById('foto_slide_3').files[0] != undefined) {
+         data.append('foto_slide_3', document.getElementById('foto_slide_3').files[0]);
+      }
+      data.append('name', app.setting_perusahaan.name);
+    	data.append('email', app.setting_perusahaan.email);
+  		data.append('no_telp', app.setting_perusahaan.no_telp);
+  		data.append('alamat', app.setting_perusahaan.alamat);
+
+  		return data;
+  	},
     redirectToSettingPerusahaanList() {
       this.$router.replace('/setting-perusahaan');  
     }
