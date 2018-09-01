@@ -13,10 +13,19 @@ class BeritaKamiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+        public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    
     public function index()
     {
         //
     }
+
+
 
         public function view() {
           $berita = BeritaKami::select()->orderBy('created_at','desc');

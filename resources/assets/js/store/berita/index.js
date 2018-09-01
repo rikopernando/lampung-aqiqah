@@ -34,6 +34,15 @@ const actions = {
       console.log('Terjadi Kesalahan :', err);
     });
   },
+  LOAD_BERITA_LIST : ({commit},get) => {
+    axios.get('berita/data')
+    .then(resp => {
+      commit('BERITA',resp.data)
+    })
+    .catch(err =>{
+      console.log('Terjadi Kesalahan :', err);
+    });
+  },
   LOAD_BERITA_DETAIL : ({commit},get) => {
     axios.get('berita/'+get.id)
     .then(resp => {

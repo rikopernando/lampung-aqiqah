@@ -58,7 +58,7 @@
     }),
      mounted() {
       const app = this;
-      app.$store.dispatch('berita/LOAD_BERITA');
+      app.$store.dispatch('berita/LOAD_BERITA_LIST');
     },
     computed: mapState ({
       beritas(){
