@@ -87,6 +87,7 @@ class SettingPerusahaanController extends Controller
               'no_telp'   => 'required',
               'alamat'    => 'required',
               'logo'      => 'image|max:3072',
+              'katalog'      => 'mimes:pdf',
               'foto_slide_1'   => 'image|max:3072',
               'foto_slide_2'   => 'image|max:3072',
               'foto_slide_3'   => 'image|max:3072',
@@ -99,6 +100,26 @@ class SettingPerusahaanController extends Controller
             'alamat' => $request->alamat,
             'email' => $request->email
           ]);
+
+          if($request->hasFile('katalog')){
+              $katalog = $request->file('katalog');
+
+              if (is_array($katalog) || is_object($katalog)) {
+                // Mengambil file yang diupload
+                $uploaded_katalog = $katalog;
+                // mengambil extension file
+                $extension = $uploaded_katalog->getClientOriginalExtension();
+                // membuat nama file random berikut extension
+                $filename     = str_random(40) . '.' . $extension;
+                // menyimpan katalog ke folder public/katalog
+                $destinationPath = public_path() . DIRECTORY_SEPARATOR . 'katalog';
+
+                $uploaded_katalog->move($destinationPath, $filename);
+                $setting_perusahaan->katalog = $filename;
+                // menyimpan field foto di table barangs  dengan filename yang baru dibuat
+                $setting_perusahaan->save();
+              }
+          }
 
           if ($request->hasFile('logo')) {
               $logo = $request->file('logo');
