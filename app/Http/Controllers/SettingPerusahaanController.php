@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\SettingPerusahaan;
 use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\File;
 
 class SettingPerusahaanController extends Controller
 {
@@ -113,8 +114,11 @@ class SettingPerusahaanController extends Controller
                 $filename     = str_random(40) . '.' . $extension;
                 // menyimpan katalog ke folder public/katalog
                 $destinationPath = public_path() . DIRECTORY_SEPARATOR . 'katalog';
-
+                // memindahkan file ke folder public/katalog
                 $uploaded_katalog->move($destinationPath, $filename);
+
+                $this->deleteFile($setting_perusahaan->katalog, 'katalog');
+
                 $setting_perusahaan->katalog = $filename;
                 // menyimpan field foto di table barangs  dengan filename yang baru dibuat
                 $setting_perusahaan->save();
@@ -133,6 +137,9 @@ class SettingPerusahaanController extends Controller
                 $filename     = str_random(40) . '.' . $extension;
                 $image_resize = Image::make($logo->getRealPath());
                 $image_resize->save(public_path('images_logo/' . $filename));
+
+                $this->deleteFile($setting_perusahaan->logo, 'images_logo');
+
                 $setting_perusahaan->logo = $filename;
                 // menyimpan field foto di table barangs  dengan filename yang baru dibuat
                 $setting_perusahaan->save();
@@ -152,6 +159,9 @@ class SettingPerusahaanController extends Controller
                 $image_resize = Image::make($foto_slide_1->getRealPath());
                 $image_resize->fit(1366,293);
                 $image_resize->save(public_path('images_slide/' . $filename));
+
+                $this->deleteFile($setting_perusahaan->foto_slide_1, 'images_slide');
+
                 $setting_perusahaan->foto_slide_1 = $filename;
                 // menyimpan field foto di table barangs  dengan filename yang baru dibuat
                 $setting_perusahaan->save();
@@ -171,6 +181,9 @@ class SettingPerusahaanController extends Controller
                 $image_resize = Image::make($foto_slide_2->getRealPath());
                 $image_resize->fit(1366,293);
                 $image_resize->save(public_path('images_slide/' . $filename));
+
+                $this->deleteFile($setting_perusahaan->foto_slide_2, 'images_slide');
+
                 $setting_perusahaan->foto_slide_2 = $filename;
                 // menyimpan field foto di table barangs  dengan filename yang baru dibuat
                 $setting_perusahaan->save();
@@ -190,6 +203,9 @@ class SettingPerusahaanController extends Controller
                 $image_resize = Image::make($foto_slide_3->getRealPath());
                 $image_resize->fit(1366,293);
                 $image_resize->save(public_path('images_slide/' . $filename));
+                
+                $this->deleteFile($setting_perusahaan->foto_slide_3, 'images_slide');
+
                 $setting_perusahaan->foto_slide_3 = $filename;
                 // menyimpan field foto di table barangs  dengan filename yang baru dibuat
                 $setting_perusahaan->save();
@@ -214,5 +230,17 @@ class SettingPerusahaanController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function deleteFile($old_file,$path) {
+
+        if($old_file){
+            $filepath = public_path() . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR . $old_file;
+            try {
+              File::delete($filepath);
+            } catch (FileNotFoundException $e){
+               // File sudah tidak ada
+            }
+        }
     }
 }
