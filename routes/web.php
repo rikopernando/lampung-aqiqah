@@ -24,13 +24,22 @@ Route::get('/mitra/data', function () {
         $respons['data_mitra'] = $data_mitra;
         $respons['count_mitra'] = $count_mitra;
 
-
         return response()->json($respons);
 });
 
 Route::get('/testimoni/data', function () {
     return response(App\Testimoni::select()->get());
 });
+
+Route::get('/setting-perusahaan/data', function () {
+    return response(App\SettingPerusahaan::select()->first());
+});
+
+Route::get('/download-katalog', function () {
+    $katalog = App\SettingPerusahaan::select('katalog')->first()->katalog; 
+    return response()->download(public_path("katalog/".$katalog));
+});
+
 
 Route::get('/berita/data', function () {
         $berita = App\BeritaKami::select()->orderBy('created_at','desc');
