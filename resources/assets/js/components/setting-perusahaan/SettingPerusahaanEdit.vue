@@ -54,7 +54,7 @@
       <md-card>
         <ul class="breadcrumb">
           <li><router-link :to="{name: 'home'}">Home</router-link></li>
-          <li><router-link :to="{name: 'setting_perusahaan'}">Setting Perusahaan</router-link></li>
+          <li><router-link :to="{name: 'setting_perusahaan'}" id="setting-perusahaan">Setting Perusahaan</router-link></li>
           <li class="active">Edit</li>
         </ul>
       </md-card>
@@ -62,7 +62,7 @@
       <md-card>
         <md-card-header>
           <div class="header-card">
-            <md-icon style="color: white;">group</md-icon>
+            <md-icon style="color: white;">business</md-icon>
           </div>
           <md-card-header-text>
             <div class="md-toolbar" style="margin-top: -20px; padding: 0px">
@@ -106,6 +106,11 @@
             <md-field>
               <label v-if="!loading" for="name">Alamat</label>
               <md-input name="alamat" id="alamat" v-model="setting_perusahaan.alamat" />
+            </md-field>
+
+            <md-field>
+              <label>Katalog</label>
+               <md-file name="katalog" v-model="setting_perusahaan.katalog" id="katalog" />
             </md-field>
 
             <md-field>
@@ -204,6 +209,7 @@ export default {
       no_telp: '',
       alamat: '',
       logo: '',
+      katalog: null,
       foto_slide_1: null,
       foto_slide_2: null,
       foto_slide_3: null,
@@ -269,6 +275,7 @@ export default {
         this.submitted = false;
       })
       .catch(err => {
+		    document.getElementById("setting-perusahaan").focus({reventScroll:true})
         this.errors = err.response.data
         console.log(this.errors)
         this.submitted = false;
@@ -278,6 +285,9 @@ export default {
     },
     inputData(app) {
   		let data = new FormData();
+      if (document.getElementById('katalog').files[0] != undefined) {
+         data.append('katalog', document.getElementById('katalog').files[0]);
+      }
       if (document.getElementById('logo').files[0] != undefined) {
          data.append('logo', document.getElementById('logo').files[0]);
       }

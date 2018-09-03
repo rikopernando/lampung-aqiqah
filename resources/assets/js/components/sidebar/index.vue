@@ -79,14 +79,14 @@
                   </router-link>
 
                   <router-link :to="{name: 'beritaKami'}" class="drop-menu">
-                    <md-icon>rate_review</md-icon>
+                    <md-icon>subject</md-icon>
                     <span class="dekstop-menu">Berita Kami</span>
                     <md-tooltip md-direction="right">Berita Kami</md-tooltip>
                   </router-link>
                 </li>
                 <li>
                   <router-link :to="{name: 'setting_perusahaan'}" class="drop-menu">
-                    <span>SP</span>
+                    <md-icon>business</md-icon>
                     <span class="dekstop-menu">Setting Perusahaan</span>
                     <md-tooltip md-direction="right">Setting Perusahaan</md-tooltip>
                   </router-link>
