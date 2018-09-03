@@ -62,7 +62,7 @@
       <md-card>
         <md-card-header>
           <div class="header-card">
-            <md-icon style="color: white;">group</md-icon>
+            <md-icon style="color: white;">business</md-icon>
           </div>
           <md-card-header-text>
             <div class="md-toolbar" style="margin-top: -20px; padding: 0px">

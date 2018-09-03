@@ -64,7 +64,7 @@
             <p style="font-style:italic;">Mohon Tunggu ...</p>
        </center>
 
-      <vueper-slides fade slide-content-outside="top" slide-content-outside-class="max-widthed" :touchable="false" :slide-ratio="0.2" autoplay v-else>
+      <vueper-slides fade slide-content-outside="top" slide-content-outside-class="max-widthed" :touchable="false" :slide-ratio="0.2" autoplay :bullets="false" v-else>
         <vueper-slide
             v-for="(slide, i) in slides" 
             :key="i" 
