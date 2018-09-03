@@ -1,6 +1,6 @@
 .main.active {
   padding-left: 275px;
-  transition: all .2s ease-in-out;
+  /*transition: all .2s ease-in-out;*/
 }
 .main .jumbotron {
   background-color: #fff;
@@ -57,7 +57,7 @@
     height: 94vh;
     padding: 15px;
     padding-left: 75px;
-    transition: all .2s ease-in-out;
+    /*transition: all .2s ease-in-out;*/
   }
   .dekstop-menu {
     text-transform: uppercase;
@@ -96,7 +96,7 @@
     font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    transition: all .2s ease-in-out;
+    /*transition: all .2s ease-in-out;*/
   }
   .header #menu-toggle i {
     display: inline-block;
@@ -125,12 +125,13 @@
     z-index: 10;
     left: 0;
     top: 50px;
-    height: 100%;
+    height: 90%;
     width: 60px;
     background: #fff;
     border-right: 1px solid #ddd;
     text-align: center;
     transition: all .2s ease-in-out;
+    overflow-y: auto;
   }
   .sidebar.active, .sidebar.hovered {
     width: 250px;
@@ -149,9 +150,20 @@
     position: relative;
     white-space: nowrap;
     overflow: hidden;
-    border-bottom: 1px solid #ddd;
     color: #444;
     text-align: left;
+  }
+  .sidebar ul.md-list.md-theme-default li div div.md-list-item-content {
+    border-bottom: 1px solid #ddd;
+  }
+  .sidebar ul.md-list.md-theme-default li div div.md-list-item-content.md-ripple.md-disabled {
+    padding: 0px !important;
+  }
+  .sidebar ul.md-list.md-theme-default li div div.md-list-expand ul li div div a {
+    color: #868686;
+  }
+  .sidebar ul.md-list.md-theme-default li div div.md-list-item-content.md-ripple.md-disabled a {
+    width: 100%;
   }
   .sidebar ul li a i {
     display: inline-block;

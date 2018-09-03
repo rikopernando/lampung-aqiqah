@@ -5,7 +5,7 @@
 
       <!-- Header -->
       <div class="header">
-        <a href="#dashboard" id="menu-toggle" class="">
+        <a @click="menuToggleSidebar" id="menu-toggle" class="menu-toggle-sidebar">
           <md-icon style="color: white">menu</md-icon>
           <span>Menu</span>
         </a>
@@ -24,77 +24,73 @@
 
       <!-- Sidebar -->
       <div class="sidebar">
-        <ul>
-          <li>
-            <router-link :to="{name: 'dashboard'}">
-              <md-icon>dashboard</md-icon><span class="dekstop-menu">Dashboard</span>
-              <md-tooltip md-direction="right">Dashboard</md-tooltip>
+        <md-list>
+          <md-list-item>
+            <router-link :to="{name: 'dashboard'}" style="margin: 0px; color: #767676 !important">
+              <md-icon>dashboard</md-icon>
+              <span>Dashboard</span>
             </router-link>
-          </li>
-          <li>
-            <router-link :to="{name: 'produk'}">
-              <md-icon>fastfood</md-icon><span class="dekstop-menu">Produk</span>
-              <md-tooltip md-direction="right">Produk</md-tooltip>
+          </md-list-item>
+
+          <md-list-item>
+            <router-link :to="{name: 'produk'}" style="margin: 0px; color: #767676 !important">
+              <md-icon>fastfood</md-icon>
+              <span>Produk</span>
             </router-link>
-          </li>
-          <li>
-            <router-link :to="{name: 'bank'}">
-              <md-icon>attach_money</md-icon><span class="dekstop-menu">Bank</span>
-              <md-tooltip md-direction="right">Bank</md-tooltip>
+          </md-list-item>
+
+          <md-list-item>
+            <router-link :to="{name: 'bank'}" style="margin: 0px; color: #767676 !important">
+              <md-icon>attach_money</md-icon>
+              <span>Bank</span>
             </router-link>
-          </li>
-          <li>
-            <router-link :to="{name: 'user'}">
-              <md-icon>account_box</md-icon><span class="dekstop-menu">User</span>
-              <md-tooltip md-direction="right">User</md-tooltip>
+          </md-list-item>
+
+          <md-list-item>
+            <router-link :to="{name: 'user'}" style="margin: 0px; color: #767676 !important">
+              <md-icon>account_box</md-icon>
+              <span>User</span>
             </router-link>
-          </li>
-          <li>
-            <router-link :to="{name: 'mitra'}">
-              <md-icon>group</md-icon><span class="dekstop-menu">Mitra</span>
-              <md-tooltip md-direction="right">Mitra</md-tooltip>
+          </md-list-item>
+
+          <md-list-item>
+            <router-link :to="{name: 'mitra'}" style="margin: 0px; color: #767676 !important">
+              <md-icon>group</md-icon>
+              <span>Mitra</span>
             </router-link>
-          </li>
-          <li>
-            <router-link :to="{name: 'laporanOrder'}">
-              <md-icon>notes</md-icon><span class="dekstop-menu">Laporan Order</span>
-              <md-tooltip md-direction="right">Laporan Order</md-tooltip>
+          </md-list-item>
+
+          <md-list-item>
+            <router-link :to="{name: 'laporanOrder'}" style="margin: 0px; color: #767676 !important">
+              <md-icon>notes</md-icon>
+              <span>Laporan Order</span>
             </router-link>
-          </li>
-          <li>
-            <router-link to="" data-toggle="collapse" href="#settings" style="background: #ffffff">
+          </md-list-item>
+          <md-list-item @click="expandSettingSidebar" md-expand :md-expanded.sync="expandSetting">
+            <span class="menu-toggle-sidebar" style="margin: 0px; color: #767676 !important">
               <md-icon>settings_applications</md-icon>
-              <span class="dekstop-menu">Setting</span>
-              <md-tooltip md-direction="right">Setting</md-tooltip>
-              <md-icon style="padding-left: 80px;">keyboard_arrow_down</md-icon>
-            </router-link>
+              <span style="margin-left: 20px;">Setting</span>
+            </span>
+            <md-list slot="md-expand">
+              <md-list-item class="md-inset">
+                <router-link :to="{name: 'testimoni'}">
+                  <span>Testimoni</span>
+                </router-link>
+              </md-list-item>
+              <md-list-item class="md-inset">
+                <router-link :to="{name: 'beritaKami'}">
+                  <span>Berita Kami</span>
+                </router-link>
+              </md-list-item>
+              <md-list-item class="md-inset">
+                <router-link :to="{name: 'setting_perusahaan'}">
+                  <span>Setting Perusahaan</span>
+                </router-link>
+              </md-list-item>
+            </md-list>
+          </md-list-item>
 
-            <div class="collapse" id="settings">
-              <ul>
-                <li>
-                  <router-link :to="{name: 'testimoni'}" class="drop-menu">
-                    <md-icon>rate_review</md-icon>
-                    <span class="dekstop-menu">Testimoni</span>
-                    <md-tooltip md-direction="right">Testimoni</md-tooltip>
-                  </router-link>
-
-                  <router-link :to="{name: 'beritaKami'}" class="drop-menu">
-                    <md-icon>rate_review</md-icon>
-                    <span class="dekstop-menu">Berita Kami</span>
-                    <md-tooltip md-direction="right">Berita Kami</md-tooltip>
-                  </router-link>
-                </li>
-                <li>
-                  <router-link :to="{name: 'setting_perusahaan'}" class="drop-menu">
-                    <span>SP</span>
-                    <span class="dekstop-menu">Setting Perusahaan</span>
-                    <md-tooltip md-direction="right">Setting Perusahaan</md-tooltip>
-                  </router-link>
-                </li>
-              </ul>
-            </div>
-          </li>
-        </ul>
+        </md-list>
 
         <footer>
           Copyright © {{ tahun }}
@@ -216,20 +212,31 @@ export default {
     tahun: new Date().getFullYear(),
     showNavigation: false,
     showSidepanel: false,
-    expandSetting: false
+    expandSetting: false,
   }),
-  mounted() {
-    var main = document.querySelector(".main");
-    var sidebar = document.querySelector(".sidebar");
-    var menutoggle = document.getElementById("menu-toggle");
+  methods: {
+    expandSettingSidebar() {
+      let main = $(".main")[0];
+      let sidebar = $(".sidebar")[0];
+      let menutoggle = $('.menu-toggle-sidebar')[0];
 
-    menutoggle.addEventListener("click", function(e) {
+      if (!menutoggle.classList.contains('active') && !this.expandSetting) {
+        menutoggle.classList.add('active');
+        main.classList.add('active');
+        sidebar.classList.add('active');
+      }
+    },
+    menuToggleSidebar() {
+      let main = $(".main")[0];
+      let sidebar = $(".sidebar")[0];
+      let menutoggle = $('.menu-toggle-sidebar')[0];
+      let settings = $('.menu-toggle-sidebar')[1];
+
       menutoggle.classList.toggle("active");
       main.classList.toggle("active");
       sidebar.classList.toggle("active");
-
-      sidebar.classList.contains("active") ? menutoggle.querySelector("i").classList.remove("fa-bars") : menutoggle.querySelector("i").classList.add("fa-bars");
-    });
+      if (!menutoggle.classList.contains('active')) this.expandSetting = false;
+    }
   }
 }
 
