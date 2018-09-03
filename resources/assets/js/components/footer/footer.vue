@@ -61,7 +61,7 @@
   export default {
     mixins: [validationMixin],
     data: () => ({
-      urlKatalog: 'https://gdurl.com/f4i3/download',
+    	urlKatalog: window.location.origin + (window.location.pathname + 'download-katalog'),
       tahun:0,
       error: {
         nama: '',
