@@ -32,6 +32,10 @@ Route::get('/testimoni/data', function () {
     return response(App\Testimoni::select()->get());
 });
 
+Route::get('/setting-perusahaan/data', function () {
+    return response(App\SettingPerusahaan::select()->first());
+});
+
 Route::get('/berita/data', function () {
         $berita = App\BeritaKami::select()->orderBy('created_at','desc');
 

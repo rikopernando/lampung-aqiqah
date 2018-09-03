@@ -59,15 +59,19 @@
 <template>
   <div >
     <div>
-    
-      <!-- class div slider-->
-      <vueper-slides fade slide-content-outside="top" slide-content-outside-class="max-widthed" :touchable="false" :slide-ratio="0.2" :bullets="false">
-        <vueper-slide 
+       <center v-if="this.$store.state.setting_perusahaan.loading">
+            <md-progress-spinner :md-diameter="100" :md-stroke="10" md-mode="indeterminate"></md-progress-spinner>
+            <p style="font-style:italic;">Mohon Tunggu ...</p>
+       </center>
+
+      <vueper-slides fade slide-content-outside="top" slide-content-outside-class="max-widthed" :touchable="false" :slide-ratio="0.2" autoplay v-else>
+        <vueper-slide
             v-for="(slide, i) in slides" 
             :key="i" 
             :image="slide.image">
         </vueper-slide>
       </vueper-slides>
+
       <md-toolbar class="md-dense">
         <div class="md-toolbar-section-start"></div>
         <h3 class="md-title"><b>MENGAPA MEMILIH AQIQAH LAMPUNG ?</b></h3>
@@ -136,25 +140,46 @@
 
 <script>
   import { VueperSlides, VueperSlide } from 'vueperslides'
+  import { mapState } from 'vuex'
   export default {
     components: { VueperSlides, VueperSlide },
-
     data : () => {
       return {
-        slides : [
-        {
-          title: 'Slider 1',
-          content: 'Slide Content',
-          image : window.location.origin + window.location.pathname+'images/banner-sate-crop.jpg',
-        },{
-          title: 'Slider 2',
-          content: 'Slide Content',
-          image : window.location.origin + window.location.pathname+'images/banner-web-crop.jpeg',
-        }]
+        slides : []
       }
     },
-    mounted() {
-      console.log()
+    computed : mapState ({
+       setting_perusahaan () {
+        return this.$store.state.setting_perusahaan.data
+       },
+    }),
+    watch : {
+      setting_perusahaan : function () {
+        if(Object.keys(this.setting_perusahaan).length){
+          this.setData(this.setting_perusahaan)
+        }
+      }
+    },
+    methods : {
+      setData(slide){
+          let url = window.location.origin + window.location.pathname
+          let data = [
+            {
+              title: 'Slider 1',
+              content: 'Slide Content',
+              image : `${url}images_slide/${slide.foto_slide_1}`,
+            },{
+              title: 'Slider 2',
+              content: 'Slide Content',
+              image : `${url}images_slide/${slide.foto_slide_2}`,
+            },{
+              title: 'Slider 3',
+              content: 'Slide Content',
+              image : `${url}images_slide/${slide.foto_slide_3}`,
+            }
+          ]
+          this.slides = data
+      }
     }
-  }
+}
 </script>
