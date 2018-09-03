@@ -103,113 +103,61 @@ class SettingPerusahaanController extends Controller
           ]);
 
           if($request->hasFile('katalog')){
-              $katalog = $request->file('katalog');
 
-              if (is_array($katalog) || is_object($katalog)) {
-                // Mengambil file yang diupload
-                $uploaded_katalog = $katalog;
-                // mengambil extension file
-                $extension = $uploaded_katalog->getClientOriginalExtension();
-                // membuat nama file random berikut extension
-                $filename     = str_random(40) . '.' . $extension;
-                // menyimpan katalog ke folder public/katalog
-                $destinationPath = public_path() . DIRECTORY_SEPARATOR . 'katalog';
-                // memindahkan file ke folder public/katalog
-                $uploaded_katalog->move($destinationPath, $filename);
+                $katalog = $request->file('katalog');
 
-                $this->deleteFile($setting_perusahaan->katalog, 'katalog');
+                $filename = $this->uploadFile($katalog,'katalog',$setting_perusahaan->katalog);
 
                 $setting_perusahaan->katalog = $filename;
                 // menyimpan field foto di table barangs  dengan filename yang baru dibuat
                 $setting_perusahaan->save();
-              }
+
           }
 
           if ($request->hasFile('logo')) {
-              $logo = $request->file('logo');
 
-              if (is_array($logo) || is_object($logo)) {
-                // Mengambil file yang diupload
-                $uploaded_logo = $logo;
-                // mengambil extension file
-                $extension = $uploaded_logo->getClientOriginalExtension();
-                // membuat nama file random berikut extension
-                $filename     = str_random(40) . '.' . $extension;
-                $image_resize = Image::make($logo->getRealPath());
-                $image_resize->save(public_path('images_logo/' . $filename));
+                $logo = $request->file('logo');
 
-                $this->deleteFile($setting_perusahaan->logo, 'images_logo');
+                $filename = $this->uploadFile($logo,'logo',$setting_perusahaan->logo);
 
                 $setting_perusahaan->logo = $filename;
                 // menyimpan field foto di table barangs  dengan filename yang baru dibuat
                 $setting_perusahaan->save();
-              }
           }
 
           if ($request->hasFile('foto_slide_1')) {
-              $foto_slide_1 = $request->file('foto_slide_1');
 
-              if (is_array($foto_slide_1) || is_object($foto_slide_1)) {
-                // Mengambil file yang diupload
-                $uploaded_foto_slide_1 = $foto_slide_1;
-                // mengambil extension file
-                $extension = $uploaded_foto_slide_1->getClientOriginalExtension();
-                // membuat nama file random berikut extension
-                $filename     = str_random(40) . '.' . $extension;
-                $image_resize = Image::make($foto_slide_1->getRealPath());
-                $image_resize->fit(1366,293);
-                $image_resize->save(public_path('images_slide/' . $filename));
+                $foto_slide_1 = $request->file('foto_slide_1');
 
-                $this->deleteFile($setting_perusahaan->foto_slide_1, 'images_slide');
+                $filename = $this->uploadFile($foto_slide_1,'slide',$setting_perusahaan->foto_slide_1);
 
                 $setting_perusahaan->foto_slide_1 = $filename;
                 // menyimpan field foto di table barangs  dengan filename yang baru dibuat
                 $setting_perusahaan->save();
-              }
+
           }
 
           if ($request->hasFile('foto_slide_2')) {
-              $foto_slide_2 = $request->file('foto_slide_2');
 
-              if (is_array($foto_slide_2) || is_object($foto_slide_2)) {
-                // Mengambil file yang diupload
-                $uploaded_foto_slide_2 = $foto_slide_2;
-                // mengambil extension file
-                $extension = $uploaded_foto_slide_2->getClientOriginalExtension();
-                // membuat nama file random berikut extension
-                $filename     = str_random(40) . '.' . $extension;
-                $image_resize = Image::make($foto_slide_2->getRealPath());
-                $image_resize->fit(1366,293);
-                $image_resize->save(public_path('images_slide/' . $filename));
+                $foto_slide_2 = $request->file('foto_slide_2');
 
-                $this->deleteFile($setting_perusahaan->foto_slide_2, 'images_slide');
+                $filename = $this->uploadFile($foto_slide_2,'slide',$setting_perusahaan->foto_slide_2);
 
                 $setting_perusahaan->foto_slide_2 = $filename;
                 // menyimpan field foto di table barangs  dengan filename yang baru dibuat
                 $setting_perusahaan->save();
-              }
+
           }
 
           if ($request->hasFile('foto_slide_3')) {
-              $foto_slide_3 = $request->file('foto_slide_3');
 
-              if (is_array($foto_slide_3) || is_object($foto_slide_3)) {
-                // Mengambil file yang diupload
-                $uploaded_foto_slide_3 = $foto_slide_3;
-                // mengambil extension file
-                $extension = $uploaded_foto_slide_3->getClientOriginalExtension();
-                // membuat nama file random berikut extension
-                $filename     = str_random(40) . '.' . $extension;
-                $image_resize = Image::make($foto_slide_3->getRealPath());
-                $image_resize->fit(1366,293);
-                $image_resize->save(public_path('images_slide/' . $filename));
-                
-                $this->deleteFile($setting_perusahaan->foto_slide_3, 'images_slide');
+                $foto_slide_3 = $request->file('foto_slide_3');
+
+                $filename = $this->uploadFile($foto_slide_3,'slide',$setting_perusahaan->foto_slide_3);
 
                 $setting_perusahaan->foto_slide_3 = $filename;
                 // menyimpan field foto di table barangs  dengan filename yang baru dibuat
                 $setting_perusahaan->save();
-              }
           }
             
           $setting_perusahaan->save();
@@ -230,6 +178,39 @@ class SettingPerusahaanController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function uploadFile($file,$type,$old_file){
+
+      if (is_array($file) || is_object($file)) {
+            // Mengambil file yang diupload
+            $uploaded_foto = $file;
+            // mengambil extension file
+            $extension = $uploaded_foto->getClientOriginalExtension();
+            // membuat nama file random berikut extension
+            $filename     = str_random(40) . '.' . $extension;
+
+            switch ($type):
+                case 'logo':
+                    $image_resize = Image::make($file->getRealPath());
+                    $image_resize->save(public_path('images_logo/' . $filename));
+                    $this->deleteFile($old_file, 'images_logo');
+                break;
+                case 'slide':
+                    $image_resize = Image::make($file->getRealPath());
+                    $image_resize->fit(1366,293);
+                    $image_resize->save(public_path('images_slide/' . $filename));
+                    $this->deleteFile($old_file, 'images_slide');
+                break;
+                case 'katalog':
+                    $destinationPath = public_path() . DIRECTORY_SEPARATOR . 'katalog';
+                    $uploaded_foto->move($destinationPath, $filename);
+                    $this->deleteFile($old_file, 'katalog');
+                break;
+            endswitch;
+            
+            return $filename;
+      }
     }
 
     public function deleteFile($old_file,$path) {
