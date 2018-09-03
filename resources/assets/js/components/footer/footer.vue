@@ -1,5 +1,3 @@
-
-
 <template>
   <div class="row footer">
   	  <div class="container">
@@ -38,9 +36,8 @@
 		        <span class="md-title">Alamat</span>
 		    	</div>
 		      <div>
-	      		<p>www.aqiqahlampung.co.id</p>
-						<p>Alamat: Jl. Komarudin Blok B No.1 Rajabasa Raya, Bandar Lampung, Lampung</p>
-						<p>Telp/Whatsapp 081249995599</p>
+						<p>Alamat: {{ setting_perusahaan.alamat }}</p>
+						<p>Telp/Whatsapp {{ setting_perusahaan.no_telp }}</p>
 					</div>
 		    </div>
 
@@ -57,7 +54,8 @@
 </div>
 </template>
 
-<script >
+<script>
+  import { mapState } from 'vuex'
   import { validationMixin } from 'vuelidate'
   import { required, email } from 'vuelidate/lib/validators'
   export default {
@@ -90,8 +88,19 @@
         }
       }
     },
+    computed : mapState ({
+       setting_perusahaan () {
+        return this.$store.state.setting_perusahaan.data
+       },
+    }),
+    watch : {
+      setting_perusahaan: function (){
+         if(Object.keys(this.setting_perusahaan).length){
+			     this.kritikSaran(this.setting_perusahaan)
+         }
+      }
+    },
 		mounted() {
-			this.kritikSaran()
       let date = new Date(); 
       this.tahun = date.getFullYear(); 
 		},
@@ -118,11 +127,11 @@
       downloadKatalog() {
         window.open(this.urlKatalog, '_blank')
       },
-			kritikSaran() {
+			kritikSaran(data) {
 				(function () {
 			      var options = {
-			          whatsapp: "+6281249995599", // WhatsApp number
-			          call: "6281249995599", // Call phone number
+			          whatsapp: data.no_telp, // WhatsApp number
+			          call: data.no_telp, // Call phone number
 			          call_to_action: "Hubungi Kami", // Call to action
 			          button_color: "#FF6550", // Color of button
 			          position: "right", // Position may be 'right' or 'left'
