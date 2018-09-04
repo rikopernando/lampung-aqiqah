@@ -79,14 +79,11 @@
       <md-toolbar class="md-dense" md-elevation="2" style="background-color: white">
         <div class="md-toolbar-row">
             <a href="#/" class="icon-aqiqah md-button md-theme-default md-active">
-                <img :src="url+'images/rumahaqiqah3.jpg'" alt="Aqiqah Lampung">
+								<md-progress-spinner :md-diameter="30" :md-stroke="3" md-mode="indeterminate" v-if="this.$store.state.setting_perusahaan.loading"></md-progress-spinner>
+                <img :src="url+'images_logo/'+this.$store.state.setting_perusahaan.data.logo" alt="Aqiqah Lampung" v-else>
             </a>
 
           <div class="md-toolbar-section-start">
-            <div style="padding-left: 50px">
-              <i class="fa fa-search icon-box"></i>
-              <input type="text" placeholder="Search..." class="input-box">
-            </div>
             <a href="#/" class="md-button md-theme-default md-active">
               <div class="md-ripple">
                 <div class="label-nav-main">HOME</div>
@@ -166,7 +163,8 @@
           </div>
 
           <a href="#/" class="md-toolbar-section-end">
-              <img :src="url+'images/rumahaqiqah3.jpg'" alt="Aqiqah Lampung">
+								<md-progress-spinner :md-diameter="30" :md-stroke="3" md-mode="indeterminate" v-if="this.$store.state.setting_perusahaan.loading"></md-progress-spinner>
+                <img :src="url+'images_logo/'+this.$store.state.setting_perusahaan.data.logo" alt="Aqiqah Lampung" v-else>
           </a>
 
           <div class="md-toolbar-section-end">
@@ -204,7 +202,8 @@
           <md-toolbar class="md-transparent" md-elevation="0">
             <span class="md-title">
               <a href="#/" class="md-toolbar-section-end">
-                  <img :src="url+'images/rumahaqiqah3.jpg'" alt="Aqiqah Lampung">
+								<md-progress-spinner :md-diameter="30" :md-stroke="3" md-mode="indeterminate" v-if="this.$store.state.setting_perusahaan.loading"></md-progress-spinner>
+                <img :src="url+'images_logo/'+this.$store.state.setting_perusahaan.data.logo" alt="Aqiqah Lampung" v-else>
               </a>
             </span>
           </md-toolbar>
@@ -327,6 +326,7 @@
 			}),
       mounted () {
         this.modal = true
+        this.$store.dispatch('setting_perusahaan/LOAD_SETTING_PERUSAHAAN')
       },
 			methods : {
 				openModal(which) {

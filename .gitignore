@@ -2,6 +2,9 @@
 /public/hot
 /public/storage
 /public/image_produks
+/public/images_logo
+/public/images_slide
+/public/katalog
 /storage/*.key
 /vendor
 /.idea
@@ -14,3 +17,5 @@ yarn.lock
 .env
 
 public/image_berita/
+public/katalog/KATALOGPRODUK.pdf
+*.pdf

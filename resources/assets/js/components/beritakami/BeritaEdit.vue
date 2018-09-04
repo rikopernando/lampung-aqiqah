@@ -29,6 +29,7 @@
           </md-field>
 
           
+          <label for="isi_berita">Isi Berita</label>
           <quill-editor v-model="berita.isi_berita" ref="myQuillEditor" :options="editorOption" style="height:10%">
           </quill-editor>
             <span-error v-if="errors.isi_berita" class="label-danger">{{errors.isi_berita[0]}}</span-error>
@@ -54,12 +55,10 @@
               </md-card-media-cover>
           </md-card>
 
-          <div class="md-toolbar-section-end">
             <md-button v-if="!loading" @click="editBerita" class="md-dense md-raised" style="background-color: #d44723; color: white">
               Simpan
             </md-button>
             <md-progress-spinner v-else :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
-          </div>
 
           <!-- Snackbar for success alert -->
           <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="notifSuccess" @md-closed="redirectToBerita">

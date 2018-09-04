@@ -16,11 +16,46 @@ Route::get('/', function () {
 });
 
 Route::get('/mitra/data', function () {
-    return response(App\Mitra::select()->get());
+       $mitra = App\Mitra::select()->orderBy('created_at','desc');
+
+        $data_mitra = $mitra->get();
+        $count_mitra = $mitra->count();
+
+        $respons['data_mitra'] = $data_mitra;
+        $respons['count_mitra'] = $count_mitra;
+
+        return response()->json($respons);
 });
 
 Route::get('/testimoni/data', function () {
     return response(App\Testimoni::select()->get());
+});
+
+Route::get('/setting-perusahaan/data', function () {
+    return response(App\SettingPerusahaan::select()->first());
+});
+
+Route::get('/download-katalog', function () {
+    $katalog = App\SettingPerusahaan::select('katalog')->first()->katalog; 
+    return response()->download(public_path("katalog/".$katalog));
+});
+
+
+Route::get('/berita/data', function () {
+        $berita = App\BeritaKami::select()->orderBy('created_at','desc');
+
+        $data_berita = $berita->get();
+        $count_berita = $berita->count();
+
+        $respons['data_berita'] = $data_berita;
+        $respons['count_berita'] = $count_berita;
+
+
+        return response()->json($respons);
+});
+
+Route::get('/berita/detail/{id}', function ($id) {
+      return response(App\BeritaKami::whereId($id)->first());
 });
 
 //Daftar Produk
@@ -82,6 +117,7 @@ Route::get('/testimoni/view', 'TestimoniController@view');
 Route::post('/testimoni/{id}', 'TestimoniController@update');
 Route::resource('testimoni', 'TestimoniController');
 Route::resource('setting-perusahaan', 'SettingPerusahaanController');
+Route::post('setting-perusahaan/{id}', 'SettingPerusahaanController@update');
 
 
 //Testimoni

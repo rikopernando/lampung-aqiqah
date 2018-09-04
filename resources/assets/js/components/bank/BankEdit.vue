@@ -39,9 +39,7 @@
               <label for="no_rek">No Rekening</label>
               <md-input type="no_rek" name="no_rek" id="no_rek" autocomplete="off" v-model="bank.no_rek" />
             </md-field>
-            <md-card-actions>
-              <md-button type="submit" class="md-primary">Submit Bank</md-button>
-            </md-card-actions>
+              <md-button type="submit" class="md-dense md-raised" style="background-color: #d44723; color: white"> Submit </md-button>
           </form>
         </md-card-content>
       </md-card>
