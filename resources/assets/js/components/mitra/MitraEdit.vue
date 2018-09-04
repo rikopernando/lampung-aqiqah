@@ -91,15 +91,13 @@
               <span class="md-error" v-if="!$v.mitra.alamat.required">Alamat tidak boleh kosong</span>
             </md-field>
 
-            <md-card-actions>
               <md-progress-spinner 
                 v-if="submitted" 
                 :md-diameter="30" 
                 :md-stroke="3" 
                 md-mode="indeterminate">
               </md-progress-spinner>
-              <md-button v-else type="submit" class="md-primary">Edit Mitra</md-button>
-            </md-card-actions>
+              <md-button v-else type="submit" class="md-dense md-raised" style="background-color: #d44723; color: white"> Submit </md-button>
 
           </form>
         </md-card-content>

@@ -55,12 +55,10 @@
               </md-card-media-cover>
           </md-card>
 
-          <div class="md-toolbar-section-end">
             <md-button v-if="!loading" @click="editBerita" class="md-dense md-raised" style="background-color: #d44723; color: white">
               Simpan
             </md-button>
             <md-progress-spinner v-else :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
-          </div>
 
           <!-- Snackbar for success alert -->
           <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="notifSuccess" @md-closed="redirectToBerita">

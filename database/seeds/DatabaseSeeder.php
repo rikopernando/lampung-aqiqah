@@ -16,5 +16,6 @@ class DatabaseSeeder extends Seeder
         $this->call(TestimoniSeeder::class);
         $this->call(MitraSeeder::class);
         $this->call(SettingPerusahaanSeeder::class);
+        $this->call(BankSeeder::class);
     }
 }

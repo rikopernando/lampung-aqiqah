@@ -172,15 +172,13 @@
                </md-card-media-cover>
             </md-card>
 
-            <md-card-actions>
               <md-progress-spinner 
                 v-if="submitted" 
                 :md-diameter="30" 
                 :md-stroke="3" 
                 md-mode="indeterminate">
               </md-progress-spinner>
-              <md-button v-else type="submit" class="md-raised md-accent">Edit</md-button>
-            </md-card-actions>
+              <md-button v-else type="submit" class="md-raised md-accent">Submit</md-button>
 
           </form>
         </md-card-content>
