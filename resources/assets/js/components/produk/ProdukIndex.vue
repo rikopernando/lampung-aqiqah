@@ -42,7 +42,7 @@
 
         <md-card-content>
           <md-button :to="`/produk/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah Produk</md-button>
-          <md-table v-model="searched" md-sort="name" md-sort-order="asc" md-fixed-header>
+          <md-table v-model="searchable_produk" md-sort="name" md-sort-order="asc" md-fixed-header>
             <md-table-empty-state v-if="loading">
       		    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
             </md-table-empty-state>
@@ -86,6 +86,14 @@
             <span><md-icon style="color: white">done_all</md-icon></span>
           </md-snackbar>
         </md-card-content>
+
+        <paging
+          v-if="!loading"
+          :dataPaging="produks"
+          :itemPerPage="10"
+          :range="5"
+          :search="searchResult"
+          @paginatedItems="getPaginatedItems($event)"></paging>
       </md-card>
 
       <md-dialog-confirm style="text-transform: capitalize" :md-active.sync="promptDelete" md-title="Konfirmasi Hapus"
@@ -121,14 +129,23 @@
       produkDelete: '',
       notifMessage: '',
       notifSuccess: false,
-      searched: [],
+      searchable_produk: [],
       produks: [],
       searchBy: 'nama_produk',
       loading: true,
-      maxChecked: 0
+      maxChecked: 0,
+      searchResult: {}
     }),
     created() {
     	this.getProdukData();
+    },
+    watch: {
+      search() {
+        this.searchProduks();
+      },
+      searchBy() {
+        this.searchProduks();
+      }
     },
     filters: {
       pemisahTitik: function (value) {
@@ -142,6 +159,16 @@
       },
     },
     methods: {
+      searchProduks() {
+        if (this.search != null) {
+          this.searchResult = this.produks.filter(item => toLower(item[this.searchBy]).includes(toLower(this.search)));
+        } else {
+          this.searchResult = this.produks;
+        }
+      },
+      getPaginatedItems(value) {
+        this.searchable_produk = value;
+      },
     	getProdukData() {
         let app = this;
     		axios.get(app.url + 'view')
@@ -151,7 +178,7 @@
           });
 
           app.produks = resp.data;
-      		app.searched = resp.data;
+      		app.searchable_produk = resp.data;
           app.jumlahTampil(app)
 
     			app.loading = false;
@@ -207,7 +234,7 @@
     		app.notifMessage = `Apakah Anda Yakin Menghapus Produk <strong>${produkName}</strong> ?`;
     	},
       searchOnTable() {
-        this.searched = searchProduk(this.produks, this.search, this.searchBy);
+        this.searchable_produk = searchProduk(this.produks, this.search, this.searchBy);
       }
     }
   }
