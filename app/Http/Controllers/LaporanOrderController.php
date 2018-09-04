@@ -30,6 +30,7 @@ class LaporanOrderController extends Controller
         $laporan_order = DB::table('pesanans')
             ->join('users', 'pesanans.pelanggan_id', '=', 'users.id')
             ->select('users.name as nama_pelanggan', 'pesanans.id as id_pesanan', 'pesanans.created_at as waktu_pesan', 'pesanans.total', 'pesanans.status_pesanan')
+            ->orderBy('pesanans.created_at', 'desc')
             ->get();
 
         foreach ($laporan_order as $laporan) {
@@ -40,7 +41,6 @@ class LaporanOrderController extends Controller
                 'total' => $laporan->total,
                 'status_pesanan' => $laporan->status_pesanan,
                 'timeago' => $this->timeago(time() - strtotime($laporan->waktu_pesan))
-                // $this->timeago(strtotime($laporan->waktu_pesan))
             ];
         }
         return response($dataLaporan);
