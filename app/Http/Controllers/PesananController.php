@@ -93,7 +93,6 @@ class PesananController extends Controller
         'tempat_lahir' => $request->tempat_lahir,
         'total' => $request->total,
         'metode_pembayaran' => $request->metode_pembayaran,
-        'status_pesanan' => 1
       ]);
 
       if($request->kirim_ke_alamat_lain){
