@@ -1,10 +1,23 @@
 <style>
+@keyframes animateDisplay {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+.main-content {
+  -webkit-animation: animateDisplay 1s; /* Safari 4.0 - 8.0 */
+  animation: animateDisplay 1s;
+}
+.sidebar-footer {
+  font-size: small !important;
+}
 @media (max-width: 600px) {
-  .md-xsmall-hide { display: none; }
-  #mobileVersion { 
+  .sidebar-screen-small-hide { 
+    display: none; 
+  }
+  #sidebarMobileVersion { 
     display: block; 
   }
-  .main {
+  .main-content {
     background: #fafafa;
     transition: all .2s ease-in-out;
   }
@@ -18,7 +31,7 @@
   .md-theme-default a:not(.md-button) {
     color: #767676 !important;
   }
-  footer {
+  .sidebar-footer {
     text-align: center;
   }
   .toolbar-mobile {
@@ -29,8 +42,11 @@
   }
 }
 @media (min-width: 601px) {
-  #mobileVersion { display: none; }
-  .main {
+  #sidebarMobileVersion { display: none; }
+  .main-content.active {
+    padding-left: 275px;
+  }
+  .main-content {
     background: #fafafa;
     position: relative;
     display: flex;
@@ -41,15 +57,17 @@
     height: 94vh;
     padding: 15px;
     padding-left: 75px;
-    /*transition: all .2s ease-in-out;*/
   }
   .dekstop-menu {
     text-transform: uppercase;
     color: #767676;
   }
-  footer {
-    font-size: 15px !important;
-    text-align: right;
+  .sidebar-footer {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .sidebar-footer a {
+    color: grey !important;
   }
   .header {
     position: fixed;
@@ -80,7 +98,6 @@
     font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    /*transition: all .2s ease-in-out;*/
   }
   .header #menu-toggle i {
     display: inline-block;
@@ -168,25 +185,12 @@
   .sidebar ul li a:hover {
     background-color: #eee;
   }
-  .sidebar ul li a:hover i {
-    opacity: .9;
-  }
-  footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    text-align: right;
-    font-size: 12px;
-    color: grey;
-  }
 }
 </style>
 
 <template>
   <div>
-    <link rel="stylesheet" :href="url + 'css/sidebar-admin.css'">
-    <div id="dekstopVersion" class="md-medium-size-50 md-small-size-50 md-xsmall-hide">
+    <div id="dekstopVersion" class="md-medium-size-50 md-small-size-50 sidebar-screen-small-hide">
 
       <!-- Header -->
       <div class="header">
@@ -276,17 +280,10 @@
           </md-list-item>
 
         </md-list>
-
-        <footer>
-          Copyright © {{ tahun }}
-          <a href="https://andaglos.id/">
-              PT. Andaglos Global Teknologi.
-          </a>
-        </footer>
       </div>
     </div>
 
-    <div id="mobileVersion">
+    <div id="sidebarMobileVersion">
       <div class="toolbar-mobile-wrapper">
         <md-toolbar class="md-primary toolbar-mobile" style="background-color: #da2921 !important;">
           <md-button class="md-icon-button" @click="showNavigation = true">
@@ -383,8 +380,16 @@
     </div>
 
     <!-- Content -->
-    <div class="main">
-      <slot/>
+    <div class="main-content">
+      <div style="margin-bottom: 15px;">
+        <slot/>
+      </div>
+      <footer class="sidebar-footer">
+        Copyright © {{ tahun }}
+        <a href="https://andaglos.id/">
+          PT. Andaglos Global Teknologi.
+        </a>
+      </footer>
     </div>
   </div>
 </template>
@@ -401,7 +406,7 @@ export default {
   }),
   methods: {
     expandSettingSidebar() {
-      let main = $(".main")[0];
+      let main = $(".main-content")[0];
       let sidebar = $(".sidebar")[0];
       let menutoggle = $('.menu-toggle-sidebar')[0];
 
@@ -412,7 +417,7 @@ export default {
       }
     },
     menuToggleSidebar() {
-      let main = $(".main")[0];
+      let main = $(".main-content")[0];
       let sidebar = $(".sidebar")[0];
       let menutoggle = $('.menu-toggle-sidebar')[0];
       let settings = $('.menu-toggle-sidebar')[1];
