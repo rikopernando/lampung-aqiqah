@@ -87,13 +87,9 @@
               <span class="md-error" v-else-if="!$v.user.email.email">Format Email salah</span>
             </md-field>
 
-              <md-progress-spinner 
-                v-if="submitted" 
-                :md-diameter="30" 
-                :md-stroke="3" 
-                md-mode="indeterminate">
-              </md-progress-spinner>
-              <md-button v-else type="submit" class="md-dense md-raised" style="background-color: #d44723; color: white"> Submit </md-button>
+            <md-progress-bar v-if="submitted" md-mode="indeterminate"></md-progress-bar>
+            </md-progress-spinner>
+            <md-button v-else type="submit" class="md-dense md-raised" style="background-color: #d44723; color: white"> Submit </md-button>
 
           </form>
         </md-card-content>
