@@ -226,11 +226,12 @@
           if (document.getElementById('foto').files[0] != undefined) {
             dataProduk.append('foto', document.getElementById('foto').files[0]);
           }
-            dataProduk.append('nama_produk', this.produk.nama_produk);
-      			dataProduk.append('harga_coret', this.produk.harga_coret);
-      			dataProduk.append('harga_jual', this.produk.harga_jual);
-      			dataProduk.append('stok', this.produk.stok);
-      			dataProduk.append('deskripsi_produk', this.produk.deskripsi_produk);
+
+          dataProduk.append('nama_produk', this.produk.nama_produk);
+    			dataProduk.append('harga_coret', this.produk.harga_coret);
+    			dataProduk.append('harga_jual', this.produk.harga_jual);
+    			dataProduk.append('stok', this.produk.stok);
+    			dataProduk.append('deskripsi_produk', this.produk.deskripsi_produk);
 
   			return dataProduk;
   		},
