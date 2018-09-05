@@ -159,13 +159,6 @@
     return text.toString().toLowerCase();
   };
 
-  const searchTestimoni = (items, term, searchBy) => {
-    if (term) {
-      return items.filter(item => toLower(item[searchBy]).includes(toLower(term)));
-    }
-    return items;
-  };
-
   export default{
     data: () => ({
       url: window.location.origin + (window.location.pathname + 'testimoni/'),
@@ -187,7 +180,6 @@
     },
     computed: mapState ({
       daftarTestimoni() {
-        console.log(this.$store.state.testimoni.daftarTestimoni)
         this.testimonis = this.$store.state.testimoni.daftarTestimoni;
         this.searchable_testimoni = this.$store.state.testimoni.daftarTestimoni;
         this.loading = false;
@@ -220,9 +212,6 @@
       },
       getPaginatedItems(value) {
         this.searchable_testimoni = value;
-      },
-      searchOnTable() {
-        this.searchable_testimoni = searchTestimoni(this.testimonis, this.search, this.searchBy);
       },
     	deleteTestimoni(testimoniId, namaLengkap) {
     		this.promptDelete = true;
