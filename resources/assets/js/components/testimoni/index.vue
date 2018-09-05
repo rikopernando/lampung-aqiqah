@@ -100,13 +100,13 @@
                 <md-table-cell md-label="ID" md-sort-by="id" md-numeric>
                   {{ item.id }}
                 </md-table-cell>
-                <md-table-cell md-label="Nama`" md-sort-by="nama_lengkap">
+                <md-table-cell md-label="Nama" md-sort-by="nama_lengkap">
                   {{ item.nama_lengkap | capitalize }}
                 </md-table-cell>
-                <md-table-cell md-label="Profesi`" md-sort-by="profesi">
+                <md-table-cell md-label="Profesi" md-sort-by="profesi">
                   {{ item.profesi | capitalize }}
                 </md-table-cell>
-                <md-table-cell md-label="Testimoni`" md-sort-by="testimoni">
+                <md-table-cell md-label="Testimoni" md-sort-by="testimoni">
                   {{ item.testimoni | selengkapnya }}...
                 </md-table-cell>
                 <md-table-cell md-label="Aksi">
