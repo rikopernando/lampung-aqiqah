@@ -1,3 +1,37 @@
+<style scoped>
+  .breadcrumb {
+    border-color: #ffffff;
+    border-style: solid;
+    border-width: 0 1px 4px 1px;
+    padding: 8px 15px;
+    margin-bottom: 35px;
+    list-style: none;
+    background-color: #ffffff;
+    border-radius: 4px;
+  }
+  .header-card i {
+    background-color: #d44723;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 3px;
+    font-size: 30px !important;
+    margin: -30px 0px 0;
+    position: relative;
+    box-shadow: -4px -3px 0px 0px #ff000045;
+  }
+  .header-title {
+    color: #867f7f;
+    font-size: 20px;
+    padding: 4px 0px 0px 10px;
+  }
+  .error-message {
+    background-color:  #ff4d4d;
+    border-radius: 6px;
+  }
+</style>
+
 <template>
   <sidebar>
     <div class="col-md-12" style="padding: 0">
@@ -81,58 +115,25 @@ export default {
         console.log(resp.data)
       })
       .catch(resp => {
-        console.log('catch:', resp);
+        console.log('catch getDataBank:', resp);
       });
     },
     saveForm() {
       this.submitted = true;
       axios.patch(this.url+'bank/' + this.$route.params.id, this.bank)
-      .then((resp) => {
+      .then(resp => {
         this.submitted = false;
         this.snackbarEditBank = true;
       })
-      .catch((err) => {
+      .catch(err => {
         this.errors = err.response.data
-        console.log('catch:', resp);
+        console.log('catch saveForm:', resp);
       })
     },
     redirectToBankList() {
       this.$router.replace('/bank');  
     }
   }
-}  
-</script>
+}
 
-<style scoped>
-  .breadcrumb {
-    border-color: #ffffff;
-    border-style: solid;
-    border-width: 0 1px 4px 1px;
-    padding: 8px 15px;
-    margin-bottom: 35px;
-    list-style: none;
-    background-color: #ffffff;
-    border-radius: 4px;
-  }
-  .header-card i {
-    background-color: #d44723;
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    line-height: 50px;
-    border-radius: 3px;
-    font-size: 30px !important;
-    margin: -30px 0px 0;
-    position: relative;
-    box-shadow: -4px -3px 0px 0px #ff000045;
-  }
-  .header-title {
-    color: #867f7f;
-    font-size: 20px;
-    padding: 4px 0px 0px 10px;
-  }
-  .error-message {
-    background-color:  #ff4d4d;
-    border-radius: 6px;
-  }
-</style>
+</script>
