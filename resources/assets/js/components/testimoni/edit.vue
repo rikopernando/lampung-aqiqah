@@ -25,19 +25,19 @@
           <md-field>
             <label for="nama_lengkap">Nama Lengkap</label>
             <md-input name="nama_lengkap" id="nama_lengkap" v-model="testimoni.nama_lengkap" ref="nama_lengkap"/>
-            <span-error v-if="errors.nama_lengkap" class="label-danger">{{errors.nama_lengkap[0]}}</span-error>
+            <span v-if="errors.nama_lengkap" class="label-danger span-error">{{errors.nama_lengkap[0]}}</span>
           </md-field>
 
           <md-field>
             <label for="profesi">Profesi</label>
             <md-input name="profesi" id="profesi" v-model="testimoni.profesi" ref="profesi"/>
-            <span-error v-if="errors.profesi" class="label-danger">{{errors.profesi[0]}}</span-error>
+            <span v-if="errors.profesi" class="label-danger span-error">{{errors.profesi[0]}}</span>
           </md-field>
 
           <md-field>
             <label>Testimoni</label>
             <md-textarea v-model="testimoni.testimoni"></md-textarea>
-            <span-error v-if="errors.testimoni" class="label-danger">{{errors.testimoni[0]}}</span-error>
+            <span v-if="errors.testimoni" class="label-danger span-error">{{errors.testimoni[0]}}</span>
           </md-field>
 
           <md-field>
@@ -47,23 +47,23 @@
 
           <md-card class="thumbnail-foto" v-if="testimoni.foto != null">
             <md-card-media-cover md-text-scrim>
-                <md-card-media md-ratio="16:9">
-                  <img :src="url_picture+'/'+testimoni.foto" alt="Foto">
-                  <img :src="previewFoto" alt="Foto" v-if="previewFoto != ''">
-                </md-card-media>
+              <md-card-media md-ratio="16:9">
+                <img :src="url_picture+'/'+testimoni.foto" alt="Foto">
+                <img :src="previewFoto" alt="Foto" v-if="previewFoto != ''">
+              </md-card-media>
 
-                <md-card-area>
-                  <md-card-actions>
-                    <md-button @click="removeImage">Hapus Foto</md-button>
-                  </md-card-actions>
-                </md-card-area>
-              </md-card-media-cover>
+              <md-card-area>
+                <md-card-actions>
+                  <md-button @click="removeImage">Hapus Foto</md-button>
+                </md-card-actions>
+              </md-card-area>
+            </md-card-media-cover>
           </md-card>
 
-            <md-button v-if="!loading" @click="editTestimoni" class="md-dense md-raised" style="background-color: #d44723; color: white">
-              Simpan
-            </md-button>
-            <md-progress-spinner v-else :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
+          <md-button v-if="!loading" @click="editTestimoni" class="md-dense md-raised" style="background-color: #d44723; color: white">
+            Simpan
+          </md-button>
+          <md-progress-spinner v-else :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
 
           <!-- Snackbar for success alert -->
           <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="notifSuccess" @md-closed="redirectToTestimoni">
@@ -218,7 +218,7 @@
     font-size: 20px;
     padding: 4px 0px 0px 10px;
   }
-  span-error {
+  .span-error {
     color: white;
     height: 20px;
     position: absolute;
