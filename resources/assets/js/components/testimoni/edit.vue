@@ -48,7 +48,7 @@
           <md-card class="thumbnail-foto" v-if="testimoni.foto != null">
             <md-card-media-cover md-text-scrim>
               <md-card-media md-ratio="16:9">
-                <img :src="url_picture+'/'+testimoni.foto" alt="Foto">
+                <img :src="url_picture + '/' + testimoni.foto" alt="Foto">
                 <img :src="previewFoto" alt="Foto" v-if="previewFoto != ''">
               </md-card-media>
 
@@ -99,20 +99,18 @@
     }),
     mounted() {
       let id = this.$route.params.id;
-
       this.testimoniId = id;
       this.getTestimoni(id);
     },
     methods: {
       getTestimoni(id){
         axios.get(this.url + "/" + id)
-        .then(function (resp) {
-          console.log(resp.data);
+        .then(resp => {
           this.testimoni = resp.data;
           this.testimoni.id = id;
           resp.data.stok === 1 ? this.testimoni.stok = true : this.testimoni.stok = false;
         })
-        .catch(function (resp) {
+        .catch(resp => {
           console.log('catch getTestimoni:', resp);
         });
       },
