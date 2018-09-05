@@ -59,10 +59,10 @@
             </md-card-media-cover>
           </md-card>
 
-            <md-button v-if="!loading" @click="createTestimoni" class="md-dense md-raised" style="background-color: #d44723; color: white">
+          <md-progress-bar v-if="submitted" md-mode="indeterminate"></md-progress-bar>
+          <md-button v-else @click="createTestimoni" class="md-dense md-raised" style="background-color: #d44723; color: white">
               Tambahkan
             </md-button>
-            <md-progress-spinner v-else :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
 
           <!-- Snackbar for success alert -->
           <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="notifSuccess" @md-closed="redirectToTestimoni">
@@ -90,7 +90,7 @@
       previewFoto: '',
       notifMessage: '',
       notifSuccess: false,
-      loading: false
+      submitted: false
     }),
     methods: {
       onFileChange(e) {
@@ -116,16 +116,16 @@
   			let app = this;
   			let dataTestimoni = app.inputData(app);
 
-        app.loading = true;
+        this.submitted = true;
         axios.post(app.url, dataTestimoni)
   			.then((resp) => {
+          this.submitted = false;
           app.notifMessage = `Berhasil Menambah Testimoni ${app.testimoni.nama_lengkap}`
           app.notifSuccess = true;
   			})
   			.catch((resp) => {
           app.$refs.nama_lengkap.$el.focus()
   				app.errors = resp.response.data
-          app.loading = false;
   			});
   		},
   		inputData(app) {
