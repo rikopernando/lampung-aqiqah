@@ -74,7 +74,7 @@
               <md-input type="no_rek" name="no_rek" id="no_rek" autocomplete="off" v-model="bank.no_rek" />
             </md-field>
               <md-progress-bar v-if="submitted" md-mode="indeterminate"></md-progress-bar>
-              <md-button v-else type="submit" class="md-dense md-raised" style="background-color: #d44723; color: white"> Submit </md-button>
+              <md-button v-else type="submit" class="md-dense md-raised" style="background-color: #d44723; color: white"> Tambahkan </md-button>
           </form>
         </md-card-content>
       </md-card>
@@ -102,12 +102,13 @@ export default {
   methods: {
     saveForm() {
       this.submitted = true;
-      axios.post(this.url+'bank', this.bank)
-      .then((resp) => {
+      
+      axios.post(this.url + 'bank', this.bank)
+      .then(resp => {
           this.submitted = false;
           this.snackbarTambahBank = true;
       })
-      .catch((err) => {
+      .catch(err => {
         this.errors = err.response.data
         console.log('catch saveForm:', resp);
       })
