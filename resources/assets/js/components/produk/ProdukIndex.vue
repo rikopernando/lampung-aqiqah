@@ -1,3 +1,62 @@
+<style scoped>
+  @media (max-width: 620px) {
+    .media-screen-medium-hide {
+      display: block;
+    }
+    .media-screen-xsmall-hide {
+      display: none
+    }
+  }
+  @media (min-width: 621px) {
+    .media-screen-xsmall-hide {
+      display: block;
+    }
+    .media-screen-medium-hide {
+      display: none;
+    }
+  }
+  .breadcrumb {
+    border-color: #ffffff;
+    border-style: solid;
+    border-width: 0 1px 4px 1px;
+    padding: 8px 15px;
+    margin-bottom: 35px;
+    list-style: none;
+    background-color: #ffffff;
+    border-radius: 4px;
+  }
+  .header-card i {
+    background-color: #d44723;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 3px;
+    font-size: 30px !important;
+    margin: -30px 0px 0;
+    position: relative;
+    box-shadow: -4px -3px 0px 0px #ff000045;
+  }
+  .header-title {
+    color: #867f7f;
+    font-size: 20px;
+    padding: 4px 0px 0px 10px;
+  }
+  .checkbox-list {
+    padding-right: 0px !important
+  }
+  .md-table table {
+    width: 0% !important;
+  }
+  .md-table-row {
+  background:#f7e1e1 !important;
+  padding:8px !important;
+  }
+  .md-layout-item{
+    padding:5px !important;
+  }
+</style>
+
 <template>
   <sidebar>
     <div class="col-md-12" style="padding: 0">
@@ -22,12 +81,12 @@
                   <md-field md-inline>
                       <label class="media-screen-xsmall-hide">Cari Dengan ...</label>
                       <label class="media-screen-medium-hide">Cari Dengan ...</label>
-                    <md-input v-model="search" @input="searchOnTable" />
+                    <md-input v-model="search" />
                   </md-field>
                 </div>
                 <div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
                   <md-field>
-                    <md-select v-model="searchBy" @md-selected="searchOnTable" name="searchBy" id="searchBy" md-dense>
+                    <md-select v-model="searchBy" name="searchBy" id="searchBy" md-dense>
                       <md-option value="nama_produk">Nama</md-option>
                       <md-option value="harga_coret">Harga Coret</md-option>
                       <md-option value="harga_jual">Harga Jual</md-option>
@@ -61,8 +120,8 @@
               </md-table-cell>
               <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
               <md-table-cell md-label="Nama`" md-sort-by="nama_produk">{{ item.nama_produk | capitalize }}</md-table-cell>
-              <md-table-cell md-label="Harga Coret" md-sort-by="harga_coret">{{ item.harga_coret | pemisahTitik }}</md-table-cell>
-              <md-table-cell md-label="Harga Jual" md-sort-by="harga_jual">{{ item.harga_jual | pemisahTitik }}</md-table-cell>
+              <md-table-cell md-label="Harga Coret" md-sort-by="harga_coret">{{ item.harga_coret | currency }}</md-table-cell>
+              <md-table-cell md-label="Harga Jual" md-sort-by="harga_jual">{{ item.harga_jual | currency }}</md-table-cell>
               <md-table-cell md-label="Stok" md-sort-by="stok">
                 <span style="color: green" v-if="item.stok == 1">Tersedia</span>
                 <span style="color: red" v-else>Tidak Tersedia</span>
@@ -111,14 +170,6 @@
     return text.toString().toLowerCase();
   };
 
-  const searchProduk = (items, term, searchBy) => {
-    if (term) {
-      return items.filter(item => toLower(item[searchBy]).includes(toLower(term)));
-    }
-
-    return items;
-  };
-
   export default {
     data: () => ({
     	url: window.location.origin + (window.location.pathname + 'produk/'),
@@ -148,11 +199,8 @@
       }
     },
     filters: {
-      pemisahTitik: function (value) {
-        var angka = [value];
-        var numberFormat = new Intl.NumberFormat('es-ES');
-        var formatted = angka.map(numberFormat.format);
-        return formatted.join('; ');
+      currency(number) {
+        return accounting.formatMoney(number, '', '2', '.', ',')
       },
       capitalize: function (value) {
         return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
@@ -170,135 +218,66 @@
         this.searchable_produk = value;
       },
     	getProdukData() {
-        let app = this;
-    		axios.get(app.url + 'view')
+    		axios.get(this.url + 'view')
     		.then(resp => {
           $.each(resp.data, function (i, item) {
             resp.data[i].tampil_produk = item.tampil_produk == 1 ? true : false;
           });
 
-          app.produks = resp.data;
-      		app.searchable_produk = resp.data;
-          app.jumlahTampil(app)
+          this.produks = resp.data;
+      		this.searchable_produk = resp.data;
+          this.jumlahTampil();
 
-    			app.loading = false;
+    			this.loading = false;
     		})
     		.catch(resp => {
+          console.log('catch getProdukData:', resp);
     			console.log(resp);
     		});
     	},
       tampilProduk(id, data, nama) {
-        let app = this;
         let hasil = data == true ? "Ditampilkan" : "Disembunyikan";
 
-    		axios.get(app.url+"update-tampil-produk/"+id+"/"+data)
+    		axios.get(this.url + "update-tampil-produk/" + id + "/" + data)
     		.then(resp => {
-          app.jumlahTampil(app)
-          app.notifMessage = `${nama.replace(/(^|\s)\S/g, l => l.toUpperCase())} Berhasil ${hasil}.`
-          app.notifSuccess = true;
+          this.jumlahTampil();
+          this.notifMessage = `${nama.replace(/(^|\s)\S/g, l => l.toUpperCase())} Berhasil ${hasil}.`
+          this.notifSuccess = true;
     		})
     		.catch(resp => {
-    			console.log('catch onConfirmDelete:', resp);
+    			console.log('catch tampilProduk:', resp);
     		})
       },
-      jumlahTampil(app) {
-        axios.get(app.url+"jumlah-tampil")
+      jumlahTampil() {
+        axios.get(this.url + "jumlah-tampil")
     		.then(resp => {
-          app.maxChecked = resp.data
+          this.maxChecked = resp.data
     		})
     		.catch(resp => {
+          console.log('catch jumlahTampil:', resp);
     			console.log(resp);
     		})
       },
     	onConfirmDelete() {
-        let app = this;
-    		axios.delete(app.url + app.produkId)
+    		axios.delete(this.url + this.produkId)
     		.then(resp => {
-          app.notifMessage = `Berhasil Menghapus Produk ${app.produkDelete}.`
-    			app.produkId = '';
-    			app.produkDelete = '';
-    			app.snackbarDelete = true;
-          app.notifSuccess = true;
-    			app.getProdukData();
+          this.notifMessage = `Berhasil Menghapus Produk ${this.produkDelete}.`
+    			this.produkId = '';
+    			this.produkDelete = '';
+    			this.snackbarDelete = true;
+          this.notifSuccess = true;
+    			this.getProdukData();
     		})
     		.catch(resp => {
     			console.log('catch onConfirmDelete:', resp);
     		})
     	},
     	deleteProduk(produkId, produkName) {
-        let app = this;
-
-    		app.promptDelete = true;
-    		app.produkId = produkId;
-    		app.produkDelete = produkName;
-    		app.notifMessage = `Apakah Anda Yakin Menghapus Produk <strong>${produkName}</strong> ?`;
-    	},
-      searchOnTable() {
-        this.searchable_produk = searchProduk(this.produks, this.search, this.searchBy);
-      }
+    		this.promptDelete = true;
+    		this.produkId = produkId;
+    		this.produkDelete = produkName;
+    		this.notifMessage = `Apakah Anda Yakin Menghapus Produk <b>${produkName}</b> ?`;
+    	}
     }
   }
 </script>
-
-<style scoped>
-	@media (max-width: 620px) {
-		.media-screen-medium-hide {
-			display: block;
-		}
-		.media-screen-xsmall-hide {
-			display: none
-		}
-	}
-	@media (min-width: 621px) {
-		.media-screen-xsmall-hide {
-			display: block;
-		}
-		.media-screen-medium-hide {
-			display: none;
-		}
-	}
-</style>
-
-
-<style scoped>
-  .breadcrumb {
-    border-color: #ffffff;
-    border-style: solid;
-    border-width: 0 1px 4px 1px;
-    padding: 8px 15px;
-    margin-bottom: 35px;
-    list-style: none;
-    background-color: #ffffff;
-    border-radius: 4px;
-  }
-  .header-card i {
-    background-color: #d44723;
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    line-height: 50px;
-    border-radius: 3px;
-    font-size: 30px !important;
-    margin: -30px 0px 0;
-    position: relative;
-    box-shadow: -4px -3px 0px 0px #ff000045;
-  }
-  .header-title {
-    color: #867f7f;
-    font-size: 20px;
-    padding: 4px 0px 0px 10px;
-  }
-  .checkbox-list {
-    padding-right: 0px !important
-  }
-  .md-table table {
-    width: 0% !important;
-  }
-  .md-table-row {
-  background:#f7e1e1 !important;
-  padding:8px !important;
-  }
-  .md-layout-item{
-    padding:5px !important;
-  }
-</style>
