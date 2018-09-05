@@ -39,7 +39,13 @@
               <label for="no_rek">No Rekening</label>
               <md-input type="no_rek" name="no_rek" id="no_rek" autocomplete="off" v-model="bank.no_rek" />
             </md-field>
-              <md-button type="submit" class="md-dense md-raised" style="background-color: #d44723; color: white"> Submit </md-button>
+            <md-progress-spinner 
+                v-if="submitted" 
+                :md-diameter="30" 
+                :md-stroke="3" 
+                md-mode="indeterminate">
+              </md-progress-spinner>
+            <md-button v-else type="submit" class="md-dense md-raised" style="background-color: #d44723; color: white"> Simpan </md-button>
           </form>
         </md-card-content>
       </md-card>
@@ -61,7 +67,8 @@ export default {
       atas_nama: '',
       no_rek: '',
     },
-    snackbarEditBank: false
+    snackbarEditBank: false,
+    submitted: false
   }),
   mounted() {
     this.getDataBank(this.$route.params.id);
@@ -78,13 +85,14 @@ export default {
       });
     },
     saveForm() {
-      const app = this;
-      axios.patch(app.url+'bank/' + app.$route.params.id, app.bank)
+      this.submitted = true;
+      axios.patch(this.url+'bank/' + this.$route.params.id, this.bank)
       .then((resp) => {
-          app.snackbarEditBank = true;
+        this.submitted = false;
+        this.snackbarEditBank = true;
       })
       .catch((err) => {
-        app.errors = err.response.data
+        this.errors = err.response.data
         console.log('catch:', resp);
       })
     },
