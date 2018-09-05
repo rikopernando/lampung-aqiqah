@@ -68,8 +68,9 @@
                   <div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
                     <md-field>
                       <md-select v-model="searchBy" name="searchBy" id="searchBy" md-dense>
-                        <md-option value="nama_lengkap">Nama Lengkap</md-option>
+                        <md-option value="nama_lengkap">Nama</md-option>
                         <md-option value="profesi">Profesi</md-option>
+                        <md-option value="testimoni">Testimoni</md-option>
                       </md-select>
                     </md-field>
                     </div>
