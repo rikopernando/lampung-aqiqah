@@ -1,3 +1,62 @@
+<style scoped>
+  @media (max-width: 620px) {
+    .media-screen-medium-hide {
+      display: block;
+    }
+    .media-screen-xsmall-hide {
+      display: none
+    }
+  }
+  @media (min-width: 621px) {
+    .media-screen-xsmall-hide {
+      display: block;
+    }
+    .media-screen-medium-hide {
+      display: none;
+    }
+  }
+  .breadcrumb {
+    border-color: #ffffff;
+    border-style: solid;
+    border-width: 0 1px 4px 1px;
+    padding: 8px 15px;
+    margin-bottom: 35px;
+    list-style: none;
+    background-color: #ffffff;
+    border-radius: 4px;
+  }
+  .header-card i {
+    background-color: #d44723;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 3px;
+    font-size: 30px !important;
+    margin: -30px 0px 0;
+    position: relative;
+    box-shadow: -4px -3px 0px 0px #ff000045;
+  }
+  .header-title {
+    color: #867f7f;
+    font-size: 20px;
+    padding: 4px 0px 0px 10px;
+  }
+  .checkbox-list {
+    padding-right: 0px !important
+  }
+  .md-table table {
+    width: 0% !important;
+  }
+  .md-table-row {
+  background:#f7e1e1 !important;
+  padding:8px !important;
+  }
+  .md-layout-item{
+    padding:5px !important;
+  }
+</style>
+
 <template>
   <sidebar>
     <div class="col-md-12" style="padding: 0">
@@ -35,8 +94,8 @@
                 <div class="md-layout">
                 <div class="md-layout-item md-medium-size-60 md-small-size-60 md-xsmall-size-60">
                   <md-field md-inline>
-                      <label class="media-screen-xsmall-hide">Cari Dengan ...</label>
-                      <label class="media-screen-medium-hide">Cari Dengan ...</label>
+                    <label class="media-screen-xsmall-hide">Cari Dengan ...</label>
+                    <label class="media-screen-medium-hide">Cari Dengan ...</label>
                     <md-input v-model="search" />
                   </md-field>
                 </div>
@@ -159,31 +218,29 @@
         this.searchable_bank = value;
       },
     	getBankData() {
-        let app = this;
-    		axios.get(app.url + 'view')
+    		axios.get(this.url + 'view')
     		.then(resp => {
           $.each(resp.data.daftarBank, function (i, item) {
-            resp.data.daftarBank[i].default = item.default == 1 ? false: true;
+            resp.data.daftarBank[i].default = item.default == 1 ? false : true;
           });
-    			app.banks = resp.data.daftarBank;
-    			app.searchable_bank = resp.data.daftarBank;
+    			this.banks = resp.data.daftarBank;
+    			this.searchable_bank = resp.data.daftarBank;
 
-    			app.loading = false;
+    			this.loading = false;
     		})
     		.catch(resp => {
-    			console.log('Terjadi Kesalahan Data Bank :', resp);
+    			console.log('catch getBankData:', resp);
     		});
     	},
       tampilDefault(id, data, nama) {
-        let app = this;
-        axios.get(app.url+"update-default-bank/"+id+"/"+data)
+        axios.get(this.url + "update-default-bank/" + id + "/" + data)
         .then(resp => {
-          app.notifMessage = `Bank ${nama.replace(/(^|\s)\S/g, l => l.toUpperCase())} Berhasil update Default.`
-          app.notifSuccess = true;
+          this.notifMessage = `Bank ${nama.replace(/(^|\s)\S/g, l => l.toUpperCase())} Berhasil update Default.`
+          this.notifSuccess = true;
           this.getBankData();
         })
         .catch(resp => {
-          console.log('catch onConfirm:', resp);
+          console.log('catch tampilDefault:', resp);
         })
 
       },
@@ -195,13 +252,13 @@
     			this.getBankData();
     		})
     		.catch(resp => {
-    			console.log('Terjadi Kesalahan Konfirmasi Delete :', resp);
+    			console.log('catch onConfirmDelete:', resp);
     		})
     	},
     	deleteBank(bankId,bankDefault) {
         if (bankDefault == false) {
           this.promptGagalHapus = true;
-        }else{
+        } else {
           this.promptDeleteBank = true;
           this.bankIdForDelete = bankId;
         }   
@@ -209,65 +266,3 @@
     }
   }
 </script>
-
-<style scoped>
-	@media (max-width: 620px) {
-		.media-screen-medium-hide {
-			display: block;
-		}
-		.media-screen-xsmall-hide {
-			display: none
-		}
-	}
-	@media (min-width: 621px) {
-		.media-screen-xsmall-hide {
-			display: block;
-		}
-		.media-screen-medium-hide {
-			display: none;
-		}
-	}
-</style>
-
-<style scoped>
-  .breadcrumb {
-    border-color: #ffffff;
-    border-style: solid;
-    border-width: 0 1px 4px 1px;
-    padding: 8px 15px;
-    margin-bottom: 35px;
-    list-style: none;
-    background-color: #ffffff;
-    border-radius: 4px;
-  }
-  .header-card i {
-    background-color: #d44723;
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    line-height: 50px;
-    border-radius: 3px;
-    font-size: 30px !important;
-    margin: -30px 0px 0;
-    position: relative;
-    box-shadow: -4px -3px 0px 0px #ff000045;
-  }
-  .header-title {
-    color: #867f7f;
-    font-size: 20px;
-    padding: 4px 0px 0px 10px;
-  }
-  .checkbox-list {
-    padding-right: 0px !important
-  }
-  .md-table table {
-    width: 0% !important;
-  }
-  .md-table-row {
-  background:#f7e1e1 !important;
-  padding:8px !important;
-  }
-  .md-layout-item{
-    padding:5px !important;
-  }
-</style>
