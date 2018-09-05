@@ -73,13 +73,8 @@
               <label for="no_rek">No Rekening</label>
               <md-input type="no_rek" name="no_rek" id="no_rek" autocomplete="off" v-model="bank.no_rek" />
             </md-field>
-            <md-progress-spinner 
-                v-if="submitted" 
-                :md-diameter="30" 
-                :md-stroke="3" 
-                md-mode="indeterminate">
-              </md-progress-spinner>
-            <md-button v-else type="submit" class="md-dense md-raised" style="background-color: #d44723; color: white"> Simpan </md-button>
+            <md-progress-bar v-if="submitted" md-mode="indeterminate"></md-progress-bar>
+            <md-button v-else type="submit" class="md-dense md-raised" style="background-color: #d44723; color: white"> Ubah </md-button>
           </form>
         </md-card-content>
       </md-card>
@@ -109,10 +104,9 @@ export default {
   },
   methods: {
     getDataBank(bankId) {
-      axios.get(this.url+'bank/' + bankId)
+      axios.get(this.url + 'bank/' + bankId)
       .then(resp => {
         this.bank = resp.data;
-        console.log(resp.data)
       })
       .catch(resp => {
         console.log('catch getDataBank:', resp);
@@ -120,7 +114,8 @@ export default {
     },
     saveForm() {
       this.submitted = true;
-      axios.patch(this.url+'bank/' + this.$route.params.id, this.bank)
+
+      axios.patch(this.url + 'bank/' + this.$route.params.id, this.bank)
       .then(resp => {
         this.submitted = false;
         this.snackbarEditBank = true;
