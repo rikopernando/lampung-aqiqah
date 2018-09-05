@@ -85,7 +85,7 @@
 
             <md-field :class="getValidationClass('repeatPassword')">
               <label for="repeatPassword">Ulangi Password</label>
-              <md-input type="repeatPassword" name="repeatPassword" id="repeatPassword" v-model="user.repeatPassword" />
+              <md-input type="password" name="repeatPassword" id="repeatPassword" v-model="user.repeatPassword" />
               <span class="md-error" v-if="!$v.user.repeatPassword.sameAsPassword">Password tidak sama</span>
             </md-field>
 
