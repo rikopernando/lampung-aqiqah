@@ -2,7 +2,6 @@
   <sidebar>
     <div class="col-md-12" style="padding: 0">
 
-
   	<!-- Prompt delete bank -->
   	<md-dialog-confirm
       :md-active.sync="promptDeleteBank"
@@ -15,8 +14,7 @@
       <md-dialog-alert 
         :md-active.sync="promptGagalHapus"
         md-title="Peringatan !!"
-        md-content="Maaf bank telah disetting default , tidak bisa dihapus silakan pindahkan default bank lain !!" />
-
+        md-content="Maaf bank telah disetting default tidak bisa dihapus, silakan ganti default banknya terlebih dahulu." />
 
       <md-card>
         <ul class="breadcrumb">
