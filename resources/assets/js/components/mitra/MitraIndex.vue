@@ -1,3 +1,53 @@
+<style scoped>
+  @media (max-width: 620px) {
+    .media-screen-medium-hide {
+      display: block;
+    }
+    .media-screen-xsmall-hide {
+      display: none
+    }
+  }
+  @media (min-width: 621px) {
+    .media-screen-xsmall-hide {
+      display: block;
+    }
+    .media-screen-medium-hide {
+      display: none;
+    }
+  }
+  .breadcrumb {
+    border-color: #ffffff;
+    border-style: solid;
+    border-width: 0 1px 4px 1px;
+    padding: 8px 15px;
+    margin-bottom: 35px;
+    list-style: none;
+    background-color: #ffffff;
+    border-radius: 4px;
+  }
+  .header-card i {
+    background-color: #d44723;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 3px;
+    font-size: 30px !important;
+    margin: -30px 0px 0;
+    position: relative;
+    box-shadow: -4px -3px 0px 0px #ff000045;
+  }
+  .header-title {
+    color: #867f7f;
+    font-size: 20px;
+    padding: 4px 0px 0px 10px;
+  }
+  .md-table-row {
+    background:#f7e1e1 !important;
+    padding:8px !important;
+  }
+</style>
+
 <template>
   <sidebar>
     <div class="col-md-12" style="padding: 0">
@@ -50,7 +100,7 @@
 
         <md-card-content>
           <md-button :to="`/mitra/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah Mitra</md-button>
-      		<md-table v-model="searched" md-sort="name" md-sort-order="asc" md-fixed-header>
+      		<md-table v-model="searchable_mitra" md-sort="name" md-sort-order="asc" md-fixed-header>
 
 			      <md-table-empty-state v-if="loading">
 					    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
@@ -83,6 +133,14 @@
               </md-table-cell>
 			      </md-table-row>
 			    </md-table>  	
+
+          <paging
+            v-if="!loading"
+            :dataPaging="mitra"
+            :itemPerPage="10"
+            :range="5"
+            :search="searchResult"
+            @paginatedItems="getPaginatedItems($event)"></paging>
         </md-card-content>
       </md-card>
 
@@ -97,116 +155,85 @@
 
 <script>
 
-    const toLower = text => {
-      return text.toString().toLowerCase();
-    };
+const toLower = text => {
+  return text.toString().toLowerCase();
+};
 
-    const searchMitra = (items, term, searchBy) => {
-      if (term) {
-        return items.filter(item => toLower(item[searchBy]).includes(toLower(term)));
-      }
-
-      return items;
-    };
-  
-  export default {
-    data : () => ({
-        url: window.location.origin + (window.location.pathname + 'mitra'),
-        promptDeleteMitra: false,
-        snackbarDeleteMitra: false,
-        mitraIdForDelete: '',
-        search: null,
-        searched: [],
-        mitra: [],
-        searchBy: 'name',
-        loading: true
-    }),
-    created() {
-      	this.getMitraData();
-    },
-    methods: {
-      getMitraData() {
-        axios.get(this.url)
-         .then(resp => {
-          this.mitra = resp.data;
-          this.searched = resp.data;
-          this.loading = false;
-        })
-        .catch(resp => {
-          alert('Terjadi Kesalahan')
-          console.log(resp);
-        });
-      },
-      searchOnTable() {
-        this.searched = searchMitra(this.mitra, this.search, this.searchBy);
-      },
-      deleteMitra(id){
-  		  this.promptDeleteMitra = true;
-  		  this.mitraIdForDelete = id;
-      },
-      onConfirmDelete() {
-        axios.delete(this.url + '/' + this.mitraIdForDelete)
-        .then(resp => {
-          this.userIdForDelete = '';
-          this.snackbarDeleteUser = true;
-          this.getMitraData();
-        })
-        .catch(resp => {
-          alert('Terjadi Kesalahan')
-          console.log('catch onConfirmDelete:', resp);
-        })
-      },
-    }
+const searchMitra = (items, term, searchBy) => {
+  if (term) {
+    return items.filter(item => toLower(item[searchBy]).includes(toLower(term)));
   }
+  return items;
+};
+
+export default {
+  data : () => ({
+    url: window.location.origin + (window.location.pathname + 'mitra'),
+    promptDeleteMitra: false,
+    snackbarDeleteMitra: false,
+    mitraIdForDelete: '',
+    search: null,
+    searchable_mitra: [],
+    mitra: [],
+    searchBy: 'nama_mitra',
+    loading: true,
+    searchResult: {}
+  }),
+  created() {
+  	this.getMitraData();
+  },
+  watch: {
+    search() {
+      this.searchMitra();
+    },
+    searchBy() {
+      this.searchMitra();
+    }
+  },
+  methods: {
+    searchMitra() {
+      if (this.search != null) {
+        this.searchResult = this.mitra.filter(item => toLower(item[this.searchBy]).includes(toLower(this.search)));
+      } else {
+        this.searchResult = this.mitra;
+      }
+    },
+    getPaginatedItems(value) {
+      this.searchable_mitra = value;
+    },
+    getMitraData() {
+      axios.get(this.url)
+       .then(resp => {
+        console.log(resp.data)
+        this.mitra = resp.data;
+        this.searchable_mitra = resp.data;
+        this.loading = false;
+      })
+      .catch(resp => {
+        alert('Terjadi Kesalahan')
+        console.log(resp);
+      });
+    },
+    searchOnTable() {
+      this.searchable_mitra = searchMitra(this.mitra, this.search, this.searchBy);
+    },
+    deleteMitra(id){
+		  this.promptDeleteMitra = true;
+		  this.mitraIdForDelete = id;
+    },
+    onConfirmDelete() {
+      axios.delete(this.url + '/' + this.mitraIdForDelete)
+      .then(resp => {
+        this.userIdForDelete = '';
+        this.snackbarDeleteUser = true;
+        this.getMitraData();
+      })
+      .catch(resp => {
+        alert('Terjadi Kesalahan')
+        console.log('catch onConfirmDelete:', resp);
+      })
+    },
+  }
+}
 
 </script>
-
-<style scoped>
-  @media (max-width: 620px) {
-    .media-screen-medium-hide {
-      display: block;
-    }
-    .media-screen-xsmall-hide {
-      display: none
-    }
-  }
-  @media (min-width: 621px) {
-    .media-screen-xsmall-hide {
-      display: block;
-    }
-    .media-screen-medium-hide {
-      display: none;
-    }
-  }
-  .breadcrumb {
-    border-color: #ffffff;
-    border-style: solid;
-    border-width: 0 1px 4px 1px;
-    padding: 8px 15px;
-    margin-bottom: 35px;
-    list-style: none;
-    background-color: #ffffff;
-    border-radius: 4px;
-  }
-  .header-card i {
-    background-color: #d44723;
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    line-height: 50px;
-    border-radius: 3px;
-    font-size: 30px !important;
-    margin: -30px 0px 0;
-    position: relative;
-    box-shadow: -4px -3px 0px 0px #ff000045;
-  }
-  .header-title {
-    color: #867f7f;
-    font-size: 20px;
-    padding: 4px 0px 0px 10px;
-  }
-  .md-table-row {
-    background:#f7e1e1 !important;
-    padding:8px !important;
-  }
-</style>
