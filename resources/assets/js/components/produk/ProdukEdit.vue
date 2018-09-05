@@ -127,8 +127,7 @@
               </md-card-media-cover>
           </md-card>
 
-          <md-progress-spinner v-if="submitted" :md-diameter="30" :md-stroke="3" md-mode="indeterminate">
-          </md-progress-spinner>
+          <md-progress-bar v-if="submitted" md-mode="indeterminate"></md-progress-bar>
           <md-button v-else @click="editProduk" class="md-dense md-raised" style="background-color: #d44723; color: white">
             Simpan
           </md-button>
