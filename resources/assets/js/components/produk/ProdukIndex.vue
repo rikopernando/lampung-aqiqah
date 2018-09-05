@@ -119,7 +119,7 @@
                   @change="tampilProduk(item.id, item.tampil_produk, item.nama_produk)" />
               </md-table-cell>
               <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
-              <md-table-cell md-label="Nama`" md-sort-by="nama_produk">{{ item.nama_produk | capitalize }}</md-table-cell>
+              <md-table-cell md-label="Nama" md-sort-by="nama_produk">{{ item.nama_produk | capitalize }}</md-table-cell>
               <md-table-cell md-label="Harga Coret" md-sort-by="harga_coret">{{ item.harga_coret | currency }}</md-table-cell>
               <md-table-cell md-label="Harga Jual" md-sort-by="harga_jual">{{ item.harga_jual | currency }}</md-table-cell>
               <md-table-cell md-label="Stok" md-sort-by="stok">
