@@ -104,7 +104,6 @@
         <md-card-content>
           <md-button :to="`/user/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah User</md-button>
       		<md-table v-model="searchable_user" md-sort="name" md-sort-order="asc" md-fixed-header>
-
 			      <md-table-empty-state v-if="loading">
 					    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
 			      </md-table-empty-state>
@@ -112,7 +111,7 @@
 			      	v-else-if="users.length == 0"
 			        md-label="Tidak ada data"
 			        md-description="Belum ada data User yang tersimpan.">
-			      </md-table-empty-state>      	
+			      </md-table-empty-state>
 			      <md-table-empty-state
 			      	v-else-if="users.length > 0 && search != null"
 			        md-label="Tidak ada User ditemukan"
@@ -135,6 +134,7 @@
               </md-table-cell>
 			      </md-table-row>
 			    </md-table>
+
           <paging
             v-if="!loading"
             :dataPaging="users"
@@ -157,14 +157,6 @@
 
 const toLower = text => {
   return text.toString().toLowerCase();
-};
-
-const searchUser = (items, term, searchBy) => {
-  if (term) {
-    return items.filter(item => toLower(item[searchBy]).includes(toLower(term)));
-  }
-
-  return items;
 };
 
 export default {
