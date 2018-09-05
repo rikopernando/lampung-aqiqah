@@ -25,19 +25,19 @@
           <md-field>
             <label for="nama_lengkap">Nama Lengkap</label>
             <md-input name="nama_lengkap" id="nama_lengkap" v-model="testimoni.nama_lengkap" ref="nama_lengkap"/>
-            <span-error v-if="errors.nama_lengkap" class="label-danger">{{errors.nama_lengkap[0]}}</span-error>
+            <span v-if="errors.nama_lengkap" class="label-danger span-error">{{errors.nama_lengkap[0]}}</span>
           </md-field>
 
           <md-field>
             <label for="profesi">Profesi</label>
             <md-input name="profesi" id="profesi" v-model="testimoni.profesi" ref="profesi"/>
-            <span-error v-if="errors.profesi" class="label-danger">{{errors.profesi[0]}}</span-error>
+            <span v-if="errors.profesi" class="label-danger span-error">{{errors.profesi[0]}}</span>
           </md-field>
 
           <md-field>
             <label>Testimoni</label>
             <md-textarea v-model="testimoni.testimoni"></md-textarea>
-            <span-error v-if="errors.testimoni" class="label-danger">{{errors.testimoni[0]}}</span-error>
+            <span v-if="errors.testimoni" class="label-danger span-error">{{errors.testimoni[0]}}</span>
           </md-field>
 
           <md-field>
@@ -47,23 +47,23 @@
 
           <md-card class="thumbnail-foto" v-if="testimoni.foto != null">
             <md-card-media-cover md-text-scrim>
-                <md-card-media md-ratio="16:9">
-                  <img :src="url_picture+'/'+testimoni.foto" alt="Foto">
-                  <img :src="previewFoto" alt="Foto" v-if="previewFoto != ''">
-                </md-card-media>
+              <md-card-media md-ratio="16:9">
+                <img :src="url_picture + '/' + testimoni.foto" alt="Foto">
+                <img :src="previewFoto" alt="Foto" v-if="previewFoto != ''">
+              </md-card-media>
 
-                <md-card-area>
-                  <md-card-actions>
-                    <md-button @click="removeImage">Hapus Foto</md-button>
-                  </md-card-actions>
-                </md-card-area>
-              </md-card-media-cover>
+              <md-card-area>
+                <md-card-actions>
+                  <md-button @click="removeImage">Hapus Foto</md-button>
+                </md-card-actions>
+              </md-card-area>
+            </md-card-media-cover>
           </md-card>
 
-            <md-button v-if="!loading" @click="editTestimoni" class="md-dense md-raised" style="background-color: #d44723; color: white">
-              Simpan
-            </md-button>
-            <md-progress-spinner v-else :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
+          <md-progress-bar v-if="submitted" md-mode="indeterminate"></md-progress-bar>
+          <md-button v-else @click="editTestimoni" class="md-dense md-raised" style="background-color: #d44723; color: white">
+            Simpan
+          </md-button>
 
           <!-- Snackbar for success alert -->
           <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="notifSuccess" @md-closed="redirectToTestimoni">
@@ -95,41 +95,37 @@
       previewFoto: '',
       notifMessage: '',
       notifSuccess: false,
-      loading: false,
+      submitted: false
     }),
     mounted() {
-      let app = this;
-      let id = app.$route.params.id;
-
-      app.testimoniId = id;
-      app.getTestimoni(app, id);
+      let id = this.$route.params.id;
+      this.testimoniId = id;
+      this.getTestimoni(id);
     },
     methods: {
-      getTestimoni(app, id){
-        axios.get(app.url+"/"+id)
-        .then(function (resp) {
-          console.log(resp.data);
-          app.testimoni = resp.data;
-          app.testimoni.id = id;
-          resp.data.stok === 1 ? app.testimoni.stok = true : app.testimoni.stok = false;
+      getTestimoni(id){
+        axios.get(this.url + "/" + id)
+        .then(resp => {
+          this.testimoni = resp.data;
+          this.testimoni.id = id;
+          resp.data.stok === 1 ? this.testimoni.stok = true : this.testimoni.stok = false;
         })
-        .catch(function (resp) {
+        .catch(resp => {
           console.log('catch getTestimoni:', resp);
         });
       },
       onFileChange(e) {
-        var files = e.target.files || e.dataTransfer.files;
+        let files = e.target.files || e.dataTransfer.files;
         if (!files.length)
           return;
         this.createImage(files[0]);
       },
       createImage(file) {
-        var image = new Image();
-        var reader = new FileReader();
-        var app = this;
+        let image = new Image();
+        let reader = new FileReader();
 
         reader.onload = (e) => {
-          app.previewFoto = e.target.result;
+          this.previewFoto = e.target.result;
         };
         reader.readAsDataURL(file);
       },
@@ -137,29 +133,29 @@
         this.testimoni.foto = null;
       },
       editTestimoni() {
-        let app = this;
-  			let dataTestimoni = app.inputData(app);
+  			let dataTestimoni = this.inputData();
 
-        app.loading = true;
-        axios.post(app.url+"/"+app.testimoniId, dataTestimoni)
+        this.submitted = true;
+        axios.post(this.url + "/" + this.testimoniId, dataTestimoni)
         .then(resp => {
-          app.notifMessage = `Berhasil Mengubah Testimoni ${app.testimoni.nama_lengkap}`
-          app.notifSuccess = true;
+          this.notifMessage = `Berhasil Mengubah Testimoni ${this.testimoni.nama_lengkap}`
+          this.notifSuccess = true;
+          this.submitted = false;
         })
         .catch(resp => {
-          console.log(resp);
-  				app.errors = resp.response.data
-          app.loading = false;
+          console.log('catch editTestimoni:', resp);
+  				this.errors = resp.response.data
+          this.submitted = false;
         });
       },
-  		inputData(app) {
+  		inputData() {
   			let dataTestimoni = new FormData();
           if (document.getElementById('foto').files[0] != undefined) {
             dataTestimoni.append('foto', document.getElementById('foto').files[0]);
           }
-            dataTestimoni.append('nama_lengkap', app.testimoni.nama_lengkap);
-      			dataTestimoni.append('profesi', app.testimoni.profesi);
-      			dataTestimoni.append('testimoni', app.testimoni.testimoni);
+            dataTestimoni.append('nama_lengkap', this.testimoni.nama_lengkap);
+      			dataTestimoni.append('profesi', this.testimoni.profesi);
+      			dataTestimoni.append('testimoni', this.testimoni.testimoni);
 
   			return dataTestimoni;
   		},
@@ -187,10 +183,6 @@
 			display: none;
 		}
 	}
-</style>
-
-
-<style scoped>
   .breadcrumb {
     border-color: #ffffff;
     border-style: solid;
@@ -218,7 +210,7 @@
     font-size: 20px;
     padding: 4px 0px 0px 10px;
   }
-  span-error {
+  .span-error {
     color: white;
     height: 20px;
     position: absolute;

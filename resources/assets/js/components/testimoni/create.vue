@@ -25,19 +25,19 @@
           <md-field>
             <label for="nama_lengkap">Nama Lengkap</label>
             <md-input name="nama_lengkap" id="nama_lengkap" v-model="testimoni.nama_lengkap" ref="nama_lengkap"/>
-            <span-error v-if="errors.nama_lengkap" class="label-danger">{{errors.nama_lengkap[0]}}</span-error>
+            <span v-if="errors.nama_lengkap" class="label-danger span-error">{{errors.nama_lengkap[0]}}</span>
           </md-field>
 
           <md-field>
             <label for="profesi">Profesi</label>
             <md-input name="profesi" id="profesi" v-model="testimoni.profesi" ref="profesi"/>
-            <span-error v-if="errors.profesi" class="label-danger">{{errors.profesi[0]}}</span-error>
+            <span v-if="errors.profesi" class="label-danger span-error">{{errors.profesi[0]}}</span>
           </md-field>
 
           <md-field>
             <label>Testimoni</label>
             <md-textarea v-model="testimoni.testimoni"></md-textarea>
-            <span-error v-if="errors.testimoni" class="label-danger">{{errors.testimoni[0]}}</span-error>
+            <span v-if="errors.testimoni" class="label-danger span-error">{{errors.testimoni[0]}}</span>
           </md-field>
 
           <md-field>
@@ -59,10 +59,10 @@
             </md-card-media-cover>
           </md-card>
 
-            <md-button v-if="!loading" @click="createTestimoni" class="md-dense md-raised" style="background-color: #d44723; color: white">
-              Submit
+          <md-progress-bar v-if="submitted" md-mode="indeterminate"></md-progress-bar>
+          <md-button v-else @click="createTestimoni" class="md-dense md-raised" style="background-color: #d44723; color: white">
+              Tambahkan
             </md-button>
-            <md-progress-spinner v-else :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
 
           <!-- Snackbar for success alert -->
           <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="notifSuccess" @md-closed="redirectToTestimoni">
@@ -90,7 +90,7 @@
       previewFoto: '',
       notifMessage: '',
       notifSuccess: false,
-      loading: false
+      submitted: false
     }),
     methods: {
       onFileChange(e) {
@@ -102,10 +102,9 @@
       createImage(file) {
         var image = new Image();
         var reader = new FileReader();
-        var app = this;
 
         reader.onload = (e) => {
-          app.previewFoto = e.target.result;
+          this.previewFoto = e.target.result;
         };
         reader.readAsDataURL(file);
       },
@@ -113,29 +112,28 @@
         this.testimoni.foto = '';
       },
       createTestimoni() {
-  			let app = this;
-  			let dataTestimoni = app.inputData(app);
+  			let dataTestimoni = this.inputData();
 
-        app.loading = true;
-        axios.post(app.url, dataTestimoni)
+        this.submitted = true;
+        axios.post(this.url, dataTestimoni)
   			.then((resp) => {
-          app.notifMessage = `Berhasil Menambah Testimoni ${app.testimoni.nama_lengkap}`
-          app.notifSuccess = true;
+          this.submitted = false;
+          this.notifMessage = `Berhasil Menambah Testimoni ${this.testimoni.nama_lengkap}`
+          this.notifSuccess = true;
   			})
   			.catch((resp) => {
-          app.$refs.nama_lengkap.$el.focus()
-  				app.errors = resp.response.data
-          app.loading = false;
+          this.$refs.nama_lengkap.$el.focus()
+  				this.errors = resp.response.data
   			});
   		},
-  		inputData(app) {
+  		inputData() {
   			let dataTestimoni = new FormData();
         if (document.getElementById('foto').files[0] != undefined) {
           dataTestimoni.append('foto', document.getElementById('foto').files[0]);
         }
-        dataTestimoni.append('nama_lengkap', app.testimoni.nama_lengkap);
-  			dataTestimoni.append('profesi', app.testimoni.profesi);
-  			dataTestimoni.append('testimoni', app.testimoni.testimoni);
+        dataTestimoni.append('nama_lengkap', this.testimoni.nama_lengkap);
+  			dataTestimoni.append('profesi', this.testimoni.profesi);
+  			dataTestimoni.append('testimoni', this.testimoni.testimoni);
 
   			return dataTestimoni;
   		},
@@ -174,7 +172,7 @@
     font-size: 20px;
     padding: 4px 0px 0px 10px;
   }
-  span-error {
+  .span-error {
     color: white;
     height: 20px;
     position: absolute;
