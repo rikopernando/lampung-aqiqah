@@ -88,7 +88,8 @@
 			        		<div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
 						        <md-field>
 						          <md-select v-model="searchBy" @md-selected="searchOnTable" name="searchBy" id="searchBy" md-dense>
-						            <md-option value="nama_mitra">Mitra</md-option>
+                        <md-option value="nama_mitra">Nama</md-option>
+						            <md-option value="no_telp">Nomor Telepon</md-option>
 						          </md-select>
 						        </md-field>
 			        		</div>
@@ -204,14 +205,13 @@ export default {
     getMitraData() {
       axios.get(this.url)
        .then(resp => {
-        console.log(resp.data)
         this.mitra = resp.data;
         this.searchable_mitra = resp.data;
         this.loading = false;
       })
       .catch(resp => {
+        console.log('catch getMitraData:', resp);
         alert('Terjadi Kesalahan')
-        console.log(resp);
       });
     },
     searchOnTable() {
@@ -229,8 +229,8 @@ export default {
         this.getMitraData();
       })
       .catch(resp => {
-        alert('Terjadi Kesalahan')
         console.log('catch onConfirmDelete:', resp);
+        alert('Terjadi Kesalahan')
       })
     },
   }
