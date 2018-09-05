@@ -108,7 +108,7 @@
                   {{ item.profesi | capitalize }}
                 </md-table-cell>
                 <md-table-cell md-label="Testimoni" md-sort-by="testimoni">
-                  {{ item.testimoni | selengkapnya }}...
+                  {{ item.testimoni | selengkapnya }}
                 </md-table-cell>
                 <md-table-cell md-label="Aksi">
                   <md-button :to="`/testimoni/edit/${item.id}`" class="md-fab md-dense md-primary">
@@ -198,8 +198,11 @@
       capitalize: (value) => {
         return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
       },
-      selengkapnya: (value) => {
-        return value.substr(0, 50);
+      selengkapnya: (teks) => {
+        if (teks.length > 50)
+          return `${teks.substr(0, 50)}...`;
+        else
+          return teks;
       }
     },
     methods: {
