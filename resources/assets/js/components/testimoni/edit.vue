@@ -143,7 +143,7 @@
           this.submitted = false;
         })
         .catch(resp => {
-          console.log(resp);
+          console.log('catch editTestimoni:', resp);
   				this.errors = resp.response.data
           this.submitted = false;
         });
