@@ -102,10 +102,9 @@
       createImage(file) {
         var image = new Image();
         var reader = new FileReader();
-        var app = this;
 
         reader.onload = (e) => {
-          app.previewFoto = e.target.result;
+          this.previewFoto = e.target.result;
         };
         reader.readAsDataURL(file);
       },
@@ -113,29 +112,28 @@
         this.testimoni.foto = '';
       },
       createTestimoni() {
-  			let app = this;
-  			let dataTestimoni = app.inputData(app);
+  			let dataTestimoni = this.inputData();
 
         this.submitted = true;
-        axios.post(app.url, dataTestimoni)
+        axios.post(this.url, dataTestimoni)
   			.then((resp) => {
           this.submitted = false;
-          app.notifMessage = `Berhasil Menambah Testimoni ${app.testimoni.nama_lengkap}`
-          app.notifSuccess = true;
+          this.notifMessage = `Berhasil Menambah Testimoni ${this.testimoni.nama_lengkap}`
+          this.notifSuccess = true;
   			})
   			.catch((resp) => {
-          app.$refs.nama_lengkap.$el.focus()
-  				app.errors = resp.response.data
+          this.$refs.nama_lengkap.$el.focus()
+  				this.errors = resp.response.data
   			});
   		},
-  		inputData(app) {
+  		inputData() {
   			let dataTestimoni = new FormData();
         if (document.getElementById('foto').files[0] != undefined) {
           dataTestimoni.append('foto', document.getElementById('foto').files[0]);
         }
-        dataTestimoni.append('nama_lengkap', app.testimoni.nama_lengkap);
-  			dataTestimoni.append('profesi', app.testimoni.profesi);
-  			dataTestimoni.append('testimoni', app.testimoni.testimoni);
+        dataTestimoni.append('nama_lengkap', this.testimoni.nama_lengkap);
+  			dataTestimoni.append('profesi', this.testimoni.profesi);
+  			dataTestimoni.append('testimoni', this.testimoni.testimoni);
 
   			return dataTestimoni;
   		},
