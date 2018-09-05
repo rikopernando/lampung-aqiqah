@@ -39,12 +39,12 @@
                   <md-field md-inline>
                       <label class="media-screen-xsmall-hide">Cari Dengan ...</label>
                       <label class="media-screen-medium-hide">Cari Dengan ...</label>
-                    <md-input v-model="search" @input="searchOnTable" />
+                    <md-input v-model="search" />
                   </md-field>
                 </div>
                 <div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
                   <md-field>
-                    <md-select v-model="searchBy" @md-selected="searchOnTable" name="searchBy" id="searchBy" md-dense>
+                    <md-select v-model="searchBy" name="searchBy" id="searchBy" md-dense>
                       <md-option value="nama_bank">Nama Bank</md-option>
                       <md-option value="no_rek">No Rek</md-option>
                     </md-select>
@@ -61,7 +61,7 @@
        <md-button :to="`/bank/create`" class="md-dense md-raised" style="background-color: #d44723; color: white"> Tambah Bank</md-button>
 
 
-         <md-table v-model="searched" md-sort="name" md-sort-order="asc" md-fixed-header>
+         <md-table v-model="searchable_bank" md-sort="name" md-sort-order="asc" md-fixed-header>
             <md-table-empty-state v-if="loading">
               <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
             </md-table-empty-state>
@@ -93,18 +93,25 @@
             </md-table-row>
           </md-table>
 
-          <!-- Snackbar for Bank delete alert -->
-        <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarDeleteBank" md-persistent>
-            <span>Bank berhasil dihapus!</span>
-          </md-snackbar>
-
-         <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="notifSuccess">
-            <span id="span-snackbar">{{notifMessage}}</span>
-            <span><md-icon style="color: white">done_all</md-icon></span>
-          </md-snackbar>
-
+          <paging
+            v-if="!loading"
+            :dataPaging="banks"
+            :itemPerPage="10"
+            :range="5"
+            :search="searchResult"
+            @paginatedItems="getPaginatedItems($event)"></paging>
         </md-card-content>
       </md-card>
+
+      <!-- Snackbar for Bank delete alert -->
+      <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarDeleteBank" md-persistent>
+        <span>Bank berhasil dihapus!</span>
+      </md-snackbar>
+
+     <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="notifSuccess">
+        <span id="span-snackbar">{{notifMessage}}</span>
+        <span><md-icon style="color: white">done_all</md-icon></span>
+      </md-snackbar>
 
     </div>
   </sidebar>
@@ -115,14 +122,6 @@
     return text.toString().toLowerCase();
   };
 
-  const searchBank = (items, term, searchBy) => {
-    if (term) {
-      return items.filter(item => toLower(item[searchBy]).includes(toLower(term)));
-    }
-
-    return items;
-  };
-
   export default {
     data: () => ({
     	url: window.location.origin + (window.location.pathname + 'bank/'),
@@ -131,17 +130,36 @@
 			snackbarDeleteBank: false,
       promptGagalHapus : false,
 	    bankIdForDelete: '',
-      searched: [],
+      searchable_bank: [],
       banks: [],
       notifMessage: '',
       notifSuccess: false,
       searchBy: 'nama_bank',
       loading: true,
+      searchResult: {}
     }),
     created() {
     	this.getBankData();
     },
+    watch: {
+      search() {
+        this.searchBanks();
+      },
+      searchBy() {
+        this.searchBanks();
+      }
+    },
     methods: {
+      searchBanks() {
+        if (this.search != null) {
+          this.searchResult = this.banks.filter(item => toLower(item[this.searchBy]).includes(toLower(this.search)));
+        } else {
+          this.searchResult = this.banks;
+        }
+      },
+      getPaginatedItems(value) {
+        this.searchable_bank = value;
+      },
     	getBankData() {
         let app = this;
     		axios.get(app.url + 'view')
@@ -150,7 +168,7 @@
             resp.data.daftarBank[i].default = item.default == 1 ? false: true;
           });
     			app.banks = resp.data.daftarBank;
-    			app.searched = resp.data.daftarBank;
+    			app.searchable_bank = resp.data.daftarBank;
 
     			app.loading = false;
     		})
@@ -189,10 +207,7 @@
           this.promptDeleteBank = true;
           this.bankIdForDelete = bankId;
         }   
-    	},
-      searchOnTable() {
-        this.searched = searchBank(this.banks, this.search, this.searchBy);
-      }
+    	}
     }
   }
 </script>
