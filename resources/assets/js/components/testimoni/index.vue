@@ -1,3 +1,43 @@
+<style scoped>
+  .breadcrumb {
+    border-color: #ffffff;
+    border-style: solid;
+    border-width: 0 1px 4px 1px;
+    padding: 8px 15px;
+    margin-bottom: 35px;
+    list-style: none;
+    background-color: #ffffff;
+    border-radius: 4px;
+  }
+  .header-card i {
+    background-color: #d44723;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 3px;
+    font-size: 30px !important;
+    margin: -30px 0px 0;
+    position: relative;
+    box-shadow: -4px -3px 0px 0px #ff000045;
+  }
+  .header-title {
+    color: #867f7f;
+    font-size: 20px;
+    padding: 4px 0px 0px 10px;
+  }
+  .md-table table {
+    width: 0% !important;
+  }
+  .md-table-row {
+    background:#f7e1e1 !important;
+    padding:8px !important;
+  }
+  .md-layout-item{
+    padding:5px !important;
+  }
+</style>
+
 <template>
     <sidebar>
       <div class="col-md-12" style="padding: 0">
@@ -20,8 +60,8 @@
                   <div class="md-layout">
                   <div class="md-layout-item md-medium-size-60 md-small-size-60 md-xsmall-size-60">
                     <md-field md-inline>
-                        <label class="media-screen-xsmall-hide">Cari Dengan ...</label>
-                        <label class="media-screen-medium-hide">Cari Dengan ...</label>
+                      <label class="media-screen-xsmall-hide">Cari Dengan ...</label>
+                      <label class="media-screen-medium-hide">Cari Dengan ...</label>
                       <md-input v-model="search" @input="searchOnTable" />
                     </md-field>
                   </div>
@@ -42,7 +82,7 @@
           <md-card-content>
             <md-button :to="`/testimoni/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah Testimoni</md-button>
 
-            <md-table v-model="searched" md-sort="name" md-sort-order="asc" md-fixed-header>
+            <md-table v-model="searchable_testimoni" md-sort="name" md-sort-order="asc" md-fixed-header>
               <md-table-empty-state v-if="$store.state.testimoni.loading">
         		    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
               </md-table-empty-state>
@@ -51,8 +91,9 @@
                   md-description="Belum Ada Testimoni Yang Tersimpan.">
               </md-table-empty-state>
 
-              <md-table-empty-state v-else-if="testimonis.length > 0 && search != null" md-label="Testimoni Tidak Ditemukan"
-                  :md-description="`Tidak Ada Testimoni Dengan Kata Kunci '${search}'. Cobalah Menggunakan Kata Kunci Lain.`">
+              <md-table-empty-state v-else-if="testimonis.length > 0 && search != null" 
+                md-label="Testimoni Tidak Ditemukan" 
+                :md-description="`Tidak Ada Testimoni Dengan Kata Kunci '${search}'. Cobalah Menggunakan Kata Kunci Lain.`">
               </md-table-empty-state>
 
               <md-table-row slot="md-table-row" slot-scope="{item}">
@@ -80,6 +121,14 @@
                 </md-table-cell>
               </md-table-row>
             </md-table>
+
+            <paging
+              v-if="!loading"
+              :dataPaging="testimonis"
+              :itemPerPage="10"
+              :range="5"
+              :search="searchResult"
+              @paginatedItems="getPaginatedItems($event)"></paging>
 
             <!-- Snackbar for success alert -->
             <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="notifSuccess">
@@ -120,7 +169,7 @@
     data: () => ({
       url: window.location.origin + (window.location.pathname + 'testimoni/'),
       testimonis: [],
-      searched: [],
+      searchable_testimoni: [],
       search: null,
 	    promptDelete: false,
 			snackbarDelete: false,
@@ -128,20 +177,19 @@
       notifSuccess: false,
       searchBy: 'nama_lengkap',
       testimoniId: '',
-      testimoniDelete: ''
+      testimoniDelete: '',
+      searchResult: {},
+      loading: true
     }),
     mounted() {
-      const app = this;
-
-      app.$store.dispatch('testimoni/LOAD_TESTIMONI');
+      this.$store.dispatch('testimoni/LOAD_TESTIMONI');
     },
     computed: mapState ({
       daftarTestimoni() {
-        const app = this;
-
-        app.testimonis = app.$store.state.testimoni.daftarTestimoni;
-        app.searched = app.$store.state.testimoni.daftarTestimoni;
-        return app.$store.state.testimoni.daftarTestimoni;
+        this.testimonis = this.$store.state.testimoni.daftarTestimoni;
+        this.searchable_testimoni = this.$store.state.testimoni.daftarTestimoni;
+        this.loading = false;
+        return this.$store.state.testimoni.daftarTestimoni;
       }
     }),
     filters: {
@@ -153,29 +201,27 @@
       }
     },
     methods: {
+      getPaginatedItems(value) {
+        this.searchable_testimoni = value;
+      },
       searchOnTable() {
-        const app = this;
-
-        app.searched = searchTestimoni(app.testimonis, app.search, app.searchBy);
+        this.searchable_testimoni = searchTestimoni(this.testimonis, this.search, this.searchBy);
       },
     	deleteTestimoni(testimoniId, namaLengkap) {
-        let app = this;
-
-    		app.promptDelete = true;
-    		app.testimoniId = testimoniId;
-    		app.testimoniDelete = namaLengkap;
-    		app.notifMessage = `Apakah Anda Yakin Menghapus Testimoni <strong>${namaLengkap}</strong> ?`;
+    		this.promptDelete = true;
+    		this.testimoniId = testimoniId;
+    		this.testimoniDelete = namaLengkap;
+    		this.notifMessage = `Apakah Anda Yakin Menghapus Testimoni <strong>${namaLengkap}</strong> ?`;
     	},
       onConfirmDelete() {
-        let app = this;
-    		axios.delete(app.url + app.testimoniId)
+    		axios.delete(this.url + this.testimoniId)
     		.then(resp => {
-          app.notifMessage = `Berhasil Menghapus Testimoni ${app.testimoniDelete}.`
-    			app.testimoniId = '';
-    			app.testimoniDelete = '';
-    			app.snackbarDelete = true;
-          app.notifSuccess = true;
-    			app.$store.dispatch('testimoni/LOAD_TESTIMONI');
+          this.notifMessage = `Berhasil Menghapus Testimoni ${this.testimoniDelete}.`
+    			this.testimoniId = '';
+    			this.testimoniDelete = '';
+    			this.snackbarDelete = true;
+          this.notifSuccess = true;
+    			this.$store.dispatch('testimoni/LOAD_TESTIMONI');
     		})
     		.catch(resp => {
     			console.log('catch onConfirmDelete:', resp);
@@ -184,43 +230,3 @@
     }
   }
 </script>
-
-<style scoped>
-  .breadcrumb {
-    border-color: #ffffff;
-    border-style: solid;
-    border-width: 0 1px 4px 1px;
-    padding: 8px 15px;
-    margin-bottom: 35px;
-    list-style: none;
-    background-color: #ffffff;
-    border-radius: 4px;
-  }
-  .header-card i {
-    background-color: #d44723;
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    line-height: 50px;
-    border-radius: 3px;
-    font-size: 30px !important;
-    margin: -30px 0px 0;
-    position: relative;
-    box-shadow: -4px -3px 0px 0px #ff000045;
-  }
-  .header-title {
-    color: #867f7f;
-    font-size: 20px;
-    padding: 4px 0px 0px 10px;
-  }
-  .md-table table {
-    width: 0% !important;
-  }
-  .md-table-row {
-    background:#f7e1e1 !important;
-    padding:8px !important;
-  }
-  .md-layout-item{
-    padding:5px !important;
-  }
-</style>
