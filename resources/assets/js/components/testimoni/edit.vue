@@ -98,38 +98,36 @@
       submitted: false
     }),
     mounted() {
-      let app = this;
-      let id = app.$route.params.id;
+      let id = this.$route.params.id;
 
-      app.testimoniId = id;
-      app.getTestimoni(app, id);
+      this.testimoniId = id;
+      this.getTestimoni(id);
     },
     methods: {
-      getTestimoni(app, id){
-        axios.get(app.url+"/"+id)
+      getTestimoni(id){
+        axios.get(this.url + "/" + id)
         .then(function (resp) {
           console.log(resp.data);
-          app.testimoni = resp.data;
-          app.testimoni.id = id;
-          resp.data.stok === 1 ? app.testimoni.stok = true : app.testimoni.stok = false;
+          this.testimoni = resp.data;
+          this.testimoni.id = id;
+          resp.data.stok === 1 ? this.testimoni.stok = true : this.testimoni.stok = false;
         })
         .catch(function (resp) {
           console.log('catch getTestimoni:', resp);
         });
       },
       onFileChange(e) {
-        var files = e.target.files || e.dataTransfer.files;
+        let files = e.target.files || e.dataTransfer.files;
         if (!files.length)
           return;
         this.createImage(files[0]);
       },
       createImage(file) {
-        var image = new Image();
-        var reader = new FileReader();
-        var app = this;
+        let image = new Image();
+        let reader = new FileReader();
 
         reader.onload = (e) => {
-          app.previewFoto = e.target.result;
+          this.previewFoto = e.target.result;
         };
         reader.readAsDataURL(file);
       },
@@ -137,29 +135,29 @@
         this.testimoni.foto = null;
       },
       editTestimoni() {
-        let app = this;
-  			let dataTestimoni = app.inputData(app);
+  			let dataTestimoni = this.inputData();
 
-        app.submitted = true;
-        axios.post(app.url+"/"+app.testimoniId, dataTestimoni)
+        this.submitted = true;
+        axios.post(this.url + "/" + this.testimoniId, dataTestimoni)
         .then(resp => {
-          app.notifMessage = `Berhasil Mengubah Testimoni ${app.testimoni.nama_lengkap}`
-          app.notifSuccess = true;
+          this.notifMessage = `Berhasil Mengubah Testimoni ${this.testimoni.nama_lengkap}`
+          this.notifSuccess = true;
+          this.submitted = false;
         })
         .catch(resp => {
           console.log(resp);
-  				app.errors = resp.response.data
-          app.submitted = false;
+  				this.errors = resp.response.data
+          this.submitted = false;
         });
       },
-  		inputData(app) {
+  		inputData() {
   			let dataTestimoni = new FormData();
           if (document.getElementById('foto').files[0] != undefined) {
             dataTestimoni.append('foto', document.getElementById('foto').files[0]);
           }
-            dataTestimoni.append('nama_lengkap', app.testimoni.nama_lengkap);
-      			dataTestimoni.append('profesi', app.testimoni.profesi);
-      			dataTestimoni.append('testimoni', app.testimoni.testimoni);
+            dataTestimoni.append('nama_lengkap', this.testimoni.nama_lengkap);
+      			dataTestimoni.append('profesi', this.testimoni.profesi);
+      			dataTestimoni.append('testimoni', this.testimoni.testimoni);
 
   			return dataTestimoni;
   		},
