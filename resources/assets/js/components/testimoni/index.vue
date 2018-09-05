@@ -62,12 +62,12 @@
                     <md-field md-inline>
                       <label class="media-screen-xsmall-hide">Cari Dengan ...</label>
                       <label class="media-screen-medium-hide">Cari Dengan ...</label>
-                      <md-input v-model="search" @input="searchOnTable" />
+                      <md-input v-model="search" />
                     </md-field>
                   </div>
                   <div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
                     <md-field>
-                      <md-select v-model="searchBy" @md-selected="searchOnTable" name="searchBy" id="searchBy" md-dense>
+                      <md-select v-model="searchBy" name="searchBy" id="searchBy" md-dense>
                         <md-option value="nama_lengkap">Nama Lengkap</md-option>
                         <md-option value="profesi">Profesi</md-option>
                       </md-select>
@@ -186,12 +186,21 @@
     },
     computed: mapState ({
       daftarTestimoni() {
+        console.log(this.$store.state.testimoni.daftarTestimoni)
         this.testimonis = this.$store.state.testimoni.daftarTestimoni;
         this.searchable_testimoni = this.$store.state.testimoni.daftarTestimoni;
         this.loading = false;
         return this.$store.state.testimoni.daftarTestimoni;
       }
     }),
+    watch: {
+      search() {
+        this.searchTestimoni();
+      },
+      searchBy() {
+        this.searchTestimoni();
+      }
+    },
     filters: {
       capitalize: (value) => {
         return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
@@ -201,6 +210,13 @@
       }
     },
     methods: {
+      searchTestimoni() {
+        if (this.search != null) {
+          this.searchResult = this.testimonis.filter(item => toLower(item[this.searchBy]).includes(toLower(this.search)));
+        } else {
+          this.searchResult = this.testimonis;
+        }
+      },
       getPaginatedItems(value) {
         this.searchable_testimoni = value;
       },
