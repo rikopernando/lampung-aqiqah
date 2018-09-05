@@ -85,7 +85,6 @@
             <span id="span-snackbar">{{notifMessage}}</span>
             <span><md-icon style="color: white">done_all</md-icon></span>
           </md-snackbar>
-        </md-card-content>
 
         <paging
           v-if="!loading"
@@ -94,6 +93,7 @@
           :range="5"
           :search="searchResult"
           @paginatedItems="getPaginatedItems($event)"></paging>
+        </md-card-content>
       </md-card>
 
       <md-dialog-confirm style="text-transform: capitalize" :md-active.sync="promptDelete" md-title="Konfirmasi Hapus"
