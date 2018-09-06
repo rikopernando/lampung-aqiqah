@@ -85,8 +85,7 @@
         isi_berita: '',
         foto: ''
       },
-      editorOption: {
-      },
+      editorOption: {},
       previewFoto: '',
       notifMessage: '',
       notifSuccess: false,
