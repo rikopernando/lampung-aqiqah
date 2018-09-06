@@ -61,6 +61,9 @@
                 <md-table-cell md-label="Judul Berita" md-sort-by="judul_berita">
                   {{ item.judul_berita | capitalize }}
                 </md-table-cell>
+                <md-table-cell md-label="Judul Berita" md-sort-by="judul_berita">
+                  {{ item.isi_berita }}
+                </md-table-cell>
 
                 <md-table-cell md-label="Aksi">
                   <md-button :to="`/berita-kami/edit/${item.id}`" class="md-fab md-dense md-primary">
