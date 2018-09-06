@@ -58,7 +58,7 @@
                 <md-table-cell md-label="ID" md-sort-by="id" md-numeric>
                   {{ item.id }}
                 </md-table-cell>
-                <md-table-cell md-label="Judul Berita`" md-sort-by="judul_berita">
+                <md-table-cell md-label="Judul Berita" md-sort-by="judul_berita">
                   {{ item.judul_berita | capitalize }}
                 </md-table-cell>
 
