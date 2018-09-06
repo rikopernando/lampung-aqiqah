@@ -29,6 +29,7 @@
                     <md-field>
                       <md-select v-model="searchBy" name="searchBy" id="searchBy" md-dense>
                         <md-option value="judul_berita">Judul Berita</md-option>
+                        <md-option value="isi_berita">Isi Berita</md-option>
                       </md-select>
                     </md-field>
                     </div>
@@ -61,7 +62,7 @@
                 <md-table-cell md-label="Judul Berita" md-sort-by="judul_berita">
                   {{ item.judul_berita | capitalize }}
                 </md-table-cell>
-                <md-table-cell md-label="Judul Berita" md-sort-by="judul_berita">
+                <md-table-cell md-label="Isi Berita" md-sort-by="isi_berita">
                   {{ item.isi_berita }}
                 </md-table-cell>
 
@@ -81,7 +82,7 @@
             <paging
               v-if="!$store.state.berita.loading"
               :dataPaging="beritas"
-              :itemPerPage="2"
+              :itemPerPage="10"
               :range="5"
               :search="searchResult"
               @paginatedItems="getPaginatedItems($event)"></paging>
