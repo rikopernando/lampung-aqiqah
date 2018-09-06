@@ -139,6 +139,14 @@
         return this.$store.state.berita.daftarBerita;
       }
     }),
+    watch: {
+      search() {
+        this.searchBerita();
+      },
+      searchBy() {
+        this.searchBerita();
+      }
+    },
     filters: {
       selengkapnya: (value) => {
         return value.substr(0, 50);
@@ -148,6 +156,13 @@
       }
     },
     methods: {
+      searchBerita() {
+        if (this.search != null) {
+          this.searchResult = this.beritas.filter(item => toLower(item[this.searchBy]).includes(toLower(this.search)));
+        } else {
+          this.searchResult = this.beritas;
+        }
+      },
       getPaginatedItems(value) {
         this.searchable_berita = value;
       },
