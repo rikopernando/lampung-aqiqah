@@ -25,13 +25,13 @@
           <md-field>
             <label for="judul_berita">Judul Berita</label>
             <md-input name="judul_berita" id="judul_berita" v-model="berita.judul_berita" ref="judul_berita"/>
-            <span-error v-if="errors.judul_berita" class="label-danger">{{errors.judul_berita[0]}}</span-error>
+            <span v-if="errors.judul_berita" class="label-danger span-error">{{errors.judul_berita[0]}}</span>
           </md-field>
 
           <label for="isi_berita">Isi Berita</label>
           <quill-editor v-model="berita.isi_berita" ref="myQuillEditor" :options="editorOption" style="height:10%">
-                </quill-editor>
-            <span-error v-if="errors.isi_berita" class="label-danger">{{errors.isi_berita[0]}}</span-error>
+          </quill-editor>
+          <span v-if="errors.isi_berita" class="label-danger span-error">{{errors.isi_berita[0]}}</span>
 
           <md-field>
             <label>Foto</label>
@@ -79,17 +79,16 @@
         isi_berita: '',
         foto: ''
       },
-      editorOption: {
-      },
+      editorOption: {},
       previewFoto: '',
       notifMessage: '',
       notifSuccess: false,
       submitted: false
     }),
     computed: {
-    editor() {
-      return this.$refs.myQuillEditor.quill
-    }
+      editor() {
+        return this.$refs.myQuillEditor.quill
+      }
     },
     methods: {
       onFileChange(e) {
@@ -101,10 +100,9 @@
       createImage(file) {
         var image = new Image();
         var reader = new FileReader();
-        var app = this;
 
         reader.onload = (e) => {
-          app.previewFoto = e.target.result;
+          this.previewFoto = e.target.result;
         };
         reader.readAsDataURL(file);
       },
@@ -112,29 +110,30 @@
         this.berita.foto = '';
       },
       createBerita() {
-  			let app = this;
-  			let dataBerita = app.inputData(app);
+  			let dataBerita = this.inputData();
+      	this.submitted = true;
 
-        	app.submitted = true;
-        	axios.post(app.url, dataBerita)
-  				.then((resp) => {
-		          app.notifMessage = `Berhasil Menambah Berita ${app.berita.judul_berita}`
-		          app.notifSuccess = true;
-              app.submitted = false;
+      	axios.post(this.url, dataBerita)
+				.then((resp) => {
+          this.notifMessage = `Berhasil Menambah Berita ${this.berita.judul_berita}`
+          this.notifSuccess = true;
+          this.submitted = false;
   			})
   			.catch((resp) => {
-          		app.$refs.judul_berita.$el.focus()
-  				app.errors = resp.response.data
-          		app.submitted = false;
+      		this.$refs.judul_berita.$el.focus()
+  				this.errors = resp.response.data
+      		this.submitted = false;
   			});
   		},
-  		inputData(app) {
+  		inputData() {
   			let dataBerita = new FormData();
-	        if (document.getElementById('foto').files[0] != undefined) {
-	          dataBerita.append('foto', document.getElementById('foto').files[0]);
-	        }
-        	dataBerita.append('judul_berita', app.berita.judul_berita);
-  			dataBerita.append('isi_berita', app.berita.isi_berita);
+
+        if (document.getElementById('foto').files[0] != undefined) {
+          dataBerita.append('foto', document.getElementById('foto').files[0]);
+        }
+        
+      	dataBerita.append('judul_berita', this.berita.judul_berita);
+  			dataBerita.append('isi_berita', this.berita.isi_berita);
 
   			return dataBerita;
   		},
@@ -173,7 +172,7 @@
     font-size: 20px;
     padding: 4px 0px 0px 10px;
   }
-  span-error {
+  .span-error {
     color: white;
     height: 20px;
     position: absolute;
