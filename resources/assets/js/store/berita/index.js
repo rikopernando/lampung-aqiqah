@@ -15,8 +15,6 @@ const mutations = {
       state.daftarBerita = data.data_berita;
       state.countBerita = data.count_berita;
       state.loading = false;
-      console.log(data.data_berita)
-      console.log(data.count_berita)
     },
     BERITADETAIL : (state, data)=> {
       state.daftarBerita = data;
@@ -31,7 +29,7 @@ const actions = {
       commit('BERITA',resp.data)
     })
     .catch(err =>{
-      console.log('Terjadi Kesalahan :', err);
+      console.log('catch LOAD_BERITA:', err);
     });
   },
   LOAD_BERITA_LIST : ({commit},get) => {
@@ -40,7 +38,7 @@ const actions = {
       commit('BERITA',resp.data)
     })
     .catch(err =>{
-      console.log('Terjadi Kesalahan :', err);
+      console.log('catch LOAD_BERITA_LIST:', err);
     });
   },
   LOAD_BERITA_DETAIL : ({commit},get) => {
@@ -49,7 +47,7 @@ const actions = {
       commit('BERITADETAIL',resp.data)
     })
     .catch(err =>{
-      console.log('Terjadi Kesalahan :', err);
+      console.log('catch LOAD_BERITA_DETAIL :', err);
     });
   },
 
