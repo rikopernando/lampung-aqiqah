@@ -55,10 +55,10 @@
               </md-card-media-cover>
           </md-card>
 
-            <md-button v-if="!loading" @click="editBerita" class="md-dense md-raised" style="background-color: #d44723; color: white">
-              Simpan
-            </md-button>
-            <md-progress-spinner v-else :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
+          <md-progress-bar v-if="submitted" md-mode="indeterminate"></md-progress-bar>
+          <md-button v-else @click="editBerita" class="md-dense md-raised" style="background-color: #d44723; color: white">
+            Simpan
+          </md-button>
 
           <!-- Snackbar for success alert -->
           <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="notifSuccess" @md-closed="redirectToBerita">
@@ -90,7 +90,7 @@
       previewFoto: '',
       notifMessage: '',
       notifSuccess: false,
-      loading: false,
+      submitted: false
     }),
     mounted() {
       let app = this;
@@ -139,16 +139,17 @@
         let app = this;
   			let dataBerita = app.inputData(app);
 
-        app.loading = true;
+        app.submitted = true;
         axios.post(app.url+"/"+app.beritaId, dataBerita)
         .then(resp => {
           app.notifMessage = `Berhasil Mengubah Berita ${app.berita.judul_berita}`
           app.notifSuccess = true;
+          app.submitted = false;
         })
         .catch(resp => {
           console.log(resp);
-  				app.errors = resp.response.data
-          app.loading = false;
+          app.errors = resp.response.data
+          app.submitted = false;
         });
       },
   		inputData(app) {
