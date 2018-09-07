@@ -82,7 +82,8 @@ class LaporanOrderController extends Controller
                 'kirim_tempat_lains.provinsi as ap_provinsi',
                 'kirim_tempat_lains.kabupaten as ap_kabupaten',
                 'kirim_tempat_lains.kecamatan as ap_kecamatan',
-                'kirim_tempat_lains.kelurahan as ap_kelurahan'
+                'kirim_tempat_lains.kelurahan as ap_kelurahan',
+                'kirim_tempat_lains.no_telp as ap_no_telp'
             )
             ->where('pesanans.id', '=', $id_pesanan)
             ->first();
@@ -117,6 +118,7 @@ class LaporanOrderController extends Controller
             'Nama Belakang' => $pesanan->ap_nama_belakang,
             'Perusahaan' => $pesanan->ap_company_name,
             'Alamat' => $pesanan->ap_alamat,
+            'Nomor Telepon' => $pesanan->ap_no_telp,
             'Provinsi' => $this->getNamaDaerah($pesanan->ap_provinsi, 1),
             'Kabupaten' => $this->getNamaDaerah($pesanan->ap_kabupaten, 2),
             'Kecamatan' => $this->getNamaDaerah($pesanan->ap_kecamatan, 3),
@@ -142,6 +144,7 @@ class LaporanOrderController extends Controller
             $result[2] = [
                 ['entri' => 'Nama', 'keterangan' => $pesanan->ip_nama_pemesan],
                 ['entri' => 'Alamat', 'keterangan' => $pesanan->ip_alamat],
+                ['entri' => 'Nomor Telepon', 'keterangan' => $pesanan->ip_no_telp],
                 ['entri' => 'Provinsi', 'keterangan' => $this->getNamaDaerah($pesanan->ip_provinsi, 1)],
                 ['entri' => 'Kabupaten', 'keterangan' => $this->getNamaDaerah($pesanan->ip_kabupaten, 2)],
                 ['entri' => 'Kecamatan', 'keterangan' => $this->getNamaDaerah($pesanan->ip_kecamatan, 3)],
@@ -153,17 +156,29 @@ class LaporanOrderController extends Controller
     }
 
     public function infoPesanan($id_pesanan) {
-        $detailPesanan = DetailPesanan::select('id_produk', 'jumlah_produk')->where('id_pesanan', $id_pesanan)->get();
+        $detailPesanan = DB::table('detail_pesanans')
+            ->join('pesanans', 'detail_pesanans.id_pesanan', '=', 'pesanans.id')
+            ->select('id_produk', 'jumlah_produk', 'pesanans.kode_unik', 'pesanans.total')
+            ->where('detail_pesanans.id_pesanan', '=', $id_pesanan)
+            ->get();
 
+        // return response()->json($detailPesanan);
         $infoPesanan = [];
         foreach ($detailPesanan as $detail) {
             $produk = Produk::select('nama_produk', 'harga_jual')->whereId($detail->id_produk)->first();
-            $infoPesanan[] = [
+            $infoPesanan[0][] = [
                 'nama_produk' => $produk->nama_produk,
+                'qty' => $detail->jumlah_produk,
                 'harga' => $produk->harga_jual,
-                'qty' => $detail->jumlah_produk
+                'subtotal' => ($produk->harga_jual * $detail->jumlah_produk)
+            ];
+    
+            $infoPesanan[1] = [
+                ['entri' => 'Kode Unik', 'keterangan' => $detail->kode_unik],
+                ['entri' => 'Subtotal', 'keterangan' => $detail->total]
             ];
         }
+
 
         return response()->json($infoPesanan);
     }
