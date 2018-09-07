@@ -404,6 +404,10 @@ export default {
     showSidepanel: false,
     expandSetting: false,
   }),
+  mounted() {
+    let el = document.getElementById('wh-widget-send-button');
+    el.style.display = 'none';
+  },
   methods: {
     expandSettingSidebar() {
       let main = $(".main-content")[0];
