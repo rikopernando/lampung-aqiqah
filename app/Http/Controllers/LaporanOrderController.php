@@ -156,18 +156,29 @@ class LaporanOrderController extends Controller
     }
 
     public function infoPesanan($id_pesanan) {
-        $detailPesanan = DetailPesanan::select('id_produk', 'jumlah_produk')->where('id_pesanan', $id_pesanan)->get();
+        $detailPesanan = DB::table('detail_pesanans')
+            ->join('pesanans', 'detail_pesanans.id_pesanan', '=', 'pesanans.id')
+            ->select('id_produk', 'jumlah_produk', 'pesanans.kode_unik', 'pesanans.total')
+            ->where('detail_pesanans.id_pesanan', '=', $id_pesanan)
+            ->get();
 
+        // return response()->json($detailPesanan);
         $infoPesanan = [];
         foreach ($detailPesanan as $detail) {
             $produk = Produk::select('nama_produk', 'harga_jual')->whereId($detail->id_produk)->first();
-            $infoPesanan[] = [
+            $infoPesanan[0][] = [
                 'nama_produk' => $produk->nama_produk,
                 'qty' => $detail->jumlah_produk,
                 'harga' => $produk->harga_jual,
                 'subtotal' => ($produk->harga_jual * $detail->jumlah_produk)
             ];
+    
+            $infoPesanan[1] = [
+                ['entri' => 'Kode Unik', 'keterangan' => $detail->kode_unik],
+                ['entri' => 'Subtotal', 'keterangan' => $detail->total]
+            ];
         }
+
 
         return response()->json($infoPesanan);
     }

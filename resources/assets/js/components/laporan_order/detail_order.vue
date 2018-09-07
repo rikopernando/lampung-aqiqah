@@ -1,4 +1,10 @@
 <style scoped>
+  div#tableInfoPesanan2 {
+    font-weight: bold;
+  }
+  div#tableInfoPesanan2 div table tbody tr:nth-child(1) td {
+    border: 0;
+  }
   .breadcrumb {
     border-color: #ffffff;
     border-style: solid;
@@ -187,6 +193,22 @@
                   </md-table-cell>
                 </md-table-row>
               </md-table>
+              <br>
+              <br>
+              <hr>
+              <md-table id="tableInfoPesanan2" v-model="infoPesanan2">
+                <md-table-row slot="md-table-row" slot-scope="{ item }">
+                  <md-table-cell>
+                    {{ item.entri }}
+                  </md-table-cell>
+                  <md-table-cell>
+                    :
+                  </md-table-cell>
+                  <md-table-cell style="text-align: right; padding-right: 170px;">
+                    {{ item.keterangan | currency }}
+                  </md-table-cell>
+                </md-table-row>
+              </md-table>
             </md-tab>
           </md-tabs>
         </md-card-content>
@@ -231,6 +253,7 @@ export default {
     detailPeserta: {},
     alamatPengiriman: {},
     infoPesanan: {},
+    infoPesanan2: {},
     statusPesanan: null,
 
     // snackbar
@@ -319,7 +342,8 @@ export default {
     getInfoPesanan() {
       axios.get(this.url + '/info-pesanan/' + this.$route.params.id_pesanan)
       .then(resp => {
-        this.infoPesanan = resp.data;
+        this.infoPesanan = resp.data[0];
+        this.infoPesanan2 = resp.data[1];
       })
       .catch(resp => {
         console.log('catch getInfoPesanan:', resp);
@@ -384,7 +408,6 @@ export default {
       this.emailLoading = true;
       axios.post(this.url + '/kirim-email', { id_pesanan: this.$route.params.id_pesanan, n: n })
       .then(resp => {
-        console.log('then sendMail:', resp);
         cb();
       })
       .catch(resp => {
