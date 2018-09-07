@@ -22,13 +22,14 @@
                     <md-field md-inline>
                         <label class="media-screen-xsmall-hide">Cari Dengan ...</label>
                         <label class="media-screen-medium-hide">Cari Dengan ...</label>
-                      <md-input v-model="search" @input="searchOnTable" />
+                      <md-input v-model="search" />
                     </md-field>
                   </div>
                   <div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
                     <md-field>
-                      <md-select v-model="searchBy" @md-selected="searchOnTable" name="searchBy" id="searchBy" md-dense>
+                      <md-select v-model="searchBy" name="searchBy" id="searchBy" md-dense>
                         <md-option value="judul_berita">Judul Berita</md-option>
+                        <md-option value="isi_berita">Isi Berita</md-option>
                       </md-select>
                     </md-field>
                     </div>
@@ -41,7 +42,7 @@
           <md-card-content>
             <md-button :to="`/berita-kami/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah Berita</md-button>
 
-            <md-table v-model="searched" md-sort="name" md-sort-order="asc" md-fixed-header>
+            <md-table v-model="searchable_berita" md-sort="name" md-sort-order="asc" md-fixed-header>
             <md-table-empty-state v-if="$store.state.berita.loading">
               <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
             </md-table-empty-state>
@@ -58,8 +59,11 @@
                 <md-table-cell md-label="ID" md-sort-by="id" md-numeric>
                   {{ item.id }}
                 </md-table-cell>
-                <md-table-cell md-label="Judul Berita`" md-sort-by="judul_berita">
+                <md-table-cell md-label="Judul Berita" md-sort-by="judul_berita">
                   {{ item.judul_berita | capitalize }}
+                </md-table-cell>
+                <md-table-cell md-label="Isi Berita" md-sort-by="isi_berita">
+                  {{ item.isi_berita }}
                 </md-table-cell>
 
                 <md-table-cell md-label="Aksi">
@@ -74,6 +78,14 @@
                 </md-table-cell>
               </md-table-row>
             </md-table>
+
+            <paging
+              v-if="!$store.state.berita.loading"
+              :dataPaging="beritas"
+              :itemPerPage="10"
+              :range="5"
+              :search="searchResult"
+              @paginatedItems="getPaginatedItems($event)"></paging>
 
             <!-- Snackbar for success alert -->
             <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="notifSuccess">
@@ -103,39 +115,39 @@
     return text.toString().toLowerCase();
   };
 
-  const searchBerita = (items, term, searchBy) => {
-    if (term) {
-      return items.filter(item => toLower(item[searchBy]).includes(toLower(term)));
-    }
-    return items;
-  };
-
   export default{
     data: () => ({
       url: window.location.origin + (window.location.pathname + 'berita/'),
       beritas: [],
-      searched: [],
+      searchable_berita: [],
       search: null,
-	  promptDelete: false,
-	  snackbarDelete: false,
+  	  promptDelete: false,
+  	  snackbarDelete: false,
       notifMessage: '',
       notifSuccess: false,
       searchBy: 'judul_berita',
       beritaId: '',
       beritaDelete: '',
+      searchResult: {},
     }),
     mounted() {
-      const app = this;
-      app.$store.dispatch('berita/LOAD_BERITA');
+      this.$store.dispatch('berita/LOAD_BERITA');
     },
     computed: mapState ({
       daftarBerita() {
-        const app = this;
-        app.beritas = app.$store.state.berita.daftarBerita;
-        app.searched = app.$store.state.berita.daftarBerita;
-        return app.$store.state.berita.daftarBerita;
+        this.beritas = this.$store.state.berita.daftarBerita;
+        this.searchable_berita = this.$store.state.berita.daftarBerita;
+        return this.$store.state.berita.daftarBerita;
       }
     }),
+    watch: {
+      search() {
+        this.searchBerita();
+      },
+      searchBy() {
+        this.searchBerita();
+      }
+    },
     filters: {
       selengkapnya: (value) => {
         return value.substr(0, 50);
@@ -145,27 +157,34 @@
       }
     },
     methods: {
+      searchBerita() {
+        if (this.search != null) {
+          this.searchResult = this.beritas.filter(item => toLower(item[this.searchBy]).includes(toLower(this.search)));
+        } else {
+          this.searchResult = this.beritas;
+        }
+      },
+      getPaginatedItems(value) {
+        this.searchable_berita = value;
+      },
       searchOnTable() {
-        const app = this;
-        app.searched = searchBerita(app.beritas, app.search, app.searchBy);
+        this.searchable_berita = searchBerita(this.beritas, this.search, this.searchBy);
       },
     	deleteBerita(beritaId, judul) {
-        let app = this;
-    		app.promptDelete = true;
-    		app.beritaId = beritaId;
-    		app.beritaDelete = judul;
-    		app.notifMessage = `Apakah Anda Yakin Menghapus Berita <strong>${judul}</strong> ?`;
+    		this.promptDelete = true;
+    		this.beritaId = beritaId;
+    		this.beritaDelete = judul;
+    		this.notifMessage = `Apakah Anda Yakin Menghapus Berita <strong>${judul}</strong> ?`;
     	},
       onConfirmDelete() {
-        let app = this;
-    		axios.delete(app.url + app.beritaId)
+    		axios.delete(this.url + this.beritaId)
     		.then(resp => {
-          		 app.notifMessage = `Berhasil Menghapus Berita ${app.beritaDelete}.`
-    			     app.beritaId = '';
-    			     app.beritaDelete = '';
-    			     app.snackbarDelete = true;
-          		 app.notifSuccess = true;
-      			   app.$store.dispatch('berita/LOAD_BERITA');
+          this.notifMessage = `Berhasil Menghapus Berita ${this.beritaDelete}.`
+          this.beritaId = '';
+          this.beritaDelete = '';
+          this.snackbarDelete = true;
+          this.notifSuccess = true;
+          this.$store.dispatch('berita/LOAD_BERITA');
 
     		})
     		.catch(resp => {

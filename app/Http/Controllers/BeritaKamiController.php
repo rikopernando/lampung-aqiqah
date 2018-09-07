@@ -27,13 +27,23 @@ class BeritaKamiController extends Controller
 
 
 
-        public function view() {
-          $berita = BeritaKami::select()->orderBy('created_at','desc');
+    public function view() {
+        $berita = BeritaKami::select()->orderBy('created_at','desc');
 
-          $data_berita = $berita->get();
-          $count_berita = $berita->count();
+        $data_berita = $berita->get();
 
-        $respons['data_berita'] = $data_berita;
+        $array_berita = [];
+        foreach ($data_berita as $berita) {
+            $array_berita[] = [
+                'id' => $berita->id,
+                'judul_berita' => $berita->judul_berita,
+                'isi_berita' => strip_tags($berita->isi_berita),
+            ];
+        }
+
+        $count_berita = $berita->count();
+
+        $respons['data_berita'] = $array_berita;
         $respons['count_berita'] = $count_berita;
 
 
