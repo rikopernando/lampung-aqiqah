@@ -56,6 +56,11 @@
                     </tbody>
                     <tbody>
                       <tr>
+                        <th class="subtotal" style="padding-top: 13px !important">KODE UNIK</th>
+                        <td></td> <td></td>
+                        <td class="subtotal" style="text-align:right; font-size:17px; font-weight:bold;"> <strong>Rp. {{ data_pesanan.kode_unik | pemisahTitik }}</strong></td>
+                      </tr>
+                      <tr>
                         <th class="subtotal" style="padding-top: 13px !important">TOTAL AKHIR</th>
                         <td></td> <td></td>
                         <td class="subtotal" style="text-align:right; font-size:17px; font-weight:bold;"> <strong>Rp. {{ data_pesanan.subtotal | pemisahTitik }}</strong></td>

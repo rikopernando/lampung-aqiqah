@@ -13,7 +13,7 @@ use Mail;
 class Pesanan extends Model
 {
     protected $fillable = [
-        'pelanggan_id', 'sumber_informasi', 'catatan', 'kirim_ke_alamat_lain', 'nama_peserta', 'tempat_tanggal_lahir', 'jenis_kelamin', 'nama_ayah', 'nama_ibu', 'tempat_lahir', 'total', 'metode_pembayaran','status_pesanan'
+        'pelanggan_id', 'sumber_informasi', 'catatan', 'kirim_ke_alamat_lain', 'nama_peserta', 'tempat_tanggal_lahir', 'jenis_kelamin', 'nama_ayah', 'nama_ibu', 'tempat_lahir', 'total', 'metode_pembayaran','status_pesanan','kode_unik'
     ];
 
     public function pelanggan()
@@ -84,5 +84,16 @@ class Pesanan extends Model
               $message->subject('Ada Pesanan baru di Aqiqah Lampung');
         });
 
+    }
+
+    public static function kodeUniktransfer(){
+        $pesanan = Pesanan::select('id')->orderBy('id','DESC')->limit(1);
+        if($pesanan->count() == 0) {
+            $id_pesanan = $pesanan->count() + 1;
+        }else{
+            $id_pesanan = $pesanan->first()->id + 1;
+        }
+        $kode_unik = $id_pesanan % 1000;
+        return $kode_unik;
     }
 }

@@ -29,7 +29,10 @@ class TambahPhotoKeSettingPerusahaan extends Migration
     public function down()
     {
       Schema::table('setting_perusahaans', function (Blueprint $table) {
-          $table->dropColumn('foto');
+          $table->dropColumn('logo');
+          $table->dropColumn('foto_slide_1');
+          $table->dropColumn('foto_slide_2');
+          $table->dropColumn('foto_slide_3');
       });
     }
 }
