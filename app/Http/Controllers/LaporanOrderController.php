@@ -163,8 +163,9 @@ class LaporanOrderController extends Controller
             $produk = Produk::select('nama_produk', 'harga_jual')->whereId($detail->id_produk)->first();
             $infoPesanan[] = [
                 'nama_produk' => $produk->nama_produk,
+                'qty' => $detail->jumlah_produk,
                 'harga' => $produk->harga_jual,
-                'qty' => $detail->jumlah_produk
+                'subtotal' => ($produk->harga_jual * $detail->jumlah_produk)
             ];
         }
 

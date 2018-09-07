@@ -176,11 +176,14 @@
                   <md-table-cell md-label="Nama Produk" md-sort-by="nama_produk">
                     {{ item.nama_produk }}
                   </md-table-cell>
+                  <md-table-cell md-label="Qty" md-sort-by="qty">
+                    {{ item.qty }}
+                  </md-table-cell>
                   <md-table-cell md-label="Harga" md-sort-by="harga">
                     {{ item.harga | currency }}
                   </md-table-cell>
-                  <md-table-cell md-label="Qty" md-sort-by="qty">
-                    {{ item.qty }}
+                  <md-table-cell md-label="Subtotal" md-sort-by="subtotal">
+                    {{ item.subtotal | currency }}
                   </md-table-cell>
                 </md-table-row>
               </md-table>
