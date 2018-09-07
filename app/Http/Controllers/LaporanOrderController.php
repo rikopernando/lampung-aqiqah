@@ -274,7 +274,7 @@ class LaporanOrderController extends Controller
     public function kirimEmail(Request $request) {
         $pesanan = DB::table('pesanans')
             ->join('users', 'pesanans.pelanggan_id', '=', 'users.id')
-            ->select('users.name as nama_pelanggan', 'pesanans.updated_at as tanggal_dikonfirmasi', 'pesanans.metode_pembayaran', 'users.email', 'pesanans.id', 'pesanans.total', 'users.alamat', 'users.no_telp')
+            ->select('users.name as nama_pelanggan', 'pesanans.updated_at as tanggal_dikonfirmasi', 'pesanans.metode_pembayaran', 'users.email', 'pesanans.id', 'pesanans.total', 'pesanans.kode_unik', 'users.alamat', 'users.no_telp')
             ->where('pesanans.id', $request->id_pesanan)
             ->first();
         $detail_pesanan = DetailPesanan::with('produk')->where('id_pesanan',$pesanan->id)->get();
