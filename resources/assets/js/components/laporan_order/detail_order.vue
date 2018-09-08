@@ -295,16 +295,16 @@ export default {
     windowWidth(width) {
       if (width > 660) {
         // desktop
-        this.tabInfoPemesan = { label: 'Info Pemesan', icon: '' }
-        this.tabDetailPeserta = { label: 'Detail Peserta', icon: '' }
-        this.tabAlamatPengiriman = { label: 'Alamat Pengiriman', icon: '' }
-        this.tabInfoPesanan = { label: 'Info Pesanan', icon: '' }
+        this.tabInfoPemesan = { label: 'Info Pemesan', icon: '' };
+        this.tabDetailPeserta = { label: 'Detail Peserta', icon: '' };
+        this.tabAlamatPengiriman = { label: 'Alamat Pengiriman', icon: '' };
+        this.tabInfoPesanan = { label: 'Info Pesanan', icon: '' };
       } else {
         // mobile 
-        this.tabInfoPemesan = { label: '', icon: 'perm_identity' }
-        this.tabDetailPeserta = { label: '', icon: 'face' }
-        this.tabAlamatPengiriman = { label: '', icon: 'room' }
-        this.tabInfoPesanan = { label: '', icon: 'shopping_cart' }
+        this.tabInfoPemesan = { label: '', icon: 'perm_identity' };
+        this.tabDetailPeserta = { label: '', icon: 'face' };
+        this.tabAlamatPengiriman = { label: '', icon: 'room' };
+        this.tabInfoPesanan = { label: '', icon: 'shopping_cart' };
       }
     }
   },
@@ -312,7 +312,7 @@ export default {
     this.windowWidth = screen.width;
     this.$nextTick(() => {
       window.addEventListener('resize', () => {
-        this.windowWidth = window.innerWidth
+        this.windowWidth = window.innerWidth;
       });
     });
   },
@@ -323,7 +323,7 @@ export default {
   },
   filters: {
     currency(number) {
-      return accounting.formatMoney(number, '', '2', '.', ',')
+      return accounting.formatMoney(number, '', '2', '.', ',');
     }
   },
   methods: {
@@ -416,7 +416,7 @@ export default {
         this.loadingInDialog = false;
         this.emailLoading = false;
         this.closeDialogWhenEmailFailed = false;
-        this.showDialog = true
+        this.showDialog = true;
       })
     }
   }
