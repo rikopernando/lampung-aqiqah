@@ -406,7 +406,7 @@ export default {
   }),
   mounted() {
     let el = document.getElementById('wh-widget-send-button');
-    el.style.display = 'none';
+    el == null ? '' : el.style.display = 'none';
   },
   methods: {
     expandSettingSidebar() {
