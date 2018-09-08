@@ -74,6 +74,7 @@
 
 
 <script>
+
   export default {
     data: () => ({
     	url: window.location.origin + (window.location.pathname + 'berita'),
@@ -99,7 +100,7 @@
     },
     computed: {
       editor() {
-        return this.$refs.myQuillEditor.quill
+        return this.$refs.myQuillEditor.quill;
       }
     },
     methods: {
@@ -138,13 +139,13 @@
         this.submitted = true;
         axios.post(this.url + "/" + this.beritaId, dataBerita)
         .then(resp => {
-          this.notifMessage = `Berhasil Mengubah Berita ${this.berita.judul_berita}`
+          this.notifMessage = `Berhasil Mengubah Berita ${this.berita.judul_berita}`;
           this.notifSuccess = true;
           this.submitted = false;
         })
         .catch(resp => {
           console.log('catch editBerita', resp);
-          this.errors = resp.response.data
+          this.errors = resp.response.data;
           this.submitted = false;
         });
       },
@@ -165,6 +166,7 @@
       }
     }
   }
+  
 </script>
 
 <style scoped>
