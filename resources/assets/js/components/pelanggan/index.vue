@@ -64,6 +64,11 @@
 	      md-cancel-text="Batal"
 	      @md-confirm="onConfirmDelete" />
 
+			<md-dialog-alert
+				:md-active.sync="alert"
+				md-title="Oooppss!"
+				md-content="Pelanggan tidak bisa dihapus karena sudah terpakai!" />
+
      	<md-card>
       	<ul class="breadcrumb">
         	<li><router-link :to="{name: 'dashboard'}">Dashboard</router-link></li>
@@ -171,6 +176,7 @@ export default {
     searchBy: 'name',
     loading: true,
     searchResult: false,
+		alert: false
   }),
   created() {
   	this.getPelangganData();
@@ -208,9 +214,13 @@ export default {
   	onConfirmDelete() {
   		axios.delete(this.url + '/' + this.pelangganIdForDelete)
   		.then(resp => {
-  			this.pelangganIdForDelete = '';
-  			this.snackbarDeletePelanggan = true;
-  			this.getPelangganData();
+        if(resp.data == 200){
+            this.pelangganIdForDelete = '';
+            this.snackbarDeletePelanggan = true;
+            this.getPelangganData();
+        }else{
+            this.alert =  true
+        }
   		})
   		.catch(resp => {
   			console.log('catch onConfirmDelete:', resp);

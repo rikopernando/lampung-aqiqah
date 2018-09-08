@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Produk;
+use App\KeranjangBelanja;
+use App\DetailPesanan;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class ProdukController extends Controller
@@ -172,7 +174,21 @@ class ProdukController extends Controller
      */
     public function destroy($id)
     {
-      $produk = Produk::destroy($id);
-      return response(200);
+      $keranjang = KeranjangBelanja::where('id_produk',$id)->count();
+      if($keranjang === 0){
+          $detail_pesanan = DetailPesanan::where('id_produk',$id)->count();
+          if($detail_pesanan === 0){
+              $produk = Produk::destroy($id);
+              return response(200);
+          }else{
+              return response()->json([
+                    'message' => 'Produk tidak bisa dihapus karena sudah terpakai' 
+              ]);
+          }
+      }else{
+          return response()->json([
+                'message' => 'Produk tidak bisa dihapus karena sudah terpakai' 
+          ]);
+      }
     }
 }

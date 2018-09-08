@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Role;
+use App\Pesanan;
 use Auth;
 
 class PelangganController extends Controller
@@ -100,7 +101,14 @@ class PelangganController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::destroy($id);
-        return response(200);
+        $pesanan = Pesanan::where('pelanggan_id',$id)->count();
+        if($pesanan === 0){
+            $user = User::destroy($id);
+            return response(200);
+        }else{
+            return response()->json([
+                'message' => 'Pelanggan Tidak Bisa Dihapus, karena sudah terpakai' 
+            ]);
+        }
     }
 }
