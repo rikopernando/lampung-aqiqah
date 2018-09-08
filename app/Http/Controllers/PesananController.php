@@ -81,6 +81,9 @@ class PesananController extends Controller
         'provinsi' => $request->provinsi, 'kabupaten' => $request->kabupaten, 'kecamatan' => $request->kecamatan, 'kelurahan' => $request->kelurahan, 'alamat' => $request->alamat, 'no_telp' => $request->handphone
       ]);
 
+      $kode_unik = Pesanan::kodeUniktransfer();
+      $total = $request->total + $kode_unik;
+
       $new_pesanan = Pesanan::create([
         'pelanggan_id' => $pelanggan_id,
         'sumber_informasi' => $request->sumber_informasi,
@@ -91,9 +94,9 @@ class PesananController extends Controller
         'nama_ayah' => $request->nama_ayah,
         'nama_ibu' => $request->nama_ibu,
         'tempat_lahir' => $request->tempat_lahir,
-        'total' => $request->total,
+        'total' => $total,
         'metode_pembayaran' => $request->metode_pembayaran,
-        'status_pesanan' => 1
+        'kode_unik' => $kode_unik
       ]);
 
       if($request->kirim_ke_alamat_lain){
@@ -200,6 +203,7 @@ class PesananController extends Controller
             $response['detail_pesanan'] = $detail_pesanan;
             $response['kirim_tempat_lain'] = $alamat_kirim;
             $response['subtotal'] = $pesanan->total;
+            $response['kode_unik'] = $pesanan->kode_unik;
 
             return $response; 
         }else{

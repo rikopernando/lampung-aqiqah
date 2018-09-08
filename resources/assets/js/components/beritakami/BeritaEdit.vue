@@ -25,14 +25,14 @@
           <md-field>
             <label for="judul_berita">Judul Berita</label>
             <md-input name="judul_berita" id="judul_berita" v-model="berita.judul_berita" ref="judul_berita"/>
-            <span-error v-if="errors.judul_berita" class="label-danger">{{errors.judul_berita[0]}}</span-error>
+            <span v-if="errors.judul_berita" class="label-danger span-error">{{errors.judul_berita[0]}}</span>
           </md-field>
 
           
           <label for="isi_berita">Isi Berita</label>
           <quill-editor v-model="berita.isi_berita" ref="myQuillEditor" :options="editorOption" style="height:10%">
           </quill-editor>
-            <span-error v-if="errors.isi_berita" class="label-danger">{{errors.isi_berita[0]}}</span-error>
+            <span v-if="errors.isi_berita" class="label-danger span-error">{{errors.isi_berita[0]}}</span>
           
 
           <md-field>
@@ -55,10 +55,10 @@
               </md-card-media-cover>
           </md-card>
 
-            <md-button v-if="!loading" @click="editBerita" class="md-dense md-raised" style="background-color: #d44723; color: white">
-              Simpan
-            </md-button>
-            <md-progress-spinner v-else :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
+          <md-progress-bar v-if="submitted" md-mode="indeterminate"></md-progress-bar>
+          <md-button v-else @click="editBerita" class="md-dense md-raised" style="background-color: #d44723; color: white">
+            Simpan
+          </md-button>
 
           <!-- Snackbar for success alert -->
           <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="notifSuccess" @md-closed="redirectToBerita">
@@ -85,47 +85,44 @@
         isi_berita: '',
         foto: ''
       },
-      editorOption: {
-      },
+      editorOption: {},
       previewFoto: '',
       notifMessage: '',
       notifSuccess: false,
-      loading: false,
+      submitted: false
     }),
     mounted() {
-      let app = this;
-      let id = app.$route.params.id;
+      let id = this.$route.params.id;
 
-      app.beritaId = id;
-      app.getBerita(app, id);
+      this.beritaId = id;
+      this.getBerita(id);
     },
     computed: {
-    editor() {
-      return this.$refs.myQuillEditor.quill
-    }
+      editor() {
+        return this.$refs.myQuillEditor.quill
+      }
     },
     methods: {
-      getBerita(app, id){
-        axios.get(app.url+"/"+id)
-        .then(function (resp) {
-          console.log(resp.data);
-          app.berita = resp.data;
-          app.berita.id = id;
+      getBerita(id) {
+        axios.get(this.url + "/" + id)
+        .then(resp => {
+          this.berita = resp.data;
+          this.berita.id = id;
         })
-        .catch(function (resp) {
+        .catch(resp => {
           console.log('catch getBerita:', resp);
         });
       },
       onFileChange(e) {
-        var files = e.target.files || e.dataTransfer.files;
+        let files = e.target.files || e.dataTransfer.files;
         if (!files.length)
           return;
         this.createImage(files[0]);
       },
       createImage(file) {
-        var image = new Image();
-        var reader = new FileReader();
-        var app = this;
+        let image = new Image();
+        let reader = new FileReader();
+        let app = this;
 
         reader.onload = (e) => {
           app.previewFoto = e.target.result;
@@ -136,28 +133,30 @@
         this.berita.foto = null;
       },
       editBerita() {
-        let app = this;
-  			let dataBerita = app.inputData(app);
+  			let dataBerita = this.inputData();
 
-        app.loading = true;
-        axios.post(app.url+"/"+app.beritaId, dataBerita)
+        this.submitted = true;
+        axios.post(this.url + "/" + this.beritaId, dataBerita)
         .then(resp => {
-          app.notifMessage = `Berhasil Mengubah Berita ${app.berita.judul_berita}`
-          app.notifSuccess = true;
+          this.notifMessage = `Berhasil Mengubah Berita ${this.berita.judul_berita}`
+          this.notifSuccess = true;
+          this.submitted = false;
         })
         .catch(resp => {
-          console.log(resp);
-  				app.errors = resp.response.data
-          app.loading = false;
+          console.log('catch editBerita', resp);
+          this.errors = resp.response.data
+          this.submitted = false;
         });
       },
-  		inputData(app) {
+  		inputData() {
   			let dataBerita = new FormData();
-          if (document.getElementById('foto').files[0] != undefined) {
-            dataBerita.append('foto', document.getElementById('foto').files[0]);
-          }
-          dataBerita.append('judul_berita', app.berita.judul_berita);
-          dataBerita.append('isi_berita', app.berita.isi_berita);
+
+        if (document.getElementById('foto').files[0] != undefined) {
+          dataBerita.append('foto', document.getElementById('foto').files[0]);
+        }
+
+        dataBerita.append('judul_berita', this.berita.judul_berita);
+        dataBerita.append('isi_berita', this.berita.isi_berita);
 
   			return dataBerita;
   		},
@@ -216,7 +215,7 @@
     font-size: 20px;
     padding: 4px 0px 0px 10px;
   }
-  span-error {
+  .span-error {
     color: white;
     height: 20px;
     position: absolute;

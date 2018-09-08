@@ -1,3 +1,37 @@
+<style scoped>
+  .breadcrumb {
+    border-color: #ffffff;
+    border-style: solid;
+    border-width: 0 1px 4px 1px;
+    padding: 8px 15px;
+    margin-bottom: 35px;
+    list-style: none;
+    background-color: #ffffff;
+    border-radius: 4px;
+  }
+  .header-card i {
+    background-color: #d44723;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 3px;
+    font-size: 30px !important;
+    margin: -30px 0px 0;
+    position: relative;
+    box-shadow: -4px -3px 0px 0px #ff000045;
+  }
+  .header-title {
+    color: #867f7f;
+    font-size: 20px;
+    padding: 4px 0px 0px 10px;
+  }
+  .error-message {
+    background-color:  #ff4d4d;
+    border-radius: 6px;
+  }
+</style>
+
 <template>
   <sidebar>
     <div class="col-md-12" style="padding: 0">
@@ -39,7 +73,8 @@
               <label for="no_rek">No Rekening</label>
               <md-input type="no_rek" name="no_rek" id="no_rek" autocomplete="off" v-model="bank.no_rek" />
             </md-field>
-              <md-button type="submit" class="md-dense md-raised" style="background-color: #d44723; color: white"> Submit </md-button>
+              <md-progress-bar v-if="submitted" md-mode="indeterminate"></md-progress-bar>
+              <md-button v-else type="submit" class="md-dense md-raised" style="background-color: #d44723; color: white"> Tambahkan </md-button>
           </form>
         </md-card-content>
       </md-card>
@@ -60,19 +95,22 @@ export default {
       nama_bank: '',
       atas_nama: '',
       no_rek: ''
-      },
-    snackbarTambahBank: false
+    },
+    snackbarTambahBank: false,
+    submitted: false
   }),
   methods: {
     saveForm() {
-      const app = this;
-      axios.post(app.url+'bank', app.bank)
-      .then((resp) => {
-          app.snackbarTambahBank = true;
+      this.submitted = true;
+      
+      axios.post(this.url + 'bank', this.bank)
+      .then(resp => {
+          this.submitted = false;
+          this.snackbarTambahBank = true;
       })
-      .catch((err) => {
+      .catch(err => {
         this.errors = err.response.data
-        console.log('catch:', resp);
+        console.log('catch saveForm:', resp);
       })
     },
     redirectToBankList() {
@@ -81,37 +119,3 @@ export default {
   }
 }  
 </script>
-
-<style scoped>
-  .breadcrumb {
-    border-color: #ffffff;
-    border-style: solid;
-    border-width: 0 1px 4px 1px;
-    padding: 8px 15px;
-    margin-bottom: 35px;
-    list-style: none;
-    background-color: #ffffff;
-    border-radius: 4px;
-  }
-  .header-card i {
-    background-color: #d44723;
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    line-height: 50px;
-    border-radius: 3px;
-    font-size: 30px !important;
-    margin: -30px 0px 0;
-    position: relative;
-    box-shadow: -4px -3px 0px 0px #ff000045;
-  }
-  .header-title {
-    color: #867f7f;
-    font-size: 20px;
-    padding: 4px 0px 0px 10px;
-  }
-  .error-message {
-    background-color:  #ff4d4d;
-    border-radius: 6px;
-  }
-</style>

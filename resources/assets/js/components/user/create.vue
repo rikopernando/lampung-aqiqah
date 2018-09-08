@@ -85,12 +85,12 @@
 
             <md-field :class="getValidationClass('repeatPassword')">
               <label for="repeatPassword">Ulangi Password</label>
-              <md-input type="repeatPassword" name="repeatPassword" id="repeatPassword" v-model="user.repeatPassword" />
+              <md-input type="password" name="repeatPassword" id="repeatPassword" v-model="user.repeatPassword" />
               <span class="md-error" v-if="!$v.user.repeatPassword.sameAsPassword">Password tidak sama</span>
             </md-field>
 
-              <md-progress-spinner v-if="submitted" :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
-              <md-button v-else type="submit" class="md-dense md-raised" style="background-color: #d44723; color: white"> Submit </md-button>
+            <md-progress-bar v-if="submitted" md-mode="indeterminate"></md-progress-bar>
+            <md-button v-else type="submit" class="md-dense md-raised" style="background-color: #d44723; color: white"> Submit </md-button>
 
           </form>
         </md-card-content>

@@ -1,11 +1,200 @@
+<style>
+@keyframes animateDisplay {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+.main-content {
+  -webkit-animation: animateDisplay 1s; /* Safari 4.0 - 8.0 */
+  animation: animateDisplay 1s;
+}
+.sidebar-footer {
+  font-size: small !important;
+}
+@media (max-width: 600px) {
+  .sidebar-screen-small-hide { 
+    display: none; 
+  }
+  #sidebarMobileVersion { 
+    display: block; 
+  }
+  .main-content {
+    background: #fafafa;
+    transition: all .2s ease-in-out;
+  }
+  .md-list-item-content {
+    padding: 4px 7px !important;
+    justify-content: flex-start !important;
+  }
+  .md-list-item-content>.md-icon:first-child {
+    margin-right: 5px !important;
+  }
+  .md-theme-default a:not(.md-button) {
+    color: #767676 !important;
+  }
+  .sidebar-footer {
+    text-align: center;
+  }
+  .toolbar-mobile {
+    position: fixed;
+  }
+  .toolbar-mobile-wrapper {
+    height: 70px;
+  }
+}
+@media (min-width: 601px) {
+  #sidebarMobileVersion { display: none; }
+  .main-content.active {
+    padding-left: 275px;
+  }
+  .main-content {
+    background: #fafafa;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    top: 50px;
+    left: 0;
+    height: 94vh;
+    padding: 15px;
+    padding-left: 75px;
+  }
+  .dekstop-menu {
+    text-transform: uppercase;
+    color: #767676;
+  }
+  .sidebar-footer {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .sidebar-footer a {
+    color: grey !important;
+  }
+  .header {
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    background: #da2921;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    color: #fff;
+  }
+  .header .logo {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .header #menu-toggle {
+    display: block;
+    float: left;
+    width: 60px;
+    height: 50px;
+    line-height: 50px;
+    margin-right: 15px;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.15);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .header #menu-toggle i {
+    display: inline-block;
+    margin: 0 5px;
+  }
+  .header #menu-toggle span {
+    width: 0px;
+    display: none;
+    overflow: hidden;
+    transition: all .2s ease-in-out;
+  }
+  .header #menu-toggle:hover {
+    background: rgba(0, 0, 0, 0.25);
+  }
+  .header #menu-toggle.active {
+    width: 250px;
+    transition: all .2s ease-in-out;
+  }
+  .header #menu-toggle.active span {
+    display: inline;
+    width: auto;
+    transition: all .2s ease-in-out;
+  }
+  .sidebar {
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 50px;
+    height: 90%;
+    width: 60px;
+    background: #fff;
+    border-right: 1px solid #ddd;
+    text-align: center;
+    transition: all .2s ease-in-out;
+    overflow-y: auto;
+  }
+  .sidebar.active, .sidebar.hovered {
+    width: 250px;
+    transition: all .2s ease-in-out;
+  }
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  .sidebar ul li {
+    display: block;
+  }
+  .sidebar ul li a {
+    display: block;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #444;
+    text-align: left;
+  }
+  .sidebar ul.md-list.md-theme-default li div div.md-list-item-content {
+    border-bottom: 1px solid #ddd;
+  }
+  .sidebar ul.md-list.md-theme-default li div div.md-list-item-content.md-ripple.md-disabled {
+    padding: 0px !important;
+  }
+  .sidebar ul.md-list.md-theme-default li div div.md-list-expand ul li div div a {
+    color: #868686;
+  }
+  .sidebar ul.md-list.md-theme-default li div div.md-list-item-content.md-ripple.md-disabled a {
+    width: 100%;
+  }
+  .sidebar ul li a i {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    -webkit-animation-duration: .7s;
+            animation-duration: .7s;
+    -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+  }
+  .sidebar ul li a span {
+    display: inline-block;
+    height: 60px;
+    line-height: 60px;
+  }
+  .sidebar ul li a:hover {
+    background-color: #eee;
+  }
+}
+</style>
+
 <template>
   <div>
-    <link rel="stylesheet" :href="url + 'css/sidebar-admin.css'">
-    <div id="dekstopVersion" class="md-medium-size-50 md-small-size-50 md-xsmall-hide">
+    <div id="dekstopVersion" class="md-medium-size-50 md-small-size-50 sidebar-screen-small-hide">
 
       <!-- Header -->
       <div class="header">
-        <a href="#dashboard" id="menu-toggle" class="">
+        <a @click="menuToggleSidebar" id="menu-toggle" class="menu-toggle-sidebar">
           <md-icon style="color: white">menu</md-icon>
           <span>Menu</span>
         </a>
@@ -24,90 +213,79 @@
 
       <!-- Sidebar -->
       <div class="sidebar">
-        <ul>
-          <li>
-            <router-link :to="{name: 'dashboard'}">
-              <md-icon>dashboard</md-icon><span class="dekstop-menu">Dashboard</span>
-              <md-tooltip md-direction="right">Dashboard</md-tooltip>
+        <md-list>
+          <md-list-item>
+            <router-link :to="{name: 'dashboard'}" style="margin: 0px; color: #767676 !important">
+              <md-icon>dashboard</md-icon>
+              <span>Dashboard</span>
             </router-link>
-          </li>
-          <li>
-            <router-link :to="{name: 'produk'}">
-              <md-icon>fastfood</md-icon><span class="dekstop-menu">Produk</span>
-              <md-tooltip md-direction="right">Produk</md-tooltip>
+          </md-list-item>
+
+          <md-list-item>
+            <router-link :to="{name: 'produk'}" style="margin: 0px; color: #767676 !important">
+              <md-icon>fastfood</md-icon>
+              <span>Produk</span>
             </router-link>
-          </li>
-          <li>
-            <router-link :to="{name: 'bank'}">
-              <md-icon>attach_money</md-icon><span class="dekstop-menu">Bank</span>
-              <md-tooltip md-direction="right">Bank</md-tooltip>
+          </md-list-item>
+
+          <md-list-item>
+            <router-link :to="{name: 'bank'}" style="margin: 0px; color: #767676 !important">
+              <md-icon>attach_money</md-icon>
+              <span>Bank</span>
             </router-link>
-          </li>
-          <li>
-            <router-link :to="{name: 'user'}">
-              <md-icon>account_box</md-icon><span class="dekstop-menu">User</span>
-              <md-tooltip md-direction="right">User</md-tooltip>
+          </md-list-item>
+
+          <md-list-item>
+            <router-link :to="{name: 'user'}" style="margin: 0px; color: #767676 !important">
+              <md-icon>account_box</md-icon>
+              <span>User</span>
             </router-link>
-          </li>
-          <li>
-            <router-link :to="{name: 'mitra'}">
-              <md-icon>group</md-icon><span class="dekstop-menu">Mitra</span>
-              <md-tooltip md-direction="right">Mitra</md-tooltip>
+          </md-list-item>
+
+          <md-list-item>
+            <router-link :to="{name: 'mitra'}" style="margin: 0px; color: #767676 !important">
+              <md-icon>group</md-icon>
+              <span>Mitra</span>
             </router-link>
-          </li>
-          <li>
-            <router-link :to="{name: 'laporanOrder'}">
-              <md-icon>notes</md-icon><span class="dekstop-menu">Laporan Order</span>
-              <md-tooltip md-direction="right">Laporan Order</md-tooltip>
+          </md-list-item>
+
+          <md-list-item>
+            <router-link :to="{name: 'laporanOrder'}" style="margin: 0px; color: #767676 !important">
+              <md-icon>notes</md-icon>
+              <span>Laporan Order</span>
             </router-link>
-          </li>
-          <li>
-            <router-link to="" data-toggle="collapse" href="#settings" style="background: #ffffff">
+          </md-list-item>
+          <md-list-item @click="expandSettingSidebar" md-expand :md-expanded.sync="expandSetting">
+            <span class="menu-toggle-sidebar" style="margin: 0px; color: #767676 !important">
               <md-icon>settings_applications</md-icon>
-              <span class="dekstop-menu">Setting</span>
-              <md-tooltip md-direction="right">Setting</md-tooltip>
-              <md-icon style="padding-left: 80px;">keyboard_arrow_down</md-icon>
-            </router-link>
+              <span style="margin-left: 20px;">Setting</span>
+            </span>
+            <md-list slot="md-expand">
+              <md-list-item class="md-inset">
+                <router-link :to="{name: 'testimoni'}">
+                  <span>Testimoni</span>
+                </router-link>
+              </md-list-item>
+              <md-list-item class="md-inset">
+                <router-link :to="{name: 'beritaKami'}">
+                  <span>Berita Kami</span>
+                </router-link>
+              </md-list-item>
+              <md-list-item class="md-inset">
+                <router-link :to="{name: 'setting_perusahaan'}">
+                  <span>Setting Perusahaan</span>
+                </router-link>
+              </md-list-item>
+            </md-list>
+          </md-list-item>
 
-            <div class="collapse" id="settings">
-              <ul>
-                <li>
-                  <router-link :to="{name: 'testimoni'}" class="drop-menu">
-                    <md-icon>rate_review</md-icon>
-                    <span class="dekstop-menu">Testimoni</span>
-                    <md-tooltip md-direction="right">Testimoni</md-tooltip>
-                  </router-link>
-
-                  <router-link :to="{name: 'beritaKami'}" class="drop-menu">
-                    <md-icon>subject</md-icon>
-                    <span class="dekstop-menu">Berita Kami</span>
-                    <md-tooltip md-direction="right">Berita Kami</md-tooltip>
-                  </router-link>
-                </li>
-                <li>
-                  <router-link :to="{name: 'setting_perusahaan'}" class="drop-menu">
-                    <md-icon>business</md-icon>
-                    <span class="dekstop-menu">Setting Perusahaan</span>
-                    <md-tooltip md-direction="right">Setting Perusahaan</md-tooltip>
-                  </router-link>
-                </li>
-              </ul>
-            </div>
-          </li>
-        </ul>
-
-        <footer>
-          Copyright © {{ tahun }}
-          <a href="https://andaglos.id/">
-              PT. Andaglos Global Teknologi.
-          </a>
-        </footer>
+        </md-list>
       </div>
     </div>
 
-    <div id="mobileVersion">
+    <div id="sidebarMobileVersion">
       <div class="toolbar-mobile-wrapper">
-        <md-toolbar class="md-primary toolbar-mobile" style="background-color: #d44723 !important;">
+        <md-toolbar class="md-primary toolbar-mobile" style="background-color: #da2921 !important;">
           <md-button class="md-icon-button" @click="showNavigation = true">
             <md-icon>menu</md-icon>
           </md-button>
@@ -173,13 +351,45 @@
               <span>Laporan Order</span>
             </router-link>
           </md-list-item>
+          <md-list-item md-expand :md-expanded.sync="expandSetting">
+            <span class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+              <md-icon>settings_applications</md-icon>
+              <span>Setting</span>
+            </span>
+            <md-list slot="md-expand">
+              <md-list-item class="md-inset">
+                <router-link :to="{name: 'testimoni'}">
+                  <span class="md-list-item-text">Testimoni</span>
+                </router-link>
+              </md-list-item>
+              <md-list-item class="md-inset">
+                <router-link :to="{name: 'beritaKami'}">
+                  <span class="md-list-item-text">Berita Kami</span>
+                </router-link>
+              </md-list-item>
+              <md-list-item class="md-inset">
+                <router-link :to="{name: 'setting_perusahaan'}">
+                  <span class="md-list-item-text">Setting Perusahaan</span>
+                </router-link>
+              </md-list-item>
+            </md-list>
+          </md-list-item>
+
         </md-list>
       </md-drawer>
     </div>
 
     <!-- Content -->
-    <div class="main">
-      <slot/>
+    <div class="main-content">
+      <div style="margin-bottom: 15px;">
+        <slot/>
+      </div>
+      <footer class="sidebar-footer">
+        Copyright © {{ tahun }}
+        <a href="https://andaglos.id/">
+          PT. Andaglos Global Teknologi.
+        </a>
+      </footer>
     </div>
   </div>
 </template>
@@ -191,20 +401,36 @@ export default {
     url : window.location.origin + window.location.pathname,
     tahun: new Date().getFullYear(),
     showNavigation: false,
-    showSidepanel: false
+    showSidepanel: false,
+    expandSetting: false,
   }),
   mounted() {
-    var main = document.querySelector(".main");
-    var sidebar = document.querySelector(".sidebar");
-    var menutoggle = document.getElementById("menu-toggle");
+    let el = document.getElementById('wh-widget-send-button');
+    el.style.display = 'none';
+  },
+  methods: {
+    expandSettingSidebar() {
+      let main = $(".main-content")[0];
+      let sidebar = $(".sidebar")[0];
+      let menutoggle = $('.menu-toggle-sidebar')[0];
 
-    menutoggle.addEventListener("click", function(e) {
+      if (!menutoggle.classList.contains('active') && !this.expandSetting) {
+        menutoggle.classList.add('active');
+        main.classList.add('active');
+        sidebar.classList.add('active');
+      }
+    },
+    menuToggleSidebar() {
+      let main = $(".main-content")[0];
+      let sidebar = $(".sidebar")[0];
+      let menutoggle = $('.menu-toggle-sidebar')[0];
+      let settings = $('.menu-toggle-sidebar')[1];
+
       menutoggle.classList.toggle("active");
       main.classList.toggle("active");
       sidebar.classList.toggle("active");
-
-      sidebar.classList.contains("active") ? menutoggle.querySelector("i").classList.remove("fa-bars") : menutoggle.querySelector("i").classList.add("fa-bars");
-    });
+      if (!menutoggle.classList.contains('active')) this.expandSetting = false;
+    }
   }
 }
 

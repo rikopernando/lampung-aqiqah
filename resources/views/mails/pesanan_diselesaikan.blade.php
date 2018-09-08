@@ -317,13 +317,19 @@
                                                     <td style="padding: 3px;"></td>
                                                     <td style="padding: 3px;"></td>
                                                     <td  align="right" style="padding:3px">Subtotal :</td>
-                                                    <td align="right" style="padding:3px"><b>Rp. {{ number_format($pesanan->total ,0, ',', '.')}}</b></td>
+                                                    <td align="right" style="padding:3px"><b>Rp. {{ number_format($pesanan->total - $pesanan->kode_unik ,0, ',', '.')}}</b></td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td style="padding: 3px;"></td>
+                                                    <td style="padding: 3px;"></td>
+                                                    <td  align="right" style="padding:3px">Kode Unik :</td>
+                                                    <td align="right" style="padding:3px"><b>Rp. {{ number_format($pesanan->kode_unik ,0, ',', '.')}}</b></td>
                                                   </tr>
                                                   <tr>
                                                     <td style="padding: 3px;"></td>
                                                     <td  align="right" style="padding:3px"></td>
                                                     <td  align="right" style="padding:3px"><b>Total :</b></td>
-                                                    <td align="right" style="padding:3px"><b>Rp. {{number_format($pesanan->total,0, ',', '.')}}</b></td>
+                                                    <td align="right" style="padding:3px"><b>Rp. {{number_format($pesanan->total ,0, ',', '.')}}</b></td>
                                                   </tr>
                                                 </tbody>
                                               </table>
