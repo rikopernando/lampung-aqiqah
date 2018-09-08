@@ -61,6 +61,10 @@ import MitraEdit from '../components/mitra/MitraEdit'
 import SettingPerusahaanIndex from '../components/setting-perusahaan/SettingPerusahaanIndex'
 import SettingPerusahaanEdit from '../components/setting-perusahaan/SettingPerusahaanEdit'
 
+import PelangganIndex from '../components/pelanggan'
+import PelangganEdit from '../components/pelanggan/edit'
+import PelangganCreate from '../components/pelanggan/create'
+
 const routes = [
   {
     path : '/',
@@ -309,6 +313,30 @@ const routes = [
     path : '/berita-kami/detail/:id',
     name : 'beritaKamiDetail',
     component : BeritaKamiDetail
+  },{
+    path : '/pelanggan',
+    name : 'pelanggan',
+    component : PelangganIndex,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
+  },{
+    path : '/pelanggan/create',
+    name : 'createPelanggan',
+    component : PelangganCreate,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
+  },{
+    path : '/pelanggan/edit/:id',
+    name : 'editPelanggan',
+    component : PelangganEdit,
+    meta : {
+      requiresAuth : true,
+      is_admin : true
+    }
   }
 ]
 
