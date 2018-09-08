@@ -7,9 +7,8 @@ use App\User;
 use App\Role;
 use Auth;
 
-class UserController extends Controller
+class PelangganController extends Controller
 {
-
     /**
      * Create a new controller instance.
      *
@@ -27,63 +26,7 @@ class UserController extends Controller
      */
     public function index()
     {
-       
-    }
-
-    public function view() {
-         return response(User::select()->leftJoin('role_user','users.id','role_user.user_id')->where('role_id',1)->get());
-    }
-
-    public function detailAkun() {
-        return response(User::where('id',Auth::User()->id)->first());
-    }
-
-    public function simpanDetailAkun(Request $request) {
-
-      $this->validate($request, [
-          'name'      => 'required|string|max:255',
-          'email'     => 'required|string|email|max:255|unique:users,email,'. $request->id,
-      ]);
-
-      if ($request->password != "") {
-        $this->validate($request, [
-            'password'  => 'required|min:6|confirmed'
-        ]);
-
-        $user = User::where('id', $request->id)->update([
-            'password'  => bcrypt($request->password)
-        ]);
-      }
-
-        $user = User::where('id', $request->id)->update([
-            'name'    => $request->name,
-            'email'   => $request->email,
-        ]);
-
-    }
-
-    public function simpanAlamat(Request $request) {
-
-      $this->validate($request, [
-          'name'        => 'required|string|max:255',
-          'no_telp'     => 'required|numeric',
-          'alamat'      => 'required',
-          'provinsi'    => 'required',
-          'kabupaten'   => 'required',
-          'kecamatan'   => 'required',
-          'kelurahan'   => 'required'
-      ]);
-
-      $user = User::where('id', $request->id)->update([
-        'name'=> $request->name,
-        'no_telp'=> $request->no_telp,
-        'alamat'=> $request->alamat,
-        'provinsi'=> $request->provinsi,
-        'kabupaten'=> $request->kabupaten,
-        'kecamatan'=> $request->kecamatan,
-        'kelurahan'=> $request->kelurahan,
-      ]);
-
+         return response(User::select()->leftJoin('role_user','users.id','role_user.user_id')->where('role_id',2)->get());
     }
 
     /**
@@ -104,13 +47,12 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // return response()->json($request);
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
-        $memberRole = Role::where('name', 'admin')->first();
+        $memberRole = Role::where('name', 'member')->first();
         $user->attachRole($memberRole);
 
         return $user;
@@ -124,7 +66,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return response(User::whereId($id)->first());
+        return response(User::where('id',$id)->first());
     }
 
     /**
