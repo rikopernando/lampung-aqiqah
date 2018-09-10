@@ -27,6 +27,10 @@
             p.md-empty-state-description {
                 font-size: small;
             }
+            .md-table-row {
+                background:#f5f5f5 !important;
+                padding:8px !important;
+            }
         </style>
 
     </head>
