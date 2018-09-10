@@ -61,12 +61,25 @@
           </div>
           <md-card-header-text>
             <div class="md-toolbar" style="margin-top: -20px; padding: 0px">
-              <div class="header-title md-toolbar-section-start">Laporan Order</div>
+              <div class="header-title md-toolbar-section-start" style="padding-right:10px">Laporan Order</div>
               <div class="header-title md-toolbar-section-end">
-				        <md-field md-inline>
-                  <label>Cari Laporan...</label>
-                  <md-input v-model="search" />
-                </md-field>
+                <div class="md-layout">
+                  <div class="md-layout-item md-medium-size-60 md-small-size-60 md-xsmall-size-60">
+    				        <md-field md-inline>
+                      <label class="media-screen-xsmall-hide">Cari Dengan ...</label>
+                      <label class="media-screen-medium-hide">Cari Laporan ...</label>
+                      <md-input v-model="search" />
+                    </md-field>
+                  </div>
+                  <div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
+                    <md-field>
+                      <md-select v-model="searchBy" name="searchBy" id="searchBy" md-dense>
+                        <md-option value="nama_pelanggan">Nama Pelanggan</md-option>
+                        <md-option value="status_pesanan">Status Pesanan</md-option>
+                      </md-select>
+                    </md-field>
+                  </div>
+                </div>
               </div>
             </div>
           </md-card-header-text>
@@ -159,28 +172,58 @@ export default {
     laporan_order: {},
     searchable_laporan_order: {},
     loading: true,
-    searchResult: {}
+    searchResult: {},
+    searchBy: 'nama_pelanggan',
   }),
   created() {
   	this.getLaporanOrderData();
   },
   watch: {
-    search() {
-      if (this.search != null) {
-        this.searchResult = this.laporan_order.filter(item => toLower(item.nama_pelanggan).includes(toLower(this.search)));
-      } else {
-        this.searchResult = this.laporan_order;
-      }
+    search(val) {
+      this.searchLaporanOrder(val);
+    },
+    searchBy(val) {
+      this.searchLaporanOrder(val);
     }
   },
   filters: {
     currency(number) {
-      return accounting.formatMoney(number, '', '2', '.', ',')
+      return accounting.formatMoney(number, '', '2', '.', ',');
     }
   },
   methods: {
     getPaginatedItems(value) {
       this.searchable_laporan_order = value;
+    },
+    searchLaporanOrder(val) {
+      if (val != null) {
+        if (this.searchBy == 'status_pesanan') {
+          this.searchByStatusPesanan(val);
+        } else {
+          this.searchResult = this.laporan_order.filter(item => toLower(item.nama_pelanggan).includes(toLower(val)));
+        }
+      } else {
+        this.searchResult = this.laporan_order;
+      }
+    },
+    searchByStatusPesanan(term) {
+      term = toLower(term);
+      switch (term) {
+        case 'belum dikonfirmasi':
+          return this.searchResult = this.laporan_order.filter(item => toLower(String(item.status_pesanan)).includes('null'));
+        break;
+        case 'belum selesai':
+          return this.searchResult = this.laporan_order.filter(item => toLower(String(item.status_pesanan)).includes('1'));
+        break;
+        case 'selesai':
+          return this.searchResult = this.laporan_order.filter(item => toLower(String(item.status_pesanan)).includes('2'));
+        break;
+        case 'dibatalkan':
+          return this.searchResult = this.laporan_order.filter(item => toLower(String(item.status_pesanan)).includes('0'));
+        break;
+        default:
+          return this.searchResult = this.laporan_order;
+      }
     },
     getLaporanOrderData() {
       axios.get(this.url + '/' + 'view')
