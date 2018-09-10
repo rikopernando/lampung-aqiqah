@@ -243,6 +243,13 @@
           </md-list-item>
 
           <md-list-item>
+            <router-link :to="{name: 'pelanggan'}" style="margin: 0px; color: #767676 !important">
+              <md-icon>contacts</md-icon>
+              <span>Pelanggan</span>
+            </router-link>
+          </md-list-item>
+
+          <md-list-item>
             <router-link :to="{name: 'mitra'}" style="margin: 0px; color: #767676 !important">
               <md-icon>group</md-icon>
               <span>Mitra</span>

@@ -119,6 +119,7 @@ Route::resource('testimoni', 'TestimoniController');
 Route::get('/berita/view', 'BeritaKamiController@view');
 Route::post('/berita/{id}', 'BeritaKamiController@update');
 Route::resource('berita', 'BeritaKamiController');
+Route::resource('pelanggan', 'PelangganController');
 
 // Mitra
 Route::resource('mitra', 'MitraController');

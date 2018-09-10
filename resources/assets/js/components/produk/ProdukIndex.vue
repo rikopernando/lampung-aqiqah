@@ -67,6 +67,12 @@
         </ul>
       </md-card>
 
+			<md-dialog-alert
+				:md-active.sync="alert"
+				md-title="Oooppss!"
+				md-content="Produk tidak bisa dihapus karena sudah terpakai!" />
+
+
       <md-card>
         <md-card-header>
           <div class="header-card">
@@ -185,7 +191,8 @@
       searchBy: 'nama_produk',
       loading: true,
       maxChecked: 0,
-      searchResult: {}
+      searchResult: {},
+      alert: false
     }),
     created() {
     	this.getProdukData();
@@ -261,12 +268,16 @@
     	onConfirmDelete() {
     		axios.delete(this.url + this.produkId)
     		.then(resp => {
-          this.notifMessage = `Berhasil Menghapus Produk ${this.produkDelete}.`
-    			this.produkId = '';
-    			this.produkDelete = '';
-    			this.snackbarDelete = true;
-          this.notifSuccess = true;
-    			this.getProdukData();
+          if(resp.data === 200){
+              this.notifMessage = `Berhasil Menghapus Produk ${this.produkDelete}.`
+              this.produkId = '';
+              this.produkDelete = '';
+              this.snackbarDelete = true;
+              this.notifSuccess = true;
+              this.getProdukData();
+          }else{
+              this.alert = true
+          }
     		})
     		.catch(resp => {
     			console.log('catch onConfirmDelete:', resp);

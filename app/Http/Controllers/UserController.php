@@ -31,7 +31,7 @@ class UserController extends Controller
     }
 
     public function view() {
-         return response(User::select()->get());
+         return response(User::select()->leftJoin('role_user','users.id','role_user.user_id')->where('role_id',1)->get());
     }
 
     public function detailAkun() {
