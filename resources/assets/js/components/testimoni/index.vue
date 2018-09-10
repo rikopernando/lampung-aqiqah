@@ -29,10 +29,6 @@
   .md-table table {
     width: 0% !important;
   }
-  .md-table-row {
-    background:#f7e1e1 !important;
-    padding:8px !important;
-  }
   .md-layout-item{
     padding:5px !important;
   }
