@@ -53,9 +53,8 @@
     <div class="col-md-12">
       <md-card>
         <ul class="breadcrumb">
-          <li><router-link :to="{name: 'home'}">Home</router-link></li>
-          <li><router-link :to="{name: 'setting_perusahaan'}" id="setting-perusahaan">Setting Perusahaan</router-link></li>
-          <li class="active">Edit</li>
+          <li><router-link :to="{name: 'dashboard'}">Dashboard</router-link></li>
+          <li class="active">Setting Perusahaan</li>
         </ul>
       </md-card>
 
@@ -72,9 +71,6 @@
           </md-card-header-text>
         </md-card-header>
         <md-card-content>
-           <ul class="error-message">
-             <li class="text-error" v-for="err in errors"> {{ err.toString() }} </li>
-           </ul>
           <form v-on:submit.prevent="saveForm()">
 
             <!-- Loading -->
@@ -221,7 +217,7 @@ export default {
     loading: true,
   }),
   mounted() {
-    this.getDataSettingPerusahaan(this.$route.params.id);
+    this.getDataSettingPerusahaan();
   },
   methods: {
     onFileChange(e) {
@@ -233,28 +229,27 @@ export default {
     createImage(file,name) {
       let image = new Image();
       let reader = new FileReader();
-      let app = this;
 
       reader.onload = (e) => {
           switch(name){
             case "logo":
-             app.previewLogo = e.target.result;
+             this.previewLogo = e.target.result;
              break;
            case "foto_slide_1":
-             app.previewSlide1 = e.target.result;
+             this.previewSlide1 = e.target.result;
              break;
            case "foto_slide_2":
-             app.previewSlide2 = e.target.result;
+             this.previewSlide2 = e.target.result;
              break;
            case "foto_slide_3":
-             app.previewSlide3 = e.target.result;
+             this.previewSlide3 = e.target.result;
           }
       };
 
       reader.readAsDataURL(file);
     },
-    getDataSettingPerusahaan(setting_perusahaanId) {
-      axios.get(this.url + '/' + setting_perusahaanId)
+    getDataSettingPerusahaan() {
+      axios.get(this.url + '/view')
       .then(resp => {
         this.setting_perusahaan = resp.data;
         this.loading = false;
@@ -264,24 +259,21 @@ export default {
       });
     },
     saveForm() {
-      const app = this
-      let data = this.inputData(app)
+      let data = this.inputData();
       this.submitted = true;
-      axios.post(this.url+'/'+this.$route.params.id , data)
+
+      axios.post(this.url + '/ubah-setting', data)
       .then(resp => {
         this.snackbarEditSettingPerusahaan = true;
         this.submitted = false;
       })
-      .catch(err => {
+      .catch(resp => {
+        console.log('catch saveForm:', resp);
 		    document.getElementById("setting-perusahaan").focus({reventScroll:true})
-        this.errors = err.response.data
-        console.log(this.errors)
         this.submitted = false;
-        alert('Terjadi Kesalahan')
-        console.log('catch saveForm:', err);
       });
     },
-    inputData(app) {
+    inputData() {
   		let data = new FormData();
       if (document.getElementById('katalog').files[0] != undefined) {
          data.append('katalog', document.getElementById('katalog').files[0]);
@@ -298,10 +290,10 @@ export default {
       if (document.getElementById('foto_slide_3').files[0] != undefined) {
          data.append('foto_slide_3', document.getElementById('foto_slide_3').files[0]);
       }
-      data.append('name', app.setting_perusahaan.name);
-    	data.append('email', app.setting_perusahaan.email);
-  		data.append('no_telp', app.setting_perusahaan.no_telp);
-  		data.append('alamat', app.setting_perusahaan.alamat);
+      data.append('name', this.setting_perusahaan.name);
+    	data.append('email', this.setting_perusahaan.email);
+  		data.append('no_telp', this.setting_perusahaan.no_telp);
+  		data.append('alamat', this.setting_perusahaan.alamat);
 
   		return data;
   	},

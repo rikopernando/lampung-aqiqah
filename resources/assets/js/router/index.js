@@ -58,8 +58,7 @@ import MitraIndex from '../components/mitra/MitraIndex'
 import MitraCreate from '../components/mitra/MitraCreate'
 import MitraEdit from '../components/mitra/MitraEdit'
 
-import SettingPerusahaanIndex from '../components/setting-perusahaan/SettingPerusahaanIndex'
-import SettingPerusahaanEdit from '../components/setting-perusahaan/SettingPerusahaanEdit'
+import SettingPerusahaanIndex from '../components/setting-perusahaan/index'
 
 const routes = [
   {
@@ -261,14 +260,6 @@ const routes = [
     path : '/setting-perusahaan',
     name : 'setting_perusahaan',
     component : SettingPerusahaanIndex,
-    meta : {
-      requiresAuth : true,
-      is_admin : true
-    }
-  },{
-    path : '/setting-perusahaan/edit/:id',
-    name : 'editSettingPerusahaan',
-    component : SettingPerusahaanEdit,
     meta : {
       requiresAuth : true,
       is_admin : true
