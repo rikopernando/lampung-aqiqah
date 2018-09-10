@@ -106,14 +106,14 @@
 
 <script>
 
-import { validationMixin } from 'vuelidate'
+import { validationMixin } from 'vuelidate';
 import {
   required,
   email,
   minLength,
   maxLength,
   sameAs
-} from 'vuelidate/lib/validators'
+} from 'vuelidate/lib/validators';
 
 export default {
   mixins: [validationMixin],
@@ -149,19 +149,19 @@ export default {
   },
   methods: {
     getValidationClass (fieldName) {
-      const field = this.$v.user[fieldName]
+      const field = this.$v.user[fieldName];
 
       if (field) {
         return {
           'md-invalid': field.$invalid && field.$dirty
-        }
+        };
       }
     },
     validateUser() {
-      this.$v.$touch()
+      this.$v.$touch();
 
       if (!this.$v.$invalid) {
-        this.saveForm()
+        this.saveForm();
       }
     },
     saveForm() {
@@ -174,6 +174,7 @@ export default {
       })
       .catch(resp => {
         console.log('catch saveForm:', resp);
+        this.submitted = false;
       });
     },
     redirectToUserList() {

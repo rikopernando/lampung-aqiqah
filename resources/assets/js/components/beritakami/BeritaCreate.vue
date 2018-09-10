@@ -70,6 +70,7 @@
 </template>
 
 <script>
+
   export default {
     data: () => ({
     	url: window.location.origin + (window.location.pathname + 'berita'),
@@ -87,7 +88,7 @@
     }),
     computed: {
       editor() {
-        return this.$refs.myQuillEditor.quill
+        return this.$refs.myQuillEditor.quill;
       }
     },
     methods: {
@@ -115,13 +116,14 @@
 
       	axios.post(this.url, dataBerita)
 				.then((resp) => {
-          this.notifMessage = `Berhasil Menambah Berita ${this.berita.judul_berita}`
+          this.notifMessage = `Berhasil Menambah Berita ${this.berita.judul_berita}`;
           this.notifSuccess = true;
           this.submitted = false;
   			})
   			.catch((resp) => {
-      		this.$refs.judul_berita.$el.focus()
-  				this.errors = resp.response.data
+          console.log('catch createberita:', resp);
+      		this.$refs.judul_berita.$el.focus();
+  				this.errors = resp.response.data;
       		this.submitted = false;
   			});
   		},

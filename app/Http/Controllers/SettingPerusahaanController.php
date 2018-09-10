@@ -9,180 +9,97 @@ use Illuminate\Support\Facades\File;
 
 class SettingPerusahaanController extends Controller
 {
+    public function view() {
+		return response()->json(SettingPerusahaan::select()->first());
+	}
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+	public function ubahSetting(Request $request) {
+		$this->validate($request, [
+            'name'      => 'required',
+            'email'     => 'required|string|email',
+            'no_telp'   => 'required',
+            'alamat'    => 'required',
+            'logo'      => 'image|max:3072',
+            'katalog'      => 'mimes:pdf',
+            'foto_slide_1'   => 'image|max:3072',
+            'foto_slide_2'   => 'image|max:3072',
+            'foto_slide_3'   => 'image|max:3072',
+        ]);
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-         return response(SettingPerusahaan::select()->first());
-    }
+	    $setting_perusahaan = SettingPerusahaan::find(1);
+        $setting_perusahaan->update([
+			'name' => $request->name,
+			'no_telp' => $request->no_telp,
+			'alamat' => $request->alamat,
+			'email' => $request->email
+        ]);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        if ($request->hasFile('katalog')) {
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+            $katalog = $request->file('katalog');
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-         return response(SettingPerusahaan::select()->first());
-    }
+            $filename = $this->uploadFile($katalog,'katalog',$setting_perusahaan->katalog);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+            $setting_perusahaan->katalog = $filename;
+            // menyimpan field foto di table barangs  dengan filename yang baru dibuat
+            $setting_perusahaan->save();
+        }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request,$id)
-    {
-          $this->validate($request, [
-              'name'      => 'required',
-              'email'     => 'required|string|email',
-              'no_telp'   => 'required',
-              'alamat'    => 'required',
-              'logo'      => 'image|max:3072',
-              'katalog'      => 'mimes:pdf',
-              'foto_slide_1'   => 'image|max:3072',
-              'foto_slide_2'   => 'image|max:3072',
-              'foto_slide_3'   => 'image|max:3072',
-          ]);
+        if ($request->hasFile('logo')) {
 
-          $setting_perusahaan = SettingPerusahaan::find($id);
-          $setting_perusahaan->update([
-            'name' => $request->name,
-            'no_telp' => $request->no_telp,
-            'alamat' => $request->alamat,
-            'email' => $request->email
-          ]);
+            $logo = $request->file('logo');
 
-          if($request->hasFile('katalog')){
+            $filename = $this->uploadFile($logo,'logo',$setting_perusahaan->logo);
 
-                $katalog = $request->file('katalog');
+            $setting_perusahaan->logo = $filename;
+            // menyimpan field foto di table barangs  dengan filename yang baru dibuat
+            $setting_perusahaan->save();
+        }
 
-                $filename = $this->uploadFile($katalog,'katalog',$setting_perusahaan->katalog);
+        if ($request->hasFile('foto_slide_1')) {
 
-                $setting_perusahaan->katalog = $filename;
-                // menyimpan field foto di table barangs  dengan filename yang baru dibuat
-                $setting_perusahaan->save();
+            $foto_slide_1 = $request->file('foto_slide_1');
 
-          }
+            $filename = $this->uploadFile($foto_slide_1,'slide',$setting_perusahaan->foto_slide_1);
 
-          if ($request->hasFile('logo')) {
+            $setting_perusahaan->foto_slide_1 = $filename;
+            // menyimpan field foto di table barangs  dengan filename yang baru dibuat
+            $setting_perusahaan->save();
+        }
 
-                $logo = $request->file('logo');
+        if ($request->hasFile('foto_slide_2')) {
 
-                $filename = $this->uploadFile($logo,'logo',$setting_perusahaan->logo);
+            $foto_slide_2 = $request->file('foto_slide_2');
 
-                $setting_perusahaan->logo = $filename;
-                // menyimpan field foto di table barangs  dengan filename yang baru dibuat
-                $setting_perusahaan->save();
-          }
+            $filename = $this->uploadFile($foto_slide_2,'slide',$setting_perusahaan->foto_slide_2);
 
-          if ($request->hasFile('foto_slide_1')) {
+            $setting_perusahaan->foto_slide_2 = $filename;
+            // menyimpan field foto di table barangs  dengan filename yang baru dibuat
+            $setting_perusahaan->save();
+        }
 
-                $foto_slide_1 = $request->file('foto_slide_1');
+        if ($request->hasFile('foto_slide_3')) {
 
-                $filename = $this->uploadFile($foto_slide_1,'slide',$setting_perusahaan->foto_slide_1);
+            $foto_slide_3 = $request->file('foto_slide_3');
 
-                $setting_perusahaan->foto_slide_1 = $filename;
-                // menyimpan field foto di table barangs  dengan filename yang baru dibuat
-                $setting_perusahaan->save();
+            $filename = $this->uploadFile($foto_slide_3,'slide',$setting_perusahaan->foto_slide_3);
 
-          }
-
-          if ($request->hasFile('foto_slide_2')) {
-
-                $foto_slide_2 = $request->file('foto_slide_2');
-
-                $filename = $this->uploadFile($foto_slide_2,'slide',$setting_perusahaan->foto_slide_2);
-
-                $setting_perusahaan->foto_slide_2 = $filename;
-                // menyimpan field foto di table barangs  dengan filename yang baru dibuat
-                $setting_perusahaan->save();
-
-          }
-
-          if ($request->hasFile('foto_slide_3')) {
-
-                $foto_slide_3 = $request->file('foto_slide_3');
-
-                $filename = $this->uploadFile($foto_slide_3,'slide',$setting_perusahaan->foto_slide_3);
-
-                $setting_perusahaan->foto_slide_3 = $filename;
-                // menyimpan field foto di table barangs  dengan filename yang baru dibuat
-                $setting_perusahaan->save();
-          }
+            $setting_perusahaan->foto_slide_3 = $filename;
+            // menyimpan field foto di table barangs  dengan filename yang baru dibuat
+            $setting_perusahaan->save();
+        }
             
-          $setting_perusahaan->save();
+        $setting_perusahaan->save();
 
-          return response()->json([
-                    'message' => 'Success',
-                    'data' => $setting_perusahaan
-                 ]);
+        return response()->json([
+            'message' => 'Success',
+            'data' => $setting_perusahaan
+        ]);
+	}
 
-    }
+	public function uploadFile($file,$type,$old_file){
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-    public function uploadFile($file,$type,$old_file){
-
-      if (is_array($file) || is_object($file)) {
+      	if (is_array($file) || is_object($file)) {
             // Mengambil file yang diupload
             $uploaded_foto = $file;
             // mengambil extension file
@@ -210,12 +127,12 @@ class SettingPerusahaanController extends Controller
             endswitch;
             
             return $filename;
-      }
+      	}
     }
 
     public function deleteFile($old_file,$path) {
 
-        if($old_file){
+        if($old_file) {
             $filepath = public_path() . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR . $old_file;
             try {
               File::delete($filepath);

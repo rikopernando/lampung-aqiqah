@@ -63,7 +63,6 @@ Route::get('/produk/view-produk/{tampil_produk}', 'DaftarProdukController@viewPr
 Route::get('/produk/sort-produk/{filter}', 'DaftarProdukController@sortProduk');
 Route::get('/produk/lihat-detail/{id_produk}', 'DaftarProdukController@detailProduk');
 
-
 route::get('/auth', 'AuthController@auth');
 
 Auth::routes();
@@ -104,7 +103,6 @@ Route::get('pesanan/history-order', 'PesananController@history_order');
 Route::get('pesanan/detail-order/{id}', 'PesananController@detail_order');
 Route::resource('pesanan', 'PesananController');
 
-
 Route::post('/keranjang-belanja/create/{id}/{jumlah_produk}', 'KeranjangBelanjaController@tambahProdukKeranjangBelanjaan');
 Route::get('/keranjang-belanja/view', 'KeranjangBelanjaController@view');
 Route::get('/keranjang-belanja/subtotal-keranjang-belanja','KeranjangBelanjaController@cekSubtotalKeranjangBelanja');
@@ -116,9 +114,6 @@ Route::resource('keranjang-belanja', 'KeranjangBelanjaController');
 Route::get('/testimoni/view', 'TestimoniController@view');
 Route::post('/testimoni/{id}', 'TestimoniController@update');
 Route::resource('testimoni', 'TestimoniController');
-Route::resource('setting-perusahaan', 'SettingPerusahaanController');
-Route::post('setting-perusahaan/{id}', 'SettingPerusahaanController@update');
-
 
 //Testimoni
 Route::get('/berita/view', 'BeritaKamiController@view');
@@ -128,3 +123,7 @@ Route::resource('pelanggan', 'PelangganController');
 
 // Mitra
 Route::resource('mitra', 'MitraController');
+
+// Setting Perusahaan
+Route::get('/setting-perusahaan/view', 'SettingPerusahaanController@view');
+Route::post('/setting-perusahaan/ubah-setting', 'SettingPerusahaanController@ubahSetting');
