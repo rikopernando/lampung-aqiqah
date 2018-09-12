@@ -158,7 +158,7 @@
                   <md-button @click="showDialogData('Batalkan Pesanan?', 'Apakah Anda yakin ingin membatalkan pesanan ini?', {n: 0, email: false})" class="md-dense md-raised md-accent">Batalkan</md-button>
                 </div>
                 <div class="header-title md-toolbar-section-end">
-                  <md-button @click="showDialogData('Konfirmasi', 'Apakah Anda yakin ingin mengonfirmasi pesanan ini?', {n: 1, email: true})" class="md-dense md-raised md-primary">Konfirmasi</md-button>
+                  <md-button @click="showDialogData('Konfirmasi Pembayaran', 'Apakah Anda yakin ingin mengonfirmasi pembayaran pesanan ini?', {n: 1, email: true})" class="md-dense md-raised md-primary">Konfirmasi Pembayaran</md-button>
                 </div>
               </div>
               <div v-else-if="statusPesanan == 1" class="md-toolbar" style="margin-top: -20px; padding: 0px">
@@ -166,10 +166,18 @@
                   <md-button @click="showDialogData('Batal Konfirmasi Pesanan', 'Apakah Anda yakin ingin membatalkan konfirmasi pesanan ini?', {n: null, email: false})" class="md-dense md-raised md-accent">Batal Konfirmasi</md-button>
                 </div>
                 <div class="header-title md-toolbar-section-end">
-                  <md-button @click="showDialogData('Selesaikan Pesanan', 'Apakah Anda yakin ingin selesaikan pesanan ini?', {n: 2, email: true})" class="md-dense md-raised md-primary">Selesaikan</md-button>
+                  <md-button @click="showDialogData('Kirim Pesanan', 'Apakah Anda yakin ingin mengirim pesanan ini?', {n: 2, email: true})" class="md-dense md-raised md-primary">Kirim Pesanan</md-button>
                 </div>
               </div>
               <div v-else-if="statusPesanan == 2" class="md-toolbar" style="margin-top: -20px; padding: 0px">
+                <div class="header-title md-toolbar-section-start">
+                  <md-button @click="showDialogData('Batal Kirim Pesanan', 'Apakah Anda yakin ingin membatalkan konfirmasi pesanan ini?', {n: null, email: false})" class="md-dense md-raised md-accent">Batal Kirim Pesanan</md-button>
+                </div>
+                <div class="header-title md-toolbar-section-end">
+                  <md-button @click="showDialogData('Selesaikan Pesanan', 'Apakah Anda yakin ingin menyelesaikan pesanan ini?', {n: 3, email: true})" class="md-dense md-raised md-primary">Selesai</md-button>
+                </div>
+              </div>
+              <div v-else-if="statusPesanan == 3" class="md-toolbar" style="margin-top: -20px; padding: 0px">
                 <div class="header-title md-toolbar-section-start">
                   <md-button @click="showDialogData('Batal Selesaikan Pesanan', 'Apakah Anda yakin ingin membatalkan penyelesaian pesanan ini?', {n: 1, email: false})" class="md-dense md-raised md-accent">Batal Selesaikan Pesanan</md-button>
                 </div>
@@ -239,6 +247,11 @@
         <span>Selesaikan Pesanan berhasil dibatalkan!</span>
       </md-snackbar>
 
+      <!-- Snackbar pesanan dikirimkan -->
+      <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarKirimPesanan" md-persistent>
+        <span>Email Kirim Pesanan berhasil dikirim!</span>
+      </md-snackbar>
+
 		</div>
 	</sidebar>
 </template>
@@ -262,6 +275,7 @@ export default {
     snackbarBatalKonfirmasiPesanan: false,
     snackbarSelesaikanPesanan: false,
     snackbarBatalSelesaikanPesanan: false,
+    snackbarKirimPesanan: false,
     windowWidth: 0,
 
     // tab
@@ -383,8 +397,9 @@ export default {
           if (this.showDialogKey.n == 0 && !this.showDialogKey.email) this.snackbarBatalkanPesanan = true;
           if (this.showDialogKey.n == 1 && this.showDialogKey.email) this.snackbarKonfirmasiPesanan = true;
           if (this.showDialogKey.n == null && !this.showDialogKey.email) this.snackbarBatalKonfirmasiPesanan = true;
-          if (this.showDialogKey.n == 2 && this.showDialogKey.email) this.snackbarSelesaikanPesanan = true;
+          if (this.showDialogKey.n == 2 && this.showDialogKey.email) this.snackbarKirimPesanan = true;
           if (this.showDialogKey.n == 1 && !this.showDialogKey.email) this.snackbarBatalSelesaikanPesanan = true;
+          if (this.showDialogKey.n == 3 && this.showDialogKey.email) this.snackbarSelesaikanPesanan = true;
 
         })
         .catch(resp => {

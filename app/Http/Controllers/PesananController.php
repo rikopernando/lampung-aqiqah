@@ -339,4 +339,17 @@ class PesananController extends Controller
         return response($detail_pesanan);
     }
 
+    public function cekTransfer(){
+
+       $curl = curl_init();
+       curl_setopt($curl, CURLOPT_URL, 'https://app.moota.co/api/v1/bank/aolk41VdzJx/mutation/search/50000000');
+       curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+       curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            'Accept: application/json',
+            'Authorization: Bearer RyiDKMig6CYQoxrsJW1UsV9u2mjzvRpnqI0auirBVprjXTLGPM'
+       ]);
+       $mutation = json_decode(curl_exec($curl),true);
+       return $mutation['mutation'];
+    }
+
 }

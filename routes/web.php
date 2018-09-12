@@ -16,15 +16,15 @@ Route::get('/', function () {
 });
 
 Route::get('/mitra/data', function () {
-       $mitra = App\Mitra::select()->orderBy('created_at','desc');
+   $mitra = App\Mitra::select()->orderBy('created_at','desc');
 
-        $data_mitra = $mitra->get();
-        $count_mitra = $mitra->count();
+   $data_mitra = $mitra->get();
+   $count_mitra = $mitra->count();
 
-        $respons['data_mitra'] = $data_mitra;
-        $respons['count_mitra'] = $count_mitra;
+   $respons['data_mitra'] = $data_mitra;
+   $respons['count_mitra'] = $count_mitra;
 
-        return response()->json($respons);
+   return response()->json($respons);
 });
 
 Route::get('/testimoni/data', function () {
@@ -42,20 +42,19 @@ Route::get('/download-katalog', function () {
 
 
 Route::get('/berita/data', function () {
-        $berita = App\BeritaKami::select()->orderBy('created_at','desc');
+    $berita = App\BeritaKami::select()->orderBy('created_at','desc');
 
-        $data_berita = $berita->get();
-        $count_berita = $berita->count();
+    $data_berita = $berita->get();
+    $count_berita = $berita->count();
 
-        $respons['data_berita'] = $data_berita;
-        $respons['count_berita'] = $count_berita;
+    $respons['data_berita'] = $data_berita;
+    $respons['count_berita'] = $count_berita;
 
-
-        return response()->json($respons);
+    return response()->json($respons);
 });
 
 Route::get('/berita/detail/{id}', function ($id) {
-      return response(App\BeritaKami::whereId($id)->first());
+   return response(App\BeritaKami::whereId($id)->first());
 });
 
 //Daftar Produk
@@ -97,6 +96,7 @@ Route::get('laporan-order/status-pesanan/{id_pesanan}', 'LaporanOrderController@
 Route::post('laporan-order/kirim-email', 'LaporanOrderController@kirimEmail');
 
 // Pesanan
+Route::get('pesanan/cek-transfer','PesananController@cekTransfer');
 Route::get('pesanan/provinsi', 'PesananController@provinsi');
 Route::get('pesanan/pilih-wilayah/{id}/{type}', 'PesananController@pilih_wilayah');
 Route::get('pesanan/history-order', 'PesananController@history_order');

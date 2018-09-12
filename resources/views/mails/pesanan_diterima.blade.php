@@ -333,15 +333,8 @@
                                               </table>
                                               <hr>
 
-                                              @if($pesanan->metode_pembayaran == 'Cash On Delivery')
-                                              <p><b>Informasi mengenai Pembayaran</b></p>
-                                              <ul>
-                                                <li>Dimohon untuk menyiapkan uang pas saat anda menerima pesanan.</li>
-                                              </ul>
-                                              <hr>
-                                              @else
-                                              <p>Pembayaran dapat dilakukan ke Rekening Bank <b>{{strtoupper($bank->nama_bank)}} ({{ $bank->no_rek }})</b> a/n <b> {{ $bank->atas_nama }}</b></p>
-                                              @endif
+                                              <p>Anda akan menerima email konfirmasi pembayaran , apabila anda telah melunasi pembayaran.</p>
+                                              <p>Pembayaran dapat dilakukan ke Rekening Bank <b>{{strtoupper($bank->nama_bank)}} ({{ $bank->no_rek }})</b> a/n <b> {{ $bank->atas_nama }}</b>, dan mohon untuk transfer tepat hingga 3 digit terakhir guna memudahkan proses verifikasi.</p>
 
                                               @if($kirim_tempat_lain->count() > 0)
                                                   <p>Pesanan Anda akan dikirimkan ke: <b>{{ $kirim_tempat_lain->first()->company_name }}</b> a/n <b>{{ $kirim_tempat_lain->first()->nama_depan }} {{ $kirim_tempat_lain->first()->nama_belakang }}</b> 
