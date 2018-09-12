@@ -42,6 +42,9 @@
     font-size: 20px;
     padding: 4px 0px 0px 10px;
   }
+  .md-layout-item{
+    padding:5px !important;
+  }
 </style>
 
 <template>
@@ -78,12 +81,12 @@
 						        <md-field md-inline>
 						        	<label class="media-screen-xsmall-hide">Cari Dengan ...</label>
 						        	<label class="media-screen-medium-hide">Cari Dengan ...</label>
-						          <md-input v-model="search" @input="searchOnTable" />
+						          <md-input v-model="search" />
 						        </md-field>
 			        		</div>
 			        		<div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
 						        <md-field>
-						          <md-select v-model="searchBy" @md-selected="searchOnTable" name="searchBy" id="searchBy" md-dense>
+						          <md-select v-model="searchBy" name="searchBy" id="searchBy" md-dense>
                         <md-option value="nama_mitra">Nama</md-option>
 						            <md-option value="no_telp">Nomor Telepon</md-option>
 						          </md-select>
@@ -209,9 +212,6 @@ export default {
         console.log('catch getMitraData:', resp);
         alert('Terjadi Kesalahan')
       });
-    },
-    searchOnTable() {
-      this.searchable_mitra = searchMitra(this.mitra, this.search, this.searchBy);
     },
     deleteMitra(id){
 		  this.promptDeleteMitra = true;
