@@ -42,6 +42,9 @@
     font-size: 20px;
     padding: 4px 0px 0px 10px;
   }
+  .md-layout-item{
+    padding:5px !important;
+  }
 </style>
 
 <template>
@@ -60,7 +63,7 @@
             <md-icon style="color: white">notes</md-icon>
           </div>
           <md-card-header-text>
-            <div class="md-toolbar" style="margin-top: -20px; padding: 0px">
+            <div class="md-toolbar" style="margin-top: -20px; padding: 4px">
               <div class="header-title md-toolbar-section-start" style="padding-right:10px">Laporan Order</div>
               <div class="header-title md-toolbar-section-end">
                 <div class="md-layout">
