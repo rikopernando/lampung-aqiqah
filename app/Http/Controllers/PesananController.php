@@ -15,6 +15,7 @@ use DB;
 use Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Mail;
 
 class PesananController extends Controller
 {
@@ -341,15 +342,41 @@ class PesananController extends Controller
 
     public function cekTransfer(){
 
-       $curl = curl_init();
-       curl_setopt($curl, CURLOPT_URL, 'https://app.moota.co/api/v1/bank/aolk41VdzJx/mutation/search/50000000');
-       curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-       curl_setopt($curl, CURLOPT_HTTPHEADER, [
-            'Accept: application/json',
-            'Authorization: Bearer RyiDKMig6CYQoxrsJW1UsV9u2mjzvRpnqI0auirBVprjXTLGPM'
-       ]);
-       $mutation = json_decode(curl_exec($curl),true);
-       return $mutation['mutation'];
+        $pesanan = Pesanan::whereNull('status_pesanan')->get();
+        $no = 0;
+        foreach($pesanan as $pesanans){
+
+           $curl = curl_init();
+           curl_setopt($curl, CURLOPT_URL, 'https://app.moota.co/api/v1/bank/aolk41VdzJx/mutation/search/'.$pesanans->total);
+           curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+           curl_setopt($curl, CURLOPT_HTTPHEADER, [
+                'Accept: application/json',
+                'Authorization: Bearer RyiDKMig6CYQoxrsJW1UsV9u2mjzvRpnqI0auirBVprjXTLGPM'
+           ]);
+           $mutation = json_decode(curl_exec($curl),true);
+
+           if(count($mutation['mutation']) > 0){
+
+                $pesanan = DB::table('pesanans')
+                    ->join('users', 'pesanans.pelanggan_id', '=', 'users.id')
+                    ->select('users.name as nama_pelanggan', 'pesanans.updated_at as tanggal_dikonfirmasi', 'pesanans.metode_pembayaran', 'users.email', 'pesanans.id', 'pesanans.total', 'pesanans.kode_unik', 'users.alamat', 'users.no_telp')
+                    ->where('pesanans.id', $pesanans->id)
+                    ->first();
+
+                $detail_pesanan = DetailPesanan::with('produk')->where('id_pesanan',$pesanans->id)->get();
+                $kirim_tempat_lain = KirimTempatLain::where('id_pesanan',$pesanans->id);
+                $bank = Bank::where('default',1)->first();
+
+                Mail::send('mails.pesanan_dikonfirmasi', compact('pesanan','detail_pesanan','kirim_tempat_lain','bank'), function ($message) use ($pesanan) {
+                      $message->from('verifikasi@andaglos.id','Aqiqah Lampung');
+                      $message->to($pesanan->email);
+                      $message->subject('Pesanan Anda Telah Kami Konfirmasi');
+                });
+
+                Pesanan::whereId($pesanans->id)->update(['status_pesanan' => 1]);
+           }
+
+        }
     }
 
 }
