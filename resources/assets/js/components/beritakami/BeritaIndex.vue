@@ -109,13 +109,14 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+
+  import { mapState } from 'vuex';
 
   const toLower = text => {
     return text.toString().toLowerCase();
   };
 
-  export default{
+  export default {
     data: () => ({
       url: window.location.origin + (window.location.pathname + 'berita/'),
       beritas: [],
@@ -153,7 +154,7 @@
         return value.substr(0, 50);
       },
      capitalize: function (value) {
-          return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
+          return value.replace(/(^|\s)\S/g, l => l.toUpperCase());
       }
     },
     methods: {
@@ -179,7 +180,7 @@
       onConfirmDelete() {
     		axios.delete(this.url + this.beritaId)
     		.then(resp => {
-          this.notifMessage = `Berhasil Menghapus Berita ${this.beritaDelete}.`
+          this.notifMessage = `Berhasil Menghapus Berita ${this.beritaDelete}.`;
           this.beritaId = '';
           this.beritaDelete = '';
           this.snackbarDelete = true;
@@ -193,6 +194,7 @@
       }
     }
   }
+  
 </script>
 
 <style scoped>
@@ -225,10 +227,6 @@
   }
   .md-table table {
     width: 0% !important;
-  }
-  .md-table-row {
-    background:#f7e1e1 !important;
-    padding:8px !important;
   }
   .md-layout-item{
     padding:5px !important;

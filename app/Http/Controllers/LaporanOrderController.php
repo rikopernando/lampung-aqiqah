@@ -298,7 +298,8 @@ class LaporanOrderController extends Controller
 
         $arrayN = [
             1 => ['pesanan_dikonfirmasi', 'Konfirmasi'],
-            2 => ['pesanan_diselesaikan', 'Selesaikan']
+            2 => ['pesanan_dikirimkan', 'Kirim'],
+            3 => ['pesanan_diselesaikan', 'Selesaikan']
         ];
 
         Mail::send('mails.'. $arrayN[$request->n][0], compact('pesanan','detail_pesanan','kirim_tempat_lain','bank'), function ($message) use ($pesanan, $request, $arrayN) {

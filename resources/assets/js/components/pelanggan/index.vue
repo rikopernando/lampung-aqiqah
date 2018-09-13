@@ -42,10 +42,6 @@
     font-size: 20px;
     padding: 4px 0px 0px 10px;
   }
-  .md-table-row {
-  background:#f7e1e1 !important;
-  padding:8px !important;
-  }
   .md-layout-item{
     padding:5px !important;
   }

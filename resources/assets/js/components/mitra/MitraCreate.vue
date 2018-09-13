@@ -80,8 +80,10 @@
               <span class="md-error" v-if="!$v.mitra.alamat.required">Alamat tidak boleh kosong</span>
             </md-field>
 
-              <md-progress-bar v-if="submitted" md-mode="indeterminate"></md-progress-bar>
-              <md-button v-else type="submit" class="md-dense md-raised" style="background-color: #d44723; color: white"> Tambahkan </md-button>
+            <md-progress-bar v-if="submitted" md-mode="indeterminate"></md-progress-bar>
+            <md-button v-else type="submit" class="md-dense md-raised" style="background-color: #d44723; color: white">
+              Tambahkan
+            </md-button>
 
           </form>
         </md-card-content>
@@ -97,14 +99,14 @@
 
 <script>
 
-import { validationMixin } from 'vuelidate'
+import { validationMixin } from 'vuelidate';
 import {
   required,
   email,
   minLength,
   maxLength,
   sameAs
-} from 'vuelidate/lib/validators'
+} from 'vuelidate/lib/validators';
 
 export default {
   mixins: [validationMixin],
@@ -134,19 +136,19 @@ export default {
   },
   methods: {
     getValidationClass (fieldName) {
-      const field = this.$v.mitra[fieldName]
+      const field = this.$v.mitra[fieldName];
 
       if (field) {
         return {
           'md-invalid': field.$invalid && field.$dirty
-        }
+        };
       }
     },
     validateMitra() {
-      this.$v.$touch()
+      this.$v.$touch();
 
       if (!this.$v.$invalid) {
-        this.saveForm()
+        this.saveForm();
       }
     },
     saveForm() {
@@ -159,7 +161,6 @@ export default {
       })
       .catch(resp => {
         this.submitted = false;
-        alert('Terjadi Kesalahan')
         console.log('catch saveForm:', resp);
       });
     },

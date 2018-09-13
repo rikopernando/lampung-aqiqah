@@ -164,7 +164,6 @@
       previewFoto: '',
       notifMessage: '',
       notifSuccess: false,
-      loading: true,
       submitted: false
     }),
     mounted() {
@@ -205,7 +204,6 @@
       },
       editProduk() {
   			let dataProduk = this.inputData();
-        this.loading = true;
         this.submitted = true;
 
         axios.post(this.url + "/" + this.produkId, dataProduk)
@@ -216,8 +214,8 @@
         })
         .catch(resp => {
           console.log('catch editProduk:', resp);
-  				this.errors = resp.response.data
-          this.loading = false;
+  				this.errors = resp.response.data;
+          this.submitted = false;
         });
       },
   		inputData() {

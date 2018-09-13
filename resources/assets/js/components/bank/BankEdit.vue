@@ -121,8 +121,9 @@ export default {
         this.snackbarEditBank = true;
       })
       .catch(err => {
-        this.errors = err.response.data
         console.log('catch saveForm:', resp);
+        this.submitted = false;
+        this.errors = err.response.data;
       })
     },
     redirectToBankList() {

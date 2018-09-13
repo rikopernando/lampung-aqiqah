@@ -92,7 +92,9 @@
             </md-field>
 
             <md-progress-bar v-if="submitted" md-mode="indeterminate"></md-progress-bar>
-            <md-button v-else type="submit" class="md-dense md-raised" style="background-color: #d44723; color: white"> Ubah </md-button>
+            <md-button v-else type="submit" class="md-dense md-raised" style="background-color: #d44723; color: white">
+              Ubah
+            </md-button>
 
           </form>
         </md-card-content>
@@ -108,13 +110,13 @@
 
 <script>
 
-import { validationMixin } from 'vuelidate'
+import { validationMixin } from 'vuelidate';
 import {
   required,
   email,
   minLength,
   maxLength
-} from 'vuelidate/lib/validators'
+} from 'vuelidate/lib/validators';
 
 export default {
   mixins: [validationMixin],
@@ -147,19 +149,19 @@ export default {
   },
   methods: {
     getValidationClass(fieldName) {
-      const field = this.$v.mitra[fieldName]
+      const field = this.$v.mitra[fieldName];
 
       if (field) {
         return {
           'md-invalid': field.$invalid && field.$dirty
-        }
+        };
       }
     },
     validateMitra() {
-      this.$v.$touch()
+      this.$v.$touch();
 
       if (!this.$v.$invalid) {
-        this.saveForm()
+        this.saveForm();
       }
     },
     getDataMitra(mitraId) {
@@ -180,9 +182,8 @@ export default {
         this.submitted = false;
       })
       .catch(resp => {
-        this.submitted = false;
         console.log('catch saveForm:', resp);
-        alert('Terjadi Kesalahan')
+        this.submitted = false;
       });
     },
     redirectToMitraList() {

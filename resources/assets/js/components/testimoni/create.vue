@@ -61,8 +61,8 @@
 
           <md-progress-bar v-if="submitted" md-mode="indeterminate"></md-progress-bar>
           <md-button v-else @click="createTestimoni" class="md-dense md-raised" style="background-color: #d44723; color: white">
-              Tambahkan
-            </md-button>
+            Tambahkan
+          </md-button>
 
           <!-- Snackbar for success alert -->
           <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="notifSuccess" @md-closed="redirectToTestimoni">
@@ -77,6 +77,7 @@
 </template>
 
 <script>
+
   export default {
     data: () => ({
     	url: window.location.origin + (window.location.pathname + 'testimoni'),
@@ -113,17 +114,19 @@
       },
       createTestimoni() {
   			let dataTestimoni = this.inputData();
-
         this.submitted = true;
+
         axios.post(this.url, dataTestimoni)
   			.then((resp) => {
           this.submitted = false;
-          this.notifMessage = `Berhasil Menambah Testimoni ${this.testimoni.nama_lengkap}`
+          this.notifMessage = `Berhasil Menambah Testimoni ${this.testimoni.nama_lengkap}`;
           this.notifSuccess = true;
-  			})
-  			.catch((resp) => {
-          this.$refs.nama_lengkap.$el.focus()
-  				this.errors = resp.response.data
+        })
+        .catch((resp) => {
+          console.log('catch createTestimoni:', resp);
+          this.submitted = false;
+          this.$refs.nama_lengkap.$el.focus();
+          this.errors = resp.response.data;
   			});
   		},
   		inputData() {

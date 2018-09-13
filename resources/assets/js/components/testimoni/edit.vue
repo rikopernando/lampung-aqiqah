@@ -79,6 +79,7 @@
 
 
 <script>
+
   export default {
     data: () => ({
     	url: window.location.origin + (window.location.pathname + 'testimoni'),
@@ -103,7 +104,7 @@
       this.getTestimoni(id);
     },
     methods: {
-      getTestimoni(id){
+      getTestimoni(id) {
         axios.get(this.url + "/" + id)
         .then(resp => {
           this.testimoni = resp.data;
@@ -138,13 +139,13 @@
         this.submitted = true;
         axios.post(this.url + "/" + this.testimoniId, dataTestimoni)
         .then(resp => {
-          this.notifMessage = `Berhasil Mengubah Testimoni ${this.testimoni.nama_lengkap}`
+          this.notifMessage = `Berhasil Mengubah Testimoni ${this.testimoni.nama_lengkap}`;
           this.notifSuccess = true;
           this.submitted = false;
         })
         .catch(resp => {
           console.log('catch editTestimoni:', resp);
-  				this.errors = resp.response.data
+  				this.errors = resp.response.data;
           this.submitted = false;
         });
       },
@@ -164,6 +165,7 @@
       }
     }
   }
+  
 </script>
 
 <style scoped>

@@ -261,10 +261,9 @@
                         <table border="0" cellpadding="0" cellspacing="0">
                          <tr>
                             <td>
+                            <h2>Pesanan Telah Dikirim</h2>
                             <p>Hi {{ $pesanan->nama_pelanggan }}</p>
-                            <p>Kami sudah menerima pembayaran Anda untuk nomor <b>Order #{{$pesanan->id}}</b>. Pesanan Anda sedang disiapkan untuk segera kami kirim.</p>
-                            <p>Kami akan mengkonfirmasi melalui email apabila pesanan telah dikirim.</p>
-                            <p>Anda dapat melakukan pengecekan terhadap status pesanan anda pada halaman akun anda.</p>
+                            <p>Pesanan Anda dengan nomor <b>Order #{{$pesanan->id}}</b> sedang dalam perjalanan.</p>
 
                              <table border="0" cellpadding="0" cellspacing="0">
                                 <tbody>
