@@ -343,7 +343,6 @@ class PesananController extends Controller
     public function cekTransfer(){
 
         $pesanan = Pesanan::whereNull('status_pesanan')->get();
-        $no = 0;
         foreach($pesanan as $pesanans){
 
            $curl = curl_init();
