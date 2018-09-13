@@ -45,7 +45,7 @@
             {{ item.nama_peserta | capitalize }}
           </md-table-cell>
           <md-table-cell md-label="Total" md-sort-by="total">
-            {{ item.total | pemisahTitik }}
+            {{ item.total | currency }}
           </md-table-cell>
           <md-table-cell md-label="Pembayaran" md-sort-by="metode_pembayaran">
             {{ item.metode_pembayaran | capitalize }}
@@ -59,7 +59,7 @@
       <paging
         v-if="!loading"
         :dataPaging="historyOrder"
-        :itemPerPage="2"
+        :itemPerPage="10"
         :range="5"
         :search="searchResult"
         @paginatedItems="getPaginatedItems($event)"></paging>
@@ -82,13 +82,13 @@
             {{ item.produk.nama_produk | capitalize }}
           </md-table-cell>
           <md-table-cell md-label="Jumlah" md-sort-by="jumlah_produk" style="text-align: right">
-            {{ item.jumlah_produk | pemisahTitik }}
+            {{ item.jumlah_produk }}
           </md-table-cell>
           <md-table-cell md-label="Harga" md-sort-by="harga_produk" style="text-align: right">
-            {{ item.harga_produk | pemisahTitik }}
+            {{ item.harga_produk | currency }}
           </md-table-cell>
           <md-table-cell md-label="Total" md-sort-by="subtotal" style="text-align: right">
-            {{ item.subtotal | pemisahTitik }}
+            {{ item.subtotal | currency }}
           </md-table-cell>
         </md-table-row>
       </md-table>
@@ -115,13 +115,10 @@
     }),
     props: ["orders", "searched"],
     filters: {
-      pemisahTitik: function (value) {
-        var angka = [value];
-        var numberFormat = new Intl.NumberFormat('es-ES');
-        var formatted = angka.map(numberFormat.format);
-        return formatted.join('; ');
+      currency(number) {
+        return accounting.formatMoney(number, '', '2', '.', ',');
       },
-      capitalize: function (value) {
+      capitalize(value) {
         return value.replace(/(^|\s)\S/g, l => l.toUpperCase())
       }
     },
@@ -156,13 +153,11 @@
         this.searchableHistoryOrder = value;
       },
       detailPesanan(id) {
-        let app = this;
+        this.idPesanan = id;
 
-        app.idPesanan = id;
-
-        axios.get(app.urlOrder+"/detail-order/"+id)
+        axios.get(this.urlOrder + "/detail-order/" + id)
         .then(resp => {
-          app.detailOrder = resp.data;
+          this.detailOrder = resp.data;
           $("#history").hide();
           $("#detailHistory").show();
         })
