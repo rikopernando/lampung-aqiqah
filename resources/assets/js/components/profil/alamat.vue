@@ -11,9 +11,7 @@
           <tbody>
             <tr>
               <td>{{ userAddress.name }}</td>
-              <td>
-                {{ userAddress.alamat }}
-              </td>
+              <td> {{ userAddress.alamat }} </td>
               <td>{{ userAddress.no_telp }}</td>
             </tr>
           </tbody>
@@ -93,9 +91,9 @@
 
   export default {
     props: [
-      "userAddress",
-      "select_provinsi", "select_kabupaten", "select_kecamatan", "select_kelurahan",
-      "provinsi" , "kabupaten" , "kecamatan" , "kelurahan"
+      "userAddress", "select_provinsi", "select_kabupaten", 
+      "select_kecamatan", "select_kelurahan", "provinsi" , 
+      "kabupaten" , "kecamatan" , "kelurahan"
     ],
     data : () => ({
       url: window.location.origin + (window.location.pathname + 'user'),
@@ -110,131 +108,125 @@
       showKelurahan : false,
     }),
     computed : mapState ({
-      profile () {
-         return this.$store.state.user.profile
+      profile() {
+        return this.$store.state.user.profile;
       },
     }),
     watch : {
-      kabupaten : function () {
-       if(Object.keys(this.kabupaten).length){
-         this.showKabupaten = true
-         this.selected_kabupaten && this.setWilayah('kecamatan',this.selected_kabupaten)
-       }
+      kabupaten() {
+        if (Object.keys(this.kabupaten).length) {
+          this.showKabupaten = true;
+          this.selected_kabupaten && this.setWilayah('kecamatan', this.selected_kabupaten);
+        }
       },
-      kecamatan : function () {
-       if(Object.keys(this.kecamatan).length){
-         this.showKecamatan = true
-         this.selected_kecamatan && this.setWilayah('kelurahan',this.selected_kecamatan)
-       }
+      kecamatan() {
+        if (Object.keys(this.kecamatan).length) {
+          this.showKecamatan = true;
+          this.selected_kecamatan && this.setWilayah('kelurahan',this.selected_kecamatan);
+        }
       },
-      kelurahan : function () {
-       if(Object.keys(this.kelurahan).length){
-         this.showKelurahan = true
-       }
+      kelurahan() {
+        if (Object.keys(this.kelurahan).length) {
+          this.showKelurahan = true;
+        }
       },
-      profile : function () {
-        this.getAddress()
+      profile() {
+        this.getAddress();
       }
     },
     mounted() {
-      this.getAddress()
+      this.getAddress();
     },
     methods: {
       getAddress() {
-        const app = this;
-
         if (Object.keys(this.profile).length) {
-          app.userAddress.name = app.profile.name
-          app.userAddress.no_telp = app.profile.no_telp
-          app.userAddress.alamat = app.profile.alamat
-          app.userAddress.provinsi = app.profile.provinsi
-          app.userAddress.kabupaten = app.profile.kabupaten
-          app.userAddress.kecamatan = app.profile.kecamatan
-          app.userAddress.kelurahan = app.profile.kelurahan
-          app.selected_provinsi = app.profile.provinsi
-          app.selected_kabupaten = app.profile.kabupaten
-          app.selected_kecamatan = app.profile.kecamatan
-          app.selected_kelurahan = app.profile.kelurahan
-
-          app.setWilayah('kabupaten',app.selected_provinsi)
+          this.userAddress.name = this.profile.name;
+          this.userAddress.no_telp = this.profile.no_telp;
+          this.userAddress.alamat = this.profile.alamat;
+          this.userAddress.provinsi = this.profile.provinsi;
+          this.userAddress.kabupaten = this.profile.kabupaten;
+          this.userAddress.kecamatan = this.profile.kecamatan;
+          this.userAddress.kelurahan = this.profile.kelurahan;
+          this.selected_provinsi = this.profile.provinsi;
+          this.selected_kabupaten = this.profile.kabupaten;
+          this.selected_kecamatan = this.profile.kecamatan;
+          this.selected_kelurahan = this.profile.kelurahan;
+          this.setWilayah('kabupaten',this.selected_provinsi);
         }
       },
       changeKelurahan () {
-          this.userAddress.kelurahan = this.$refs.kelurahan.$el.selectize.getValue()
+          this.userAddress.kelurahan = this.$refs.kelurahan.$el.selectize.getValue();
       },
       pilihWilayah(type) {
-        const app = this
-        var selectize
-        var id_wilayah
+        let selectize;
+        let id_wilayah;
 
-          switch (type) {
-              case "kabupaten":
-                id_wilayah = app.$refs.provinsi.$el.selectize.getValue()
-                if(id_wilayah){
-                    app.userAddress.provinsi = id_wilayah
-                    app.userAddress.kabupaten = null
-                    app.userAddress.kecamatan = null
-                    app.userAddress.kelurahan = null
-                    selectize = app.$refs.kabupaten.$el.selectize
-                    app.$refs.kecamatan.$el.selectize.disable()
-                    app.$refs.kelurahan.$el.selectize.disable()
-                }
-                  break;
-              case "kecamatan":
-                id_wilayah = app.$refs.kabupaten.$el.selectize.getValue()
-                if(id_wilayah){
-                    app.userAddress.kabupaten = id_wilayah
-                    app.userAddress.kecamatan = null
-                    app.userAddress.kelurahan = null
-                    selectize = app.$refs.kecamatan.$el.selectize
-                    selectize.clearOptions()
-                    app.$refs.kelurahan.$el.selectize.clearOptions()
-                    app.$refs.kelurahan.$el.selectize.disable()
-                }
-                  break;
-              case "kelurahan":
-                id_wilayah = app.$refs.kecamatan.$el.selectize.getValue()
-                if(id_wilayah){
-                    app.userAddress.kecamatan = id_wilayah
-                    app.userAddress.kelurahan = null
-                    selectize = app.$refs.kelurahan.$el.selectize
-                    selectize.clearOptions()
-                }
-                  break;
-          }
+        switch (type) {
+          case "kabupaten":
+            id_wilayah = this.$refs.provinsi.$el.selectize.getValue();
 
-        if(id_wilayah){
-          app.setWilayah(type,id_wilayah)
-          selectize.enable()
-          selectize.focus()
+            if (id_wilayah) {
+                this.userAddress.provinsi = id_wilayah;
+                this.userAddress.kabupaten = null;
+                this.userAddress.kecamatan = null;
+                this.userAddress.kelurahan = null;
+                this.$refs.kecamatan.$el.selectize.disable();
+                this.$refs.kelurahan.$el.selectize.disable();
+                selectize = this.$refs.kabupaten.$el.selectize;
+            }
+          break;
+          case "kecamatan":
+            id_wilayah = this.$refs.kabupaten.$el.selectize.getValue();
+
+            if (id_wilayah) {
+                this.userAddress.kabupaten = id_wilayah;
+                this.userAddress.kecamatan = null;
+                this.userAddress.kelurahan = null;
+                this.$refs.kelurahan.$el.selectize.clearOptions();
+                this.$refs.kelurahan.$el.selectize.disable();
+                selectize = this.$refs.kecamatan.$el.selectize;
+                selectize.clearOptions();
+            }
+          break;
+          case "kelurahan":
+            id_wilayah = this.$refs.kecamatan.$el.selectize.getValue()
+
+            if (id_wilayah) {
+                this.userAddress.kecamatan = id_wilayah;
+                this.userAddress.kelurahan = null;
+                selectize = this.$refs.kelurahan.$el.selectize;
+                selectize.clearOptions();
+            }
+          break;
+        }
+
+        if (id_wilayah) {
+          this.setWilayah(type, id_wilayah);
+          selectize.enable();
+          selectize.focus();
         }
       },
-      setWilayah(type,id_wilayah) {
-        const app = this
-
-        if(id_wilayah){
-            app.$store.commit(`lokasi/${LOAD_DATA}`,{data : type, status : 1})
-            app.$store.dispatch('lokasi/LOAD_WILAYAH',{
-              type : type,
-              id : id_wilayah,
-              status : 1
-            })
+      setWilayah(type, id_wilayah) {
+        if (id_wilayah) {
+          this.$store.commit(`lokasi/${LOAD_DATA}`,{data : type, status : 1});
+          this.$store.dispatch('lokasi/LOAD_WILAYAH',{
+            type : type,
+            id : id_wilayah,
+            status : 1
+          });
         }
       },
       ubahAlamat() {
         $("#tableAlamat").hide();
         $("#btnUbah").hide();
-
         $("#inputAlamat").show();
         $("#btnSimpan").show();
       },
       simpanAlamat() {
-        const app = this;
-
-        axios.put(app.url+'/simpan-alamat', app.userAddress)
-  			.then(function (resp) {
-          app.notifMessage = `Berhasil Mengubah Alamat`
-          app.notifSuccess = true;
+        axios.put(this.url + '/simpan-alamat', this.userAddress)
+  			.then(resp => {
+          this.notifMessage = `Berhasil Mengubah Alamat`;
+          this.notifSuccess = true;
 
           $("#tableAlamat").show();
           $("#btnUbah").show();
@@ -242,13 +234,13 @@
           $("#inputAlamat").hide();
           $("#btnSimpan").hide();
   			})
-  			.catch(function (resp) {
+  			.catch(resp => {
           console.log(resp);
-  				app.errors = resp.response
+  				this.errors = resp.response;
   			});
       },
       redirectTo() {
-        window.location.replace(window.location.origin+(window.location.pathname)+"#/akun")
+        window.location.replace(window.location.origin + (window.location.pathname) + "#/akun");
       },
     }
   }
