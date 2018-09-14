@@ -96,7 +96,6 @@ Route::get('laporan-order/status-pesanan/{id_pesanan}', 'LaporanOrderController@
 Route::post('laporan-order/kirim-email', 'LaporanOrderController@kirimEmail');
 
 // Pesanan
-Route::get('pesanan/cek-transfer','PesananController@cekTransfer');
 Route::get('pesanan/provinsi', 'PesananController@provinsi');
 Route::get('pesanan/pilih-wilayah/{id}/{type}', 'PesananController@pilih_wilayah');
 Route::get('pesanan/history-order', 'PesananController@history_order');

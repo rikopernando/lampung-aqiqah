@@ -45,12 +45,6 @@ class CekTransfer extends Command
      */
     public function handle()
     {
-          $mitra = new Bank();
-          $mitra->nama_bank = "BNI Syariah";
-          $mitra->atas_nama = "Aqiqah Lampung";
-          $mitra->no_rek = "214515815";
-          $mitra->default = "0";
-          $mitra->save();
         $this->pesanans->each(function ($pesanans) {
 
            $curl = curl_init();
