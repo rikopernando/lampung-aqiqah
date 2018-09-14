@@ -335,31 +335,6 @@
                                               </table>
                                               <hr>
 
-                                              @if($pesanan->metode_pembayaran == 'Cash On Delivery')
-                                              <p><b>Informasi mengenai Pembayaran</b></p>
-                                              <ul>
-                                                <li>Dimohon untuk menyiapkan uang pas saat anda menerima pesanan.</li>
-                                              </ul>
-                                              <hr>
-                                              @else
-                                              <p>Pembayaran dapat dilakukan ke Rekening Bank <b>{{strtoupper($bank->nama_bank)}} ({{ $bank->no_rek }})</b> a/n <b> {{ $bank->atas_nama }}</b></p>
-                                              @endif
-
-                                              @if($kirim_tempat_lain->count() > 0)
-                                                  <p>Pesanan Anda akan dikirimkan ke: <b>{{ $kirim_tempat_lain->first()->company_name }}</b> a/n <b>{{ $kirim_tempat_lain->first()->nama_depan }} {{ $kirim_tempat_lain->first()->nama_belakang }}</b> 
-                                                  </p>
-                                                  <p>
-                                                    <b>{{ $kirim_tempat_lain->first()->alamat }} </b>
-                                                  </p>
-                                              @else
-                                                  <p>Pesanan Anda akan dikirimkan ke: <b>{{ $pesanan->nama_pelanggan }}</b> </p>
-                                                  <p>
-                                                    <b>{{ $pesanan->alamat }}
-                                                    Phone: {{ $pesanan->no_telp }}</b>
-                                                  </p>
-                                              @endif
-                                              <br>
-
                                                 <center><p>Jika Anda membutuhkan bantuan, silahkan hubungi kami di <b>072178789</b> atau email ke <b>admin@gmail.com</b> </p></center><p>
                                                   Salam,<br>
 
