@@ -104,6 +104,7 @@
         </md-card-header>
         <md-card-content>
           <md-button :to="`/pelanggan/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah Pelanggan</md-button>
+          <md-button :href="`${url}/download-excel`" class="md-dense" style="background-color: #d44723; color: white">Download Pelanggan</md-button>
       		<md-table v-model="searchable_pelanggan" md-sort="name" md-sort-order="asc" md-fixed-header>
 			      <md-table-empty-state v-if="loading">
 					    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>

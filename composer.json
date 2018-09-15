@@ -12,7 +12,8 @@
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "laravolt/indonesia": "^0.8.0",
-        "santigarcor/laratrust": "5.0.*"
+        "santigarcor/laratrust": "5.0.*",
+        "maatwebsite/excel": "~2.1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

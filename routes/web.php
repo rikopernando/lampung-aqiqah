@@ -118,6 +118,7 @@ Route::resource('testimoni', 'TestimoniController');
 Route::get('/berita/view', 'BeritaKamiController@view');
 Route::post('/berita/{id}', 'BeritaKamiController@update');
 Route::resource('berita', 'BeritaKamiController');
+Route::get('pelanggan/download-excel', 'PelangganController@downloadExcel');
 Route::resource('pelanggan', 'PelangganController');
 
 // Mitra

@@ -7,6 +7,7 @@ use App\User;
 use App\Role;
 use App\Pesanan;
 use Auth;
+use Excel;
 
 class PelangganController extends Controller
 {
@@ -110,5 +111,32 @@ class PelangganController extends Controller
                 'message' => 'Pelanggan Tidak Bisa Dihapus, karena sudah terpakai' 
             ]);
         }
+    }
+
+    public function downloadExcel(){
+        Excel::create('Pelanggan', function ($excel){
+            $excel->sheet('Pelanggan', function($sheet){
+              $row = 1;
+              $sheet->row($row,[
+                'PELANGGAN' 
+              ]);
+
+              $row = 3;
+              $sheet->row($row,[
+                'Nama',
+                'Email'
+              ]);
+
+              $row = ++$row;
+
+              $pelanggan = User::select()->leftJoin('role_user','users.id','role_user.user_id')->where('role_id',2)->get();
+              foreach($pelanggan as $pelanggans){
+                $sheet->row(++$row,[
+                    $pelanggans->name,
+                    $pelanggans->email
+                ]);
+              }
+            });        
+        })->export('xls');
     }
 }
