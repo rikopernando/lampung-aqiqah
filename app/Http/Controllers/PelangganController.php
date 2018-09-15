@@ -49,10 +49,20 @@ class PelangganController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request,[
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'no_telp' => 'required',
+            'alamat' => 'required',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'no_telp' => $request->no_telp,
+            'alamat' => $request->alamat
         ]);
         $memberRole = Role::where('name', 'member')->first();
         $user->attachRole($memberRole);
@@ -91,7 +101,14 @@ class PelangganController extends Controller
      */
     public function update(Request $request, $id)
     {
-        User::whereId($id)->update($request->all());
+        $this->validate($request,[
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,'.$id,
+            'no_telp' => 'required',
+            'alamat' => 'required',
+        ]);
+
+        $pelanggans = User::whereId($id)->update($request->all());
     }
 
     /**
@@ -124,7 +141,9 @@ class PelangganController extends Controller
               $row = 3;
               $sheet->row($row,[
                 'Nama',
-                'Email'
+                'Email',
+                'No. Telpon',
+                'Alamat'
               ]);
 
               $row = ++$row;
@@ -133,7 +152,9 @@ class PelangganController extends Controller
               foreach($pelanggan as $pelanggans){
                 $sheet->row(++$row,[
                     $pelanggans->name,
-                    $pelanggans->email
+                    $pelanggans->email,
+                    $pelanggans->no_telp,
+                    $pelanggans->alamat
                 ]);
               }
             });        
