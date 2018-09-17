@@ -77,32 +77,19 @@
           <md-card-header-text>
             <div class="md-toolbar" style="margin-top: -20px; padding: 4px">
               <div class="header-title md-toolbar-section-start" style="padding-right:10px">Produk</div>
-              <div class="header-title md-toolbar-section-end">
-                <div class="md-layout">
-                <div class="md-layout-item md-medium-size-60 md-small-size-60 md-xsmall-size-60">
-                  <md-field md-inline>
-                      <label class="media-screen-xsmall-hide">Cari Dengan ...</label>
-                      <label class="media-screen-medium-hide">Cari Dengan ...</label>
-                    <md-input v-model="search" />
-                  </md-field>
-                </div>
-                <div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
-                  <md-field>
-                    <md-select v-model="searchBy" name="searchBy" id="searchBy" md-dense>
-                      <md-option value="nama_produk">Nama</md-option>
-                      <md-option value="harga_coret">Harga Coret</md-option>
-                      <md-option value="harga_jual">Harga Jual</md-option>
-                    </md-select>
-                  </md-field>
-                  </div>
-                </div>
-              </div>
             </div>
           </md-card-header-text>
         </md-card-header>
 
         <md-card-content>
-          <md-button :to="`/produk/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah Produk</md-button>
+          <div class="row">
+            <div class="col-md-9">
+              <md-button :to="`/produk/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">tambah produk</md-button>
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" name="pencarian" v-model="search" placeholder="Masukan Pencarian disini ..." style="font-size : 13px; font-style: italic">
+            </div>
+          </div>
           <md-table v-model="searchable_produk" md-sort="name" md-sort-order="asc" md-fixed-header>
             <md-table-empty-state v-if="loading">
       		    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
@@ -110,8 +97,7 @@
             <md-table-empty-state v-else-if="Object.keys(produks).length == 0" md-label="Tidak Ada Data"
                 md-description="Belum Ada Produk Yang Tersimpan.">
             </md-table-empty-state>
-            <md-table-empty-state v-else-if="Object.keys(produks).length > 0 && search != null" md-label="Produk Tidak Ditemukan"
-                :md-description="`Tidak Ada Produk Dengan Kata Kunci '${search}'. Cobalah Menggunakan Kata Kunci Lain.`">
+            <md-table-empty-state v-else-if="Object.keys(produks).length > 0 && search != null" md-label="Produk Tidak Ditemukan" :md-description="`Tidak Ada Produk Dengan Kata Kunci '${search}'. Cobalah Menggunakan Kata Kunci Lain.`">
             </md-table-empty-state>
 
             <md-table-row slot="md-table-row" slot-scope="{item}">
@@ -183,10 +169,8 @@
       notifSuccess: false,
       searchable_produk: [],
       produks: {},
-      searchBy: 'nama_produk',
       loading: true,
       maxChecked: 0,
-      searchResult: {},
       alert: false
     }),
     mounted() {
@@ -196,12 +180,8 @@
     watch: {
       search() {
         const app = this
-        app.searchProduks();
+    	  app.getProdukData();
       },
-      searchBy() {
-        const app = this
-        app.searchProduks();
-      }
     },
     filters: {
       currency(number) {
@@ -212,24 +192,14 @@
       },
     },
     methods: {
-      searchProduks() {
-        const app = this
-        if (app.search != null) {
-          app.searchResult = app.produks.data.filter(item => toLower(item[app.searchBy]).includes(toLower(app.search)));
-        } else {
-          app.searchResult = app.produks.data;
-        }
-      },
-      getPaginatedItems(value) {
-        const app = this
-        app.searchable_produk = value;
-      },
     	getProdukData(page) {
         const app = this
         if(typeof page === 'undefined'){
           page = 1
         }
-    		axios.get(`${app.url}produk?page=${page}`).then(resp => {
+        let url
+        app.search ? url = `${app.url}produk/pencarian?page=${page}&search=${app.search}` : url = `${app.url}produk?page=${page}`
+    		axios.get(url).then(resp => {
           const { produk } = resp.data
           $.each(produk.data, (i, item) => {
             produk.data[i].tampil_produk = item.tampil_produk == 1 ? true : false;

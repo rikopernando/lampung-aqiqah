@@ -82,6 +82,7 @@ Route::get('/bank/count-default', 'BankController@countDefault');
 Route::resource('bank', 'BankController');
 //Produk
 
+Route::get('/produk/pencarian', 'ProdukController@search');
 Route::post('/produk/{id}', 'ProdukController@update');
 Route::get('/produk/update-tampil-produk/{id}/{boolean}', 'ProdukController@updateTampilProduk');
 Route::get('/produk/jumlah-tampil', 'ProdukController@jumlahTampil');
