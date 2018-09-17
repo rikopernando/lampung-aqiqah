@@ -121,15 +121,17 @@
 			        <md-table-cell md-label="Mitra" md-sort-by="name">{{ item.nama_mitra }}</md-table-cell>
 			        <md-table-cell md-label="No. Telepon" md-sort-by="no_telp">{{ item.no_telp }}</md-table-cell>
 			        <md-table-cell md-label="Alamat" md-sort-by="alamat">{{ item.alamat }}</md-table-cell>
-               <md-table-cell md-label="Aksi">
-                <md-button :to="`/mitra/edit/${item.id}`" class="md-fab md-dense md-primary">
-                  <md-icon>edit</md-icon>
-                  <md-tooltip md-direction="top">Edit</md-tooltip>
-                </md-button>
-                <md-button @click="deleteMitra(item.id)" class="md-fab md-dense md-plain">
-                  <md-icon>delete_forever</md-icon>
-                  <md-tooltip md-direction="top">Hapus</md-tooltip>
-                </md-button>
+              <md-table-cell md-label="Edit">
+               <md-button :to="`/mitra/edit/${item.id}`" class="md-fab md-dense md-primary">
+                 <md-icon>edit</md-icon>
+                 <md-tooltip md-direction="top">Edit</md-tooltip>
+               </md-button>
+              </md-table-cell>
+              <md-table-cell md-label="Hapus">
+               <md-button @click="deleteMitra(item.id)" class="md-fab md-dense md-plain">
+                 <md-icon>delete_forever</md-icon>
+                 <md-tooltip md-direction="top">Hapus</md-tooltip>
+               </md-button>
               </md-table-cell>
 			      </md-table-row>
 			    </md-table>  	

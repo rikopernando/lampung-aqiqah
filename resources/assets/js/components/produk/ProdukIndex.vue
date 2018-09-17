@@ -128,11 +128,13 @@
                 <span style="color: green" v-if="item.stok == 1">Tersedia</span>
                 <span style="color: red" v-else>Tidak Tersedia</span>
               </md-table-cell>
-              <md-table-cell md-label="Aksi">
+              <md-table-cell md-label="Edit">
                 <md-button :to="`/produk/edit/${item.id}`" class="md-fab md-dense md-primary">
                   <md-icon>edit</md-icon>
                   <md-tooltip md-direction="top">Edit</md-tooltip>
                 </md-button>
+              </md-table-cell>
+              <md-table-cell md-label="Hapus">
                 <md-button  @click="deleteProduk(item.id, item.nama_produk)" class="md-fab md-dense md-plain">
                   <md-icon>delete_forever</md-icon>
                   <md-tooltip md-direction="top">Hapus</md-tooltip>

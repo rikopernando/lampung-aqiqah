@@ -133,11 +133,13 @@
               <md-table-cell md-label="Default" style="text-align: center; padding-left: 15px;">
                 <md-radio v-model="item.default"  @change="tampilDefault(item.id,item.default,item.nama_bank)" :value="false"></md-radio>
               </md-table-cell>
-               <md-table-cell md-label="Aksi">
+              <md-table-cell md-label="Edit">
                 <md-button :to="`/bank/edit/${item.id}`" class="md-fab md-dense md-primary">
                   <md-icon>edit</md-icon>
                   <md-tooltip md-direction="top">Edit</md-tooltip>
                 </md-button>
+              </md-table-cell>
+              <md-table-cell md-label="Hapus">
                 <md-button @click="deleteBank(item.id,item.default)" class="md-fab md-dense md-plain">
                   <md-icon>delete_forever</md-icon>
                   <md-tooltip md-direction="top">Hapus</md-tooltip>
