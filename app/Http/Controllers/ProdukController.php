@@ -20,10 +20,6 @@ class ProdukController extends Controller
         $this->middleware('auth');
     }
 
-    public function view() {
-        return response(Produk::select()->get());
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -31,7 +27,11 @@ class ProdukController extends Controller
      */
     public function index()
     {
-        //
+       $produk = Produk::paginate(2);
+
+       return response()->json([
+            'produk' => $produk
+       ],200);
     }
 
     /**

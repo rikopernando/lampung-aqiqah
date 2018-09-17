@@ -107,10 +107,10 @@
             <md-table-empty-state v-if="loading">
       		    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
             </md-table-empty-state>
-            <md-table-empty-state v-else-if="produks.length == 0" md-label="Tidak Ada Data"
+            <md-table-empty-state v-else-if="Object.keys(produks).length == 0" md-label="Tidak Ada Data"
                 md-description="Belum Ada Produk Yang Tersimpan.">
             </md-table-empty-state>
-            <md-table-empty-state v-else-if="produks.length > 0 && search != null" md-label="Produk Tidak Ditemukan"
+            <md-table-empty-state v-else-if="Object.keys(produks).length > 0 && search != null" md-label="Produk Tidak Ditemukan"
                 :md-description="`Tidak Ada Produk Dengan Kata Kunci '${search}'. Cobalah Menggunakan Kata Kunci Lain.`">
             </md-table-empty-state>
 
@@ -149,13 +149,10 @@
             <span><md-icon style="color: white">done_all</md-icon></span>
           </md-snackbar>
 
-        <paging
-          v-if="!loading"
-          :dataPaging="produks"
-          :itemPerPage="10"
-          :range="5"
-          :search="searchResult"
-          @paginatedItems="getPaginatedItems($event)"></paging>
+          <div align="rigth">
+            <pagination :data="produks" v-on:pagination-change-page="getProdukData" :limit="4"></pagination>
+          </div>
+
         </md-card-content>
       </md-card>
 
@@ -176,7 +173,7 @@
 
   export default {
     data: () => ({
-    	url: window.location.origin + (window.location.pathname + 'produk/'),
+    	url: window.location.origin + window.location.pathname,
       search: null,
 	    promptDelete: false,
 			snackbarDelete: false,
@@ -185,22 +182,25 @@
       notifMessage: '',
       notifSuccess: false,
       searchable_produk: [],
-      produks: [],
+      produks: {},
       searchBy: 'nama_produk',
       loading: true,
       maxChecked: 0,
       searchResult: {},
       alert: false
     }),
-    created() {
-    	this.getProdukData();
+    mounted() {
+      const app = this
+    	app.getProdukData();
     },
     watch: {
       search() {
-        this.searchProduks();
+        const app = this
+        app.searchProduks();
       },
       searchBy() {
-        this.searchProduks();
+        const app = this
+        app.searchProduks();
       }
     },
     filters: {
@@ -213,50 +213,55 @@
     },
     methods: {
       searchProduks() {
-        if (this.search != null) {
-          this.searchResult = this.produks.filter(item => toLower(item[this.searchBy]).includes(toLower(this.search)));
+        const app = this
+        if (app.search != null) {
+          app.searchResult = app.produks.data.filter(item => toLower(item[app.searchBy]).includes(toLower(app.search)));
         } else {
-          this.searchResult = this.produks;
+          app.searchResult = app.produks.data;
         }
       },
       getPaginatedItems(value) {
-        this.searchable_produk = value;
+        const app = this
+        app.searchable_produk = value;
       },
-    	getProdukData() {
-    		axios.get(this.url + 'view')
-    		.then(resp => {
-          $.each(resp.data, function (i, item) {
-            resp.data[i].tampil_produk = item.tampil_produk == 1 ? true : false;
+    	getProdukData(page) {
+        const app = this
+        if(typeof page === 'undefined'){
+          page = 1
+        }
+    		axios.get(`${app.url}produk?page=${page}`).then(resp => {
+          const { produk } = resp.data
+          $.each(produk.data, (i, item) => {
+            produk.data[i].tampil_produk = item.tampil_produk == 1 ? true : false;
           });
-
-          this.produks = resp.data;
-      		this.searchable_produk = resp.data;
-          this.jumlahTampil();
-
-    			this.loading = false;
+          app.produks = produk;
+      		app.searchable_produk = produk.data;
+          app.jumlahTampil();
+    			app.loading = false;
     		})
     		.catch(resp => {
           console.log('catch getProdukData:', resp);
-    			console.log(resp);
     		});
     	},
       tampilProduk(id, data, nama) {
+        const app = this
         let hasil = data == true ? "Ditampilkan" : "Disembunyikan";
 
-    		axios.get(this.url + "update-tampil-produk/" + id + "/" + data)
+    		axios.get(`${app.url}produk/update-tampil-produk/${id}/${data}`)
     		.then(resp => {
-          this.jumlahTampil();
-          this.notifMessage = `${nama.replace(/(^|\s)\S/g, l => l.toUpperCase())} Berhasil ${hasil}.`
-          this.notifSuccess = true;
+          app.jumlahTampil();
+          app.notifMessage = `${nama.replace(/(^|\s)\S/g, l => l.toUpperCase())} Berhasil ${hasil}.`
+          app.notifSuccess = true;
     		})
     		.catch(resp => {
     			console.log('catch tampilProduk:', resp);
     		})
       },
       jumlahTampil() {
-        axios.get(this.url + "jumlah-tampil")
+        const app = this
+        axios.get(`${app.url}produk/jumlah-tampil`)
     		.then(resp => {
-          this.maxChecked = resp.data
+          app.maxChecked = resp.data
     		})
     		.catch(resp => {
           console.log('catch jumlahTampil:', resp);
@@ -264,17 +269,18 @@
     		})
       },
     	onConfirmDelete() {
-    		axios.delete(this.url + this.produkId)
+        const app = this
+    		axios.delete(`${app.urlproduk}/${app.produkId}`)
     		.then(resp => {
           if(resp.data === 200){
-              this.notifMessage = `Berhasil Menghapus Produk ${this.produkDelete}.`
-              this.produkId = '';
-              this.produkDelete = '';
-              this.snackbarDelete = true;
-              this.notifSuccess = true;
-              this.getProdukData();
+              app.notifMessage = `Berhasil Menghapus Produk ${app.produkDelete}.`
+              app.produkId = '';
+              app.produkDelete = '';
+              app.snackbarDelete = true;
+              app.notifSuccess = true;
+              app.getProdukData();
           }else{
-              this.alert = true
+              app.alert = true
           }
     		})
     		.catch(resp => {
@@ -282,10 +288,10 @@
     		})
     	},
     	deleteProduk(produkId, produkName) {
-    		this.promptDelete = true;
-    		this.produkId = produkId;
-    		this.produkDelete = produkName;
-    		this.notifMessage = `Apakah Anda Yakin Menghapus Produk <b>${produkName}</b> ?`;
+    		app.promptDelete = true;
+    		app.produkId = produkId;
+    		app.produkDelete = produkName;
+    		app.notifMessage = `Apakah Anda Yakin Menghapus Produk <b>${produkName}</b> ?`;
     	}
     }
   }
