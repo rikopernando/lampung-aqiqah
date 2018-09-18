@@ -23,7 +23,23 @@ class BankController extends Controller
      */
     public function index()
     {
-        //
+       $bank = Bank::paginate(10);
+
+       return response()->json([
+            'bank' => $bank
+       ],200);
+    }
+
+    public function search(Request $request){
+        $bank = Bank::where(function ($bank) use ($request){
+            $bank->orWhere('nama_bank','LIKE','%'. $request->search .'%')
+                 ->orWhere('atas_nama','LIKE','%'. $request->search .'%')
+                 ->orWhere('no_rek','LIKE','%'. $request->search .'%');
+        })->paginate(10);
+
+       return response()->json([
+            'bank' => $bank
+       ],200);
     }
 
     public function view() {

@@ -76,6 +76,7 @@ Route::put('/user/simpan-alamat', 'UserController@simpanAlamat');
 Route::resource('user', 'UserController');
 
 //Bank
+Route::get('/bank/pencarian', 'BankController@search');
 Route::get('/bank/view', 'BankController@view');
 Route::get('/bank/update-default-bank/{id}/{boolean}', 'BankController@updateDefaultBank');
 Route::get('/bank/count-default', 'BankController@countDefault');

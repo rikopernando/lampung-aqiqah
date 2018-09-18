@@ -135,9 +135,7 @@
             <span><md-icon style="color: white">done_all</md-icon></span>
           </md-snackbar>
 
-          <div align="rigth">
             <pagination :data="produks" v-on:pagination-change-page="getProdukData" :limit="4"></pagination>
-          </div>
 
         </md-card-content>
       </md-card>
