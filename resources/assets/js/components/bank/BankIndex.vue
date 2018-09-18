@@ -208,7 +208,7 @@
     	},
       tampilDefault(id, data, nama) {
         const app = this
-        axios.get(app.url + "update-default-bank/" + id + "/" + data)
+        axios.get(`${app.url}/update-default-bank/${id}/${data}`)
         .then(resp => {
           app.notifMessage = `Bank ${nama.replace(/(^|\s)\S/g, l => l.toUpperCase())} Berhasil update Default.`
           app.notifSuccess = true;
@@ -221,7 +221,7 @@
       },
     	onConfirmDelete() {
         const app = this
-    		axios.delete(app.url + app.bankIdForDelete)
+    		axios.delete(`${app.url}/${app.bankIdForDelete}`)
     		.then(resp => {
     			app.bankIdForDelete = '';
     			app.snackbarDeleteBank = true;

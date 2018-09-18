@@ -42,14 +42,6 @@ class BankController extends Controller
        ],200);
     }
 
-    public function view() {
-        $daftarBank = Bank::select()->get();
-        $respons['daftarBank'] = $daftarBank;
-
-        return response($respons);
-
-    }
-
     public function countDefault(){
          $countDefaultBank = Bank::select()->where('default',1)->count();
          return response($countDefaultBank);

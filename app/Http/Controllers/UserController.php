@@ -27,11 +27,25 @@ class UserController extends Controller
      */
     public function index()
     {
-       
+       $user = User::select()->leftJoin('role_user','users.id','role_user.user_id')->where('role_id',1)->paginate(10);
+
+       return response()->json([
+            'user' => $user
+       ],200);
     }
 
-    public function view() {
-         return response(User::select()->leftJoin('role_user','users.id','role_user.user_id')->where('role_id',1)->get());
+    public function search(Request $request){
+        $user = User::select()->leftJoin('role_user','users.id','role_user.user_id')->where('role_id',1)
+                ->where(function ($user) use ($request){
+                $user->orWhere('name','LIKE','%'. $request->search .'%')
+                       ->orWhere('email','LIKE','%'. $request->search .'%')
+                       ->orWhere('alamat','LIKE','%'. $request->search .'%')
+                       ->orWhere('no_telp','LIKE','%'. $request->search .'%');
+        })->paginate(10);
+
+       return response()->json([
+            'user' => $user
+       ],200);
     }
 
     public function detailAkun() {
