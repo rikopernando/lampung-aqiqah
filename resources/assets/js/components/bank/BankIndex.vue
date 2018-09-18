@@ -86,43 +86,30 @@
           <md-card-header-text>
             <div class="md-toolbar" style="margin-top: -20px; padding: 4px">
               <div class="header-title md-toolbar-section-start" style="padding-right:10px">Bank</div>
-              <div class="header-title md-toolbar-section-end">
-                <div class="md-layout">
-                <div class="md-layout-item md-medium-size-60 md-small-size-60 md-xsmall-size-60">
-                  <md-field md-inline>
-                    <label class="media-screen-xsmall-hide">Cari Dengan ...</label>
-                    <label class="media-screen-medium-hide">Cari Dengan ...</label>
-                    <md-input v-model="search" />
-                  </md-field>
-                </div>
-                <div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
-                  <md-field>
-                    <md-select v-model="searchBy" name="searchBy" id="searchBy" md-dense>
-                      <md-option value="nama_bank">Nama Bank</md-option>
-                      <md-option value="no_rek">No Rek</md-option>
-                    </md-select>
-                  </md-field>
-                  </div>
-                </div>
-              </div>
             </div>
           </md-card-header-text>
         </md-card-header>
 
         <md-card-content>
 
-       <md-button :to="`/bank/create`" class="md-dense md-raised" style="background-color: #d44723; color: white"> Tambah Bank</md-button>
-
+          <div class="row">
+            <div class="col-md-9">
+               <md-button :to="`/bank/create`" class="md-dense md-raised" style="background-color: #d44723; color: white"> Tambah Bank</md-button>
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" name="pencarian" v-model="search" placeholder="Masukan Pencarian disini ..." style="font-size : 13px; font-style: italic">
+            </div>
+          </div>
 
          <md-table v-model="searchable_bank" md-sort="name" md-sort-order="asc" md-fixed-header>
             <md-table-empty-state v-if="loading">
               <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
             </md-table-empty-state>
-            <md-table-empty-state v-else-if="banks.length == 0" md-label="Tidak ada data"
+            <md-table-empty-state v-else-if="Object.keys(banks).length == 0" md-label="Tidak ada data"
                 md-description="Belum ada data Bank yang tersimpan.">
             </md-table-empty-state>
-            <md-table-empty-state v-else-if="banks.length > 0 && search != null" md-label="Tidak ada Bank ditemukan"
-                :md-description="`Tidak ada Bank ditemukan untuk kata kunci '${search}'. Cobalah menggunakan kata kunci yang lain.`">
+            <md-table-empty-state v-else-if="Object.keys(banks).length > 0 && search != null" md-label="Tidak ada Bank ditemukan"
+                :md-description="`Tidak ada Bank yang ditemukan untuk kata kunci '${search}'. Cobalah menggunakan kata kunci yang lain.`">
             </md-table-empty-state>
 
             <md-table-row slot="md-table-row" slot-scope="{ item }" >
@@ -133,11 +120,13 @@
               <md-table-cell md-label="Default" style="text-align: center; padding-left: 15px;">
                 <md-radio v-model="item.default"  @change="tampilDefault(item.id,item.default,item.nama_bank)" :value="false"></md-radio>
               </md-table-cell>
-               <md-table-cell md-label="Aksi">
+              <md-table-cell md-label="Edit">
                 <md-button :to="`/bank/edit/${item.id}`" class="md-fab md-dense md-primary">
                   <md-icon>edit</md-icon>
                   <md-tooltip md-direction="top">Edit</md-tooltip>
                 </md-button>
+              </md-table-cell>
+              <md-table-cell md-label="Hapus">
                 <md-button @click="deleteBank(item.id,item.default)" class="md-fab md-dense md-plain">
                   <md-icon>delete_forever</md-icon>
                   <md-tooltip md-direction="top">Hapus</md-tooltip>
@@ -146,13 +135,8 @@
             </md-table-row>
           </md-table>
 
-          <paging
-            v-if="!loading"
-            :dataPaging="banks"
-            :itemPerPage="10"
-            :range="5"
-            :search="searchResult"
-            @paginatedItems="getPaginatedItems($event)"></paging>
+          <pagination :data="banks" v-on:pagination-change-page="getBankData" :limit="4"></pagination>
+
         </md-card-content>
       </md-card>
 
@@ -177,63 +161,58 @@
 
   export default {
     data: () => ({
-    	url: window.location.origin + (window.location.pathname + 'bank/'),
+    	url: window.location.origin + window.location.pathname + 'bank',
       search: null,
 	    promptDeleteBank: false,
 			snackbarDeleteBank: false,
       promptGagalHapus : false,
 	    bankIdForDelete: '',
       searchable_bank: [],
-      banks: [],
+      banks: {},
       notifMessage: '',
       notifSuccess: false,
-      searchBy: 'nama_bank',
       loading: true,
-      searchResult: {}
     }),
     created() {
-    	this.getBankData();
+      const app = this
+    	app.getBankData();
     },
     watch: {
       search() {
-        this.searchBanks();
+        const app = this
+    	  app.getBankData();
       },
-      searchBy() {
-        this.searchBanks();
-      }
     },
     methods: {
-      searchBanks() {
-        if (this.search != null) {
-          this.searchResult = this.banks.filter(item => toLower(item[this.searchBy]).includes(toLower(this.search)));
-        } else {
-          this.searchResult = this.banks;
+    	getBankData(page) {
+        const app = this
+        let url
+        if(typeof page === 'undefined'){
+          page = 1
         }
-      },
-      getPaginatedItems(value) {
-        this.searchable_bank = value;
-      },
-    	getBankData() {
-    		axios.get(this.url + 'view')
-    		.then(resp => {
-          $.each(resp.data.daftarBank, function (i, item) {
-            resp.data.daftarBank[i].default = item.default == 1 ? false : true;
-          });
-    			this.banks = resp.data.daftarBank;
-    			this.searchable_bank = resp.data.daftarBank;
+        app.search ? url = `${app.url}/pencarian?page=${page}&search=${app.search}` : url = `${app.url}?page=${page}`  
 
-    			this.loading = false;
+    		axios.get(url)
+    		.then(resp => {
+          const { bank } = resp.data
+          $.each(bank.data, (i, item) => {
+            bank.data[i].default = item.default == 1 ? false : true;
+          });
+    			app.banks = bank
+    			app.searchable_bank = bank.data 
+    			app.loading = false;
     		})
     		.catch(resp => {
     			console.log('catch getBankData:', resp);
     		});
     	},
       tampilDefault(id, data, nama) {
-        axios.get(this.url + "update-default-bank/" + id + "/" + data)
+        const app = this
+        axios.get(`${app.url}/update-default-bank/${id}/${data}`)
         .then(resp => {
-          this.notifMessage = `Bank ${nama.replace(/(^|\s)\S/g, l => l.toUpperCase())} Berhasil update Default.`
-          this.notifSuccess = true;
-          this.getBankData();
+          app.notifMessage = `Bank ${nama.replace(/(^|\s)\S/g, l => l.toUpperCase())} Berhasil update Default.`
+          app.notifSuccess = true;
+          app.getBankData();
         })
         .catch(resp => {
           console.log('catch tampilDefault:', resp);
@@ -241,22 +220,24 @@
 
       },
     	onConfirmDelete() {
-    		axios.delete(this.url + this.bankIdForDelete)
+        const app = this
+    		axios.delete(`${app.url}/${app.bankIdForDelete}`)
     		.then(resp => {
-    			this.bankIdForDelete = '';
-    			this.snackbarDeleteBank = true;
-    			this.getBankData();
+    			app.bankIdForDelete = '';
+    			app.snackbarDeleteBank = true;
+    			app.getBankData();
     		})
     		.catch(resp => {
     			console.log('catch onConfirmDelete:', resp);
     		})
     	},
     	deleteBank(bankId,bankDefault) {
+        const app = this
         if (bankDefault == false) {
-          this.promptGagalHapus = true;
+          app.promptGagalHapus = true;
         } else {
-          this.promptDeleteBank = true;
-          this.bankIdForDelete = bankId;
+          app.promptDeleteBank = true;
+          app.bankIdForDelete = bankId;
         }   
     	}
     }

@@ -75,41 +75,29 @@
           <md-card-header-text>
             <div class="md-toolbar" style="margin-top: -20px; padding: 4px">
               <div class="header-title md-toolbar-section-start" style="padding-right:10px">User</div>
-              <div class="header-title md-toolbar-section-end">
-                <div class="md-layout">
-			        		<div class="md-layout-item md-medium-size-60 md-small-size-60 md-xsmall-size-60">
-						        <md-field md-inline>
-						        	<label class="media-screen-xsmall-hide">Cari Dengan ...</label>
-						        	<label class="media-screen-medium-hide">Cari Dengan ...</label>
-						          <md-input v-model="search" />
-						        </md-field>
-			        		</div>
-			        		<div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
-						        <md-field>
-						          <md-select v-model="searchBy" name="searchBy" id="searchBy" md-dense>
-						            <md-option value="name">Nama</md-option>
-						            <md-option value="email">Email</md-option>
-						          </md-select>
-						        </md-field>
-			        		</div>
-			        	</div>
-              </div>
             </div>
           </md-card-header-text>
         </md-card-header>
         <md-card-content>
+          <div class="row">
+            <div class="col-md-9">
           <md-button :to="`/user/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah User</md-button>
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" name="pencarian" v-model="search" placeholder="Masukan Pencarian disini ..." style="font-size : 13px; font-style: italic">
+            </div>
+          </div>
       		<md-table v-model="searchable_user" md-sort="name" md-sort-order="asc" md-fixed-header>
 			      <md-table-empty-state v-if="loading">
 					    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
 			      </md-table-empty-state>
 			      <md-table-empty-state
-			      	v-else-if="users.length == 0"
+			      	v-else-if="Object.keys(users).length == 0"
 			        md-label="Tidak ada data"
 			        md-description="Belum ada data User yang tersimpan.">
 			      </md-table-empty-state>
 			      <md-table-empty-state
-			      	v-else-if="users.length > 0 && search != null"
+			      	v-else-if="Object.keys(users).length > 0 && search != null"
 			        md-label="Tidak ada User ditemukan"
 			        :md-description="`Tidak ada User ditemukan untuk kata kunci '${search}'. Cobalah menggunakan kata kunci yang lain.`">
 			      </md-table-empty-state>
@@ -118,11 +106,13 @@
 			        <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
 			        <md-table-cell md-label="Nama" md-sort-by="name">{{ item.name }}</md-table-cell>
 			        <md-table-cell md-label="Email" md-sort-by="email">{{ item.email }}</md-table-cell>
-               <md-table-cell md-label="Aksi">
+              <md-table-cell md-label="Edit">
                 <md-button :to="`/user/edit/${item.id}`" class="md-fab md-dense md-primary">
                   <md-icon>edit</md-icon>
                   <md-tooltip md-direction="top">Edit</md-tooltip>
                 </md-button>
+              </md-table-cell>
+              <md-table-cell md-label="Hapus">
                 <md-button @click="deleteUser(item.id)" class="md-fab md-dense md-plain">
                   <md-icon>delete_forever</md-icon>
                   <md-tooltip md-direction="top">Hapus</md-tooltip>
@@ -131,13 +121,8 @@
 			      </md-table-row>
 			    </md-table>
 
-          <paging
-            v-if="!loading"
-            :dataPaging="users"
-            :itemPerPage="10"
-            :range="5"
-            :search="searchResult"
-            @paginatedItems="getPaginatedItems($event)"></paging>
+            <pagination :data="users" v-on:pagination-change-page="getUserData" :limit="4"></pagination>
+
         </md-card-content>
       </md-card>
 
@@ -157,64 +142,60 @@ const toLower = text => {
 
 export default {
   data: () => ({
-  	url: window.location.origin + (window.location.pathname + 'user'),
+  	url: window.location.origin + window.location.pathname + 'user',
     search: null,
     promptDeleteUser: false,
 		snackbarDeleteUser: false,
     userIdForDelete: '',
     searchable_user: [],
-    users: [],
-    searchBy: 'name',
+    users: {},
     loading: true,
-    searchResult: false,
   }),
   created() {
-  	this.getUserData();
+    const app = this
+  	app.getUserData();
   },
   watch: {
     search() {
-      this.searchUsers();
+      const app = this
+  	  app.getUserData()
     },
-    searchBy() {
-      this.searchUsers();
-    }
   },
   methods: {
-    searchUsers() {
-      if (this.search != null) {
-        this.searchResult = this.users.filter(item => toLower(item[this.searchBy]).includes(toLower(this.search)));
-      } else {
-        this.searchResult = this.users;
+  	getUserData(page) {
+      const app = this
+      let url
+      if(typeof page === 'undefined'){
+        page = 1
       }
-    },
-    getPaginatedItems(value) {
-      this.searchable_user = value;
-    },
-  	getUserData() {
-  		axios.get(this.url + '/' + 'view')
+      app.search ? url = `${app.url}/pencarian?page=${page}&search=${app.search}` : url = `${app.url}?page=${page}`
+  		axios.get(url)
   		.then(resp => {
-  			this.users = resp.data;
-  			this.searchable_user = resp.data;
-  			this.loading = false;
+        const { user } = resp.data
+  			app.users = user;
+  			app.searchable_user = user.data;
+  			app.loading = false;
   		})
   		.catch(resp => {
   			console.log('catch getUserData:', resp);
   		});
   	},
   	onConfirmDelete() {
-  		axios.delete(this.url + '/' + this.userIdForDelete)
+      const app = this
+  		axios.delete(app.url + '/' + app.userIdForDelete)
   		.then(resp => {
-  			this.userIdForDelete = '';
-  			this.snackbarDeleteUser = true;
-  			this.getUserData();
+  			app.userIdForDelete = '';
+  			app.snackbarDeleteUser = true;
+  			app.getUserData();
   		})
   		.catch(resp => {
   			console.log('catch onConfirmDelete:', resp);
   		})
   	},
   	deleteUser(userId) {
-  		this.promptDeleteUser = true;
-  		this.userIdForDelete = userId;
+      const app = this
+  		app.promptDeleteUser = true;
+  		app.userIdForDelete = userId;
   	}
   }
 }

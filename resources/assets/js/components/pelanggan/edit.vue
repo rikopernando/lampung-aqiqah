@@ -34,6 +34,23 @@
     font-size: 20px;
     padding: 4px 0px 0px 10px;
   }
+  .header-title {
+    color: #867f7f;
+    font-size: 20px;
+    padding: 4px 0px 0px 10px;
+  }
+  .md-layout-item{
+    padding:5px !important;
+  }
+  .error-message {
+    background-color:  #ff4d4d;
+    border-radius: 6px;
+  }
+  .text-error {
+    font-weight: bold;
+    color: white;
+    padding: 4px;
+  }
 </style>
 
 <template>
@@ -42,7 +59,7 @@
       <md-card>
         <ul class="breadcrumb">
           <li><router-link :to="{name: 'dashboard'}">Dashboard</router-link></li>
-          <li><router-link :to="{name: 'pelanggan'}">Pelanggan</router-link></li>
+          <li><router-link :to="{name: 'pelanggan'}" id="pelanggan">Pelanggan</router-link></li>
           <li class="active">Edit</li>
         </ul>
       </md-card>
@@ -60,7 +77,10 @@
           </md-card-header-text>
         </md-card-header>
         <md-card-content>
-          <form novalidate v-on:submit.prevent="validatePelanggan">
+          <ul class="error-message">
+            <li class="text-error" v-for="err in errors"> {{ err.toString() }} </li>
+          </ul>
+          <form novalidate v-on:submit.prevent="saveForm">
 
             <!-- Loading -->
             <div v-if="loading" class="_spinner-container">
@@ -73,18 +93,24 @@
               </div>
             </div>
 
-            <md-field :class="getValidationClass('name')">
-              <label v-if="!loading" for="name">Nama</label>
+            <md-field>
+              <label for="name">Nama</label>
               <md-input name="name" id="name" v-model="pelanggan.name" />
-              <span class="md-error" v-if="!$v.pelanggan.name.required">Tolong isi kolom Nama</span>
-              <span class="md-error" v-else-if="!$v.pelanggan.name.minlength">Nama setidaknya mengandung 3 karakter</span>
             </md-field>
 
-            <md-field :class="getValidationClass('email')">
-              <label v-if="!loading" for="email">Email</label>
+            <md-field>
+              <label for="email">Email</label>
               <md-input type="email" name="email" id="email" v-model="pelanggan.email" />
-              <span class="md-error" v-if="!$v.pelanggan.email.required">Tolong isi kolom Email</span>
-              <span class="md-error" v-else-if="!$v.pelanggan.email.email">Format Email salah</span>
+            </md-field>
+
+            <md-field>
+              <label for="no_telp">No. Telpon</label>
+              <md-input type="text" name="no_telp" id="no_telp" v-model="pelanggan.no_telp" />
+            </md-field>
+
+            <md-field>
+              <label for="alamat">Alamat</label>
+              <md-input type="alamat" name="alamat" id="alamat" v-model="pelanggan.alamat" />
             </md-field>
 
             <md-progress-bar v-if="submitted" md-mode="indeterminate"></md-progress-bar>
@@ -105,58 +131,24 @@
 
 <script>
 
-import { validationMixin } from 'vuelidate'
-import {
-  required,
-  email,
-  minLength,
-  maxLength
-} from 'vuelidate/lib/validators'
-
 export default {
-  mixins: [validationMixin],
   data: () => ({
+    errors: [],
     url: window.location.origin + (window.location.pathname + 'pelanggan'),
     pelanggan: {
       name: '',
-      email: ''
+      email: '',
+      no_telp: '',
+      alamat: '',
     },
     snackbarEditPelanggan: false,
     submitted: false,
     loading: true,
   }),
-  validations: {
-    pelanggan: {
-      name: {
-        required,
-        minLength: minLength(3)
-      },
-      email: {
-        required,
-        email
-      }
-    }
-  },
   mounted() {
     this.getDataPelanggan(this.$route.params.id);
   },
   methods: {
-    getValidationClass(fieldName) {
-      const field = this.$v.pelanggan[fieldName]
-
-      if (field) {
-        return {
-          'md-invalid': field.$invalid && field.$dirty
-        }
-      }
-    },
-    validatePelanggan() {
-      this.$v.$touch()
-
-      if (!this.$v.$invalid) {
-        this.saveForm()
-      }
-    },
     getDataPelanggan(pelangganId) {
       axios.get(this.url + '/' + pelangganId)
       .then(resp => {
@@ -176,6 +168,9 @@ export default {
       })
       .catch(resp => {
         console.log('catch saveForm:', resp);
+        this.errors = resp.response.data
+        this.submitted = false;
+		    document.getElementById("pelanggan").focus({reventScroll:true})
       });
     },
     redirectToPelangganList() {

@@ -25,6 +25,7 @@ window.$ = window.jQuery = require('jquery')
 import Paging from './components/paging/paging'
 
 // Global Vue Components
+Vue.component('pagination', require('laravel-vue-pagination'))
 Vue.component('sidebar', Sidebar)
 Vue.component('selectize-component', require('vue2-selectize'))
 Vue.component('v-select', vSelect)

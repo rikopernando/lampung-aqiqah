@@ -77,41 +77,27 @@
           <md-card-header-text>
             <div class="md-toolbar" style="margin-top: -20px; padding: 4px">
               <div class="header-title md-toolbar-section-start" style="padding-right:10px">Produk</div>
-              <div class="header-title md-toolbar-section-end">
-                <div class="md-layout">
-                <div class="md-layout-item md-medium-size-60 md-small-size-60 md-xsmall-size-60">
-                  <md-field md-inline>
-                      <label class="media-screen-xsmall-hide">Cari Dengan ...</label>
-                      <label class="media-screen-medium-hide">Cari Dengan ...</label>
-                    <md-input v-model="search" />
-                  </md-field>
-                </div>
-                <div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
-                  <md-field>
-                    <md-select v-model="searchBy" name="searchBy" id="searchBy" md-dense>
-                      <md-option value="nama_produk">Nama</md-option>
-                      <md-option value="harga_coret">Harga Coret</md-option>
-                      <md-option value="harga_jual">Harga Jual</md-option>
-                    </md-select>
-                  </md-field>
-                  </div>
-                </div>
-              </div>
             </div>
           </md-card-header-text>
         </md-card-header>
 
         <md-card-content>
-          <md-button :to="`/produk/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah Produk</md-button>
+          <div class="row">
+            <div class="col-md-9">
+              <md-button :to="`/produk/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">tambah produk</md-button>
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" name="pencarian" v-model="search" placeholder="Masukan Pencarian disini ..." style="font-size : 13px; font-style: italic">
+            </div>
+          </div>
           <md-table v-model="searchable_produk" md-sort="name" md-sort-order="asc" md-fixed-header>
             <md-table-empty-state v-if="loading">
       		    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
             </md-table-empty-state>
-            <md-table-empty-state v-else-if="produks.length == 0" md-label="Tidak Ada Data"
+            <md-table-empty-state v-else-if="Object.keys(produks).length == 0" md-label="Tidak Ada Data"
                 md-description="Belum Ada Produk Yang Tersimpan.">
             </md-table-empty-state>
-            <md-table-empty-state v-else-if="produks.length > 0 && search != null" md-label="Produk Tidak Ditemukan"
-                :md-description="`Tidak Ada Produk Dengan Kata Kunci '${search}'. Cobalah Menggunakan Kata Kunci Lain.`">
+            <md-table-empty-state v-else-if="Object.keys(produks).length > 0 && search != null" md-label="Produk Tidak Ditemukan" :md-description="`Tidak Ada Produk Dengan Kata Kunci '${search}'. Cobalah Menggunakan Kata Kunci Lain.`">
             </md-table-empty-state>
 
             <md-table-row slot="md-table-row" slot-scope="{item}">
@@ -128,11 +114,13 @@
                 <span style="color: green" v-if="item.stok == 1">Tersedia</span>
                 <span style="color: red" v-else>Tidak Tersedia</span>
               </md-table-cell>
-              <md-table-cell md-label="Aksi">
+              <md-table-cell md-label="Edit">
                 <md-button :to="`/produk/edit/${item.id}`" class="md-fab md-dense md-primary">
                   <md-icon>edit</md-icon>
                   <md-tooltip md-direction="top">Edit</md-tooltip>
                 </md-button>
+              </md-table-cell>
+              <md-table-cell md-label="Hapus">
                 <md-button  @click="deleteProduk(item.id, item.nama_produk)" class="md-fab md-dense md-plain">
                   <md-icon>delete_forever</md-icon>
                   <md-tooltip md-direction="top">Hapus</md-tooltip>
@@ -147,13 +135,8 @@
             <span><md-icon style="color: white">done_all</md-icon></span>
           </md-snackbar>
 
-        <paging
-          v-if="!loading"
-          :dataPaging="produks"
-          :itemPerPage="10"
-          :range="5"
-          :search="searchResult"
-          @paginatedItems="getPaginatedItems($event)"></paging>
+            <pagination :data="produks" v-on:pagination-change-page="getProdukData" :limit="4"></pagination>
+
         </md-card-content>
       </md-card>
 
@@ -174,7 +157,7 @@
 
   export default {
     data: () => ({
-    	url: window.location.origin + (window.location.pathname + 'produk/'),
+    	url: window.location.origin + window.location.pathname,
       search: null,
 	    promptDelete: false,
 			snackbarDelete: false,
@@ -183,23 +166,20 @@
       notifMessage: '',
       notifSuccess: false,
       searchable_produk: [],
-      produks: [],
-      searchBy: 'nama_produk',
+      produks: {},
       loading: true,
       maxChecked: 0,
-      searchResult: {},
       alert: false
     }),
-    created() {
-    	this.getProdukData();
+    mounted() {
+      const app = this
+    	app.getProdukData();
     },
     watch: {
       search() {
-        this.searchProduks();
+        const app = this
+    	  app.getProdukData();
       },
-      searchBy() {
-        this.searchProduks();
-      }
     },
     filters: {
       currency(number) {
@@ -210,51 +190,46 @@
       },
     },
     methods: {
-      searchProduks() {
-        if (this.search != null) {
-          this.searchResult = this.produks.filter(item => toLower(item[this.searchBy]).includes(toLower(this.search)));
-        } else {
-          this.searchResult = this.produks;
+    	getProdukData(page) {
+        const app = this
+        if(typeof page === 'undefined'){
+          page = 1
         }
-      },
-      getPaginatedItems(value) {
-        this.searchable_produk = value;
-      },
-    	getProdukData() {
-    		axios.get(this.url + 'view')
-    		.then(resp => {
-          $.each(resp.data, function (i, item) {
-            resp.data[i].tampil_produk = item.tampil_produk == 1 ? true : false;
+        let url
+        app.search ? url = `${app.url}produk/pencarian?page=${page}&search=${app.search}` : url = `${app.url}produk?page=${page}`
+    		axios.get(url).then(resp => {
+          const { produk } = resp.data
+          $.each(produk.data, (i, item) => {
+            produk.data[i].tampil_produk = item.tampil_produk == 1 ? true : false;
           });
-
-          this.produks = resp.data;
-      		this.searchable_produk = resp.data;
-          this.jumlahTampil();
-
-    			this.loading = false;
+          app.produks = produk;
+      		app.searchable_produk = produk.data;
+          app.jumlahTampil();
+    			app.loading = false;
     		})
     		.catch(resp => {
           console.log('catch getProdukData:', resp);
-    			console.log(resp);
     		});
     	},
       tampilProduk(id, data, nama) {
+        const app = this
         let hasil = data == true ? "Ditampilkan" : "Disembunyikan";
 
-    		axios.get(this.url + "update-tampil-produk/" + id + "/" + data)
+    		axios.get(`${app.url}produk/update-tampil-produk/${id}/${data}`)
     		.then(resp => {
-          this.jumlahTampil();
-          this.notifMessage = `${nama.replace(/(^|\s)\S/g, l => l.toUpperCase())} Berhasil ${hasil}.`
-          this.notifSuccess = true;
+          app.jumlahTampil();
+          app.notifMessage = `${nama.replace(/(^|\s)\S/g, l => l.toUpperCase())} Berhasil ${hasil}.`
+          app.notifSuccess = true;
     		})
     		.catch(resp => {
     			console.log('catch tampilProduk:', resp);
     		})
       },
       jumlahTampil() {
-        axios.get(this.url + "jumlah-tampil")
+        const app = this
+        axios.get(`${app.url}produk/jumlah-tampil`)
     		.then(resp => {
-          this.maxChecked = resp.data
+          app.maxChecked = resp.data
     		})
     		.catch(resp => {
           console.log('catch jumlahTampil:', resp);
@@ -262,17 +237,18 @@
     		})
       },
     	onConfirmDelete() {
-    		axios.delete(this.url + this.produkId)
+        const app = this
+    		axios.delete(`${app.urlproduk}/${app.produkId}`)
     		.then(resp => {
           if(resp.data === 200){
-              this.notifMessage = `Berhasil Menghapus Produk ${this.produkDelete}.`
-              this.produkId = '';
-              this.produkDelete = '';
-              this.snackbarDelete = true;
-              this.notifSuccess = true;
-              this.getProdukData();
+              app.notifMessage = `Berhasil Menghapus Produk ${app.produkDelete}.`
+              app.produkId = '';
+              app.produkDelete = '';
+              app.snackbarDelete = true;
+              app.notifSuccess = true;
+              app.getProdukData();
           }else{
-              this.alert = true
+              app.alert = true
           }
     		})
     		.catch(resp => {
@@ -280,10 +256,10 @@
     		})
     	},
     	deleteProduk(produkId, produkName) {
-    		this.promptDelete = true;
-    		this.produkId = produkId;
-    		this.produkDelete = produkName;
-    		this.notifMessage = `Apakah Anda Yakin Menghapus Produk <b>${produkName}</b> ?`;
+    		app.promptDelete = true;
+    		app.produkId = produkId;
+    		app.produkDelete = produkName;
+    		app.notifMessage = `Apakah Anda Yakin Menghapus Produk <b>${produkName}</b> ?`;
     	}
     }
   }

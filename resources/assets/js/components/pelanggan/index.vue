@@ -80,41 +80,30 @@
           <md-card-header-text>
             <div class="md-toolbar" style="margin-top: -20px; padding: 4px">
               <div class="header-title md-toolbar-section-start" style="padding-right:10px">Pelanggan</div>
-              <div class="header-title md-toolbar-section-end">
-                <div class="md-layout">
-			        		<div class="md-layout-item md-medium-size-60 md-small-size-60 md-xsmall-size-60">
-						        <md-field md-inline>
-						        	<label class="media-screen-xsmall-hide">Cari Dengan ...</label>
-						        	<label class="media-screen-medium-hide">Cari Dengan ...</label>
-						          <md-input v-model="search" />
-						        </md-field>
-			        		</div>
-			        		<div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
-						        <md-field>
-						          <md-select v-model="searchBy" name="searchBy" id="searchBy" md-dense>
-						            <md-option value="name">Nama</md-option>
-						            <md-option value="email">Email</md-option>
-						          </md-select>
-						        </md-field>
-			        		</div>
-			        	</div>
-              </div>
             </div>
           </md-card-header-text>
         </md-card-header>
         <md-card-content>
-          <md-button :to="`/pelanggan/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah Pelanggan</md-button>
+          <div class="row">
+            <div class="col-md-9">
+              <md-button :to="`/pelanggan/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah Pelanggan</md-button>
+              <md-button :href="`${url}/download-excel`" class="md-dense" style="background-color: #d44723; color: white">Download Pelanggan</md-button>
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" name="pencarian" v-model="search" placeholder="Masukan Pencarian disini ..." style="font-size : 13px; font-style: italic">
+            </div>
+          </div>
       		<md-table v-model="searchable_pelanggan" md-sort="name" md-sort-order="asc" md-fixed-header>
 			      <md-table-empty-state v-if="loading">
 					    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
 			      </md-table-empty-state>
 			      <md-table-empty-state
-			      	v-else-if="pelanggans.length == 0"
+			      	v-else-if="Object.keys(pelanggans).length == 0"
 			        md-label="Tidak ada data"
 			        md-description="Belum ada data Pelanggan yang tersimpan.">
 			      </md-table-empty-state>
 			      <md-table-empty-state
-			      	v-else-if="pelanggans.length > 0 && search != null"
+			      	v-else-if="Object.keys(pelanggans).length > 0 && search != null"
 			        md-label="Tidak ada Pelanggan ditemukan"
 			        :md-description="`Tidak ada Pelanggan ditemukan untuk kata kunci '${search}'. Cobalah menggunakan kata kunci yang lain.`">
 			      </md-table-empty-state>
@@ -123,26 +112,25 @@
 			        <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
 			        <md-table-cell md-label="Nama" md-sort-by="name">{{ item.name }}</md-table-cell>
 			        <md-table-cell md-label="Email" md-sort-by="email">{{ item.email }}</md-table-cell>
-               <md-table-cell md-label="Aksi">
-                <md-button :to="`/pelanggan/edit/${item.id}`" class="md-fab md-dense md-primary">
-                  <md-icon>edit</md-icon>
-                  <md-tooltip md-direction="top">Edit</md-tooltip>
-                </md-button>
-                <md-button @click="deletePelanggan(item.id)" class="md-fab md-dense md-plain">
-                  <md-icon>delete_forever</md-icon>
-                  <md-tooltip md-direction="top">Hapus</md-tooltip>
-                </md-button>
+			        <md-table-cell md-label="No. Telpon" md-sort-by="no_telp">{{ item.no_telp }}</md-table-cell>
+			        <md-table-cell md-label="Alamat" md-sort-by="alamat">{{ item.alamat }}</md-table-cell>
+              <md-table-cell md-label="Edit">
+               <md-button :to="`/pelanggan/edit/${item.id}`" class="md-fab md-dense md-primary">
+                 <md-icon>edit</md-icon>
+                 <md-tooltip md-direction="top">Edit</md-tooltip>
+               </md-button>
+              </md-table-cell>
+              <md-table-cell md-label="Hapus">
+               <md-button @click="deletePelanggan(item.id)" class="md-fab md-dense md-plain">
+                 <md-icon>delete_forever</md-icon>
+                 <md-tooltip md-direction="top">Hapus</md-tooltip>
+               </md-button>
               </md-table-cell>
 			      </md-table-row>
 			    </md-table>
 
-          <paging
-            v-if="!loading"
-            :dataPaging="pelanggans"
-            :itemPerPage="10"
-            :range="5"
-            :search="searchResult"
-            @paginatedItems="getPaginatedItems($event)"></paging>
+            <pagination :data="pelanggans" v-on:pagination-change-page="getPelangganData" :limit="4"></pagination>
+
         </md-card-content>
       </md-card>
 
@@ -162,60 +150,55 @@ const toLower = text => {
 
 export default {
   data: () => ({
-  	url: window.location.origin + (window.location.pathname + 'pelanggan'),
+  	url: window.location.origin + window.location.pathname + 'pelanggan',
     search: null,
     promptDeletePelanggan: false,
 		snackbarDeletePelanggan: false,
     pelangganIdForDelete: '',
     searchable_pelanggan: [],
-    pelanggans: [],
-    searchBy: 'name',
+    pelanggans: {},
     loading: true,
-    searchResult: false,
 		alert: false
   }),
   created() {
-  	this.getPelangganData();
+      const app = this
+  	  app.getPelangganData();
   },
   watch: {
     search() {
-      this.searchPelanggans();
+      const app = this
+      app.getPelangganData();
     },
-    searchBy() {
-      this.searchPelanggans();
-    }
   },
   methods: {
-    searchPelanggans() {
-      if (this.search != null) {
-        this.searchResult = this.pelanggans.filter(item => toLower(item[this.searchBy]).includes(toLower(this.search)));
-      } else {
-        this.searchResult = this.pelanggans;
+  	getPelangganData(page) {
+      const app = this
+      let url
+      if(typeof page === 'undefined'){
+        page = 1
       }
-    },
-    getPaginatedItems(value) {
-      this.searchable_pelanggan = value;
-    },
-  	getPelangganData() {
-  		axios.get(this.url)
+      app.search ? url = `${app.url}/pencarian?page=${page}&search=${app.search}` : url = `${app.url}?page=${page}`
+  		axios.get(url)
   		.then(resp => {
-  			this.pelanggans = resp.data;
-  			this.searchable_pelanggan = resp.data;
-  			this.loading = false;
+        const { pelanggan } = resp.data
+  			app.pelanggans = pelanggan;
+  			app.searchable_pelanggan = pelanggan.data;
+  			app.loading = false;
   		})
   		.catch(resp => {
   			console.log('catch getPelangganData:', resp);
   		});
   	},
   	onConfirmDelete() {
-  		axios.delete(this.url + '/' + this.pelangganIdForDelete)
+      const app = this
+  		axios.delete(`${app.url}/${app.pelangganIdForDelete}`)
   		.then(resp => {
         if(resp.data == 200){
-            this.pelangganIdForDelete = '';
-            this.snackbarDeletePelanggan = true;
-            this.getPelangganData();
+            app.pelangganIdForDelete = '';
+            app.snackbarDeletePelanggan = true;
+            app.getPelangganData();
         }else{
-            this.alert =  true
+            app.alert =  true
         }
   		})
   		.catch(resp => {
@@ -223,8 +206,9 @@ export default {
   		})
   	},
   	deletePelanggan(pelangganId) {
-  		this.promptDeletePelanggan = true;
-  		this.pelangganIdForDelete = pelangganId;
+      const app = this
+  		app.promptDeletePelanggan = true;
+  		app.pelangganIdForDelete = pelangganId;
   	}
   }
 }

@@ -66,11 +66,13 @@
                   {{ item.isi_berita }}
                 </md-table-cell>
 
-                <md-table-cell md-label="Aksi">
+                <md-table-cell md-label="Edit">
                   <md-button :to="`/berita-kami/edit/${item.id}`" class="md-fab md-dense md-primary">
                     <md-icon>edit</md-icon>
                     <md-tooltip md-direction="top">Edit</md-tooltip>
                   </md-button>
+                </md-table-cell>
+                <md-table-cell md-label="Hapus">
                   <md-button  @click="deleteBerita(item.id, item.judul_berita)" class="md-fab md-dense md-plain">
                     <md-icon>delete_forever</md-icon>
                     <md-tooltip md-direction="top">Hapus</md-tooltip>

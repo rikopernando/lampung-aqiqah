@@ -69,19 +69,20 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 // User
-Route::get('/user/view', 'UserController@view');
+Route::get('/user/pencarian', 'UserController@search');
 Route::get('/user/detail-akun', 'UserController@detailAkun');
 Route::put('/user/simpan-detail-akun', 'UserController@simpanDetailAkun');
 Route::put('/user/simpan-alamat', 'UserController@simpanAlamat');
 Route::resource('user', 'UserController');
 
 //Bank
-Route::get('/bank/view', 'BankController@view');
+Route::get('/bank/pencarian', 'BankController@search');
 Route::get('/bank/update-default-bank/{id}/{boolean}', 'BankController@updateDefaultBank');
 Route::get('/bank/count-default', 'BankController@countDefault');
 Route::resource('bank', 'BankController');
 //Produk
-Route::get('/produk/view', 'ProdukController@view');
+
+Route::get('/produk/pencarian', 'ProdukController@search');
 Route::post('/produk/{id}', 'ProdukController@update');
 Route::get('/produk/update-tampil-produk/{id}/{boolean}', 'ProdukController@updateTampilProduk');
 Route::get('/produk/jumlah-tampil', 'ProdukController@jumlahTampil');
@@ -118,6 +119,10 @@ Route::resource('testimoni', 'TestimoniController');
 Route::get('/berita/view', 'BeritaKamiController@view');
 Route::post('/berita/{id}', 'BeritaKamiController@update');
 Route::resource('berita', 'BeritaKamiController');
+
+// Pelanggan
+Route::get('pelanggan/pencarian', 'PelangganController@search');
+Route::get('pelanggan/download-excel', 'PelangganController@downloadExcel');
 Route::resource('pelanggan', 'PelangganController');
 
 // Mitra

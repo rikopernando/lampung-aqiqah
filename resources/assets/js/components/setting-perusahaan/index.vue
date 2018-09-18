@@ -53,7 +53,7 @@
     <div class="col-md-12">
       <md-card>
         <ul class="breadcrumb">
-          <li><router-link :to="{name: 'dashboard'}">Dashboard</router-link></li>
+          <li><router-link :to="{name: 'dashboard'}" id="setting-perusahaan">Dashboard</router-link></li>
           <li class="active">Setting Perusahaan</li>
         </ul>
       </md-card>
@@ -71,6 +71,9 @@
           </md-card-header-text>
         </md-card-header>
         <md-card-content>
+          <ul class="error-message">
+            <li class="text-error" v-for="err in errors"> {{ err.toString() }} </li>
+          </ul>
           <form v-on:submit.prevent="saveForm()">
 
             <!-- Loading -->
@@ -271,6 +274,7 @@ export default {
         console.log('catch saveForm:', resp);
 		    document.getElementById("setting-perusahaan").focus({reventScroll:true})
         this.submitted = false;
+        this.errors = resp.response.data
       });
     },
     inputData() {

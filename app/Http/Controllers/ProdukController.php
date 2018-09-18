@@ -20,10 +20,6 @@ class ProdukController extends Controller
         $this->middleware('auth');
     }
 
-    public function view() {
-        return response(Produk::select()->get());
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -31,7 +27,24 @@ class ProdukController extends Controller
      */
     public function index()
     {
-        //
+       $produk = Produk::paginate(10);
+
+       return response()->json([
+            'produk' => $produk
+       ],200);
+    }
+
+    public function search(Request $request){
+        $produk = Produk::where(function ($produk) use ($request){
+            $produk->orWhere('nama_produk','LIKE','%'. $request->search .'%')
+                   ->orWhere('harga_coret','LIKE','%'. $request->search .'%')
+                   ->orWhere('harga_jual','LIKE','%'. $request->search .'%')
+                   ->orWhere('deskripsi_produk','LIKE','%'. $request->search .'%');
+        })->paginate(10);
+
+       return response()->json([
+            'produk' => $produk
+       ],200);
     }
 
     /**

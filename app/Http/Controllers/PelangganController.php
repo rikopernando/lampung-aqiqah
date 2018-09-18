@@ -7,6 +7,7 @@ use App\User;
 use App\Role;
 use App\Pesanan;
 use Auth;
+use Excel;
 
 class PelangganController extends Controller
 {
@@ -27,7 +28,25 @@ class PelangganController extends Controller
      */
     public function index()
     {
-         return response(User::select()->leftJoin('role_user','users.id','role_user.user_id')->where('role_id',2)->get());
+         $pelanggans = User::select()->leftJoin('role_user','users.id','role_user.user_id')->where('role_id',2)->paginate(10);
+         return response()->json([
+             'pelanggan' => $pelanggans 
+         ],200);
+    }
+
+    public function search(Request $request){
+
+         $pelanggans = User::select()->leftJoin('role_user','users.id','role_user.user_id')->where('role_id',2)
+                ->where(function ($pelanggans) use ($request){
+                $pelanggans->orWhere('name','LIKE','%'. $request->search .'%')
+                       ->orWhere('email','LIKE','%'. $request->search .'%')
+                       ->orWhere('alamat','LIKE','%'. $request->search .'%')
+                       ->orWhere('no_telp','LIKE','%'. $request->search .'%');
+               })->paginate(10);
+
+         return response()->json([
+             'pelanggan' => $pelanggans 
+         ],200);
     }
 
     /**
@@ -48,10 +67,20 @@ class PelangganController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request,[
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'no_telp' => 'required',
+            'alamat' => 'required',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'no_telp' => $request->no_telp,
+            'alamat' => $request->alamat
         ]);
         $memberRole = Role::where('name', 'member')->first();
         $user->attachRole($memberRole);
@@ -90,7 +119,14 @@ class PelangganController extends Controller
      */
     public function update(Request $request, $id)
     {
-        User::whereId($id)->update($request->all());
+        $this->validate($request,[
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,'.$id,
+            'no_telp' => 'required',
+            'alamat' => 'required',
+        ]);
+
+        $pelanggans = User::whereId($id)->update($request->all());
     }
 
     /**
@@ -110,5 +146,36 @@ class PelangganController extends Controller
                 'message' => 'Pelanggan Tidak Bisa Dihapus, karena sudah terpakai' 
             ]);
         }
+    }
+
+    public function downloadExcel(){
+        Excel::create('Pelanggan', function ($excel){
+            $excel->sheet('Pelanggan', function($sheet){
+              $row = 1;
+              $sheet->row($row,[
+                'PELANGGAN' 
+              ]);
+
+              $row = 3;
+              $sheet->row($row,[
+                'Nama',
+                'Email',
+                'No. Telpon',
+                'Alamat'
+              ]);
+
+              $row = ++$row;
+
+              $pelanggan = User::select()->leftJoin('role_user','users.id','role_user.user_id')->where('role_id',2)->get();
+              foreach($pelanggan as $pelanggans){
+                $sheet->row(++$row,[
+                    $pelanggans->name,
+                    $pelanggans->email,
+                    $pelanggans->no_telp,
+                    $pelanggans->alamat
+                ]);
+              }
+            });        
+        })->export('xls');
     }
 }
