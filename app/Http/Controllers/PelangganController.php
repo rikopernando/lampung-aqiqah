@@ -28,7 +28,25 @@ class PelangganController extends Controller
      */
     public function index()
     {
-         return response(User::select()->leftJoin('role_user','users.id','role_user.user_id')->where('role_id',2)->get());
+         $pelanggans = User::select()->leftJoin('role_user','users.id','role_user.user_id')->where('role_id',2)->paginate(10);
+         return response()->json([
+             'pelanggan' => $pelanggans 
+         ],200);
+    }
+
+    public function search(Request $request){
+
+         $pelanggans = User::select()->leftJoin('role_user','users.id','role_user.user_id')->where('role_id',2)
+                ->where(function ($pelanggans) use ($request){
+                $pelanggans->orWhere('name','LIKE','%'. $request->search .'%')
+                       ->orWhere('email','LIKE','%'. $request->search .'%')
+                       ->orWhere('alamat','LIKE','%'. $request->search .'%')
+                       ->orWhere('no_telp','LIKE','%'. $request->search .'%');
+               })->paginate(10);
+
+         return response()->json([
+             'pelanggan' => $pelanggans 
+         ],200);
     }
 
     /**

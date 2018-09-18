@@ -35,7 +35,7 @@ class CekTransfer extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->pesanans = Pesanan::whereNull('status_pesanan')->get();
+       // $this->pesanans = Pesanan::whereNull('status_pesanan')->get();
     }
 
     /**
