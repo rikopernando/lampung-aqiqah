@@ -24,7 +24,21 @@ class MitraController extends Controller
      */
     public function index()
     {
-         return response(Mitra::select()->get());
+         $mitra = Mitra::paginate(10);
+         return response()->json([
+             'mitra' => $mitra
+         ],200);
+    }
+
+    public function search(Request $request){
+        $mitra = Mitra::where(function ($mitra) use ($request) {
+                 $mitra->orWhere('nama_mitra','LIKE','%'. $request->search .'%') 
+                       ->orWhere('no_telp','LIKE','%'. $request->search .'%')
+                       ->orWhere('alamat','LIKE','%'. $request->search .'%');
+            })->paginate(10);
+         return response()->json([
+             'mitra' => $mitra
+         ],200);
     }
 
     /**

@@ -126,6 +126,7 @@ Route::get('pelanggan/download-excel', 'PelangganController@downloadExcel');
 Route::resource('pelanggan', 'PelangganController');
 
 // Mitra
+Route::get('mitra/pencarian', 'MitraController@search');
 Route::resource('mitra', 'MitraController');
 
 // Setting Perusahaan

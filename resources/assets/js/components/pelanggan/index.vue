@@ -143,11 +143,6 @@
 </template>
 
 <script>
-
-const toLower = text => {
-  return text.toString().toLowerCase();
-};
-
 export default {
   data: () => ({
   	url: window.location.origin + window.location.pathname + 'pelanggan',
