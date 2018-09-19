@@ -58,79 +58,89 @@ class PesananController extends Controller
 
       $this->validationPesanan($request);
 
-      if(Auth::check()){
-         $pelanggan_id = Auth::User()->id;
-         $keranjang_belanja = KeranjangBelanja::where('id_pelanggan',$pelanggan_id);
-      }else{
+      try {
 
-        $user = User::create([
-            'name' => $request->nama_pemesan,
-            'email' => $request->email,
-            'password' => bcrypt('123456'),
-        ]);
+          if(Auth::check()){
+             $pelanggan_id = Auth::User()->id;
+             $keranjang_belanja = KeranjangBelanja::where('id_pelanggan',$pelanggan_id);
+          }else{
 
-        $memberRole = Role::where('name' , 'member')->first();
-        $user->attachRole($memberRole);
+            $user = User::create([
+                'name' => $request->nama_pemesan,
+                'email' => $request->email,
+                'password' => bcrypt('123456'),
+            ]);
 
-        $pelanggan_id = $user->id;
-        $session_id = $this->getSessionId();
-        $keranjang_belanja = KeranjangBelanja::where('session_id',$session_id);
-      }
+            $memberRole = Role::where('name' , 'member')->first();
+            $user->attachRole($memberRole);
 
-      $update_alamat_user = User::find($pelanggan_id);
-      $update_alamat_user->update([
-        'provinsi' => $request->provinsi, 'kabupaten' => $request->kabupaten, 'kecamatan' => $request->kecamatan, 'kelurahan' => $request->kelurahan, 'alamat' => $request->alamat, 'no_telp' => $request->handphone
-      ]);
+            $pelanggan_id = $user->id;
+            $session_id = $this->getSessionId();
+            $keranjang_belanja = KeranjangBelanja::where('session_id',$session_id);
+          }
 
-      $kode_unik = Pesanan::kodeUniktransfer();
-      $total = $request->total + $kode_unik;
-
-      $new_pesanan = Pesanan::create([
-        'pelanggan_id' => $pelanggan_id,
-        'sumber_informasi' => $request->sumber_informasi,
-        'catatan' => $request->catatan,
-        'nama_peserta' => $request->nama_peserta,
-        'tempat_tanggal_lahir' => $request->tempat_tanggal_lahir,
-        'jenis_kelamin' => $request->jenis_kelamin_peserta,
-        'nama_ayah' => $request->nama_ayah,
-        'nama_ibu' => $request->nama_ibu,
-        'tempat_lahir' => $request->tempat_lahir,
-        'total' => $total,
-        'metode_pembayaran' => $request->metode_pembayaran,
-        'kode_unik' => $kode_unik
-      ]);
-
-      if($request->kirim_ke_alamat_lain){
-
-          $new_kirim_tempat_lain = KirimTempatLain::create([
-             'id_pesanan' => $new_pesanan->id,
-             'nama_depan' => $request->kirim_tempat_lain['nama_depan'],
-             'nama_belakang' => $request->kirim_tempat_lain['nama_belakang'],
-             'company_name' => $request->kirim_tempat_lain['company_name'],
-             'alamat' => $request->kirim_tempat_lain['alamat'],
-             'no_telp' => $request->kirim_tempat_lain['handphone'],
-             'provinsi' => $request->kirim_tempat_lain['provinsi'],
-             'kabupaten' => $request->kirim_tempat_lain['kabupaten'],
-             'kecamatan' => $request->kirim_tempat_lain['kecamatan'],
-             'kelurahan' => $request->kirim_tempat_lain['kelurahan']
+          $update_alamat_user = User::find($pelanggan_id);
+          $update_alamat_user->update([
+            'provinsi' => $request->provinsi, 'kabupaten' => $request->kabupaten, 'kecamatan' => $request->kecamatan, 'kelurahan' => $request->kelurahan, 'alamat' => $request->alamat, 'no_telp' => $request->handphone
           ]);
 
+          $kode_unik = Pesanan::kodeUniktransfer();
+          $total = $request->total + $kode_unik;
+
+          $new_pesanan = Pesanan::create([
+            'pelanggan_id' => $pelanggan_id,
+            'sumber_informasi' => $request->sumber_informasi,
+            'catatan' => $request->catatan,
+            'nama_peserta' => $request->nama_peserta,
+            'tempat_tanggal_lahir' => $request->tempat_tanggal_lahir,
+            'jenis_kelamin' => $request->jenis_kelamin_peserta,
+            'nama_ayah' => $request->nama_ayah,
+            'nama_ibu' => $request->nama_ibu,
+            'tempat_lahir' => $request->tempat_lahir,
+            'total' => $total,
+            'metode_pembayaran' => $request->metode_pembayaran,
+            'kode_unik' => $kode_unik
+          ]);
+
+          if($request->kirim_ke_alamat_lain){
+
+              $new_kirim_tempat_lain = KirimTempatLain::create([
+                 'id_pesanan' => $new_pesanan->id,
+                 'nama_depan' => $request->kirim_tempat_lain['nama_depan'],
+                 'nama_belakang' => $request->kirim_tempat_lain['nama_belakang'],
+                 'company_name' => $request->kirim_tempat_lain['company_name'],
+                 'alamat' => $request->kirim_tempat_lain['alamat'],
+                 'no_telp' => $request->kirim_tempat_lain['handphone'],
+                 'provinsi' => $request->kirim_tempat_lain['provinsi'],
+                 'kabupaten' => $request->kirim_tempat_lain['kabupaten'],
+                 'kecamatan' => $request->kirim_tempat_lain['kecamatan'],
+                 'kelurahan' => $request->kirim_tempat_lain['kelurahan']
+              ]);
+
+          }
+
+
+          foreach($keranjang_belanja->get() as $data) {
+            $new_detail_pesanan = DetailPesanan::create([
+              'id_pesanan' => $new_pesanan->id, 'id_produk' => $data->id_produk, 'pelanggan_id' => $pelanggan_id, 'jumlah_produk' => $data->jumlah_produk, 'harga_produk' => $data->harga_produk, 'potongan' => $data->potongan, 'subtotal' => $data->subtotal
+            ]);            
+          }
+
+          $keranjang_belanja->delete();
+
+          $new_pesanan->pesananDiterima();
+
+          DB::commit();
+
+          return $new_pesanan->id;
+      }
+      catch (Exception $err){
+          DB::rollBack();
+          return response()->json([
+                'error' => $err 
+          ],500); 
       }
 
-
-      foreach($keranjang_belanja->get() as $data) {
-        $new_detail_pesanan = DetailPesanan::create([
-          'id_pesanan' => $new_pesanan->id, 'id_produk' => $data->id_produk, 'pelanggan_id' => $pelanggan_id, 'jumlah_produk' => $data->jumlah_produk, 'harga_produk' => $data->harga_produk, 'potongan' => $data->potongan, 'subtotal' => $data->subtotal
-        ]);            
-      }
-
-      $keranjang_belanja->delete();
-
-      $new_pesanan->pesananDiterima();
-
-      DB::commit();
-
-      return $new_pesanan->id;
     }
 
     /**

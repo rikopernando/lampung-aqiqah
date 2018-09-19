@@ -350,7 +350,7 @@ class LaporanOrderController extends Controller
         ];
 
         Mail::send('mails.'. $arrayN[$request->n][0], compact('pesanan','detail_pesanan','kirim_tempat_lain','bank'), function ($message) use ($pesanan, $request, $arrayN) {
-              $message->from('verifikasi@andaglos.id','Aqiqah Lampung');
+              $message->from('aqiqahlampung@muliajayaindofarm.com','Aqiqah Lampung');
               $message->to($pesanan->email);
               $message->subject('Pesanan Anda Telah Kami '. $arrayN[$request->n][1]);
         });
