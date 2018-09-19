@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host'       => env('MAIL_HOST', 'mail.andaglos.id'),
+    'host'       => env('MAIL_HOST', 'mail.muliajayaindofarm.com'),
 
 
     /*
