@@ -16,42 +16,30 @@
             <md-card-header-text>
               <div class="md-toolbar" style="margin-top: -20px; padding: 4px">
                 <div class="header-title md-toolbar-section-start" style="padding-right:10px">Berita Kami</div>
-                <div class="header-title md-toolbar-section-end">
-                  <div class="md-layout">
-                  <div class="md-layout-item md-medium-size-60 md-small-size-60 md-xsmall-size-60">
-                    <md-field md-inline>
-                        <label class="media-screen-xsmall-hide">Cari Dengan ...</label>
-                        <label class="media-screen-medium-hide">Cari Dengan ...</label>
-                      <md-input v-model="search" />
-                    </md-field>
-                  </div>
-                  <div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
-                    <md-field>
-                      <md-select v-model="searchBy" name="searchBy" id="searchBy" md-dense>
-                        <md-option value="judul_berita">Judul Berita</md-option>
-                        <md-option value="isi_berita">Isi Berita</md-option>
-                      </md-select>
-                    </md-field>
-                    </div>
-                  </div>
-                </div>
               </div>
             </md-card-header-text>
           </md-card-header>
 
           <md-card-content>
-            <md-button :to="`/berita-kami/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah Berita</md-button>
+              <div class="row">
+                <div class="col-md-9">
+                  <md-button :to="`/berita-kami/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah Berita</md-button>
+                </div>
+                <div class="col-md-3">
+                  <input class="form-control" name="pencarian" v-model="search" placeholder="Masukan Pencarian disini ..." style="font-size : 13px; font-style: italic">
+                </div>
+              </div>
 
             <md-table v-model="searchable_berita" md-sort="name" md-sort-order="asc" md-fixed-header>
-            <md-table-empty-state v-if="$store.state.berita.loading">
+            <md-table-empty-state v-if="loading">
               <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
             </md-table-empty-state>
 
-              <md-table-empty-state v-else-if="beritas.length == 0" md-label="Tidak Ada Data"
+              <md-table-empty-state v-else-if="searchable_berita.length == 0" md-label="Tidak Ada Data"
                   md-description="Belum Ada Berita Yang Tersimpan.">
               </md-table-empty-state>
 
-              <md-table-empty-state v-else-if="beritas.length > 0 && search != null" md-label="Berita Tidak Ditemukan"
+              <md-table-empty-state v-else-if="Object.keys(beritas).length > 0 && search != null" md-label="Berita Tidak Ditemukan"
                   :md-description="`Tidak Ada Berita Dengan Kata Kunci '${search}'. Cobalah Menggunakan Kata Kunci Lain.`">
               </md-table-empty-state>
 
@@ -81,13 +69,7 @@
               </md-table-row>
             </md-table>
 
-            <paging
-              v-if="!$store.state.berita.loading"
-              :dataPaging="beritas"
-              :itemPerPage="10"
-              :range="5"
-              :search="searchResult"
-              @paginatedItems="getPaginatedItems($event)"></paging>
+            <pagination :data="beritas" v-on:pagination-change-page="getBeritaData" :limit="4"></pagination>
 
             <!-- Snackbar for success alert -->
             <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="notifSuccess">
@@ -95,9 +77,6 @@
               <span><md-icon style="color: white">done_all</md-icon></span>
             </md-snackbar>
 
-            <div style="display: none">
-              {{ daftarBerita }}
-            </div>
           </md-card-content>
         </md-card>
 
@@ -111,45 +90,29 @@
 </template>
 
 <script>
-
-  import { mapState } from 'vuex';
-
-  const toLower = text => {
-    return text.toString().toLowerCase();
-  };
-
   export default {
     data: () => ({
-      url: window.location.origin + (window.location.pathname + 'berita/'),
-      beritas: [],
+      url: window.location.origin + window.location.pathname + 'berita',
+      beritas: {},
       searchable_berita: [],
       search: null,
   	  promptDelete: false,
   	  snackbarDelete: false,
       notifMessage: '',
       notifSuccess: false,
-      searchBy: 'judul_berita',
       beritaId: '',
       beritaDelete: '',
-      searchResult: {},
+      loading: true
     }),
     mounted() {
-      this.$store.dispatch('berita/LOAD_BERITA');
+      const app = this
+      app.getBeritaData()
     },
-    computed: mapState ({
-      daftarBerita() {
-        this.beritas = this.$store.state.berita.daftarBerita;
-        this.searchable_berita = this.$store.state.berita.daftarBerita;
-        return this.$store.state.berita.daftarBerita;
-      }
-    }),
     watch: {
       search() {
-        this.searchBerita();
+        const app = this
+        app.getBeritaData()
       },
-      searchBy() {
-        this.searchBerita();
-      }
     },
     filters: {
       selengkapnya: (value) => {
@@ -160,35 +123,40 @@
       }
     },
     methods: {
-      searchBerita() {
-        if (this.search != null) {
-          this.searchResult = this.beritas.filter(item => toLower(item[this.searchBy]).includes(toLower(this.search)));
-        } else {
-          this.searchResult = this.beritas;
+      getBeritaData(page){
+        const app = this
+        let url 
+        if(typeof page === 'undefined'){
+          page = 1
         }
-      },
-      getPaginatedItems(value) {
-        this.searchable_berita = value;
-      },
-      searchOnTable() {
-        this.searchable_berita = searchBerita(this.beritas, this.search, this.searchBy);
+        app.search ? url = `${app.url}/pencarian?page=${page}&search=${app.search}` : url = `${app.url}?page=${page}`
+        axios.get(url).then((resp) => {
+          const { berita_kami } = resp.data
+          app.beritas = berita_kami
+          app.searchable_berita = berita_kami.data
+          app.loading = false
+        })
+        .catch((err) => {
+    			console.log('catch getTestimoniData:',err);
+        })
       },
     	deleteBerita(beritaId, judul) {
-    		this.promptDelete = true;
-    		this.beritaId = beritaId;
-    		this.beritaDelete = judul;
-    		this.notifMessage = `Apakah Anda Yakin Menghapus Berita <strong>${judul}</strong> ?`;
+        const app = this
+    		app.promptDelete = true;
+    		app.beritaId = beritaId;
+    		app.beritaDelete = judul;
+    		app.notifMessage = `Apakah Anda Yakin Menghapus Berita <strong>${judul}</strong> ?`;
     	},
       onConfirmDelete() {
-    		axios.delete(this.url + this.beritaId)
+        const app = this
+    		axios.delete(`${app.url}/${app.beritaId}`)
     		.then(resp => {
-          this.notifMessage = `Berhasil Menghapus Berita ${this.beritaDelete}.`;
-          this.beritaId = '';
-          this.beritaDelete = '';
-          this.snackbarDelete = true;
-          this.notifSuccess = true;
-          this.$store.dispatch('berita/LOAD_BERITA');
-
+          app.notifMessage = `Berhasil Menghapus Berita ${app.beritaDelete}.`;
+          app.beritaId = '';
+          app.beritaDelete = '';
+          app.snackbarDelete = true;
+          app.notifSuccess = true;
+          app.getBeritaData()
     		})
     		.catch(resp => {
     			console.log('catch onConfirmDelete:', resp);

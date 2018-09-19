@@ -57,7 +57,14 @@
           </md-card-header>
 
           <md-card-content>
-            <md-button :to="`/testimoni/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah Testimoni</md-button>
+              <div class="row">
+                <div class="col-md-9">
+                  <md-button :to="`/testimoni/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah Testimoni</md-button>
+                </div>
+                <div class="col-md-3">
+                  <input class="form-control" name="pencarian" v-model="search" placeholder="Masukan Pencarian disini ..." style="font-size : 13px; font-style: italic">
+                </div>
+              </div>
 
             <md-table v-model="searchable_testimoni" md-sort="name" md-sort-order="asc" md-fixed-header>
               <md-table-empty-state v-if="loading">

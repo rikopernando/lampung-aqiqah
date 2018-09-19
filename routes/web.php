@@ -117,7 +117,7 @@ Route::post('/testimoni/{id}', 'TestimoniController@update');
 Route::resource('testimoni', 'TestimoniController');
 
 //Testimoni
-Route::get('/berita/view', 'BeritaKamiController@view');
+Route::get('/berita/pencarian', 'BeritaKamiController@search');
 Route::post('/berita/{id}', 'BeritaKamiController@update');
 Route::resource('berita', 'BeritaKamiController');
 
