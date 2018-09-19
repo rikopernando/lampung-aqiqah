@@ -70,7 +70,7 @@ class Pesanan extends Model
         $bank = Bank::where('default',1)->first();
 
         Mail::send('mails.pesanan_diterima', compact('pesanan','detail_pesanan','kirim_tempat_lain','bank'), function ($message) use ($pesanan) {
-              $message->from('verifikasi@andaglos.id','Aqiqah Lampung');
+              $message->from('aqiqahlampung@muliajayaindofarm.com','Aqiqah Lampung');
               $message->to($pesanan->pelanggan->email);
               $message->subject('Pesanan Anda Telah Kami Terima');
         });
@@ -79,7 +79,7 @@ class Pesanan extends Model
         $email = SettingPerusahaan::select()->first()->email;
 
         Mail::send('mails.notifikasi_admin', compact('id_pesanan'), function ($message) use ($email) {
-              $message->from('verifikasi@andaglos.id','Aqiqah Lampung');
+              $message->from('aqiqahlampung@muliajayaindofarm.com','Aqiqah Lampung');
               $message->to($email);
               $message->subject('Ada Pesanan baru di Aqiqah Lampung');
         });
