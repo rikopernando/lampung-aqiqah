@@ -27,11 +27,7 @@ class LaporanOrderController extends Controller
     public function view()
     {
         $dataLaporan = [];
-        $laporan_order = DB::table('pesanans')
-            ->join('users', 'pesanans.pelanggan_id', '=', 'users.id')
-            ->select('users.name as nama_pelanggan', 'pesanans.id as id_pesanan', 'pesanans.created_at as waktu_pesan', 'pesanans.total', 'pesanans.status_pesanan')
-            ->orderBy('pesanans.created_at', 'desc')
-            ->get();
+        $laporan_order = Pesanan::LaporanOrder()->orderBy('pesanans.created_at', 'desc')->paginate(10);
 
         foreach ($laporan_order as $laporan) {
             $dataLaporan[] = [
@@ -43,7 +39,58 @@ class LaporanOrderController extends Controller
                 'timeago' => $this->timeago(time() - strtotime($laporan->waktu_pesan))
             ];
         }
-        return response($dataLaporan);
+
+        return response()->json([
+            'laporan_order' => $this->pagination($dataLaporan,$laporan_order,'laporan-order/view')
+        ]);
+    }
+    
+    public function search(Request $request)
+    {
+        $dataLaporan = [];
+        $laporan_order = Pesanan::LaporanOrder()->where(function ($laporan_order) use ($request){
+                   $laporan_order->orWhere('users.name','LIKE','%'. $request->search .'%') 
+                   ->orWhere('pesanans.id','LIKE','%'. $request->search .'%')
+                   ->orWhere('pesanans.created_at','LIKE','%'. $request->search .'%')
+                   ->orWhere('pesanans.total','LIKE','%'. $request->search .'%')
+                   ->orWhere('pesanans.status_pesanan','LIKE','%'. $request->search .'%');
+            })
+            ->orderBy('pesanans.created_at', 'desc')
+            ->paginate(10);
+
+        foreach ($laporan_order as $laporan) {
+            $dataLaporan[] = [
+                'id_pesanan' => $laporan->id_pesanan,
+                'nama_pelanggan' => $laporan->nama_pelanggan,
+                'waktu' => $laporan->waktu_pesan,
+                'total' => $laporan->total,
+                'status_pesanan' => $laporan->status_pesanan,
+                'timeago' => $this->timeago(time() - strtotime($laporan->waktu_pesan))
+            ];
+        }
+
+        return response()->json([
+            'laporan_order' => $this->pagination($dataLaporan,$laporan_order,'laporan-order/pencarian')
+        ]);
+    }
+    
+    public function pagination($dataLaporan,$laporan_order,$url){
+
+        $respons['current_page']   = $laporan_order->currentPage();
+        $respons['data']           = $dataLaporan;
+        $respons['first_page_url'] = $laporan_order->firstItem();
+        $respons['from']           = 1;
+        $respons['last_page']      = $laporan_order->lastPage();
+        $respons['last_page_url']  = $laporan_order->lastPage();
+        $respons['next_page_url']  = $laporan_order->nextPageUrl();
+        $respons['path']           = url($url);
+        $respons['per_page']       = $laporan_order->perPage();
+        $respons['prev_page_url']  = $laporan_order->previousPageUrl();
+        $respons['to']             = $laporan_order->perPage();
+        $respons['total']          = $laporan_order->total();
+
+        return $respons;
+
     }
 
     public function detail_order($id_pesanan) {
