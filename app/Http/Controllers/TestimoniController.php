@@ -15,8 +15,17 @@ class TestimoniController extends Controller
      */
 
 
-    public function view() {
-        return response(Testimoni::select()->get());
+    public function search(Request $request) {
+        $testimoni = Testimoni::where(function ($testimoni) use ($request){
+               $testimoni->orWhere('nama_lengkap','LIKE','%'. $request->search .'%')
+               ->orWhere('profesi','LIKE','%'. $request->search .'%')
+               ->orWhere('profesi','LIKE','%'. $request->search .'%')
+               ->orWhere('testimoni','LIKE','%'. $request->search .'%');
+        })->paginate(10);
+
+        return response()->json([
+            'testimoni' => $testimoni 
+        ],200);
     }
 
     /**
@@ -26,7 +35,10 @@ class TestimoniController extends Controller
      */
     public function index()
     {
-        //
+        $testimoni = Testimoni::paginate(10);
+        return response()->json([
+            'testimoni' => $testimoni 
+        ],200);
     }
 
     /**

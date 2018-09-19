@@ -112,7 +112,7 @@ Route::post('/keranjang-belanja/jumlah-pesanan', 'KeranjangBelanjaController@jum
 Route::resource('keranjang-belanja', 'KeranjangBelanjaController');
 
 //Testimoni
-Route::get('/testimoni/view', 'TestimoniController@view');
+Route::get('/testimoni/pencarian', 'TestimoniController@search');
 Route::post('/testimoni/{id}', 'TestimoniController@update');
 Route::resource('testimoni', 'TestimoniController');
 
