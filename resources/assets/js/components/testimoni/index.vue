@@ -52,43 +52,30 @@
             <md-card-header-text>
               <div class="md-toolbar" style="margin-top: -20px; padding: 4px">
                 <div class="header-title md-toolbar-section-start" style="padding-right:10px">Testimoni</div>
-                <div class="header-title md-toolbar-section-end">
-                  <div class="md-layout">
-                  <div class="md-layout-item md-medium-size-60 md-small-size-60 md-xsmall-size-60">
-                    <md-field md-inline>
-                      <label class="media-screen-xsmall-hide">Cari Dengan ...</label>
-                      <label class="media-screen-medium-hide">Cari Dengan ...</label>
-                      <md-input v-model="search" />
-                    </md-field>
-                  </div>
-                  <div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
-                    <md-field>
-                      <md-select v-model="searchBy" name="searchBy" id="searchBy" md-dense>
-                        <md-option value="nama_lengkap">Nama</md-option>
-                        <md-option value="profesi">Profesi</md-option>
-                        <md-option value="testimoni">Testimoni</md-option>
-                      </md-select>
-                    </md-field>
-                    </div>
-                  </div>
-                </div>
               </div>
             </md-card-header-text>
           </md-card-header>
 
           <md-card-content>
-            <md-button :to="`/testimoni/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah Testimoni</md-button>
+              <div class="row">
+                <div class="col-md-9">
+                  <md-button :to="`/testimoni/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah Testimoni</md-button>
+                </div>
+                <div class="col-md-3">
+                  <input class="form-control" name="pencarian" v-model="search" placeholder="Masukan Pencarian disini ..." style="font-size : 13px; font-style: italic">
+                </div>
+              </div>
 
             <md-table v-model="searchable_testimoni" md-sort="name" md-sort-order="asc" md-fixed-header>
-              <md-table-empty-state v-if="$store.state.testimoni.loading">
+              <md-table-empty-state v-if="loading">
         		    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
               </md-table-empty-state>
 
-              <md-table-empty-state v-else-if="testimonis.length == 0" md-label="Tidak Ada Data"
+              <md-table-empty-state v-else-if="Object.keys(testimonis).length == 0" md-label="Tidak Ada Data"
                   md-description="Belum Ada Testimoni Yang Tersimpan.">
               </md-table-empty-state>
 
-              <md-table-empty-state v-else-if="testimonis.length > 0 && search != null" 
+              <md-table-empty-state v-else-if="Object.keys(testimonis).length > 0 && search != null" 
                 md-label="Testimoni Tidak Ditemukan" 
                 :md-description="`Tidak Ada Testimoni Dengan Kata Kunci '${search}'. Cobalah Menggunakan Kata Kunci Lain.`">
               </md-table-empty-state>
@@ -120,14 +107,8 @@
                 </md-table-cell>
               </md-table-row>
             </md-table>
-
-            <paging
-              v-if="!loading"
-              :dataPaging="testimonis"
-              :itemPerPage="10"
-              :range="5"
-              :search="searchResult"
-              @paginatedItems="getPaginatedItems($event)"></paging>
+            
+            <pagination :data="testimonis" v-on:pagination-change-page="getTestimoniData" :limit="4"></pagination>
 
             <!-- Snackbar for success alert -->
             <md-snackbar md-position="center" :md-duration="1500" :md-active.sync="notifSuccess">
@@ -135,9 +116,6 @@
               <span><md-icon style="color: white">done_all</md-icon></span>
             </md-snackbar>
 
-            <div style="display: none">
-              {{ daftarTestimoni }}
-            </div>
           </md-card-content>
         </md-card>
 
@@ -151,46 +129,29 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
-
-  const toLower = text => {
-    return text.toString().toLowerCase();
-  };
-
   export default{
     data: () => ({
-      url: window.location.origin + (window.location.pathname + 'testimoni/'),
-      testimonis: [],
+      url: window.location.origin + window.location.pathname + 'testimoni',
+      testimonis: {},
       searchable_testimoni: [],
       search: null,
 	    promptDelete: false,
 			snackbarDelete: false,
       notifMessage: '',
       notifSuccess: false,
-      searchBy: 'nama_lengkap',
       testimoniId: '',
       testimoniDelete: '',
-      searchResult: {},
       loading: true
     }),
     mounted() {
-      this.$store.dispatch('testimoni/LOAD_TESTIMONI');
+      const app = this
+      app.getTestimoniData()
     },
-    computed: mapState ({
-      daftarTestimoni() {
-        this.testimonis = this.$store.state.testimoni.daftarTestimoni;
-        this.searchable_testimoni = this.$store.state.testimoni.daftarTestimoni;
-        this.loading = false;
-        return this.$store.state.testimoni.daftarTestimoni;
-      }
-    }),
     watch: {
       search() {
-        this.searchTestimoni();
+        const app = this
+        app.getTestimoniData()
       },
-      searchBy() {
-        this.searchTestimoni();
-      }
     },
     filters: {
       capitalize: (value) => {
@@ -204,31 +165,42 @@
       }
     },
     methods: {
-      searchTestimoni() {
-        if (this.search != null) {
-          this.searchResult = this.testimonis.filter(item => toLower(item[this.searchBy]).includes(toLower(this.search)));
-        } else {
-          this.searchResult = this.testimonis;
+      getTestimoniData(page){
+        const app = this
+        let url 
+        if(typeof page === 'undefined'){
+          page = 1
         }
-      },
-      getPaginatedItems(value) {
-        this.searchable_testimoni = value;
+        app.search ? url = `${app.url}/pencarian?page=${page}&search=${app.search}` : url = `${app.url}?page=${page}`
+        
+        axios.get(url).then((resp) => {
+          const { testimoni } = resp.data
+          app.testimonis = testimoni
+          app.searchable_testimoni = testimoni.data
+          app.loading = false
+        })
+        .catch((err) => {
+    			console.log('catch getTestimoniData:',err);
+        })
+
       },
     	deleteTestimoni(testimoniId, namaLengkap) {
-    		this.promptDelete = true;
-    		this.testimoniId = testimoniId;
-    		this.testimoniDelete = namaLengkap;
-    		this.notifMessage = `Apakah Anda Yakin Menghapus Testimoni <strong>${namaLengkap}</strong> ?`;
+        const app = this
+    		app.promptDelete = true;
+    		app.testimoniId = testimoniId;
+    		app.testimoniDelete = namaLengkap;
+    		app.notifMessage = `Apakah Anda Yakin Menghapus Testimoni <strong>${namaLengkap}</strong> ?`;
     	},
       onConfirmDelete() {
-    		axios.delete(this.url + this.testimoniId)
+        const app = this
+    		axios.delete(`${app.url}/${app.testimoniId}`)
     		.then(resp => {
-          this.notifMessage = `Berhasil Menghapus Testimoni ${this.testimoniDelete}.`
-    			this.testimoniId = '';
-    			this.testimoniDelete = '';
-    			this.snackbarDelete = true;
-          this.notifSuccess = true;
-    			this.$store.dispatch('testimoni/LOAD_TESTIMONI');
+          app.notifMessage = `Berhasil Menghapus Testimoni ${app.testimoniDelete}.`
+    			app.testimoniId = '';
+    			app.testimoniDelete = '';
+    			app.snackbarDelete = true;
+          app.notifSuccess = true;
+          app.getTestimoniData()
     		})
     		.catch(resp => {
     			console.log('catch onConfirmDelete:', resp);

@@ -96,4 +96,10 @@ class Pesanan extends Model
         $kode_unik = $id_pesanan % 1000;
         return $kode_unik;
     }
+
+    public function scopeLaporanOrder($query){
+            $query->join('users', 'pesanans.pelanggan_id', '=', 'users.id')
+            ->select('users.name as nama_pelanggan', 'pesanans.id as id_pesanan', 'pesanans.created_at as waktu_pesan', 'pesanans.total', 'pesanans.status_pesanan');
+            return $query;
+    }
 }

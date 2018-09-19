@@ -13,7 +13,7 @@ const mutations = {
     TESTIMONI : (state, data)=> {
       state.daftarTestimoni = data;
       state.loading = false;
-    },
+    }
 }
 
 const actions = {

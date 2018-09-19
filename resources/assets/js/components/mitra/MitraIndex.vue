@@ -75,43 +75,31 @@
           <md-card-header-text>
             <div class="md-toolbar" style="margin-top: -20px; padding: 4px">
               <div class="header-title md-toolbar-section-start" style="padding-right:10px">Mitra</div>
-              <div class="header-title md-toolbar-section-end">
-                <div class="md-layout">
-			        		<div class="md-layout-item md-medium-size-60 md-small-size-60 md-xsmall-size-60">
-						        <md-field md-inline>
-						        	<label class="media-screen-xsmall-hide">Cari Dengan ...</label>
-						        	<label class="media-screen-medium-hide">Cari Dengan ...</label>
-						          <md-input v-model="search" />
-						        </md-field>
-			        		</div>
-			        		<div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
-						        <md-field>
-						          <md-select v-model="searchBy" name="searchBy" id="searchBy" md-dense>
-                        <md-option value="nama_mitra">Nama</md-option>
-						            <md-option value="no_telp">Nomor Telepon</md-option>
-						          </md-select>
-						        </md-field>
-			        		</div>
-			        	</div>
-              </div>
             </div>
           </md-card-header-text>
         </md-card-header>
 
         <md-card-content>
-          <md-button :to="`/mitra/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah Mitra</md-button>
+          <div class="row">
+            <div class="col-md-9">
+             <md-button :to="`/mitra/create`" class="md-dense md-raised" style="background-color: #d44723; color: white">Tambah Mitra</md-button>
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" name="pencarian" v-model="search" placeholder="Masukan Pencarian disini ..." style="font-size : 13px; font-style: italic">
+            </div>
+          </div>
       		<md-table v-model="searchable_mitra" md-sort="name" md-sort-order="asc" md-fixed-header>
 
 			      <md-table-empty-state v-if="loading">
 					    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
 			      </md-table-empty-state>
 			      <md-table-empty-state
-			      	v-else-if="mitra.length == 0"
+			      	v-else-if="Object.keys(mitra).length == 0"
 			        md-label="Tidak ada data"
 			        md-description="Belum ada data Mitra yang tersimpan.">
 			      </md-table-empty-state>      	
 			      <md-table-empty-state
-			      	v-else-if="mitra.length > 0 && search != null"
+			      	v-else-if="Object.keys(mitra).length > 0 && search != null"
 			        md-label="Tidak ada Mitra ditemukan"
 			        :md-description="`Tidak ada Mitra ditemukan untuk kata kunci '${search}'. Cobalah menggunakan kata kunci yang lain.`">
 			      </md-table-empty-state>
@@ -136,13 +124,8 @@
 			      </md-table-row>
 			    </md-table>  	
 
-          <paging
-            v-if="!loading"
-            :dataPaging="mitra"
-            :itemPerPage="10"
-            :range="5"
-            :search="searchResult"
-            @paginatedItems="getPaginatedItems($event)"></paging>
+            <pagination :data="mitra" v-on:pagination-change-page="getMitraData" :limit="4"></pagination>
+
         </md-card-content>
       </md-card>
 
@@ -157,58 +140,41 @@
 
 <script>
 
-const toLower = text => {
-  return text.toString().toLowerCase();
-};
-
-const searchMitra = (items, term, searchBy) => {
-  if (term) {
-    return items.filter(item => toLower(item[searchBy]).includes(toLower(term)));
-  }
-  return items;
-};
-
 export default {
   data : () => ({
-    url: window.location.origin + (window.location.pathname + 'mitra'),
+    url: window.location.origin + window.location.pathname + 'mitra',
     promptDeleteMitra: false,
     snackbarDeleteMitra: false,
     mitraIdForDelete: '',
     search: null,
     searchable_mitra: [],
-    mitra: [],
-    searchBy: 'nama_mitra',
+    mitra: {},
     loading: true,
-    searchResult: {}
   }),
   created() {
-  	this.getMitraData();
+    const app = this
+  	app.getMitraData();
   },
   watch: {
     search() {
-      this.searchMitra();
-    },
-    searchBy() {
-      this.searchMitra();
+      const app = this
+  	  app.getMitraData();
     }
   },
   methods: {
-    searchMitra() {
-      if (this.search != null) {
-        this.searchResult = this.mitra.filter(item => toLower(item[this.searchBy]).includes(toLower(this.search)));
-      } else {
-        this.searchResult = this.mitra;
+    getMitraData(page) {
+      const app = this
+      let url
+      if(typeof page === 'undefined'){
+        page = 1
       }
-    },
-    getPaginatedItems(value) {
-      this.searchable_mitra = value;
-    },
-    getMitraData() {
-      axios.get(this.url)
+      app.search ? url = `${app.url}/pencarian?page=${page}&search=${app.search}` : url = `${app.url}?page=${page}`
+      axios.get(url)
        .then(resp => {
-        this.mitra = resp.data;
-        this.searchable_mitra = resp.data;
-        this.loading = false;
+        const { mitra } = resp.data
+        app.mitra = mitra
+        app.searchable_mitra = mitra.data;
+        app.loading = false;
       })
       .catch(resp => {
         console.log('catch getMitraData:', resp);
@@ -216,15 +182,17 @@ export default {
       });
     },
     deleteMitra(id){
-		  this.promptDeleteMitra = true;
-		  this.mitraIdForDelete = id;
+      const app = this
+		  app.promptDeleteMitra = true;
+		  app.mitraIdForDelete = id;
     },
     onConfirmDelete() {
-      axios.delete(this.url + '/' + this.mitraIdForDelete)
+      const app = this
+      axios.delete(`${app.url}/${app.mitraIdForDelete}`)
       .then(resp => {
-        this.userIdForDelete = '';
-        this.snackbarDeleteUser = true;
-        this.getMitraData();
+        app.userIdForDelete = '';
+        app.snackbarDeleteUser = true;
+        app.getMitraData();
       })
       .catch(resp => {
         console.log('catch onConfirmDelete:', resp);

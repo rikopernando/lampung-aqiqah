@@ -14,26 +14,56 @@ class BeritaKamiController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-        public function __construct()
+    public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    public function pagination($data,$berita_kami,$url){
+
+        $respons['current_page']   = $berita_kami->currentPage();
+        $respons['data']           = $data;
+        $respons['first_page_url'] = $berita_kami->firstItem();
+        $respons['from']           = 1;
+        $respons['last_page']      = $berita_kami->lastPage();
+        $respons['last_page_url']  = $berita_kami->lastPage();
+        $respons['next_page_url']  = $berita_kami->nextPageUrl();
+        $respons['path']           = url($url);
+        $respons['per_page']       = $berita_kami->perPage();
+        $respons['prev_page_url']  = $berita_kami->previousPageUrl();
+        $respons['to']             = $berita_kami->perPage();
+        $respons['total']          = $berita_kami->total();
+
+        return $respons;
+
     }
 
     
     public function index()
     {
-        //
+       $berita_kami = BeritaKami::orderBy('created_at','desc')->paginate(1);
+        $array_berita = [];
+        foreach ($berita_kami as $berita) {
+            $array_berita[] = [
+                'id' => $berita->id,
+                'judul_berita' => $berita->judul_berita,
+                'isi_berita' => strip_tags($berita->isi_berita),
+            ];
+        }
+        
+      return response()->json([
+         'berita_kami' => $this->pagination($array_berita, $berita_kami, '/') 
+      ],200);
     }
 
-
-
-    public function view() {
-        $berita = BeritaKami::select()->orderBy('created_at','desc');
-
-        $data_berita = $berita->get();
+    public function search(Request $request) {
+       $berita_kami = BeritaKami::where(function ($berita_kami) use ($request){
+              $berita_kami->orWhere('judul_berita','LIKE','%'. $request->search .'%') 
+              ->orWhere('isi_berita','LIKE','%'. $request->search .'%'); 
+       })->orderBy('created_at','desc')->paginate(1);
 
         $array_berita = [];
-        foreach ($data_berita as $berita) {
+        foreach ($berita_kami as $berita) {
             $array_berita[] = [
                 'id' => $berita->id,
                 'judul_berita' => $berita->judul_berita,
@@ -41,13 +71,9 @@ class BeritaKamiController extends Controller
             ];
         }
 
-        $count_berita = $berita->count();
-
-        $respons['data_berita'] = $array_berita;
-        $respons['count_berita'] = $count_berita;
-
-
-        return response()->json($respons);
+      return response()->json([
+         'berita_kami' => $this->pagination($array_berita, $berita_kami, '/pencarian') 
+      ],200);
 
     }
 

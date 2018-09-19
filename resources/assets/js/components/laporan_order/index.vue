@@ -65,29 +65,17 @@
           <md-card-header-text>
             <div class="md-toolbar" style="margin-top: -20px; padding: 4px">
               <div class="header-title md-toolbar-section-start" style="padding-right:10px">Laporan Order</div>
-              <div class="header-title md-toolbar-section-end">
-                <div class="md-layout">
-                  <div class="md-layout-item md-medium-size-60 md-small-size-60 md-xsmall-size-60">
-    				        <md-field md-inline>
-                      <label class="media-screen-xsmall-hide">Cari Dengan ...</label>
-                      <label class="media-screen-medium-hide">Cari Laporan ...</label>
-                      <md-input v-model="search" />
-                    </md-field>
-                  </div>
-                  <div class="md-layout-item md-medium-size-40 md-small-size-40 md-xsmall-size-40">
-                    <md-field>
-                      <md-select v-model="searchBy" name="searchBy" id="searchBy" md-dense>
-                        <md-option value="nama_pelanggan">Nama Pelanggan</md-option>
-                        <md-option value="status_pesanan">Status Pesanan</md-option>
-                      </md-select>
-                    </md-field>
-                  </div>
-                </div>
-              </div>
             </div>
           </md-card-header-text>
         </md-card-header>
         <md-card-content>
+          <div class="row">
+            <div class="col-md-9">
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" name="pencarian" v-model="search" placeholder="Masukan Pencarian disini ..." style="font-size : 13px; font-style: italic">
+            </div>
+          </div>
       		<md-table v-model="searchable_laporan_order" md-sort="name" md-sort-order="asc" md-fixed-header>
 			      <md-table-empty-state v-if="loading">
 					    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
@@ -138,24 +126,9 @@
               </md-table-cell>
             </md-table-row>
           </md-table>
+            <pagination :data="laporan_order" v-on:pagination-change-page="getLaporanOrderData" :limit="4"></pagination>
         </md-card-content>
 
-        <!-- 
-          PAGING:
-          v-if (wajib) = agar jalan hanya saat loading selesai
-          :dataPaging (wajib) = data Array of Object yang akan dipaging
-          :itemPerPage (opsional) = jumlah item yang ditampilkan per halaman
-          :range (opsional) = range paging
-          :search (opsional) = data Array of Object hasil dari pencarian
-          @paginatedItems (wajib) = event untuk mengambil hasil data yang dikembalikan dari component paging
-         -->
-        <paging
-          v-if="!loading"
-          :dataPaging="laporan_order"
-          :itemPerPage="10"
-          :range="5"
-          :search="searchResult"
-          @paginatedItems="getPaginatedItems($event)"></paging>
 
       </md-card>
 		</div>
@@ -164,29 +137,22 @@
 
 <script>
 
-const toLower = text => {
-  return text.toString().toLowerCase();
-};
-
 export default {
   data: () => ({
-  	url: window.location.origin + (window.location.pathname + 'laporan-order'),
+  	url: window.location.origin + window.location.pathname + 'laporan-order',
     search: null,
     laporan_order: {},
-    searchable_laporan_order: {},
+    searchable_laporan_order: [],
     loading: true,
-    searchResult: {},
-    searchBy: 'nama_pelanggan',
   }),
   created() {
-  	this.getLaporanOrderData();
+    const app = this
+  	app.getLaporanOrderData();
   },
   watch: {
-    search(val) {
-      this.searchLaporanOrder(val);
-    },
-    searchBy(val) {
-      this.searchLaporanOrder(val);
+    search() {
+      const app = this
+  	  app.getLaporanOrderData();
     }
   },
   filters: {
@@ -195,45 +161,19 @@ export default {
     }
   },
   methods: {
-    getPaginatedItems(value) {
-      this.searchable_laporan_order = value;
-    },
-    searchLaporanOrder(val) {
-      if (val != null) {
-        if (this.searchBy == 'status_pesanan') {
-          this.searchByStatusPesanan(val);
-        } else {
-          this.searchResult = this.laporan_order.filter(item => toLower(item.nama_pelanggan).includes(toLower(val)));
-        }
-      } else {
-        this.searchResult = this.laporan_order;
+    getLaporanOrderData(page) {
+      const app = this
+      let url
+      if(typeof page === 'undefined'){
+        page = 1
       }
-    },
-    searchByStatusPesanan(term) {
-      term = toLower(term);
-      switch (term) {
-        case 'belum dikonfirmasi':
-          return this.searchResult = this.laporan_order.filter(item => toLower(String(item.status_pesanan)).includes('null'));
-        break;
-        case 'belum selesai':
-          return this.searchResult = this.laporan_order.filter(item => toLower(String(item.status_pesanan)).includes('1'));
-        break;
-        case 'selesai':
-          return this.searchResult = this.laporan_order.filter(item => toLower(String(item.status_pesanan)).includes('2'));
-        break;
-        case 'dibatalkan':
-          return this.searchResult = this.laporan_order.filter(item => toLower(String(item.status_pesanan)).includes('0'));
-        break;
-        default:
-          return this.searchResult = this.laporan_order;
-      }
-    },
-    getLaporanOrderData() {
-      axios.get(this.url + '/' + 'view')
+      app.search ? url = `${app.url}/pencarian?page=${page}&search=${app.search}` : url = `${app.url}/view?page=${page}`
+      axios.get(url)
       .then(resp => {
-        this.laporan_order = resp.data;
-        this.searchable_laporan_order = resp.data;
-        this.loading = false;
+        const { laporan_order } = resp.data
+        app.laporan_order = laporan_order;
+        app.searchable_laporan_order = laporan_order.data;
+        app.loading = false;
       })
       .catch(resp => {
         console.log('catch getLaporanOrderData:', resp);

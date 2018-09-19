@@ -90,6 +90,7 @@ Route::resource('produk', 'ProdukController');
 
 // Laporan Order
 Route::get('laporan-order/view', 'LaporanOrderController@view');
+Route::get('laporan-order/pencarian', 'LaporanOrderController@search');
 Route::get('laporan-order/detail-order/{id_pesanan}', 'LaporanOrderController@detail_order');
 Route::get('laporan-order/info-pesanan/{id_pesanan}', 'LaporanOrderController@infoPesanan');
 Route::post('laporan-order/ubah-status-pesanan', 'LaporanOrderController@ubahStatusPesanan');
@@ -111,12 +112,12 @@ Route::post('/keranjang-belanja/jumlah-pesanan', 'KeranjangBelanjaController@jum
 Route::resource('keranjang-belanja', 'KeranjangBelanjaController');
 
 //Testimoni
-Route::get('/testimoni/view', 'TestimoniController@view');
+Route::get('/testimoni/pencarian', 'TestimoniController@search');
 Route::post('/testimoni/{id}', 'TestimoniController@update');
 Route::resource('testimoni', 'TestimoniController');
 
 //Testimoni
-Route::get('/berita/view', 'BeritaKamiController@view');
+Route::get('/berita/pencarian', 'BeritaKamiController@search');
 Route::post('/berita/{id}', 'BeritaKamiController@update');
 Route::resource('berita', 'BeritaKamiController');
 
@@ -126,6 +127,7 @@ Route::get('pelanggan/download-excel', 'PelangganController@downloadExcel');
 Route::resource('pelanggan', 'PelangganController');
 
 // Mitra
+Route::get('mitra/pencarian', 'MitraController@search');
 Route::resource('mitra', 'MitraController');
 
 // Setting Perusahaan
