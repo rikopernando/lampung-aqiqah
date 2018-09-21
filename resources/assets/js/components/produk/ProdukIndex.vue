@@ -186,11 +186,8 @@
       },
     },
     methods: {
-    	getProdukData(page) {
+    	getProdukData(page = 1) {
         const app = this
-        if(typeof page === 'undefined'){
-          page = 1
-        }
         let url
         app.search ? url = `${app.url}produk/pencarian?page=${page}&search=${app.search}` : url = `${app.url}produk?page=${page}`
     		axios.get(url).then(resp => {

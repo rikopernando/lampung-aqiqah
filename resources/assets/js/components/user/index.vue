@@ -157,12 +157,9 @@ export default {
     },
   },
   methods: {
-  	getUserData(page) {
+  	getUserData(page = 1) {
       const app = this
       let url
-      if(typeof page === 'undefined'){
-        page = 1
-      }
       app.search ? url = `${app.url}/pencarian?page=${page}&search=${app.search}` : url = `${app.url}?page=${page}`
   		axios.get(url)
   		.then(resp => {
