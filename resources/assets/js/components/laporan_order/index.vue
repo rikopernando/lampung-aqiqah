@@ -107,16 +107,19 @@
               </md-table-cell>
               <md-table-cell md-label="Status Pesanan">
                 <div v-if="item.status_pesanan == null">
-                  Belum Dikonfirmasi
+                  Belum Dibayar
                 </div>
                 <div v-else-if="item.status_pesanan == 0">
-                  <span style="color: red;">Dibatalkan</span>
+                  <span style="color: red;">DIBATALKAN</span>
                 </div>
                 <div v-else-if="item.status_pesanan == 1">
-                  <span style="color: green;">Belum Selesai</span>
+                  <span style="color: green;">PESANAN BELUM DIKIRIM</span>
                 </div>
                 <div v-else-if="item.status_pesanan == 2">
-                  <span style="color: blue;">Selesai</span>
+                  <span style="color: teal;">PESANAN SEDANG DIKIRIM</span>
+                </div>
+                <div v-else-if="item.status_pesanan == 3">
+                  <span style="color: blue;">SELESAI</span>
                 </div>
               </md-table-cell>
               <md-table-cell md-label="Detail Order">
