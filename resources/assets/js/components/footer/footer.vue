@@ -48,7 +48,7 @@
 	    </div>
 	  </div>
 	  <p class="copyright">
-	  	Copyright © {{ tahun }} PT. Andaglos Global Teknologi.
+	  	Copyright © {{ tahun }} Aqiqah Lampung 
 	  </p>
   </div>
 </div>
