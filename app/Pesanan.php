@@ -13,7 +13,7 @@ use Mail;
 class Pesanan extends Model
 {
     protected $fillable = [
-        'pelanggan_id', 'sumber_informasi', 'catatan', 'kirim_ke_alamat_lain', 'nama_peserta', 'tempat_tanggal_lahir', 'jenis_kelamin', 'nama_ayah', 'nama_ibu', 'tempat_lahir', 'total', 'metode_pembayaran','status_pesanan','kode_unik'
+        'pelanggan_id', 'sumber_informasi', 'catatan', 'kirim_ke_alamat_lain', 'nama_peserta', 'tempat_tanggal_lahir', 'jenis_kelamin', 'nama_ayah', 'nama_ibu', 'tempat_lahir', 'total', 'metode_pembayaran','status_pesanan','kode_unik','alasan_batal'
     ];
 
     public function pelanggan()
