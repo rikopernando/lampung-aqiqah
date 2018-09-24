@@ -1,7 +1,11 @@
+<style scoped>
+  .layer {
+    background-color: rgba(248, 247, 216, 0.72);
+  }
+</style>
+
 <template>
-
-
-  <div v-bind:style="{ 'background-image': 'url(' + url+'/images/background-produk.jpg' + ')' }">
+  <div v-bind:style="background">
         <div class="produk-modal-container" id="produk-modal" >
             <div class="produk-modal">
                 <div class="title-produk">
@@ -32,90 +36,93 @@
                 </div>
             </div>
         </div>
-  <div class="container">
-        <div class="md-medium-size-50 md-small-size-50 md-xsmall-hide" style="margin:30px">
-          <md-empty-state v-if="this.$store.state.daftarproduk.loading">
-                <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
-           </md-empty-state>
 
-          <div v-for="produk in produks">
-              <div class="col-md-3 col-sm-6 col-xs-6" style="padding: 25px 15px">
-                  <div class="md-layout-item">
-                   <md-card md-with-hover>
-                      <div id="card-atas" @click="openModalProduk(produk.id)">
-                       <md-card-media class="card-image" >
-                          <md-card md-with-hover style="margin-top: -50px!important">
-                            <img :src="url_picture+'/default.jpg'" class="image" v-if="produk.foto == null">
-                            <img :src="url_picture+'/'+produk.foto" class="image" v-else>
-                          </md-card>
-                       </md-card-media>
-                       <p class="flexFont">
-                         <center> {{ produk.nama_produk | capitalize }} </center>
-                       </p>
-                       <md-card-actions class="card-action">
-                         <div class="md-toolbar-section-start harga-coret">Rp {{ produk.harga_coret | pemisahTitik }} </div>
-                         <div class="md-toolbar-section-end harga-jual">Rp {{ produk.harga_jual | pemisahTitik }} </div>
-                       </md-card-actions>
-                       </div>
-                       <div id="card-bawah">
-                       <md-card-actions class="card-action">
-                         <md-button @click="createKeranjang(produk.id)" class="beli-sekarang" style="background-color: #db4a24; color: white">
-                           Masuk Keranjang <span class="bg"></span>
-                         </md-button>
-                       </md-card-actions>
-                     </div>
-                     </md-card>
+  <div class="layer">
+      <div class="container">
+            <div class="md-medium-size-50 md-small-size-50 md-xsmall-hide" style="margin:30px">
+              <md-empty-state v-if="this.$store.state.daftarproduk.loading">
+                    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+               </md-empty-state>
+
+              <div v-for="produk in produks">
+                  <div class="col-md-3 col-sm-6 col-xs-6" style="padding: 25px 15px">
+                      <div class="md-layout-item">
+                       <md-card md-with-hover>
+                          <div id="card-atas" @click="openModalProduk(produk.id)">
+                           <md-card-media class="card-image" >
+                              <md-card md-with-hover style="margin-top: -50px!important">
+                                <img :src="url_picture+'/default.jpg'" class="image" v-if="produk.foto == null">
+                                <img :src="url_picture+'/'+produk.foto" class="image" v-else>
+                              </md-card>
+                           </md-card-media>
+                           <p class="flexFont">
+                             <center> {{ produk.nama_produk | capitalize }} </center>
+                           </p>
+                           <md-card-actions class="card-action">
+                             <div class="md-toolbar-section-start harga-coret">Rp {{ produk.harga_coret | pemisahTitik }} </div>
+                             <div class="md-toolbar-section-end harga-jual">Rp {{ produk.harga_jual | pemisahTitik }} </div>
+                           </md-card-actions>
+                           </div>
+                           <div id="card-bawah">
+                           <md-card-actions class="card-action">
+                             <md-button @click="createKeranjang(produk.id)" class="beli-sekarang" style="background-color: #db4a24; color: white">
+                               Masuk Keranjang <span class="bg"></span>
+                             </md-button>
+                           </md-card-actions>
+                         </div>
+                         </md-card>
+                      </div>
                   </div>
-              </div>
+                </div>
             </div>
-        </div>
 
-        <div id="displayMobile" style="margin:30px">
+            <div id="displayMobile" style="margin:30px">
 
-           <md-empty-state v-if="this.$store.state.daftarproduk.loading">
-                <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
-           </md-empty-state>
+               <md-empty-state v-if="this.$store.state.daftarproduk.loading">
+                    <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+               </md-empty-state>
 
-            <div v-for="produk in produks">
-              <div class="col-xs-6" style="padding: 25px 5px">
-                  <div class="md-layout-item">
-                     <md-card md-with-hover>
-                      <div id="card-atas" @click="openModalProduk(produk.id)">
-                       <md-card-media class="card-image">
-                          <md-card md-with-hover style="margin-top: -50px!important">
-                            <img :src="url_picture+'/default.jpg'" class="image" v-if="produk.foto == null">
-                            <img :src="url_picture+'/'+produk.foto" class="image" v-else>
-                          </md-card>
-                       </md-card-media>
-                       <p class="flexFont">
-                         <center> {{ produk.nama_produk | capitalize }} </center>
-                       </p>
-                       <md-card-actions class="card-action">
-                         <div class="md-toolbar-section-start harga-coret"> {{ produk.harga_coret | pemisahTitik }} </div>
-                         <div class="md-toolbar-section-end harga-jual"> {{ produk.harga_jual | pemisahTitik }} </div>
-                       </md-card-actions>
-                     </div>
-                     <div id="card-bawah" >
-                       <md-card-actions class="card-action">
-                         <md-button  @click="createKeranjang(produk.id)" class="md-raised beli-sekarang">
-                           Masuk Keranjang
-                         </md-button>
-                       </md-card-actions>
-                     </div>
-                     </md-card>
+                <div v-for="produk in produks">
+                  <div class="col-xs-6" style="padding: 25px 5px">
+                      <div class="md-layout-item">
+                         <md-card md-with-hover>
+                          <div id="card-atas" @click="openModalProduk(produk.id)">
+                           <md-card-media class="card-image">
+                              <md-card md-with-hover style="margin-top: -50px!important">
+                                <img :src="url_picture+'/default.jpg'" class="image" v-if="produk.foto == null">
+                                <img :src="url_picture+'/'+produk.foto" class="image" v-else>
+                              </md-card>
+                           </md-card-media>
+                           <p class="flexFont">
+                             <center> {{ produk.nama_produk | capitalize }} </center>
+                           </p>
+                           <md-card-actions class="card-action">
+                             <div class="md-toolbar-section-start harga-coret"> {{ produk.harga_coret | pemisahTitik }} </div>
+                             <div class="md-toolbar-section-end harga-jual"> {{ produk.harga_jual | pemisahTitik }} </div>
+                           </md-card-actions>
+                         </div>
+                         <div id="card-bawah" >
+                           <md-card-actions class="card-action">
+                             <md-button  @click="createKeranjang(produk.id)" class="md-raised beli-sekarang">
+                               Masuk Keranjang
+                             </md-button>
+                           </md-card-actions>
+                         </div>
+                         </md-card>
+                      </div>
                   </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-        <!-- Snackbar for Bank delete alert -->
-        <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarBerhasil" md-persistent>
-            <span>Produk Berhasil Masuk Keranjang !</span>
-          </md-snackbar>
-        <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarAdmin" md-persistent>
-            <span>Untuk belanja produk silakan login sebagai pelanggan</span>
-          </md-snackbar>
-  </div>
+            <!-- Snackbar for Bank delete alert -->
+            <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarBerhasil" md-persistent>
+                <span>Produk Berhasil Masuk Keranjang !</span>
+              </md-snackbar>
+            <md-snackbar md-position="center" :md-duration="2000" :md-active.sync="snackbarAdmin" md-persistent>
+                <span>Untuk belanja produk silakan login sebagai pelanggan</span>
+              </md-snackbar>
+      </div>
+      </div>
   </div>
 </template>
 
@@ -126,6 +133,9 @@
     name: 'ElevationExample',
     data : () => {
       return {
+        background : {
+          backgroundImage: 'url(' + window.location.origin + window.location.pathname+'/images/background-produk.jpg' + ')' 
+        },
         url : window.location.origin + window.location.pathname,
         url_picture : window.location.origin + (window.location.pathname) + "image_produks/",
         snackbarBerhasil: false,
