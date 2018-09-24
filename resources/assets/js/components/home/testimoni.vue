@@ -1,7 +1,13 @@
+<style scoped>
+  .layer {
+    background-color: rgba(248, 247, 216, 0.72);
+  }
+</style>
+
 <template>
   <div v-bind:style="{ 'background-image': 'url(' + url+'/images/background-produk.jpg' + ')' }">
       <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-12 layer">
             <md-toolbar class="md-dense">
               <div class="md-toolbar-section-start"></div>
                 <h3 class="md-title"><b>TESTIMONIAL</b></h3>
