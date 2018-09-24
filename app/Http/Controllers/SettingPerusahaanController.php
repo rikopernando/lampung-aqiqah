@@ -110,6 +110,7 @@ class SettingPerusahaanController extends Controller
             switch ($type):
                 case 'logo':
                     $image_resize = Image::make($file->getRealPath());
+                    $image_resize->fit(271,54);
                     $image_resize->save(public_path('images_logo/' . $filename));
                     $this->deleteFile($old_file, 'images_logo');
                 break;

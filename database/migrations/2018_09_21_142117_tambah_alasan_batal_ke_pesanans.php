@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class TambahKodeUnikKePesanans extends Migration
+class TambahAlasanBatalKePesanans extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class TambahKodeUnikKePesanans extends Migration
     public function up()
     {
       Schema::table('pesanans', function (Blueprint $table) {
-          $table->integer('kode_unik')->nullable();
+          $table->text('alasan_batal')->nullable();
       });
     }
 
@@ -26,7 +26,7 @@ class TambahKodeUnikKePesanans extends Migration
     public function down()
     {
       Schema::table('pesanans', function (Blueprint $table) {
-          $table->dropColumn('kode_unik');
+          $table->dropColumn('alasan_batal');
       });
     }
 }

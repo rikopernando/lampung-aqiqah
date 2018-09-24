@@ -254,7 +254,7 @@
           </md-list-item>
 
           <md-list-item>
-            <a href="#/berita-kami" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
+            <a href="#/berita-kami-list" class="md-list-item-content md-ripple md-button" style="margin: 0px; color: #767676 !important">
               <md-icon>timeline</md-icon>
               <span>Berita Kami</span>
             </a>

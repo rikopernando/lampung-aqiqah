@@ -48,7 +48,7 @@
 	    </div>
 	  </div>
 	  <p class="copyright">
-	  	Copyright © {{ tahun }} PT. Andaglos Global Teknologi.
+	  	Copyright © {{ tahun }} Mulia Jaya Indofarm
 	  </p>
   </div>
 </div>

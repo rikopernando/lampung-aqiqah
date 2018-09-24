@@ -117,6 +117,7 @@
                <md-file name="logo" v-model="setting_perusahaan.logo" id="logo" accept="image/*" @change="onFileChange" />
             </md-field>
 
+            <p style="color :red; font-style:italic;">* Ukuran logo yang disarankan 271 x 54</p>
             <md-card class="thumbnail-foto" v-if="setting_perusahaan.logo != null">
               <md-card-media-cover md-text-scrim>
                  <md-card-media md-ratio="16:9">

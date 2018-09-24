@@ -302,9 +302,11 @@ class LaporanOrderController extends Controller
     }
 
     public function ubahStatusPesanan(Request $request) {
-        return Pesanan::whereId($request->id_pesanan)->update([
+        $update = [
             'status_pesanan' => $request->angka
-        ]);
+        ];
+        $request->angka == 0 && $update['alasan_batal'] = $request->alasan_batal;
+        return Pesanan::whereId($request->id_pesanan)->update($update);
     }
 
     public function getNamaDaerah($id, $n) {
@@ -336,7 +338,7 @@ class LaporanOrderController extends Controller
     public function kirimEmail(Request $request) {
         $pesanan = DB::table('pesanans')
             ->join('users', 'pesanans.pelanggan_id', '=', 'users.id')
-            ->select('users.name as nama_pelanggan', 'pesanans.updated_at as tanggal_dikonfirmasi', 'pesanans.metode_pembayaran', 'users.email', 'pesanans.id', 'pesanans.total', 'pesanans.kode_unik', 'users.alamat', 'users.no_telp')
+            ->select('users.name as nama_pelanggan', 'pesanans.updated_at as tanggal_dikonfirmasi', 'pesanans.metode_pembayaran', 'users.email', 'pesanans.id', 'pesanans.total', 'pesanans.kode_unik', 'users.alamat', 'users.no_telp', 'pesanans.alasan_batal')
             ->where('pesanans.id', $request->id_pesanan)
             ->first();
         $detail_pesanan = DetailPesanan::with('produk')->where('id_pesanan',$pesanan->id)->get();
@@ -344,15 +346,16 @@ class LaporanOrderController extends Controller
         $bank = Bank::where('default',1)->first();
 
         $arrayN = [
-            1 => ['pesanan_dikonfirmasi', 'Konfirmasi'],
-            2 => ['pesanan_dikirimkan', 'Kirim'],
-            3 => ['pesanan_diselesaikan', 'Selesaikan']
+            0 => ['pesanan_dibatalkan', 'Dibatalkan'],
+            1 => ['pesanan_dikonfirmasi', 'Dikonfirmasi'],
+            2 => ['pesanan_dikirimkan', 'Dikirim'],
+            3 => ['pesanan_diselesaikan', 'Diselesaikan']
         ];
 
         Mail::send('mails.'. $arrayN[$request->n][0], compact('pesanan','detail_pesanan','kirim_tempat_lain','bank'), function ($message) use ($pesanan, $request, $arrayN) {
               $message->from('aqiqahlampung@muliajayaindofarm.com','Aqiqah Lampung');
               $message->to($pesanan->email);
-              $message->subject('Pesanan Anda Telah Kami '. $arrayN[$request->n][1]);
+              $message->subject('Pesanan Anda Telah '. $arrayN[$request->n][1]);
         });
 
     }
